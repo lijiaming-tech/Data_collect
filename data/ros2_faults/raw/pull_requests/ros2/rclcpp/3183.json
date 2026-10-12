@@ -1,0 +1,30 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3183",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3183",
+    "fetched_at": "2026-10-11T11:20:35.617890+00:00",
+    "http_status": 200,
+    "response_sha256": "9ca8db32c6566befff3fdc1d95a61fc3670de93a004c48f6a97dd9729a3c43fb"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/3183",
+  "title": "Bugfix/rclcpp action UUID rng race condition by iv461 · Pull Request #3183 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nFixes #3182\n\n\nIs this user-facing behavior change?\n\n\nNo\n\n\nDid you use Generative AI?\n\n\nNo :)\n\n\nAdditional Information",
+  "discussion_rendered_text": [
+    "Tick the box to add this pull request to the merge queue (same as @mergifyio queue).\n\n\n\n Queue this pull request",
+    "Pulls: #3183\n\nGist: https://gist.githubusercontent.com/jmachowinski/2abefb9da5a9aa70bfd2dee04dcc724a/raw/9b72c3c8e10eb20ef78113fba7ed61ac8829b28e/ros2.repos\n\nBUILD args:\n\nTEST args:\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/19708\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "https://github.com/Mergifyio backport lyrical kilted",
+    "backport lyrical kilted\n\n\n✅ Backports have been created\nDetails\n\n\n#3188 Bugfix/rclcpp action UUID rng race condition (backport #3183) has been created for branch lyrical\n\n\n#3189 Bugfix/rclcpp action UUID rng race condition (backport #3183) has been created for branch kilted"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros2/rclcpp/commit/30177a323de4df04026144e9c773476094af62ed",
+    "https://github.com/ros2/rclcpp/commit/480bc818cb1d668f52c621a2d54a5ee45947bd62",
+    "https://github.com/ros2/rclcpp/commit/569edb884138c2e3de25cbfe462a6d4d09dde52a",
+    "https://github.com/ros2/rclcpp/pull/3183/commits/4ed254c64027bd8fc39e37d683844a2ee9655d1e",
+    "https://github.com/ros2/rclcpp/pull/3183/commits/547b44e6362140b4faddf1d4cf5d1d1196425f6c",
+    "https://github.com/ros2/rclcpp/pull/3183/commits/57be7db75bc762e1ba08a84731236a897e0964e2",
+    "https://github.com/ros2/rclcpp/pull/3183/commits/c85d28eb723ff958d6cd614ccbc22aeafc3dc744"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

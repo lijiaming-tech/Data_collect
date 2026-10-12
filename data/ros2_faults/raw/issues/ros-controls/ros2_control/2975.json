@@ -1,0 +1,1249 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/2975",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/2975",
+    "fetched_at": "2026-10-11T11:24:43.498558+00:00",
+    "http_status": 200,
+    "response_sha256": "5abc0f7b1fd251f9221120cf7b3425c6c222226ab0308b7a84e21ce60bcc176b"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc7kuKQ-",
+    "databaseId": 3837305918,
+    "number": 2975,
+    "title": "CM is calling update of a controller after cleanup",
+    "url": "https://github.com/ros-controls/ros2_control/issues/2975",
+    "body": "**Describe the bug**\nHow can that happen?\n```\n2026-01-21T03:32:25.3778768Z     [ros2_control_node-1] [INFO] [1768966270.605792714] [controller_manager]: Shutdown request received....\n2026-01-21T03:32:25.3779985Z     [ros2_control_node-1] [INFO] [1768966270.605864869] [controller_manager]: Shutting down all controllers in the controller manager.\n2026-01-21T03:32:25.3781262Z     [ros2_control_node-1] [INFO] [1768966270.605915321] [controller_manager]: Deactivating controller 'rrbot_with_sensor_position_controller'\n2026-01-21T03:32:25.3782460Z     [ros2_control_node-1] [INFO] [1768966270.605978392] [controller_manager]: Shutting down controller 'rrbot_with_sensor_position_controller'\n2026-01-21T03:32:25.3783632Z     [ros2_control_node-1] [INFO] [1768966270.606012694] [controller_manager]: Deactivating controller 'threedofbot_joint_state_broadcaster'\n2026-01-21T03:32:25.3784872Z     [ros2_control_node-1] [INFO] [1768966270.606047241] [controller_manager]: Shutting down controller 'threedofbot_joint_state_broadcaster'\n2026-01-21T03:32:25.3785725Z     [ros2_control_node-1] [INFO] [1768966270.606066098] [controller_manager]: Deactivating controller 'threedofbot_position_controller'\n2026-01-21T03:32:25.3786469Z     [ros2_control_node-1] [INFO] [1768966270.606092795] [controller_manager]: Shutting down controller 'threedofbot_position_controller'\n2026-01-21T03:32:25.3787199Z     [ros2_control_node-1] [INFO] [1768966270.606111174] [controller_manager]: Deactivating controller 'threedofbot_pid_gain_controller'\n2026-01-21T03:32:25.3787966Z     [ros2_control_node-1] [INFO] [1768966270.606133770] [controller_manager]: Shutting down controller 'threedofbot_pid_gain_controller'\n2026-01-21T03:32:25.3788894Z     [ros2_control_node-1] [INFO] [1768966270.606151592] [controller_manager]: Deactivating controller 'joint_state_broadcaster'\n2026-01-21T03:32:25.3789577Z     [ros2_control_node-1] [INFO] [1768966270.606177328] [controller_manager]: Shutting down controller 'joint_state_broadcaster'\n2026-01-21T03:32:25.3790277Z     [ros2_control_node-1] [INFO] [1768966270.606193478] [controller_manager]: Shutting down controller 'rrbot_joint_state_broadcaster'\n2026-01-21T03:32:25.3790988Z     [ros2_control_node-1] [INFO] [1768966270.606215154] [controller_manager]: Shutting down controller 'rrbot_position_controller'\n2026-01-21T03:32:25.3791709Z     [ros2_control_node-1] [INFO] [1768966270.606233607] [controller_manager]: Deactivating controller 'rrbot_external_fts_broadcaster'\n2026-01-21T03:32:25.3792421Z     [ros2_control_node-1] [INFO] [1768966270.606276777] [controller_manager]: Shutting down controller 'rrbot_external_fts_broadcaster'\n2026-01-21T03:32:25.3793178Z     [ros2_control_node-1] [INFO] [1768966270.606293918] [controller_manager]: Deactivating controller 'rrbot_with_sensor_joint_state_broadcaster'\n2026-01-21T03:32:25.3793975Z     [ros2_control_node-1] [INFO] [1768966270.606315254] [controller_manager]: Shutting down controller 'rrbot_with_sensor_joint_state_broadcaster'\n2026-01-21T03:32:25.3794741Z     [ros2_control_node-1] [INFO] [1768966270.606330257] [controller_manager]: Deactivating controller 'rrbot_with_sensor_fts_broadcaster'\n2026-01-21T03:32:25.3795478Z     [ros2_control_node-1] [INFO] [1768966270.606346233] [controller_manager]: Shutting down controller 'rrbot_with_sensor_fts_broadcaster'\n2026-01-21T03:32:25.3796165Z     [ros2_control_node-1] [INFO] [1768966270.606417420] [resource_manager]: 'deactivate' hardware 'FakeThreeDofBot' \n2026-01-21T03:32:25.3796901Z     [ros2_control_node-1] [INFO] [1768966270.606432924] [resource_manager]: Successful 'deactivate' of hardware 'FakeThreeDofBot'\n2026-01-21T03:32:25.3797539Z     [ros2_control_node-1] [INFO] [1768966270.606439827] [resource_manager]: 'shutdown' hardware 'FakeThreeDofBot' \n2026-01-21T03:32:25.3798347Z     [ros2_control_node-1] [INFO] [1768966270.606445357] [resource_manager]: Successful 'shutdown' of hardware 'FakeThreeDofBot'\n2026-01-21T03:32:25.3799167Z     [ros2_control_node-1] [INFO] [1768966270.606455997] [resource_manager]: 'deactivate' hardware 'RRBotSystemWithSensor' \n2026-01-21T03:32:25.3800019Z     [ros2_control_node-1] [INFO] [1768966270.606462240] [controller_manager.resource_manager.hardware_component.system.RRBotSystemWithSensor]: Deactivating ...please wait...\n2026-01-21T03:32:25.3800798Z     [ros2_control_node-1] Stack trace (most recent call last) in thread 38299:\n2026-01-21T03:32:25.3801315Z     [ros2_control_node-1] #17   Object \"/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2\", at 0xffffffffffffffff, in \n2026-01-21T03:32:25.3801908Z     [ros2_control_node-1] #16   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f0c05ed9a73, in __clone\n2026-01-21T03:32:25.3802430Z     [ros2_control_node-1] #15   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f0c05e48ac2, in \n2026-01-21T03:32:25.3802961Z     [ros2_control_node-1] #14   Object \"/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30\", at 0x7f0c060b9252, in \n2026-01-21T03:32:25.3804122Z     [ros2_control_node-1] #13   Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x55ef749b7c95, in std::thread::_State_impl<std::thread::_Invoker<std::tuple<main::{lambda()#1}> > >::_M_run()\n2026-01-21T03:32:25.3806178Z     [ros2_control_node-1] #12   Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x55ef749b7cb1, in std::thread::_Invoker<std::tuple<main::{lambda()#1}> >::operator()()\n2026-01-21T03:32:25.3808981Z     [ros2_control_node-1] #11   Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x55ef749b7cdd, in void std::thread::_Invoker<std::tuple<main::{lambda()#1}> >::_M_invoke<0ul>(std::_Index_tuple<0ul>)\n2026-01-21T03:32:25.3811875Z     [ros2_control_node-1] #10   Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x55ef749b7d30, in std::__invoke_result<main::{lambda()#1}>::type std::__invoke<main::{lambda()#1}>(main::{lambda()#1}&&)\n2026-01-21T03:32:25.3814668Z     [ros2_control_node-1] #9    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x55ef749b7d6d, in void std::__invoke_impl<void, main::{lambda()#1}>(std::__invoke_other, main::{lambda()#1}&&)\n2026-01-21T03:32:25.3817259Z     [ros2_control_node-1] #8    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x55ef749b6772, in main::{lambda()#1}::operator()() const\n2026-01-21T03:32:25.3819934Z     [ros2_control_node-1] #7    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f0c06a95374, in controller_manager::ControllerManager::update(rclcpp::Time const&, rclcpp::Duration const&)\n2026-01-21T03:32:25.3822007Z     [ros2_control_node-1] #6    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf8376b03, in joint_state_broadcaster::JointStateBroadcaster::update(rclcpp::Time const&, rclcpp::Duration const&)\n2026-01-21T03:32:25.3826926Z     [ros2_control_node-1] #5    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf8386408, in std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > >, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > > > >::operator[](std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)\n2026-01-21T03:32:25.3836525Z     [ros2_control_node-1] #4    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf838aa03, in std::__detail::_Map_base<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > > >, std::__detail::_Select1st, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true>, true>::operator[](std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)\n2026-01-21T03:32:25.3846602Z     [ros2_control_node-1] #3    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf8390149, in std::_Hashtable<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > > >, std::__detail::_Select1st, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_find_node(unsigned long, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) const\n2026-01-21T03:32:25.3856766Z     [ros2_control_node-1] #2    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf83957a1, in std::_Hashtable<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > > >, std::__detail::_Select1st, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_find_before_node(unsigned long, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, unsigned long) const\n2026-01-21T03:32:25.3875608Z     [ros2_control_node-1] #1    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf839a0c4, in std::_Hashtable<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > > >, std::__detail::_Select1st, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits<true, false, true> >::_M_bucket_index(std::__detail::_Hash_node_value<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > >, true> const&) const\n2026-01-21T03:32:25.3896625Z     [ros2_control_node-1] #0    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf839d7ab, in std::__detail::_Hash_code_base<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > >, std::__detail::_Select1st, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, true>::_M_bucket_index(std::__detail::_Hash_node_value<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, std::unordered_map<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, double, std::hash<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::equal_to<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >, std::allocator<std::pair<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const, double> > > >, true> const&, unsigned long) const\n2026-01-21T03:32:25.3904414Z     [ros2_control_node-1] Segmentation fault (Address not mapped to object [0x7f0c2cbde294])\n2026-01-21T03:32:25.3904917Z     [INFO] [robot_state_publisher-2]: process has finished cleanly [pid 38261]\n2026-01-21T03:32:25.3905539Z     [INFO] [publisher_forward_position_controller-8]: process has finished cleanly [pid 38295]\n2026-01-21T03:32:25.3906351Z     [INFO] [publisher_forward_position_controller-9]: process has finished cleanly [pid 38297]\n2026-01-21T03:32:25.3907149Z     [INFO] [publisher_forward_position_controller-7]: process has finished cleanly [pid 38293]\n2026-01-21T03:32:25.3908960Z     [ERROR] [ros2_control_node-1]: process has died [pid 38259, exit code -11, cmd '/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node --ros-args --params-file /home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/ros2_control_demo_example_13/share/ros2_control_demo_example_13/config/three_robots_controllers.yaml -r ~/robot_description:=/robot_description'].\n```\n\n**To Reproduce**\nhumble, ros2_control_demo_example_13\nhttps://github.com/ros-controls/ros2_control_ci/issues/605#issuecomment-3776550885\n",
+    "bodyHTML": "<p dir=\"auto\"><strong>Describe the bug</strong><br>\nHow can that happen?</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"2026-01-21T03:32:25.3778768Z     [ros2_control_node-1] [INFO] [1768966270.605792714] [controller_manager]: Shutdown request received....\n2026-01-21T03:32:25.3779985Z     [ros2_control_node-1] [INFO] [1768966270.605864869] [controller_manager]: Shutting down all controllers in the controller manager.\n2026-01-21T03:32:25.3781262Z     [ros2_control_node-1] [INFO] [1768966270.605915321] [controller_manager]: Deactivating controller 'rrbot_with_sensor_position_controller'\n2026-01-21T03:32:25.3782460Z     [ros2_control_node-1] [INFO] [1768966270.605978392] [controller_manager]: Shutting down controller 'rrbot_with_sensor_position_controller'\n2026-01-21T03:32:25.3783632Z     [ros2_control_node-1] [INFO] [1768966270.606012694] [controller_manager]: Deactivating controller 'threedofbot_joint_state_broadcaster'\n2026-01-21T03:32:25.3784872Z     [ros2_control_node-1] [INFO] [1768966270.606047241] [controller_manager]: Shutting down controller 'threedofbot_joint_state_broadcaster'\n2026-01-21T03:32:25.3785725Z     [ros2_control_node-1] [INFO] [1768966270.606066098] [controller_manager]: Deactivating controller 'threedofbot_position_controller'\n2026-01-21T03:32:25.3786469Z     [ros2_control_node-1] [INFO] [1768966270.606092795] [controller_manager]: Shutting down controller 'threedofbot_position_controller'\n2026-01-21T03:32:25.3787199Z     [ros2_control_node-1] [INFO] [1768966270.606111174] [controller_manager]: Deactivating controller 'threedofbot_pid_gain_controller'\n2026-01-21T03:32:25.3787966Z     [ros2_control_node-1] [INFO] [1768966270.606133770] [controller_manager]: Shutting down controller 'threedofbot_pid_gain_controller'\n2026-01-21T03:32:25.3788894Z     [ros2_control_node-1] [INFO] [1768966270.606151592] [controller_manager]: Deactivating controller 'joint_state_broadcaster'\n2026-01-21T03:32:25.3789577Z     [ros2_control_node-1] [INFO] [1768966270.606177328] [controller_manager]: Shutting down controller 'joint_state_broadcaster'\n2026-01-21T03:32:25.3790277Z     [ros2_control_node-1] [INFO] [1768966270.606193478] [controller_manager]: Shutting down controller 'rrbot_joint_state_broadcaster'\n2026-01-21T03:32:25.3790988Z     [ros2_control_node-1] [INFO] [1768966270.606215154] [controller_manager]: Shutting down controller 'rrbot_position_controller'\n2026-01-21T03:32:25.3791709Z     [ros2_control_node-1] [INFO] [1768966270.606233607] [controller_manager]: Deactivating controller 'rrbot_external_fts_broadcaster'\n2026-01-21T03:32:25.3792421Z     [ros2_control_node-1] [INFO] [1768966270.606276777] [controller_manager]: Shutting down controller 'rrbot_external_fts_broadcaster'\n2026-01-21T03:32:25.3793178Z     [ros2_control_node-1] [INFO] [1768966270.606293918] [controller_manager]: Deactivating controller 'rrbot_with_sensor_joint_state_broadcaster'\n2026-01-21T03:32:25.3793975Z     [ros2_control_node-1] [INFO] [1768966270.606315254] [controller_manager]: Shutting down controller 'rrbot_with_sensor_joint_state_broadcaster'\n2026-01-21T03:32:25.3794741Z     [ros2_control_node-1] [INFO] [1768966270.606330257] [controller_manager]: Deactivating controller 'rrbot_with_sensor_fts_broadcaster'\n2026-01-21T03:32:25.3795478Z     [ros2_control_node-1] [INFO] [1768966270.606346233] [controller_manager]: Shutting down controller 'rrbot_with_sensor_fts_broadcaster'\n2026-01-21T03:32:25.3796165Z     [ros2_control_node-1] [INFO] [1768966270.606417420] [resource_manager]: 'deactivate' hardware 'FakeThreeDofBot' \n2026-01-21T03:32:25.3796901Z     [ros2_control_node-1] [INFO] [1768966270.606432924] [resource_manager]: Successful 'deactivate' of hardware 'FakeThreeDofBot'\n2026-01-21T03:32:25.3797539Z     [ros2_control_node-1] [INFO] [1768966270.606439827] [resource_manager]: 'shutdown' hardware 'FakeThreeDofBot' \n2026-01-21T03:32:25.3798347Z     [ros2_control_node-1] [INFO] [1768966270.606445357] [resource_manager]: Successful 'shutdown' of hardware 'FakeThreeDofBot'\n2026-01-21T03:32:25.3799167Z     [ros2_control_node-1] [INFO] [1768966270.606455997] [resource_manager]: 'deactivate' hardware 'RRBotSystemWithSensor' \n2026-01-21T03:32:25.3800019Z     [ros2_control_node-1] [INFO] [1768966270.606462240] [controller_manager.resource_manager.hardware_component.system.RRBotSystemWithSensor]: Deactivating ...please wait...\n2026-01-21T03:32:25.3800798Z     [ros2_control_node-1] Stack trace (most recent call last) in thread 38299:\n2026-01-21T03:32:25.3801315Z     [ros2_control_node-1] #17   Object &quot;/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2&quot;, at 0xffffffffffffffff, in \n2026-01-21T03:32:25.3801908Z     [ros2_control_node-1] #16   Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7f0c05ed9a73, in __clone\n2026-01-21T03:32:25.3802430Z     [ros2_control_node-1] #15   Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7f0c05e48ac2, in \n2026-01-21T03:32:25.3802961Z     [ros2_control_node-1] #14   Object &quot;/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30&quot;, at 0x7f0c060b9252, in \n2026-01-21T03:32:25.3804122Z     [ros2_control_node-1] #13   Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x55ef749b7c95, in std::thread::_State_impl&lt;std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt; &gt;::_M_run()\n2026-01-21T03:32:25.3806178Z     [ros2_control_node-1] #12   Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x55ef749b7cb1, in std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt;::operator()()\n2026-01-21T03:32:25.3808981Z     [ros2_control_node-1] #11   Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x55ef749b7cdd, in void std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt;::_M_invoke&lt;0ul&gt;(std::_Index_tuple&lt;0ul&gt;)\n2026-01-21T03:32:25.3811875Z     [ros2_control_node-1] #10   Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x55ef749b7d30, in std::__invoke_result&lt;main::{lambda()#1}&gt;::type std::__invoke&lt;main::{lambda()#1}&gt;(main::{lambda()#1}&amp;&amp;)\n2026-01-21T03:32:25.3814668Z     [ros2_control_node-1] #9    Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x55ef749b7d6d, in void std::__invoke_impl&lt;void, main::{lambda()#1}&gt;(std::__invoke_other, main::{lambda()#1}&amp;&amp;)\n2026-01-21T03:32:25.3817259Z     [ros2_control_node-1] #8    Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x55ef749b6772, in main::{lambda()#1}::operator()() const\n2026-01-21T03:32:25.3819934Z     [ros2_control_node-1] #7    Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7f0c06a95374, in controller_manager::ControllerManager::update(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n2026-01-21T03:32:25.3822007Z     [ros2_control_node-1] #6    Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so&quot;, at 0x7f0bf8376b03, in joint_state_broadcaster::JointStateBroadcaster::update(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n2026-01-21T03:32:25.3826926Z     [ros2_control_node-1] #5    Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so&quot;, at 0x7f0bf8386408, in std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt;, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt; &gt; &gt;::operator[](std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)\n2026-01-21T03:32:25.3836525Z     [ros2_control_node-1] #4    Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so&quot;, at 0x7f0bf838aa03, in std::__detail::_Map_base&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt; &gt;, std::__detail::_Select1st, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits&lt;true, false, true&gt;, true&gt;::operator[](std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)\n2026-01-21T03:32:25.3846602Z     [ros2_control_node-1] #3    Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so&quot;, at 0x7f0bf8390149, in std::_Hashtable&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt; &gt;, std::__detail::_Select1st, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits&lt;true, false, true&gt; &gt;::_M_find_node(unsigned long, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;, unsigned long) const\n2026-01-21T03:32:25.3856766Z     [ros2_control_node-1] #2    Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so&quot;, at 0x7f0bf83957a1, in std::_Hashtable&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt; &gt;, std::__detail::_Select1st, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits&lt;true, false, true&gt; &gt;::_M_find_before_node(unsigned long, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;, unsigned long) const\n2026-01-21T03:32:25.3875608Z     [ros2_control_node-1] #1    Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so&quot;, at 0x7f0bf839a0c4, in std::_Hashtable&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt; &gt;, std::__detail::_Select1st, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits&lt;true, false, true&gt; &gt;::_M_bucket_index(std::__detail::_Hash_node_value&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, true&gt; const&amp;) const\n2026-01-21T03:32:25.3896625Z     [ros2_control_node-1] #0    Object &quot;/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so&quot;, at 0x7f0bf839d7ab, in std::__detail::_Hash_code_base&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, std::__detail::_Select1st, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, true&gt;::_M_bucket_index(std::__detail::_Hash_node_value&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, true&gt; const&amp;, unsigned long) const\n2026-01-21T03:32:25.3904414Z     [ros2_control_node-1] Segmentation fault (Address not mapped to object [0x7f0c2cbde294])\n2026-01-21T03:32:25.3904917Z     [INFO] [robot_state_publisher-2]: process has finished cleanly [pid 38261]\n2026-01-21T03:32:25.3905539Z     [INFO] [publisher_forward_position_controller-8]: process has finished cleanly [pid 38295]\n2026-01-21T03:32:25.3906351Z     [INFO] [publisher_forward_position_controller-9]: process has finished cleanly [pid 38297]\n2026-01-21T03:32:25.3907149Z     [INFO] [publisher_forward_position_controller-7]: process has finished cleanly [pid 38293]\n2026-01-21T03:32:25.3908960Z     [ERROR] [ros2_control_node-1]: process has died [pid 38259, exit code -11, cmd '/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node --ros-args --params-file /home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/ros2_control_demo_example_13/share/ros2_control_demo_example_13/config/three_robots_controllers.yaml -r ~/robot_description:=/robot_description'].\"><pre class=\"notranslate\"><code class=\"notranslate\">2026-01-21T03:32:25.3778768Z     [ros2_control_node-1] [INFO] [1768966270.605792714] [controller_manager]: Shutdown request received....\n2026-01-21T03:32:25.3779985Z     [ros2_control_node-1] [INFO] [1768966270.605864869] [controller_manager]: Shutting down all controllers in the controller manager.\n2026-01-21T03:32:25.3781262Z     [ros2_control_node-1] [INFO] [1768966270.605915321] [controller_manager]: Deactivating controller 'rrbot_with_sensor_position_controller'\n2026-01-21T03:32:25.3782460Z     [ros2_control_node-1] [INFO] [1768966270.605978392] [controller_manager]: Shutting down controller 'rrbot_with_sensor_position_controller'\n2026-01-21T03:32:25.3783632Z     [ros2_control_node-1] [INFO] [1768966270.606012694] [controller_manager]: Deactivating controller 'threedofbot_joint_state_broadcaster'\n2026-01-21T03:32:25.3784872Z     [ros2_control_node-1] [INFO] [1768966270.606047241] [controller_manager]: Shutting down controller 'threedofbot_joint_state_broadcaster'\n2026-01-21T03:32:25.3785725Z     [ros2_control_node-1] [INFO] [1768966270.606066098] [controller_manager]: Deactivating controller 'threedofbot_position_controller'\n2026-01-21T03:32:25.3786469Z     [ros2_control_node-1] [INFO] [1768966270.606092795] [controller_manager]: Shutting down controller 'threedofbot_position_controller'\n2026-01-21T03:32:25.3787199Z     [ros2_control_node-1] [INFO] [1768966270.606111174] [controller_manager]: Deactivating controller 'threedofbot_pid_gain_controller'\n2026-01-21T03:32:25.3787966Z     [ros2_control_node-1] [INFO] [1768966270.606133770] [controller_manager]: Shutting down controller 'threedofbot_pid_gain_controller'\n2026-01-21T03:32:25.3788894Z     [ros2_control_node-1] [INFO] [1768966270.606151592] [controller_manager]: Deactivating controller 'joint_state_broadcaster'\n2026-01-21T03:32:25.3789577Z     [ros2_control_node-1] [INFO] [1768966270.606177328] [controller_manager]: Shutting down controller 'joint_state_broadcaster'\n2026-01-21T03:32:25.3790277Z     [ros2_control_node-1] [INFO] [1768966270.606193478] [controller_manager]: Shutting down controller 'rrbot_joint_state_broadcaster'\n2026-01-21T03:32:25.3790988Z     [ros2_control_node-1] [INFO] [1768966270.606215154] [controller_manager]: Shutting down controller 'rrbot_position_controller'\n2026-01-21T03:32:25.3791709Z     [ros2_control_node-1] [INFO] [1768966270.606233607] [controller_manager]: Deactivating controller 'rrbot_external_fts_broadcaster'\n2026-01-21T03:32:25.3792421Z     [ros2_control_node-1] [INFO] [1768966270.606276777] [controller_manager]: Shutting down controller 'rrbot_external_fts_broadcaster'\n2026-01-21T03:32:25.3793178Z     [ros2_control_node-1] [INFO] [1768966270.606293918] [controller_manager]: Deactivating controller 'rrbot_with_sensor_joint_state_broadcaster'\n2026-01-21T03:32:25.3793975Z     [ros2_control_node-1] [INFO] [1768966270.606315254] [controller_manager]: Shutting down controller 'rrbot_with_sensor_joint_state_broadcaster'\n2026-01-21T03:32:25.3794741Z     [ros2_control_node-1] [INFO] [1768966270.606330257] [controller_manager]: Deactivating controller 'rrbot_with_sensor_fts_broadcaster'\n2026-01-21T03:32:25.3795478Z     [ros2_control_node-1] [INFO] [1768966270.606346233] [controller_manager]: Shutting down controller 'rrbot_with_sensor_fts_broadcaster'\n2026-01-21T03:32:25.3796165Z     [ros2_control_node-1] [INFO] [1768966270.606417420] [resource_manager]: 'deactivate' hardware 'FakeThreeDofBot' \n2026-01-21T03:32:25.3796901Z     [ros2_control_node-1] [INFO] [1768966270.606432924] [resource_manager]: Successful 'deactivate' of hardware 'FakeThreeDofBot'\n2026-01-21T03:32:25.3797539Z     [ros2_control_node-1] [INFO] [1768966270.606439827] [resource_manager]: 'shutdown' hardware 'FakeThreeDofBot' \n2026-01-21T03:32:25.3798347Z     [ros2_control_node-1] [INFO] [1768966270.606445357] [resource_manager]: Successful 'shutdown' of hardware 'FakeThreeDofBot'\n2026-01-21T03:32:25.3799167Z     [ros2_control_node-1] [INFO] [1768966270.606455997] [resource_manager]: 'deactivate' hardware 'RRBotSystemWithSensor' \n2026-01-21T03:32:25.3800019Z     [ros2_control_node-1] [INFO] [1768966270.606462240] [controller_manager.resource_manager.hardware_component.system.RRBotSystemWithSensor]: Deactivating ...please wait...\n2026-01-21T03:32:25.3800798Z     [ros2_control_node-1] Stack trace (most recent call last) in thread 38299:\n2026-01-21T03:32:25.3801315Z     [ros2_control_node-1] #17   Object \"/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2\", at 0xffffffffffffffff, in \n2026-01-21T03:32:25.3801908Z     [ros2_control_node-1] #16   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f0c05ed9a73, in __clone\n2026-01-21T03:32:25.3802430Z     [ros2_control_node-1] #15   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f0c05e48ac2, in \n2026-01-21T03:32:25.3802961Z     [ros2_control_node-1] #14   Object \"/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30\", at 0x7f0c060b9252, in \n2026-01-21T03:32:25.3804122Z     [ros2_control_node-1] #13   Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x55ef749b7c95, in std::thread::_State_impl&lt;std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt; &gt;::_M_run()\n2026-01-21T03:32:25.3806178Z     [ros2_control_node-1] #12   Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x55ef749b7cb1, in std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt;::operator()()\n2026-01-21T03:32:25.3808981Z     [ros2_control_node-1] #11   Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x55ef749b7cdd, in void std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt;::_M_invoke&lt;0ul&gt;(std::_Index_tuple&lt;0ul&gt;)\n2026-01-21T03:32:25.3811875Z     [ros2_control_node-1] #10   Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x55ef749b7d30, in std::__invoke_result&lt;main::{lambda()#1}&gt;::type std::__invoke&lt;main::{lambda()#1}&gt;(main::{lambda()#1}&amp;&amp;)\n2026-01-21T03:32:25.3814668Z     [ros2_control_node-1] #9    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x55ef749b7d6d, in void std::__invoke_impl&lt;void, main::{lambda()#1}&gt;(std::__invoke_other, main::{lambda()#1}&amp;&amp;)\n2026-01-21T03:32:25.3817259Z     [ros2_control_node-1] #8    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x55ef749b6772, in main::{lambda()#1}::operator()() const\n2026-01-21T03:32:25.3819934Z     [ros2_control_node-1] #7    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f0c06a95374, in controller_manager::ControllerManager::update(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n2026-01-21T03:32:25.3822007Z     [ros2_control_node-1] #6    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf8376b03, in joint_state_broadcaster::JointStateBroadcaster::update(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n2026-01-21T03:32:25.3826926Z     [ros2_control_node-1] #5    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf8386408, in std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt;, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt; &gt; &gt;::operator[](std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)\n2026-01-21T03:32:25.3836525Z     [ros2_control_node-1] #4    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf838aa03, in std::__detail::_Map_base&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt; &gt;, std::__detail::_Select1st, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits&lt;true, false, true&gt;, true&gt;::operator[](std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)\n2026-01-21T03:32:25.3846602Z     [ros2_control_node-1] #3    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf8390149, in std::_Hashtable&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt; &gt;, std::__detail::_Select1st, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits&lt;true, false, true&gt; &gt;::_M_find_node(unsigned long, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;, unsigned long) const\n2026-01-21T03:32:25.3856766Z     [ros2_control_node-1] #2    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf83957a1, in std::_Hashtable&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt; &gt;, std::__detail::_Select1st, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits&lt;true, false, true&gt; &gt;::_M_find_before_node(unsigned long, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;, unsigned long) const\n2026-01-21T03:32:25.3875608Z     [ros2_control_node-1] #1    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf839a0c4, in std::_Hashtable&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt; &gt;, std::__detail::_Select1st, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, std::__detail::_Prime_rehash_policy, std::__detail::_Hashtable_traits&lt;true, false, true&gt; &gt;::_M_bucket_index(std::__detail::_Hash_node_value&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, true&gt; const&amp;) const\n2026-01-21T03:32:25.3896625Z     [ros2_control_node-1] #0    Object \"/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/joint_state_broadcaster/lib/libjoint_state_broadcaster.so\", at 0x7f0bf839d7ab, in std::__detail::_Hash_code_base&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, std::__detail::_Select1st, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::__detail::_Mod_range_hashing, std::__detail::_Default_ranged_hash, true&gt;::_M_bucket_index(std::__detail::_Hash_node_value&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, std::unordered_map&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, double, std::hash&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::equal_to&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;, std::allocator&lt;std::pair&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const, double&gt; &gt; &gt; &gt;, true&gt; const&amp;, unsigned long) const\n2026-01-21T03:32:25.3904414Z     [ros2_control_node-1] Segmentation fault (Address not mapped to object [0x7f0c2cbde294])\n2026-01-21T03:32:25.3904917Z     [INFO] [robot_state_publisher-2]: process has finished cleanly [pid 38261]\n2026-01-21T03:32:25.3905539Z     [INFO] [publisher_forward_position_controller-8]: process has finished cleanly [pid 38295]\n2026-01-21T03:32:25.3906351Z     [INFO] [publisher_forward_position_controller-9]: process has finished cleanly [pid 38297]\n2026-01-21T03:32:25.3907149Z     [INFO] [publisher_forward_position_controller-7]: process has finished cleanly [pid 38293]\n2026-01-21T03:32:25.3908960Z     [ERROR] [ros2_control_node-1]: process has died [pid 38259, exit code -11, cmd '/home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node --ros-args --params-file /home/runner/work/ros2_control_ci/ros2_control_ci/.work/target_ws/install/ros2_control_demo_example_13/share/ros2_control_demo_example_13/config/three_robots_controllers.yaml -r ~/robot_description:=/robot_description'].\n</code></pre></div>\n<p dir=\"auto\"><strong>To Reproduce</strong><br>\nhumble, ros2_control_demo_example_13<br>\n<a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3836416252\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control_ci/issues/605\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control_ci/issues/605/hovercard?comment_id=3776550885&amp;comment_type=issue_comment\" href=\"https://github.com/ros-controls/ros2_control_ci/issues/605#issuecomment-3776550885\">ros-controls/ros2_control_ci#605 (comment)</a></p>",
+    "state": "CLOSED",
+    "stateReason": "NOT_PLANNED",
+    "createdAt": "2026-01-21T09:13:48Z",
+    "updatedAt": "2026-04-30T13:49:24Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+      "login": "christophfroehlich",
+      "id": "MDQ6VXNlcjMzNjcyNDQ=",
+      "profileUrl": "https://github.com/christophfroehlich",
+      "name": "Christoph Fröhlich",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+            "fullDatabaseId": "8380273440",
+            "color": "ededed",
+            "name": "stale",
+            "nameHTML": "stale",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/stale",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 4,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7ju8mP",
+      "databaseId": 3820734863,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kuKQ-",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2975,
+        "locked": false,
+        "databaseId": 3837305918
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE5MTgyMDQ=",
+        "login": "destogl",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/1918204?v=4",
+        "profileUrl": "https://github.com/destogl",
+        "name": "Dr. Denis"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2975#issuecomment-3820734863",
+      "createdAt": "2026-01-29T22:22:55Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Funky but only on Humble, no?",
+      "bodyHTML": "<p dir=\"auto\">Funky but only on Humble, no?</p>",
+      "bodyVersion": "5caa5b30614d0b742a29e96d9d09e7dc6fd2ceca00a2ca9f890f83332740fe4f",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7j02ad",
+      "databaseId": 3822282397,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kuKQ-",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2975,
+        "locked": false,
+        "databaseId": 3837305918
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2975#issuecomment-3822282397",
+      "createdAt": "2026-01-30T07:31:31Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I've seen this only once in the linked humble CI run 🤷 ",
+      "bodyHTML": "<p dir=\"auto\">I've seen this only once in the linked humble CI run 🤷</p>",
+      "bodyVersion": "667f900a91f7688989753662b8ddfce309f276b9c982a494c1177d0492563d72",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7ycZ5a",
+      "databaseId": 4067532378,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kuKQ-",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2975,
+        "locked": false,
+        "databaseId": 3837305918
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2975#issuecomment-4067532378",
+      "createdAt": "2026-03-16T13:06:21Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABA3WiYg",
+      "databaseId": 4353008226,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kuKQ-",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2975,
+        "locked": false,
+        "databaseId": 3837305918
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2975#issuecomment-4353008226",
+      "createdAt": "2026-04-30T13:49:23Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue was closed because it has been stalled for 45 days with no activity.",
+      "bodyHTML": "<p dir=\"auto\">This issue was closed because it has been stalled for 45 days with no activity.</p>",
+      "bodyVersion": "2ebf833f90f878eff9039e2c6cb637ca3b662f79161cd2a020a36f04c154f883",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7kuKQ-zwAAAAUqMWpz",
+      "databaseId": 22182718067,
+      "createdAt": "2026-01-21T09:13:49Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7ju8mP",
+      "databaseId": 3820734863,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kuKQ-",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2975,
+        "locked": false,
+        "databaseId": 3837305918
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE5MTgyMDQ=",
+        "login": "destogl",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/1918204?v=4",
+        "profileUrl": "https://github.com/destogl",
+        "name": "Dr. Denis"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2975#issuecomment-3820734863",
+      "createdAt": "2026-01-29T22:22:55Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Funky but only on Humble, no?",
+      "bodyHTML": "<p dir=\"auto\">Funky but only on Humble, no?</p>",
+      "bodyVersion": "5caa5b30614d0b742a29e96d9d09e7dc6fd2ceca00a2ca9f890f83332740fe4f",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7j02ad",
+      "databaseId": 3822282397,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kuKQ-",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2975,
+        "locked": false,
+        "databaseId": 3837305918
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2975#issuecomment-3822282397",
+      "createdAt": "2026-01-30T07:31:31Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I've seen this only once in the linked humble CI run 🤷 ",
+      "bodyHTML": "<p dir=\"auto\">I've seen this only once in the linked humble CI run 🤷</p>",
+      "bodyVersion": "667f900a91f7688989753662b8ddfce309f276b9c982a494c1177d0492563d72",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7ycZ5a",
+      "databaseId": 4067532378,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kuKQ-",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2975,
+        "locked": false,
+        "databaseId": 3837305918
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2975#issuecomment-4067532378",
+      "createdAt": "2026-03-16T13:06:21Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7kuKQ-zwAAAAV_FSB6",
+      "databaseId": 23606927482,
+      "createdAt": "2026-03-16T13:06:21Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+        "archivedAt": null,
+        "nameHTML": "stale",
+        "name": "stale",
+        "color": "ededed",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABA3WiYg",
+      "databaseId": 4353008226,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kuKQ-",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2975,
+        "locked": false,
+        "databaseId": 3837305918
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2975#issuecomment-4353008226",
+      "createdAt": "2026-04-30T13:49:23Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue was closed because it has been stalled for 45 days with no activity.",
+      "bodyHTML": "<p dir=\"auto\">This issue was closed because it has been stalled for 45 days with no activity.</p>",
+      "bodyVersion": "2ebf833f90f878eff9039e2c6cb637ca3b662f79161cd2a020a36f04c154f883",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc7kuKQ-zwAAAAXUTHL3",
+      "databaseId": 25036616439,
+      "createdAt": "2026-04-30T13:49:24Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "stateReason": "NOT_PLANNED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABm9_U4MgBqzIyMTgyNzE4MDY3",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnd6mwqABqzI1MDM2NjE2NDM5"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABm9_U4MgBqzIyMTgyNzE4MDY3",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnd6mwqABqzI1MDM2NjE2NDM5"
+    }
+  },
+  "linked_pull_requests": [],
+  "comments_complete": true,
+  "linked_pr_fetches": []
+}

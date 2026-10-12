@@ -1,0 +1,3609 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-navigation/navigation2",
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/issues/5464",
+    "final_url": "https://github.com/ros-navigation/navigation2/issues/5464",
+    "fetched_at": "2026-10-11T11:23:07.623805+00:00",
+    "http_status": 200,
+    "response_sha256": "77113bd394abb304c484a8cf6add8ffbd1aeaaba771a429f5a14e522a418a89c"
+  },
+  "issue": {
+    "id": "I_kwDOCBF7SM7GwR46",
+    "databaseId": 3334544954,
+    "number": 5464,
+    "title": "MPPI acceleration constraints not respected",
+    "url": "https://github.com/ros-navigation/navigation2/issues/5464",
+    "body": "## Bug report\n\nI have a suspicion that the acceleration limits are not working after https://github.com/ros-navigation/navigation2/pull/5266\n\n\n\n#### Steps to reproduce issue\n\n```\nax_max: 0.1\nax_min: -0.1\n```\n\nScenario: some setup that makes your robot accelerate in a straight line\n\nCheckout before and after the PR\n\n#### Expected behavior\n\nSee a curve that roughly respects the acceleration constraints\n\n\n#### Actual behavior\n\nDoes not seem to respect the acceleration constraints\n\n#### Reproduction instructions\n\n#### Additional information\n",
+    "bodyHTML": "<h2 dir=\"auto\">Bug report</h2>\n<p dir=\"auto\">I have a suspicion that the acceleration limits are not working after <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3142733869\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5266\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/5266/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/5266\">#5266</a></p>\n<h4 dir=\"auto\">Steps to reproduce issue</h4>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"ax_max: 0.1\nax_min: -0.1\"><pre class=\"notranslate\"><code class=\"notranslate\">ax_max: 0.1\nax_min: -0.1\n</code></pre></div>\n<p dir=\"auto\">Scenario: some setup that makes your robot accelerate in a straight line</p>\n<p dir=\"auto\">Checkout before and after the PR</p>\n<h4 dir=\"auto\">Expected behavior</h4>\n<p dir=\"auto\">See a curve that roughly respects the acceleration constraints</p>\n<h4 dir=\"auto\">Actual behavior</h4>\n<p dir=\"auto\">Does not seem to respect the acceleration constraints</p>\n<h4 dir=\"auto\">Reproduction instructions</h4>\n<h4 dir=\"auto\">Additional information</h4>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2025-08-19T14:10:09Z",
+    "updatedAt": "2025-08-26T19:26:32Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/14879660?u=e29d50db1bac036eae32b30fec612615ccd3791a&v=4",
+      "login": "tonynajjar",
+      "id": "MDQ6VXNlcjE0ODc5NjYw",
+      "profileUrl": "https://github.com/tonynajjar",
+      "name": "Tony Najjar",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWwxMTA5MjA5MTQx",
+            "fullDatabaseId": "1109209141",
+            "color": "f7de20",
+            "name": "1 - High",
+            "nameHTML": "1 - High",
+            "description": "High Priority",
+            "url": "https://github.com/ros-navigation/navigation2/labels/1%20-%20High",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+            "fullDatabaseId": "948691578",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros-navigation/navigation2/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 12,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6-1LGD",
+      "databaseId": 3201610115,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3201610115",
+      "createdAt": "2025-08-19T17:34:30Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "OK. Now with issues described in:\n- https://github.com/ros-navigation/navigation2/issues/5214\n- https://github.com/ros-navigation/navigation2/pull/5266\n\nI think we should revert the change and/or make it parameterized about whether to utilize. Clearly this isn't the right answer for everyone as @tonynajjar is reporting issues with acceleration constraints and @adivardi with more wobbling in the angular axis from that change.\n\n@chanhhoang99 I followed up in #5214 for clarification on your tuning adjustments with this change. Can you follow up? \n\n@tonynajjar what are you plotting to get those results you posted in #5266? How would you explain this given we [apply acceleration constraints to the output optimal control](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L312-L337), regardless of the motion model? That should ensure no matter what (though quality variable) it should meed the dynamic/kinematic limitations. Is `IDX=0` somehow jumping illegitimately - I don't see any other way? ",
+      "bodyHTML": "<p dir=\"auto\">OK. Now with issues described in:</p>\n<ul dir=\"auto\">\n<li><span class=\"reference\"><svg data-component=\"Octicon\" class=\"octicon octicon-issue-closed closed mr-1\" title=\"Closed\" viewBox=\"0 0 16 16\" version=\"1.1\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M11.28 6.78a.75.75 0 0 0-1.06-1.06L7.25 8.69 5.78 7.22a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l3.5-3.5Z\"></path><path d=\"M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0Zm-1.5 0a6.5 6.5 0 1 0-13 0 6.5 6.5 0 0 0 13 0Z\"></path></svg><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3102539848\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5214\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5214/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5214\">[MPPI] Question on Motion model Lag Compensation<span class=\"issue-shorthand\"> #5214</span></a></span></li>\n<li><span class=\"reference\"><svg data-component=\"Octicon\" class=\"octicon octicon-git-merge merged color-fg-done mr-1\" title=\"Merged\" viewBox=\"0 0 16 16\" version=\"1.1\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M5.45 5.154A4.25 4.25 0 0 0 9.25 7.5h1.378a2.251 2.251 0 1 1 0 1.5H9.25A5.734 5.734 0 0 1 5 7.123v3.505a2.25 2.25 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.95-.218ZM4.25 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm8.5-4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM5 3.25a.75.75 0 1 0 0 .005V3.25Z\"></path></svg><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3142733869\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5266\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/5266/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/5266\">Unclamp noise velocity.<span class=\"issue-shorthand\"> #5266</span></a></span></li>\n</ul>\n<p dir=\"auto\">I think we should revert the change and/or make it parameterized about whether to utilize. Clearly this isn't the right answer for everyone as <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/tonynajjar/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/tonynajjar\">@tonynajjar</a> is reporting issues with acceleration constraints and <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/adivardi/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/adivardi\">@adivardi</a> with more wobbling in the angular axis from that change.</p>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/chanhhoang99/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/chanhhoang99\">@chanhhoang99</a> I followed up in <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3102539848\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5214\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5214/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5214\">#5214</a> for clarification on your tuning adjustments with this change. Can you follow up?</p>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/tonynajjar/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/tonynajjar\">@tonynajjar</a> what are you plotting to get those results you posted in <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3142733869\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5266\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/5266/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/5266\">#5266</a>? How would you explain this given we <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L312-L337\">apply acceleration constraints to the output optimal control</a>, regardless of the motion model? That should ensure no matter what (though quality variable) it should meed the dynamic/kinematic limitations. Is <code class=\"notranslate\">IDX=0</code> somehow jumping illegitimately - I don't see any other way?</p>",
+      "bodyVersion": "18d55482b9ed21d1465168d17f1cb5e47f7c9edbda1bcb5acb81e73b6fc7a7b3",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6-1QaY",
+      "databaseId": 3201631896,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3201631896",
+      "createdAt": "2025-08-19T17:42:42Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-08-19T20:46:43Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM6-1QaYznVEWKI",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+          "url": "https://github.com/SteveMacenski",
+          "login": "SteveMacenski"
+        }
+      },
+      "pinnedBy": null,
+      "body": "I will go ahead and take on the revert / parameterization action so that this is not delayed. @chanhhoang99  - but I'd love your thoughts.",
+      "bodyHTML": "<p dir=\"auto\">I will go ahead and take on the revert / parameterization action so that this is not delayed. <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/chanhhoang99/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/chanhhoang99\">@chanhhoang99</a>  - but I'd love your thoughts.</p>",
+      "bodyVersion": "9020a4ae24eed60293c1042ed0483368001b65af6e75206f8b1d4dd161ae29e9",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjc0ODE3MTAz",
+                "login": "chanhhoang99",
+                "name": null,
+                "avatarUrl": "https://avatars.githubusercontent.com/u/74817103?s=64&u=d0d432c87f2664f5fcf9293a12abeb5580b926de&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6-1cXG",
+      "databaseId": 3201680838,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0ODc5NjYw",
+        "login": "tonynajjar",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14879660?u=e29d50db1bac036eae32b30fec612615ccd3791a&v=4",
+        "profileUrl": "https://github.com/tonynajjar",
+        "name": "Tony Najjar"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3201680838",
+      "createdAt": "2025-08-19T17:59:52Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> @tonynajjar what are you plotting to get those results you posted in #5266?\n\nOops forgot to mention, that's just linear velocity. The path is straight",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/tonynajjar/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/tonynajjar\">@tonynajjar</a> what are you plotting to get those results you posted in <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3142733869\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5266\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/5266/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/5266\">#5266</a>?</p>\n</blockquote>\n<p dir=\"auto\">Oops forgot to mention, that's just linear velocity. The path is straight</p>",
+      "bodyVersion": "ec6d918f3bb51d44854c8a7eeef80744e01efc6fa185f8ca7c8b51a530a0aed2",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6-1nn3",
+      "databaseId": 3201726967,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3201726967",
+      "createdAt": "2025-08-19T18:15:07Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-08-19T18:37:41Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM6-1nn3znU9lfg",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+          "url": "https://github.com/SteveMacenski",
+          "login": "SteveMacenski"
+        }
+      },
+      "pinnedBy": null,
+      "body": "But.... what _is_ it 🙃 Position, velocity, Y axis time or motion axis?",
+      "bodyHTML": "<p dir=\"auto\">But.... what <em>is</em> it 🙃 Position, velocity, Y axis time or motion axis?</p>",
+      "bodyVersion": "538834a435deeb8c9cc8dab79dc0082e98a21a2725361422c43117bd0fa3587f",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6-2alw",
+      "databaseId": 3201935728,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0ODc5NjYw",
+        "login": "tonynajjar",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14879660?u=e29d50db1bac036eae32b30fec612615ccd3791a&v=4",
+        "profileUrl": "https://github.com/tonynajjar",
+        "name": "Tony Najjar"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3201935728",
+      "createdAt": "2025-08-19T19:18:12Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Y-axis: cmd_vel.linear.x\nX-axis: time\n\ndoes that answer you?",
+      "bodyHTML": "<p dir=\"auto\">Y-axis: cmd_vel.linear.x<br>\nX-axis: time</p>\n<p dir=\"auto\">does that answer you?</p>",
+      "bodyVersion": "e16c26b94ddab1b4afc8fc21e2c7de0ae2a260ed3f749f34737ae13a9890565b",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+                "login": "SteveMacenski",
+                "name": "Steve Macenski",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6--e8p",
+      "databaseId": 3204050729,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjc0ODE3MTAz",
+        "login": "chanhhoang99",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/74817103?u=d0d432c87f2664f5fcf9293a12abeb5580b926de&v=4",
+        "profileUrl": "https://github.com/chanhhoang99",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3204050729",
+      "createdAt": "2025-08-20T03:24:08Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-08-20T03:27:03Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM6--e8pznVQ_N0",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjc0ODE3MTAz",
+          "url": "https://github.com/chanhhoang99",
+          "login": "chanhhoang99"
+        }
+      },
+      "pinnedBy": null,
+      "body": "@SteveMacenski ,\nIt's okay to revert it. To be honest, I believe I have not yet tested all the case(we do not have the methodology and deep enough understanding to verify such breaking changes).\nAbout the accel limit constrain is not respect, I believe it's an intended output of the PR.\nImagine we are trying to control a robot with a hard accel constrain(I clamped the velocity on my driver controller at a max = 0.5), so as we control the robot, let's say robot is rotating at 1.0rad/s^2, so it takes 1 second to reach 0rad/s. So we as the controller, we need to stop it sooner than expect.\nThis behavior, I think matches with the predict function, the MPPI prediction must stop it beforehand like we do with teleop_keyboard. So that's why MPPI produce such a steep velocity, but later it will be clamp by the driver.",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/SteveMacenski/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/SteveMacenski\">@SteveMacenski</a> ,<br>\nIt's okay to revert it. To be honest, I believe I have not yet tested all the case(we do not have the methodology and deep enough understanding to verify such breaking changes).<br>\nAbout the accel limit constrain is not respect, I believe it's an intended output of the PR.<br>\nImagine we are trying to control a robot with a hard accel constrain(I clamped the velocity on my driver controller at a max = 0.5), so as we control the robot, let's say robot is rotating at 1.0rad/s^2, so it takes 1 second to reach 0rad/s. So we as the controller, we need to stop it sooner than expect.<br>\nThis behavior, I think matches with the predict function, the MPPI prediction must stop it beforehand like we do with teleop_keyboard. So that's why MPPI produce such a steep velocity, but later it will be clamp by the driver.</p>",
+      "bodyVersion": "8b61da9492f203826c97a7539b16bfd92ca9c72a3ae93cd627c3a3b59d896e50",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6_TjlJ",
+      "databaseId": 3209574729,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU3OTEwNzU2",
+        "login": "adivardi",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/57910756?u=74217c8036cb88ac718acaf19160cfc369f8f74a&v=4",
+        "profileUrl": "https://github.com/adivardi",
+        "name": "Adi Vardi"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3209574729",
+      "createdAt": "2025-08-21T08:41:25Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@SteveMacenski Are you also working on a PR to make this parameterized? Or would you like a contribution?\nEven with the oscillations, this is quite helpful for our slow vehicle, so it will be great to have an option.\n",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/SteveMacenski/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/SteveMacenski\">@SteveMacenski</a> Are you also working on a PR to make this parameterized? Or would you like a contribution?<br>\nEven with the oscillations, this is quite helpful for our slow vehicle, so it will be great to have an option.</p>",
+      "bodyVersion": "a84c0bbb068f75a5a56697737ae947372eef1d9bc01dae4a847105962c2fd776",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6_UcRX",
+      "databaseId": 3209806935,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU3OTEwNzU2",
+        "login": "adivardi",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/57910756?u=74217c8036cb88ac718acaf19160cfc369f8f74a&v=4",
+        "profileUrl": "https://github.com/adivardi",
+        "name": "Adi Vardi"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3209806935",
+      "createdAt": "2025-08-21T09:47:52Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I would like to keep discussing this change and whether we can make it work. Shall we keep it here?\n\n> Imagine we are trying to control a robot with a hard accel constrain(I clamped the velocity on my driver controller at a max = 0.5), so as we control the robot, let's say robot is rotating at 1.0rad/s^2, so it takes 1 second to reach 0rad/s. So we as the controller, we need to stop it sooner than expect.\n\n@chanhhoang99 but shouldn't MPPI take that into account in the prediction? If it knows the acceleration limit, and can predict for 1second?\nCould you also point me to a theoretical basis for this change? Is it https://val-sagrario.github.io/Dynamics%20of%20First%20Order%20Systems%20for%20game%20devs%20-%20Jan%202020.pdf ?\n\n---------\n\n> How would you explain this given we [apply acceleration constraints to the output optimal control](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L312-L337), regardless of the motion model? That should ensure no matter what (though quality variable) it should meed the dynamic/kinematic limitations. Is `IDX=0` somehow jumping illegitimately - I don't see any other way?\n\n@SteveMacenski \nI also don't get it. It should all be limited based on `control_sequence_.vx(0)`. Isn't the control sequence  = previous control sequence shifted by one place + noise ?\n\nAlso, why is `applyConstraints()` [only applied to the optimal control](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L339)? Shouldn't it be applied in `MotionModel::predict()`?\nIt also only affects `control_sequence_.wz` for `idx >= 1` for some reason.",
+      "bodyHTML": "<p dir=\"auto\">I would like to keep discussing this change and whether we can make it work. Shall we keep it here?</p>\n<blockquote>\n<p dir=\"auto\">Imagine we are trying to control a robot with a hard accel constrain(I clamped the velocity on my driver controller at a max = 0.5), so as we control the robot, let's say robot is rotating at 1.0rad/s^2, so it takes 1 second to reach 0rad/s. So we as the controller, we need to stop it sooner than expect.</p>\n</blockquote>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/chanhhoang99/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/chanhhoang99\">@chanhhoang99</a> but shouldn't MPPI take that into account in the prediction? If it knows the acceleration limit, and can predict for 1second?<br>\nCould you also point me to a theoretical basis for this change? Is it <a href=\"https://val-sagrario.github.io/Dynamics%20of%20First%20Order%20Systems%20for%20game%20devs%20-%20Jan%202020.pdf\" rel=\"nofollow\">https://val-sagrario.github.io/Dynamics%20of%20First%20Order%20Systems%20for%20game%20devs%20-%20Jan%202020.pdf</a> ?</p>\n<hr>\n<blockquote>\n<p dir=\"auto\">How would you explain this given we <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L312-L337\">apply acceleration constraints to the output optimal control</a>, regardless of the motion model? That should ensure no matter what (though quality variable) it should meed the dynamic/kinematic limitations. Is <code class=\"notranslate\">IDX=0</code> somehow jumping illegitimately - I don't see any other way?</p>\n</blockquote>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/SteveMacenski/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/SteveMacenski\">@SteveMacenski</a><br>\nI also don't get it. It should all be limited based on <code class=\"notranslate\">control_sequence_.vx(0)</code>. Isn't the control sequence  = previous control sequence shifted by one place + noise ?</p>\n<p dir=\"auto\">Also, why is <code class=\"notranslate\">applyConstraints()</code> <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L339\">only applied to the optimal control</a>? Shouldn't it be applied in <code class=\"notranslate\">MotionModel::predict()</code>?<br>\nIt also only affects <code class=\"notranslate\">control_sequence_.wz</code> for <code class=\"notranslate\">idx &gt;= 1</code> for some reason.</p>",
+      "bodyVersion": "3359e795686b24dae947cdb063bc15596472c2714356b467c1959443470328c7",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6_Zbbv",
+      "databaseId": 3211114223,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3211114223",
+      "createdAt": "2025-08-21T15:31:12Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I decided that is was better to revert, if it breaks acceleration constraints then it is an invalid option as acceleration constraints are super important to be respected. I consider that to be buggy behavior that needs to be fixed before its possible parameterization, I hope you understand. \n\n> Isn't the control sequence = previous control sequence shifted by one place + noise ?\n\nYes, but something seems wrong in this case. \n\n> Also, why is applyConstraints() [only applied to the optimal control](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L339)? Shouldn't it be applied in MotionModel::predict()?\n\nIt is applied in both. \n ",
+      "bodyHTML": "<p dir=\"auto\">I decided that is was better to revert, if it breaks acceleration constraints then it is an invalid option as acceleration constraints are super important to be respected. I consider that to be buggy behavior that needs to be fixed before its possible parameterization, I hope you understand.</p>\n<blockquote>\n<p dir=\"auto\">Isn't the control sequence = previous control sequence shifted by one place + noise ?</p>\n</blockquote>\n<p dir=\"auto\">Yes, but something seems wrong in this case.</p>\n<blockquote>\n<p dir=\"auto\">Also, why is applyConstraints() <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L339\">only applied to the optimal control</a>? Shouldn't it be applied in MotionModel::predict()?</p>\n</blockquote>\n<p dir=\"auto\">It is applied in both.</p>",
+      "bodyVersion": "d2db5da32001697352f88b93d64c5e419dcd2c37ed3fddeb6485d251e78afcf4",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6_gvmm",
+      "databaseId": 3213031846,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjc0ODE3MTAz",
+        "login": "chanhhoang99",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/74817103?u=d0d432c87f2664f5fcf9293a12abeb5580b926de&v=4",
+        "profileUrl": "https://github.com/chanhhoang99",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3213031846",
+      "createdAt": "2025-08-22T04:54:48Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-08-22T06:23:01Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM6_gvmmznXMx8g",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjc0ODE3MTAz",
+          "url": "https://github.com/chanhhoang99",
+          "login": "chanhhoang99"
+        }
+      },
+      "pinnedBy": null,
+      "body": "@adivardi ,\n\n> @chanhhoang99 but shouldn't MPPI take that into account in the prediction? If it knows the acceleration limit, and can predict for 1second?\nCould you also point me to a theoretical basis for this change? Is it https://val-sagrario.github.io/Dynamics%20of%20First%20Order%20Systems%20for%20game%20devs%20-%20Jan%202020.pdf ?\n\nYou can test this change this way: \n- Try to clamp your vehicle with a really low accel constrain like az_max=0.1 rad/s^2, ax_max=0.1rad/s(Do this with ros2_control or your custom controller node that clamp every cmd_vel sent to the  motor driver to a specific accel constrain you want.). \n- Try yourself to control your vehicle with teleop_keyboard to see how hard it is to control with such constrain.\n- Then use the change in this PR, change the az_max and ax_max in navigation MPPI parameter to the same value you clamp on your driver controller(e.g 0.1rad/s^2 and 0.1m/s^2). From my testing, MPPI is still able to control  the vehicle which is really hard to control by teleop_keyboard, which I think the MPPI already takes into account the accel constrain you set in the driver controller.\n\nThe link above is not related to this PR. Sorry for the confusion.",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/adivardi/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/adivardi\">@adivardi</a> ,</p>\n<blockquote>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/chanhhoang99/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/chanhhoang99\">@chanhhoang99</a> but shouldn't MPPI take that into account in the prediction? If it knows the acceleration limit, and can predict for 1second?<br>\nCould you also point me to a theoretical basis for this change? Is it <a href=\"https://val-sagrario.github.io/Dynamics%20of%20First%20Order%20Systems%20for%20game%20devs%20-%20Jan%202020.pdf\" rel=\"nofollow\">https://val-sagrario.github.io/Dynamics%20of%20First%20Order%20Systems%20for%20game%20devs%20-%20Jan%202020.pdf</a> ?</p>\n</blockquote>\n<p dir=\"auto\">You can test this change this way:</p>\n<ul dir=\"auto\">\n<li>Try to clamp your vehicle with a really low accel constrain like az_max=0.1 rad/s^2, ax_max=0.1rad/s(Do this with ros2_control or your custom controller node that clamp every cmd_vel sent to the  motor driver to a specific accel constrain you want.).</li>\n<li>Try yourself to control your vehicle with teleop_keyboard to see how hard it is to control with such constrain.</li>\n<li>Then use the change in this PR, change the az_max and ax_max in navigation MPPI parameter to the same value you clamp on your driver controller(e.g 0.1rad/s^2 and 0.1m/s^2). From my testing, MPPI is still able to control  the vehicle which is really hard to control by teleop_keyboard, which I think the MPPI already takes into account the accel constrain you set in the driver controller.</li>\n</ul>\n<p dir=\"auto\">The link above is not related to this PR. Sorry for the confusion.</p>",
+      "bodyVersion": "9a21551bc113c16c316dbdb697b8b91c767b1b8673593b2e72633d76e93db789",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6_hlhx",
+      "databaseId": 3213252721,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU3OTEwNzU2",
+        "login": "adivardi",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/57910756?u=74217c8036cb88ac718acaf19160cfc369f8f74a&v=4",
+        "profileUrl": "https://github.com/adivardi",
+        "name": "Adi Vardi"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3213252721",
+      "createdAt": "2025-08-22T06:51:33Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> > Also, why is applyConstraints() [only applied to the optimal control](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L339)? Shouldn't it be applied in MotionModel::predict()?\n> \n> It is applied in both.\n\nCould you please point me to where it is done? I really can't find it.\nOnly place I find `motion_model_->applyConstraints(...)` is in `Optimizer::applyControlSequenceConstraints()`,  called from `Optimizer::updateControlSequence()`, which is at the end of `Optimizer::optimize()` (after all the critics were evaluated)",
+      "bodyHTML": "<blockquote>\n<blockquote>\n<p dir=\"auto\">Also, why is applyConstraints() <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L339\">only applied to the optimal control</a>? Shouldn't it be applied in MotionModel::predict()?</p>\n</blockquote>\n<p dir=\"auto\">It is applied in both.</p>\n</blockquote>\n<p dir=\"auto\">Could you please point me to where it is done? I really can't find it.<br>\nOnly place I find <code class=\"notranslate\">motion_model_-&gt;applyConstraints(...)</code> is in <code class=\"notranslate\">Optimizer::applyControlSequenceConstraints()</code>,  called from <code class=\"notranslate\">Optimizer::updateControlSequence()</code>, which is at the end of <code class=\"notranslate\">Optimizer::optimize()</code> (after all the critics were evaluated)</p>",
+      "bodyVersion": "34e3abdfe2bf8269d013ba5b19c7063d6d33680194821b1e3a48f3fefaeffe58",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7AQJHP",
+      "databaseId": 3225457103,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3225457103",
+      "createdAt": "2025-08-26T19:26:32Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "[This block](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L312-L337) sets the acceleration limits for the optimal trajectory before outputting. The [motion model](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/include/nav2_mppi_controller/motion_models.hpp#L85-L95) does so for the sampled input control velocities to create the vehicle velocities at the start.   ",
+      "bodyHTML": "<p dir=\"auto\"><a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L312-L337\">This block</a> sets the acceleration limits for the optimal trajectory before outputting. The <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/include/nav2_mppi_controller/motion_models.hpp#L85-L95\">motion model</a> does so for the sampled input control velocities to create the vehicle velocities at the start.</p>",
+      "bodyVersion": "388a8d4e5c7c04f696f7417f6d59ff3a63c4485adf959f6c1327d0ecb565e09f",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "RenamedTitleEvent",
+      "id": "RTE_lADOCBF7SM7GwR46zwAAAAR58hqR",
+      "databaseId": 19225778833,
+      "createdAt": "2025-08-19T14:11:06Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0ODc5NjYw",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14879660?s=64&u=e29d50db1bac036eae32b30fec612615ccd3791a&v=4",
+        "login": "tonynajjar",
+        "profileResourcePath": "/tonynajjar",
+        "__typename": "User",
+        "name": "Tony Najjar"
+      },
+      "currentTitle": "MPPI acceleration constraints not respected",
+      "previousTitle": "MPPI acceleration constraints not working"
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6-1LGD",
+      "databaseId": 3201610115,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3201610115",
+      "createdAt": "2025-08-19T17:34:30Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "OK. Now with issues described in:\n- https://github.com/ros-navigation/navigation2/issues/5214\n- https://github.com/ros-navigation/navigation2/pull/5266\n\nI think we should revert the change and/or make it parameterized about whether to utilize. Clearly this isn't the right answer for everyone as @tonynajjar is reporting issues with acceleration constraints and @adivardi with more wobbling in the angular axis from that change.\n\n@chanhhoang99 I followed up in #5214 for clarification on your tuning adjustments with this change. Can you follow up? \n\n@tonynajjar what are you plotting to get those results you posted in #5266? How would you explain this given we [apply acceleration constraints to the output optimal control](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L312-L337), regardless of the motion model? That should ensure no matter what (though quality variable) it should meed the dynamic/kinematic limitations. Is `IDX=0` somehow jumping illegitimately - I don't see any other way? ",
+      "bodyHTML": "<p dir=\"auto\">OK. Now with issues described in:</p>\n<ul dir=\"auto\">\n<li><span class=\"reference\"><svg data-component=\"Octicon\" class=\"octicon octicon-issue-closed closed mr-1\" title=\"Closed\" viewBox=\"0 0 16 16\" version=\"1.1\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M11.28 6.78a.75.75 0 0 0-1.06-1.06L7.25 8.69 5.78 7.22a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l3.5-3.5Z\"></path><path d=\"M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0Zm-1.5 0a6.5 6.5 0 1 0-13 0 6.5 6.5 0 0 0 13 0Z\"></path></svg><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3102539848\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5214\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5214/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5214\">[MPPI] Question on Motion model Lag Compensation<span class=\"issue-shorthand\"> #5214</span></a></span></li>\n<li><span class=\"reference\"><svg data-component=\"Octicon\" class=\"octicon octicon-git-merge merged color-fg-done mr-1\" title=\"Merged\" viewBox=\"0 0 16 16\" version=\"1.1\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M5.45 5.154A4.25 4.25 0 0 0 9.25 7.5h1.378a2.251 2.251 0 1 1 0 1.5H9.25A5.734 5.734 0 0 1 5 7.123v3.505a2.25 2.25 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.95-.218ZM4.25 13.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm8.5-4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5ZM5 3.25a.75.75 0 1 0 0 .005V3.25Z\"></path></svg><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3142733869\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5266\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/5266/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/5266\">Unclamp noise velocity.<span class=\"issue-shorthand\"> #5266</span></a></span></li>\n</ul>\n<p dir=\"auto\">I think we should revert the change and/or make it parameterized about whether to utilize. Clearly this isn't the right answer for everyone as <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/tonynajjar/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/tonynajjar\">@tonynajjar</a> is reporting issues with acceleration constraints and <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/adivardi/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/adivardi\">@adivardi</a> with more wobbling in the angular axis from that change.</p>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/chanhhoang99/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/chanhhoang99\">@chanhhoang99</a> I followed up in <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3102539848\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5214\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5214/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5214\">#5214</a> for clarification on your tuning adjustments with this change. Can you follow up?</p>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/tonynajjar/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/tonynajjar\">@tonynajjar</a> what are you plotting to get those results you posted in <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3142733869\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5266\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/5266/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/5266\">#5266</a>? How would you explain this given we <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L312-L337\">apply acceleration constraints to the output optimal control</a>, regardless of the motion model? That should ensure no matter what (though quality variable) it should meed the dynamic/kinematic limitations. Is <code class=\"notranslate\">IDX=0</code> somehow jumping illegitimately - I don't see any other way?</p>",
+      "bodyVersion": "18d55482b9ed21d1465168d17f1cb5e47f7c9edbda1bcb5acb81e73b6fc7a7b3",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM7GwR46zwAAAAR6KjFY",
+      "databaseId": 19229454680,
+      "createdAt": "2025-08-19T17:34:36Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM7GwR46zwAAAAR6KjFi",
+      "databaseId": 19229454690,
+      "createdAt": "2025-08-19T17:34:36Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWwxMTA5MjA5MTQx",
+        "archivedAt": null,
+        "nameHTML": "1 - High",
+        "name": "1 - High",
+        "color": "f7de20",
+        "description": "High Priority"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "AssignedEvent",
+      "id": "AE_lADOCBF7SM7GwR46zwAAAAR6K-Dc",
+      "databaseId": 19229565148,
+      "createdAt": "2025-08-19T17:41:57Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "assignee": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "resourcePath": "/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6-1QaY",
+      "databaseId": 3201631896,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3201631896",
+      "createdAt": "2025-08-19T17:42:42Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-08-19T20:46:43Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM6-1QaYznVEWKI",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+          "url": "https://github.com/SteveMacenski",
+          "login": "SteveMacenski"
+        }
+      },
+      "pinnedBy": null,
+      "body": "I will go ahead and take on the revert / parameterization action so that this is not delayed. @chanhhoang99  - but I'd love your thoughts.",
+      "bodyHTML": "<p dir=\"auto\">I will go ahead and take on the revert / parameterization action so that this is not delayed. <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/chanhhoang99/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/chanhhoang99\">@chanhhoang99</a>  - but I'd love your thoughts.</p>",
+      "bodyVersion": "9020a4ae24eed60293c1042ed0483368001b65af6e75206f8b1d4dd161ae29e9",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjc0ODE3MTAz",
+                "login": "chanhhoang99",
+                "name": null,
+                "avatarUrl": "https://avatars.githubusercontent.com/u/74817103?s=64&u=d0d432c87f2664f5fcf9293a12abeb5580b926de&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6-1cXG",
+      "databaseId": 3201680838,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0ODc5NjYw",
+        "login": "tonynajjar",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14879660?u=e29d50db1bac036eae32b30fec612615ccd3791a&v=4",
+        "profileUrl": "https://github.com/tonynajjar",
+        "name": "Tony Najjar"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3201680838",
+      "createdAt": "2025-08-19T17:59:52Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> @tonynajjar what are you plotting to get those results you posted in #5266?\n\nOops forgot to mention, that's just linear velocity. The path is straight",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/tonynajjar/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/tonynajjar\">@tonynajjar</a> what are you plotting to get those results you posted in <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3142733869\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5266\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/5266/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/5266\">#5266</a>?</p>\n</blockquote>\n<p dir=\"auto\">Oops forgot to mention, that's just linear velocity. The path is straight</p>",
+      "bodyVersion": "ec6d918f3bb51d44854c8a7eeef80744e01efc6fa185f8ca7c8b51a530a0aed2",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6-1nn3",
+      "databaseId": 3201726967,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3201726967",
+      "createdAt": "2025-08-19T18:15:07Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-08-19T18:37:41Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM6-1nn3znU9lfg",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+          "url": "https://github.com/SteveMacenski",
+          "login": "SteveMacenski"
+        }
+      },
+      "pinnedBy": null,
+      "body": "But.... what _is_ it 🙃 Position, velocity, Y axis time or motion axis?",
+      "bodyHTML": "<p dir=\"auto\">But.... what <em>is</em> it 🙃 Position, velocity, Y axis time or motion axis?</p>",
+      "bodyVersion": "538834a435deeb8c9cc8dab79dc0082e98a21a2725361422c43117bd0fa3587f",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6-2alw",
+      "databaseId": 3201935728,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0ODc5NjYw",
+        "login": "tonynajjar",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14879660?u=e29d50db1bac036eae32b30fec612615ccd3791a&v=4",
+        "profileUrl": "https://github.com/tonynajjar",
+        "name": "Tony Najjar"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3201935728",
+      "createdAt": "2025-08-19T19:18:12Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Y-axis: cmd_vel.linear.x\nX-axis: time\n\ndoes that answer you?",
+      "bodyHTML": "<p dir=\"auto\">Y-axis: cmd_vel.linear.x<br>\nX-axis: time</p>\n<p dir=\"auto\">does that answer you?</p>",
+      "bodyVersion": "e16c26b94ddab1b4afc8fc21e2c7de0ae2a260ed3f749f34737ae13a9890565b",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+                "login": "SteveMacenski",
+                "name": "Steve Macenski",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ConnectedEvent",
+      "id": "COE_lADOCBF7SM7GwR46zwAAAAR6Teqb",
+      "databaseId": 19231795867,
+      "createdAt": "2025-08-19T20:10:10Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "subject": {
+        "id": "PR_kwDOCBF7SM6kXEs_",
+        "__typename": "PullRequest",
+        "title": "Revert \"Unclamp noise velocity.\"",
+        "url": "https://github.com/ros-navigation/navigation2/pull/5467",
+        "number": 5467,
+        "state": "MERGED",
+        "isDraft": false,
+        "isInMergeQueue": false,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      }
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOCBF7SM7GwR46zwAAAAR6VZTV",
+      "databaseId": 19232298197,
+      "createdAt": "2025-08-19T20:45:52Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOCBF7SM6kXEs_",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-navigation/navigation2/pull/5467",
+        "number": 5467,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6--e8p",
+      "databaseId": 3204050729,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjc0ODE3MTAz",
+        "login": "chanhhoang99",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/74817103?u=d0d432c87f2664f5fcf9293a12abeb5580b926de&v=4",
+        "profileUrl": "https://github.com/chanhhoang99",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3204050729",
+      "createdAt": "2025-08-20T03:24:08Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-08-20T03:27:03Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM6--e8pznVQ_N0",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjc0ODE3MTAz",
+          "url": "https://github.com/chanhhoang99",
+          "login": "chanhhoang99"
+        }
+      },
+      "pinnedBy": null,
+      "body": "@SteveMacenski ,\nIt's okay to revert it. To be honest, I believe I have not yet tested all the case(we do not have the methodology and deep enough understanding to verify such breaking changes).\nAbout the accel limit constrain is not respect, I believe it's an intended output of the PR.\nImagine we are trying to control a robot with a hard accel constrain(I clamped the velocity on my driver controller at a max = 0.5), so as we control the robot, let's say robot is rotating at 1.0rad/s^2, so it takes 1 second to reach 0rad/s. So we as the controller, we need to stop it sooner than expect.\nThis behavior, I think matches with the predict function, the MPPI prediction must stop it beforehand like we do with teleop_keyboard. So that's why MPPI produce such a steep velocity, but later it will be clamp by the driver.",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/SteveMacenski/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/SteveMacenski\">@SteveMacenski</a> ,<br>\nIt's okay to revert it. To be honest, I believe I have not yet tested all the case(we do not have the methodology and deep enough understanding to verify such breaking changes).<br>\nAbout the accel limit constrain is not respect, I believe it's an intended output of the PR.<br>\nImagine we are trying to control a robot with a hard accel constrain(I clamped the velocity on my driver controller at a max = 0.5), so as we control the robot, let's say robot is rotating at 1.0rad/s^2, so it takes 1 second to reach 0rad/s. So we as the controller, we need to stop it sooner than expect.<br>\nThis behavior, I think matches with the predict function, the MPPI prediction must stop it beforehand like we do with teleop_keyboard. So that's why MPPI produce such a steep velocity, but later it will be clamp by the driver.</p>",
+      "bodyVersion": "8b61da9492f203826c97a7539b16bfd92ca9c72a3ae93cd627c3a3b59d896e50",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6_TjlJ",
+      "databaseId": 3209574729,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU3OTEwNzU2",
+        "login": "adivardi",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/57910756?u=74217c8036cb88ac718acaf19160cfc369f8f74a&v=4",
+        "profileUrl": "https://github.com/adivardi",
+        "name": "Adi Vardi"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3209574729",
+      "createdAt": "2025-08-21T08:41:25Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@SteveMacenski Are you also working on a PR to make this parameterized? Or would you like a contribution?\nEven with the oscillations, this is quite helpful for our slow vehicle, so it will be great to have an option.\n",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/SteveMacenski/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/SteveMacenski\">@SteveMacenski</a> Are you also working on a PR to make this parameterized? Or would you like a contribution?<br>\nEven with the oscillations, this is quite helpful for our slow vehicle, so it will be great to have an option.</p>",
+      "bodyVersion": "a84c0bbb068f75a5a56697737ae947372eef1d9bc01dae4a847105962c2fd776",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6_UcRX",
+      "databaseId": 3209806935,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU3OTEwNzU2",
+        "login": "adivardi",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/57910756?u=74217c8036cb88ac718acaf19160cfc369f8f74a&v=4",
+        "profileUrl": "https://github.com/adivardi",
+        "name": "Adi Vardi"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3209806935",
+      "createdAt": "2025-08-21T09:47:52Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I would like to keep discussing this change and whether we can make it work. Shall we keep it here?\n\n> Imagine we are trying to control a robot with a hard accel constrain(I clamped the velocity on my driver controller at a max = 0.5), so as we control the robot, let's say robot is rotating at 1.0rad/s^2, so it takes 1 second to reach 0rad/s. So we as the controller, we need to stop it sooner than expect.\n\n@chanhhoang99 but shouldn't MPPI take that into account in the prediction? If it knows the acceleration limit, and can predict for 1second?\nCould you also point me to a theoretical basis for this change? Is it https://val-sagrario.github.io/Dynamics%20of%20First%20Order%20Systems%20for%20game%20devs%20-%20Jan%202020.pdf ?\n\n---------\n\n> How would you explain this given we [apply acceleration constraints to the output optimal control](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L312-L337), regardless of the motion model? That should ensure no matter what (though quality variable) it should meed the dynamic/kinematic limitations. Is `IDX=0` somehow jumping illegitimately - I don't see any other way?\n\n@SteveMacenski \nI also don't get it. It should all be limited based on `control_sequence_.vx(0)`. Isn't the control sequence  = previous control sequence shifted by one place + noise ?\n\nAlso, why is `applyConstraints()` [only applied to the optimal control](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L339)? Shouldn't it be applied in `MotionModel::predict()`?\nIt also only affects `control_sequence_.wz` for `idx >= 1` for some reason.",
+      "bodyHTML": "<p dir=\"auto\">I would like to keep discussing this change and whether we can make it work. Shall we keep it here?</p>\n<blockquote>\n<p dir=\"auto\">Imagine we are trying to control a robot with a hard accel constrain(I clamped the velocity on my driver controller at a max = 0.5), so as we control the robot, let's say robot is rotating at 1.0rad/s^2, so it takes 1 second to reach 0rad/s. So we as the controller, we need to stop it sooner than expect.</p>\n</blockquote>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/chanhhoang99/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/chanhhoang99\">@chanhhoang99</a> but shouldn't MPPI take that into account in the prediction? If it knows the acceleration limit, and can predict for 1second?<br>\nCould you also point me to a theoretical basis for this change? Is it <a href=\"https://val-sagrario.github.io/Dynamics%20of%20First%20Order%20Systems%20for%20game%20devs%20-%20Jan%202020.pdf\" rel=\"nofollow\">https://val-sagrario.github.io/Dynamics%20of%20First%20Order%20Systems%20for%20game%20devs%20-%20Jan%202020.pdf</a> ?</p>\n<hr>\n<blockquote>\n<p dir=\"auto\">How would you explain this given we <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L312-L337\">apply acceleration constraints to the output optimal control</a>, regardless of the motion model? That should ensure no matter what (though quality variable) it should meed the dynamic/kinematic limitations. Is <code class=\"notranslate\">IDX=0</code> somehow jumping illegitimately - I don't see any other way?</p>\n</blockquote>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/SteveMacenski/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/SteveMacenski\">@SteveMacenski</a><br>\nI also don't get it. It should all be limited based on <code class=\"notranslate\">control_sequence_.vx(0)</code>. Isn't the control sequence  = previous control sequence shifted by one place + noise ?</p>\n<p dir=\"auto\">Also, why is <code class=\"notranslate\">applyConstraints()</code> <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L339\">only applied to the optimal control</a>? Shouldn't it be applied in <code class=\"notranslate\">MotionModel::predict()</code>?<br>\nIt also only affects <code class=\"notranslate\">control_sequence_.wz</code> for <code class=\"notranslate\">idx &gt;= 1</code> for some reason.</p>",
+      "bodyVersion": "3359e795686b24dae947cdb063bc15596472c2714356b467c1959443470328c7",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6_Zbbv",
+      "databaseId": 3211114223,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3211114223",
+      "createdAt": "2025-08-21T15:31:12Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I decided that is was better to revert, if it breaks acceleration constraints then it is an invalid option as acceleration constraints are super important to be respected. I consider that to be buggy behavior that needs to be fixed before its possible parameterization, I hope you understand. \n\n> Isn't the control sequence = previous control sequence shifted by one place + noise ?\n\nYes, but something seems wrong in this case. \n\n> Also, why is applyConstraints() [only applied to the optimal control](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L339)? Shouldn't it be applied in MotionModel::predict()?\n\nIt is applied in both. \n ",
+      "bodyHTML": "<p dir=\"auto\">I decided that is was better to revert, if it breaks acceleration constraints then it is an invalid option as acceleration constraints are super important to be respected. I consider that to be buggy behavior that needs to be fixed before its possible parameterization, I hope you understand.</p>\n<blockquote>\n<p dir=\"auto\">Isn't the control sequence = previous control sequence shifted by one place + noise ?</p>\n</blockquote>\n<p dir=\"auto\">Yes, but something seems wrong in this case.</p>\n<blockquote>\n<p dir=\"auto\">Also, why is applyConstraints() <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L339\">only applied to the optimal control</a>? Shouldn't it be applied in MotionModel::predict()?</p>\n</blockquote>\n<p dir=\"auto\">It is applied in both.</p>",
+      "bodyVersion": "d2db5da32001697352f88b93d64c5e419dcd2c37ed3fddeb6485d251e78afcf4",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6_gvmm",
+      "databaseId": 3213031846,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjc0ODE3MTAz",
+        "login": "chanhhoang99",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/74817103?u=d0d432c87f2664f5fcf9293a12abeb5580b926de&v=4",
+        "profileUrl": "https://github.com/chanhhoang99",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3213031846",
+      "createdAt": "2025-08-22T04:54:48Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-08-22T06:23:01Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM6_gvmmznXMx8g",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjc0ODE3MTAz",
+          "url": "https://github.com/chanhhoang99",
+          "login": "chanhhoang99"
+        }
+      },
+      "pinnedBy": null,
+      "body": "@adivardi ,\n\n> @chanhhoang99 but shouldn't MPPI take that into account in the prediction? If it knows the acceleration limit, and can predict for 1second?\nCould you also point me to a theoretical basis for this change? Is it https://val-sagrario.github.io/Dynamics%20of%20First%20Order%20Systems%20for%20game%20devs%20-%20Jan%202020.pdf ?\n\nYou can test this change this way: \n- Try to clamp your vehicle with a really low accel constrain like az_max=0.1 rad/s^2, ax_max=0.1rad/s(Do this with ros2_control or your custom controller node that clamp every cmd_vel sent to the  motor driver to a specific accel constrain you want.). \n- Try yourself to control your vehicle with teleop_keyboard to see how hard it is to control with such constrain.\n- Then use the change in this PR, change the az_max and ax_max in navigation MPPI parameter to the same value you clamp on your driver controller(e.g 0.1rad/s^2 and 0.1m/s^2). From my testing, MPPI is still able to control  the vehicle which is really hard to control by teleop_keyboard, which I think the MPPI already takes into account the accel constrain you set in the driver controller.\n\nThe link above is not related to this PR. Sorry for the confusion.",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/adivardi/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/adivardi\">@adivardi</a> ,</p>\n<blockquote>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/chanhhoang99/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/chanhhoang99\">@chanhhoang99</a> but shouldn't MPPI take that into account in the prediction? If it knows the acceleration limit, and can predict for 1second?<br>\nCould you also point me to a theoretical basis for this change? Is it <a href=\"https://val-sagrario.github.io/Dynamics%20of%20First%20Order%20Systems%20for%20game%20devs%20-%20Jan%202020.pdf\" rel=\"nofollow\">https://val-sagrario.github.io/Dynamics%20of%20First%20Order%20Systems%20for%20game%20devs%20-%20Jan%202020.pdf</a> ?</p>\n</blockquote>\n<p dir=\"auto\">You can test this change this way:</p>\n<ul dir=\"auto\">\n<li>Try to clamp your vehicle with a really low accel constrain like az_max=0.1 rad/s^2, ax_max=0.1rad/s(Do this with ros2_control or your custom controller node that clamp every cmd_vel sent to the  motor driver to a specific accel constrain you want.).</li>\n<li>Try yourself to control your vehicle with teleop_keyboard to see how hard it is to control with such constrain.</li>\n<li>Then use the change in this PR, change the az_max and ax_max in navigation MPPI parameter to the same value you clamp on your driver controller(e.g 0.1rad/s^2 and 0.1m/s^2). From my testing, MPPI is still able to control  the vehicle which is really hard to control by teleop_keyboard, which I think the MPPI already takes into account the accel constrain you set in the driver controller.</li>\n</ul>\n<p dir=\"auto\">The link above is not related to this PR. Sorry for the confusion.</p>",
+      "bodyVersion": "9a21551bc113c16c316dbdb697b8b91c767b1b8673593b2e72633d76e93db789",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6_hlhx",
+      "databaseId": 3213252721,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU3OTEwNzU2",
+        "login": "adivardi",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/57910756?u=74217c8036cb88ac718acaf19160cfc369f8f74a&v=4",
+        "profileUrl": "https://github.com/adivardi",
+        "name": "Adi Vardi"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3213252721",
+      "createdAt": "2025-08-22T06:51:33Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> > Also, why is applyConstraints() [only applied to the optimal control](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L339)? Shouldn't it be applied in MotionModel::predict()?\n> \n> It is applied in both.\n\nCould you please point me to where it is done? I really can't find it.\nOnly place I find `motion_model_->applyConstraints(...)` is in `Optimizer::applyControlSequenceConstraints()`,  called from `Optimizer::updateControlSequence()`, which is at the end of `Optimizer::optimize()` (after all the critics were evaluated)",
+      "bodyHTML": "<blockquote>\n<blockquote>\n<p dir=\"auto\">Also, why is applyConstraints() <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L339\">only applied to the optimal control</a>? Shouldn't it be applied in MotionModel::predict()?</p>\n</blockquote>\n<p dir=\"auto\">It is applied in both.</p>\n</blockquote>\n<p dir=\"auto\">Could you please point me to where it is done? I really can't find it.<br>\nOnly place I find <code class=\"notranslate\">motion_model_-&gt;applyConstraints(...)</code> is in <code class=\"notranslate\">Optimizer::applyControlSequenceConstraints()</code>,  called from <code class=\"notranslate\">Optimizer::updateControlSequence()</code>, which is at the end of <code class=\"notranslate\">Optimizer::optimize()</code> (after all the critics were evaluated)</p>",
+      "bodyVersion": "34e3abdfe2bf8269d013ba5b19c7063d6d33680194821b1e3a48f3fefaeffe58",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7AQJHP",
+      "databaseId": 3225457103,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7GwR46",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5464,
+        "locked": false,
+        "databaseId": 3334544954
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5464#issuecomment-3225457103",
+      "createdAt": "2025-08-26T19:26:32Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "[This block](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L312-L337) sets the acceleration limits for the optimal trajectory before outputting. The [motion model](https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/include/nav2_mppi_controller/motion_models.hpp#L85-L95) does so for the sampled input control velocities to create the vehicle velocities at the start.   ",
+      "bodyHTML": "<p dir=\"auto\"><a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/src/optimizer.cpp#L312-L337\">This block</a> sets the acceleration limits for the optimal trajectory before outputting. The <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_mppi_controller/include/nav2_mppi_controller/motion_models.hpp#L85-L95\">motion model</a> does so for the sampled input control velocities to create the vehicle velocities at the start.</p>",
+      "bodyVersion": "388a8d4e5c7c04f696f7417f6d59ff3a63c4485adf959f6c1327d0ecb565e09f",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": true,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmMKrWJABqzE5MjI1Nzc4ODMz",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABmM1BZgAAqjMyMTExMTQyMjM="
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": true,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmMNlp-ABqzE5MjI5NDU0Njgw",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABmOfYpkAAqjMyMjU0NTcxMDM="
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOCBF7SM6kXEs_",
+      "url": "https://github.com/ros-navigation/navigation2/pull/5467",
+      "number": 5467,
+      "title": "Revert \"Unclamp noise velocity.\"",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2025-08-19T20:09:53Z",
+      "databaseId": 2757511999,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5467",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5467.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5467.changes.json"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclpy/pull/1561",
+    "final_url": "https://github.com/ros2/rclpy/pull/1561",
+    "fetched_at": "2026-10-11T11:19:30.873014+00:00",
+    "http_status": 200,
+    "response_sha256": "cbe47852cc021613e9b7ef7d8ade5f798071220f4c5620cdd1ea5c3289daec67"
+  },
+  "url": "https://github.com/ros2/rclpy/pull/1561",
+  "title": "Fix liveliness BEST_AVAILABLE handling in rclpy by pavansai018 · Pull Request #1561 · ros2/rclpy · GitHub",
+  "state_from_issue_link": "CLOSED",
+  "body_rendered_text": "Fix liveliness BEST_AVAILABLE handling in rclpy\n\n\nSummary\n\n\nThis PR resolves an inconsistency in how rclpy handles LivelinessPolicy.BEST_AVAILABLE.\n\nThe Python QoS API exposes this enum value, but the rmw layer does not implement a corresponding liveliness policy. As a result, rclpy forwarded an unsupported enum value into rmw_qos_profile_t, causing incorrect introspection and QoS incompatibility warnings.\n\n\nThis patch maps LivelinessPolicy.BEST_AVAILABLE to LivelinessPolicy.AUTOMATIC, aligning with how the rmw-defined qos_profile_best_available behaves.\n\n\nProblem\n\n\nWhen both publisher and subscription use:\n\n\n\n```\nQoSProfile(depth=10, liveliness=LivelinessPolicy.BEST_AVAILABLE)\n```\n\n\n\nthe following issues occur:\n\n\n\nros2 topic info shows AUTOMATIC instead of BEST_AVAILABLE\n\n\nQoS compatibility check reports LIVELINESS incompatibility\n\n\nPublisher and subscription cannot communicate despite matching QoS settings\n\n\n\nRoot cause:\n\nBEST_AVAILABLE (raw value 5) is not a valid rmw liveliness policy and must be resolved to a supported value before constructing the rmw QoS profile.\n\n\nSolution\n\n\n\nDetect LivelinessPolicy.BEST_AVAILABLE in the QoSProfile setter\n\n\nResolve it to LivelinessPolicy.AUTOMATIC before sending it to rmw\n\n\n\nThis restores correct QoS negotiation and ensures consistent behavior across publisher/subscription endpoints.\n\n\nImpact\n\n\n\nFixes LIVELINESS incompatibility warnings\n\n\nEnsures introspection reflects the correct resolved policy\n\n\nDoes not break existing user code\n\n\nMakes rclpy consistent with rmw QoS semantics\n\n\n\nFuture Considerations\n\n\nA future ROS 2 release may choose to deprecate liveliness BEST_AVAILABLE or extend rmw to support a formal best-available liveliness policy. This patch provides safe and deterministic behavior for current ROS 2 distributions.\n\n\nRelated Issue\n\n\nFixes: ros2/ros2#1722",
+  "discussion_rendered_text": [],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros2/rclpy/commit/ac7fb7cc70a815484628fba950d8268fada08697",
+    "https://github.com/ros2/rclpy/commit/d9b6704b6e5472d323954d95e4772026f28af012",
+    "https://github.com/ros2/rclpy/pull/1561/commits/b6f03c7dc14bb2a03737afe6cec87deaad02d2bc",
+    "https://github.com/ros2/rclpy/pull/1561/commits/d9b6704b6e5472d323954d95e4772026f28af012",
+    "https://github.com/ros2/rclpy/pull/1561/commits/ea561ed3f69d3e0563f74bd7209b6d2a09cca6c4"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

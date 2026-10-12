@@ -1,0 +1,201 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3308",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3308",
+    "fetched_at": "2026-10-11T11:24:37.209926+00:00",
+    "http_status": 200,
+    "response_sha256": "efe2df39477d400a3592a3cdd5cb762e818c5f43e85c92142490b8db5e06f1b8"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc8AAAABCKfpGw",
+    "databaseId": 4440189211,
+    "number": 3308,
+    "title": "Unset fallback_controllers list warnings",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3308",
+    "body": "Our setup recently started to complain about an unset `fallback_controllers` parameter.\n```\n[INFO] [1778687515.100459868] [arm_controller]: Received new action goal\n[INFO] [1778687515.100686615] [arm_controller]: Accepted new action goal\n[INFO] [1778687516.574463718] [arm_controller]: Goal reached, success!\n[INFO] [1778687517.325472441] [arm_controller]: Received new action goal\n[INFO] [1778687517.325594391] [arm_controller]: Accepted new action goal\n[WARN] [1778687517.663535884] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[INFO] [1778687518.819410366] [arm_controller]: Goal reached, success!\n[WARN] [1778687532.659037565] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687547.653311594] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687562.655851613] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687577.652542881] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687592.658599848] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687607.642737525] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687622.649339659] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687637.655355398] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687652.635913366] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687667.622851234] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687682.647852895] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687697.628982877] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n```\n\n**Expected behavior**\nUsers shouldn't have to explicitly say they aren't using any fallback controllers.\n```yaml\narm_controller:\n  ros__parameters:\n    joints:\n      - joint_1\n      - joint_2\n    fallback_controllers: []   # This shouldn't be required\n```\n\n**Environment:**\n - OS: Ubuntu\n - Version: Jazzy\n",
+    "bodyHTML": "<p dir=\"auto\">Our setup recently started to complain about an unset <code class=\"notranslate\">fallback_controllers</code> parameter.</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"[INFO] [1778687515.100459868] [arm_controller]: Received new action goal\n[INFO] [1778687515.100686615] [arm_controller]: Accepted new action goal\n[INFO] [1778687516.574463718] [arm_controller]: Goal reached, success!\n[INFO] [1778687517.325472441] [arm_controller]: Received new action goal\n[INFO] [1778687517.325594391] [arm_controller]: Accepted new action goal\n[WARN] [1778687517.663535884] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[INFO] [1778687518.819410366] [arm_controller]: Goal reached, success!\n[WARN] [1778687532.659037565] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687547.653311594] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687562.655851613] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687577.652542881] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687592.658599848] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687607.642737525] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687622.649339659] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687637.655355398] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687652.635913366] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687667.622851234] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687682.647852895] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687697.628982877] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\"><pre class=\"notranslate\"><code class=\"notranslate\">[INFO] [1778687515.100459868] [arm_controller]: Received new action goal\n[INFO] [1778687515.100686615] [arm_controller]: Accepted new action goal\n[INFO] [1778687516.574463718] [arm_controller]: Goal reached, success!\n[INFO] [1778687517.325472441] [arm_controller]: Received new action goal\n[INFO] [1778687517.325594391] [arm_controller]: Accepted new action goal\n[WARN] [1778687517.663535884] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[INFO] [1778687518.819410366] [arm_controller]: Goal reached, success!\n[WARN] [1778687532.659037565] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687547.653311594] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687562.655851613] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687577.652542881] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687592.658599848] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687607.642737525] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687622.649339659] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687637.655355398] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687652.635913366] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687667.622851234] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687682.647852895] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n[WARN] [1778687697.628982877] [rclcpp]: Failed to get parameters: parameter 'arm_controller.fallback_controllers' is not initialized\n</code></pre></div>\n<p dir=\"auto\"><strong>Expected behavior</strong><br>\nUsers shouldn't have to explicitly say they aren't using any fallback controllers.</p>\n<div class=\"highlight highlight-source-yaml notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"arm_controller:\n  ros__parameters:\n    joints:\n      - joint_1\n      - joint_2\n    fallback_controllers: []   # This shouldn't be required\"><pre class=\"notranslate\"><span class=\"pl-ent\">arm_controller</span>:\n  <span class=\"pl-ent\">ros__parameters</span>:\n    <span class=\"pl-ent\">joints</span>:\n      - <span class=\"pl-s\">joint_1</span>\n      - <span class=\"pl-s\">joint_2</span>\n    <span class=\"pl-ent\">fallback_controllers</span>: <span class=\"pl-s\">[]   </span><span class=\"pl-c\"><span class=\"pl-c\">#</span> This shouldn't be required</span></pre></div>\n<p dir=\"auto\"><strong>Environment:</strong></p>\n<ul dir=\"auto\">\n<li>OS: Ubuntu</li>\n<li>Version: Jazzy</li>\n</ul>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-05-13T18:15:17Z",
+    "updatedAt": "2026-05-14T12:17:28Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/25058794?u=73e4c0be67427f7fa3cb356021a63b0fd1271b62&v=4",
+      "login": "MarqRazz",
+      "id": "MDQ6VXNlcjI1MDU4Nzk0",
+      "profileUrl": "https://github.com/MarqRazz",
+      "name": "Marq Rasmussen",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 0,
+    "duplicateOf": null
+  },
+  "comments": [],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc8AAAABCKfpG88AAAAF76Pbow",
+      "databaseId": 25495329699,
+      "createdAt": "2026-05-13T18:15:18Z",
+      "actor": {
+        "id": "MDQ6VXNlcjI1MDU4Nzk0",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/25058794?s=64&u=73e4c0be67427f7fa3cb356021a63b0fd1271b62&v=4",
+        "login": "MarqRazz",
+        "profileResourcePath": "/MarqRazz",
+        "__typename": "User",
+        "name": "Marq Rasmussen"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "RenamedTitleEvent",
+      "id": "RTE_lADOBiM5Uc8AAAABCKfpG88AAAAF76Tp7w",
+      "databaseId": 25495398895,
+      "createdAt": "2026-05-13T18:17:05Z",
+      "actor": {
+        "id": "MDQ6VXNlcjI1MDU4Nzk0",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/25058794?s=64&u=73e4c0be67427f7fa3cb356021a63b0fd1271b62&v=4",
+        "login": "MarqRazz",
+        "profileResourcePath": "/MarqRazz",
+        "__typename": "User",
+        "name": "Marq Rasmussen"
+      },
+      "currentTitle": "Unset fallback_controllers list warnings",
+      "previousTitle": "Unset fallback_controllers list can crash the CM"
+    },
+    {
+      "__typename": "ConnectedEvent",
+      "id": "COE_lADOBiM5Uc8AAAABCKfpG88AAAAF8ZgHjg",
+      "databaseId": 25528108942,
+      "createdAt": "2026-05-14T12:17:14Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "subject": {
+        "id": "PR_kwDOBiM5Uc7YNsXp",
+        "__typename": "PullRequest",
+        "title": "Fix fallback parameter warning spam in controller manager",
+        "url": "https://github.com/ros-controls/ros2_control/pull/3270",
+        "number": 3270,
+        "state": "MERGED",
+        "isDraft": false,
+        "isInMergeQueue": false,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+          "name": "ros2_control",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+            "login": "ros-controls"
+          }
+        }
+      }
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc8AAAABCKfpG88AAAAF8ZgeQQ",
+      "databaseId": 25528114753,
+      "createdAt": "2026-05-14T12:17:31Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABniKM3vABqzI1NDk1MzI5Njk5",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABniZrq3gBqzI1NTI4MTE0NzUz"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABniKM3vABqzI1NDk1MzI5Njk5",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABniZrq3gBqzI1NTI4MTE0NzUz"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOBiM5Uc7YNsXp",
+      "url": "https://github.com/ros-controls/ros2_control/pull/3270",
+      "number": 3270,
+      "title": "Fix fallback parameter warning spam in controller manager",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-05-05T00:18:16Z",
+      "databaseId": 3627468265,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "nameWithOwner": "ros-controls/ros2_control",
+        "owner": {
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "__typename": "Organization"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3270",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3270.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3270.changes.json"
+    }
+  ]
+}

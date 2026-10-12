@@ -1,0 +1,24 @@
+{
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/pull/6401",
+    "final_url": "https://github.com/ros-navigation/navigation2/pull/6401",
+    "fetched_at": "2026-10-11T11:21:40.133721+00:00",
+    "http_status": 200,
+    "response_sha256": "783937f082b92f6d34434961951187ee783a9acb22064e2fe189bcecc03fec12"
+  },
+  "url": "https://github.com/ros-navigation/navigation2/pull/6401",
+  "title": "Fix Theta* skipping expansion of the last popped open-set node by Grices · Pull Request #6401 · ros-navigation/navigation2 · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Fixes #6398\n\n\ngeneratePath expanded the current node before popping the next open-set\n\nnode. After the last remaining node was popped, the queue was empty so the\n\nloop exited without setNeighbors or isGoal on that node.\n\n\nThis could return a false no-path when that node was the goal or the only\n\n8-connected gateway out of a pocket.\n\n\nPop the next node at the start of the loop, then expand or accept it as the\n\ngoal. Keep the existing cancel_checker handling.",
+  "discussion_rendered_text": [
+    "Codecov Report\n\n\n✅ All modified and coverable lines are covered by tests.\n\n\n\n\n\nFiles with missing lines\nCoverage Δ\n\n\n\n\n\n\nnav2_theta_star_planner/src/theta_star.cpp\n98.41% <100.00%> (+0.75%)\n⬆️\n\n\n\n 🚀 New features to boost your workflow: \n\n\n❄️ Test Analytics: Detect flaky tests, report on failures, and find test suite problems.",
+    "Pull request overview\n\n\nThis pull request fixes a correctness bug in nav2_theta_star_planner’s Theta* implementation where ThetaStar::generatePath() could exit when the open set became empty without ever checking/expanding the last popped node, causing false “no path” results in edge cases.\n\n\nChanges:\n\n\n\nRefactors the main search loop to pop the next open-set node at the start of each iteration, then evaluate it (goal check) and expand it (neighbor generation).\n\n\nConverts the goal-detection path to an immediate success return after backtrace() and clearQueue(), ensuring the final popped node is handled correctly.\n\n\nSimplifies the post-loop logic so that exhausting the queue deterministically returns failure (raw_path.clear(); return false;).\n\n\n\n\n💡 Add a code-review agent skill or configure MCP servers for context-aware, tailored reviews. Learn more in the docs."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-navigation/navigation2/commit/b18851965a467e08ea004a1182710b3c12570f21",
+    "https://github.com/ros-navigation/navigation2/commit/fbc79a1f5fa9b69cb73005e0a7aa94886372a58e",
+    "https://github.com/ros-navigation/navigation2/pull/6401/commits/41c965c39057f80fc88883ac97e59fe7f8bb71e8"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

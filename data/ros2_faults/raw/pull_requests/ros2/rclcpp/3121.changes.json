@@ -1,0 +1,27 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3121/files",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3121/files",
+    "fetched_at": "2026-10-11T11:23:41.508026+00:00",
+    "http_status": 200,
+    "response_sha256": "3955bc4e432c1acd1b9c957b7f2dbd56751698f11ceb3e9fed03d9bdad4802a5"
+  },
+  "files": {
+    "rclcpp/test/rclcpp/executors/test_executors.cpp": [
+      "@@ -480,10 +480,6 @@ TYPED_TEST(TestExecutors, spinSome)",
+      " ",
+      " // The purpose of this test is to check that the ExecutorT.spin_some() method:",
+      " //   - does not continue executing after max_duration has elapsed",
+      "-// TODO(wjwwood): The `StaticSingleThreadedExecutor`",
+      "-//   do not properly implement max_duration (it seems), so disable this test",
+      "-//   for them in the meantime.",
+      "-//   see: https://github.com/ros2/rclcpp/issues/2462",
+      " TYPED_TEST(TestExecutorsStable, spinSomeMaxDuration)",
+      " {",
+      "   using ExecutorType = TypeParam;"
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

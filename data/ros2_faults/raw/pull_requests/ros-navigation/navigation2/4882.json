@@ -1,0 +1,32 @@
+{
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/pull/4882",
+    "final_url": "https://github.com/ros-navigation/navigation2/pull/4882",
+    "fetched_at": "2026-10-11T11:24:11.366678+00:00",
+    "http_status": 200,
+    "response_sha256": "03c783f1e3f24671f22d321a46b7f91087c1b68fef46f21d0cee1522bb3b5bfe"
+  },
+  "url": "https://github.com/ros-navigation/navigation2/pull/4882",
+  "title": "Fix rviz crash if launch later by mini-1235 · Pull Request #4882 · ros-navigation/navigation2 · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Basic Info\n\n\n\n\n\nInfo\nPlease fill out this column\n\n\n\n\n\nTicket(s) this addresses\n#4754\n\n\n\nPrimary OS tested on\nUbuntu 24.04\n\n\n\nRobotic platform tested on\nturtlebot 3 simulation\n\n\n\nDoes this PR contain AI generated software?\nNo\n\n\n\n\n\nDescription of contribution in a few bullet points\n\n\nRevival of #4871 targeting the main branch with improved code\n\n\n\nOpen a new thread to load plugins, to ensure that get_parameter() would not block the main thread. The combo box will now have value if it successfully gets the parameter, otherwise empty\n\n\n\nDescription of documentation updates required from your changes\n\n\nNone\n\n\nDescription of how this change was tested\n\n\nExtensively tested on tb3 simulation and all tests passed\n\n\n\nFuture work that may be required in bullet points\n\nFor Maintainers: \n\n\n Check that any new parameters added are updated in docs.nav2.org\n\n\n Check that any significant change is added to the migration guide\n\n\n Check that any new features OR changes to existing behaviors are reflected in the tuning guide\n\n\n Check that any new functions have Doxygen added\n\n\n Check that any new features have test coverage\n\n\n Check that any new plugins is added to the plugins page\n\n\n If BT Node, Additionally: add to BT's XML index of nodes for groot, BT package's readme table, and BT library lists",
+  "discussion_rendered_text": [
+    "I now add the combo_box->addItem(\"Default\"); after we have loaded the parameter successfully, but I can move it before loading the plugin if you think it is better",
+    "Codecov Report\n\n\nAll modified and coverable lines are covered by tests ✅\n\n\nsee 6 files with indirect coverage changes",
+    "Otherwise, small thing to update and should be good to go!"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/quasi-robotics/navigation2/commit/9aac1f259b6038cb9578331455236da3583976b6",
+    "https://github.com/ros-navigation/navigation2/commit/419237289080ecc77e10aa7e82b8a534e95e0675",
+    "https://github.com/ros-navigation/navigation2/commit/861ee258154c690b95ef410e20ebe3d026bd7e01",
+    "https://github.com/ros-navigation/navigation2/commit/9e0bee5c93ee20456d1ec60eab4194310415675d",
+    "https://github.com/ros-navigation/navigation2/pull/4882/commits/6d008bc61eeb5779993ec5de78fc2c0d715395fb",
+    "https://github.com/ros-navigation/navigation2/pull/4882/commits/6e50a9f4ac8b45c8f8085b42d2bfb03d7167760b",
+    "https://github.com/ros-navigation/navigation2/pull/4882/commits/8a08da54417be2a7e9a664cec800776d8dc8d021",
+    "https://github.com/ros-navigation/navigation2/pull/4882/commits/b67d41f4ca867a5ef3f3b38dd6a18d59b66372e7",
+    "https://github.com/ros-navigation/navigation2/pull/4882/commits/c97b8e038694e7667aa04efe476aae50e0fb9eda",
+    "https://github.com/stevedanomodolor/navigation2/commit/c3bb664a6847b855fb70d1cfa992d0975203531d"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

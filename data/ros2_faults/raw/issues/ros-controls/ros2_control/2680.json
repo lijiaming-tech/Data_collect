@@ -1,0 +1,2218 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/2680",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/2680",
+    "fetched_at": "2026-10-11T11:24:32.623804+00:00",
+    "http_status": 200,
+    "response_sha256": "cbb605a2e1306c92908346259a101518ac96ca0a5a5a9b84345511b017bd2301"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc7RwqTU",
+    "databaseId": 3519194324,
+    "number": 2680,
+    "title": "AsynFunctionHandler: pure virtual method called",
+    "url": "https://github.com/ros-controls/ros2_control/issues/2680",
+    "body": "jazzy/testing\nhttps://github.com/ros-controls/ros2_control/actions/runs/18538727857/job/52840519388?pr=2678\n```\n    [ RUN      ] ResourceManagerTestAsyncReadWrite.test_components_with_async_components_on_activate\n\n\n    [INFO] [1760553203.979237134] [resource_manager]: 'configure' hardware 'TestActuatorHardware' \n    [INFO] [1760553203.979256419] [resource_manager]: Successful 'configure' of hardware 'TestActuatorHardware'\n    [INFO] [1760553203.979266288] [resource_manager]: 'activate' hardware 'TestActuatorHardware' \n    [INFO] [1760553203.979276998] [resource_manager]: Successful 'activate' of hardware 'TestActuatorHardware'\n    [INFO] [1760553203.979289351] [resource_manager]: 'configure' hardware 'TestSensorHardware' \n    [INFO] [1760553203.979296645] [resource_manager]: Successful 'configure' of hardware 'TestSensorHardware'\n    [INFO] [1760553203.979303127] [resource_manager]: 'activate' hardware 'TestSensorHardware' \n    [INFO] [1760553203.979310560] [resource_manager]: Successful 'activate' of hardware 'TestSensorHardware'\n    [INFO] [1760553203.979320209] [resource_manager]: 'configure' hardware 'TestSystemHardware' \n    [INFO] [1760553203.979326530] [resource_manager]: Successful 'configure' of hardware 'TestSystemHardware'\n    [INFO] [1760553203.979339865] [resource_manager]: 'activate' hardware 'TestSystemHardware' \n    [INFO] [1760553203.979347420] [resource_manager]: Successful 'activate' of hardware 'TestSystemHardware'\n    [WARN] [1760553203.979422229] [ResourceManagerTest]: AsyncFunctionHandler is configured with DETACHED scheduling policy. This means that the async callback may not be synchronized with the main thread. \n    [INFO] [1760553203.979444180] [ResourceManagerTest]: AsyncFunctionHandler: Resuming the async callback thread.\n    pure virtual method called\n    terminate called without an active exception\n```",
+    "bodyHTML": "<p dir=\"auto\">jazzy/testing<br>\n<a href=\"https://github.com/ros-controls/ros2_control/actions/runs/18538727857/job/52840519388?pr=2678\">https://github.com/ros-controls/ros2_control/actions/runs/18538727857/job/52840519388?pr=2678</a></p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"    [ RUN      ] ResourceManagerTestAsyncReadWrite.test_components_with_async_components_on_activate\n\n\n    [INFO] [1760553203.979237134] [resource_manager]: 'configure' hardware 'TestActuatorHardware' \n    [INFO] [1760553203.979256419] [resource_manager]: Successful 'configure' of hardware 'TestActuatorHardware'\n    [INFO] [1760553203.979266288] [resource_manager]: 'activate' hardware 'TestActuatorHardware' \n    [INFO] [1760553203.979276998] [resource_manager]: Successful 'activate' of hardware 'TestActuatorHardware'\n    [INFO] [1760553203.979289351] [resource_manager]: 'configure' hardware 'TestSensorHardware' \n    [INFO] [1760553203.979296645] [resource_manager]: Successful 'configure' of hardware 'TestSensorHardware'\n    [INFO] [1760553203.979303127] [resource_manager]: 'activate' hardware 'TestSensorHardware' \n    [INFO] [1760553203.979310560] [resource_manager]: Successful 'activate' of hardware 'TestSensorHardware'\n    [INFO] [1760553203.979320209] [resource_manager]: 'configure' hardware 'TestSystemHardware' \n    [INFO] [1760553203.979326530] [resource_manager]: Successful 'configure' of hardware 'TestSystemHardware'\n    [INFO] [1760553203.979339865] [resource_manager]: 'activate' hardware 'TestSystemHardware' \n    [INFO] [1760553203.979347420] [resource_manager]: Successful 'activate' of hardware 'TestSystemHardware'\n    [WARN] [1760553203.979422229] [ResourceManagerTest]: AsyncFunctionHandler is configured with DETACHED scheduling policy. This means that the async callback may not be synchronized with the main thread. \n    [INFO] [1760553203.979444180] [ResourceManagerTest]: AsyncFunctionHandler: Resuming the async callback thread.\n    pure virtual method called\n    terminate called without an active exception\"><pre class=\"notranslate\"><code class=\"notranslate\">    [ RUN      ] ResourceManagerTestAsyncReadWrite.test_components_with_async_components_on_activate\n\n\n    [INFO] [1760553203.979237134] [resource_manager]: 'configure' hardware 'TestActuatorHardware' \n    [INFO] [1760553203.979256419] [resource_manager]: Successful 'configure' of hardware 'TestActuatorHardware'\n    [INFO] [1760553203.979266288] [resource_manager]: 'activate' hardware 'TestActuatorHardware' \n    [INFO] [1760553203.979276998] [resource_manager]: Successful 'activate' of hardware 'TestActuatorHardware'\n    [INFO] [1760553203.979289351] [resource_manager]: 'configure' hardware 'TestSensorHardware' \n    [INFO] [1760553203.979296645] [resource_manager]: Successful 'configure' of hardware 'TestSensorHardware'\n    [INFO] [1760553203.979303127] [resource_manager]: 'activate' hardware 'TestSensorHardware' \n    [INFO] [1760553203.979310560] [resource_manager]: Successful 'activate' of hardware 'TestSensorHardware'\n    [INFO] [1760553203.979320209] [resource_manager]: 'configure' hardware 'TestSystemHardware' \n    [INFO] [1760553203.979326530] [resource_manager]: Successful 'configure' of hardware 'TestSystemHardware'\n    [INFO] [1760553203.979339865] [resource_manager]: 'activate' hardware 'TestSystemHardware' \n    [INFO] [1760553203.979347420] [resource_manager]: Successful 'activate' of hardware 'TestSystemHardware'\n    [WARN] [1760553203.979422229] [ResourceManagerTest]: AsyncFunctionHandler is configured with DETACHED scheduling policy. This means that the async callback may not be synchronized with the main thread. \n    [INFO] [1760553203.979444180] [ResourceManagerTest]: AsyncFunctionHandler: Resuming the async callback thread.\n    pure virtual method called\n    terminate called without an active exception\n</code></pre></div>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2025-10-15T18:51:41Z",
+    "updatedAt": "2026-06-03T15:17:01Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+      "login": "christophfroehlich",
+      "id": "MDQ6VXNlcjMzNjcyNDQ=",
+      "profileUrl": "https://github.com/christophfroehlich",
+      "name": "Christoph Fröhlich",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+            "fullDatabaseId": "8380273440",
+            "color": "ededed",
+            "name": "stale",
+            "nameHTML": "stale",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/stale",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 7,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7LNoag",
+      "databaseId": 3409348256,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-3409348256",
+      "createdAt": "2025-10-16T06:20:45Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "https://github.com/ros-controls/ros2_control/actions/runs/18538727857/job/52840519388?pr=2678",
+      "bodyHTML": "<p dir=\"auto\"><a href=\"https://github.com/ros-controls/ros2_control/actions/runs/18538727857/job/52840519388?pr=2678\">https://github.com/ros-controls/ros2_control/actions/runs/18538727857/job/52840519388?pr=2678</a></p>",
+      "bodyVersion": "a1ec6c6d73ed5b214d261dddb8d77990eb32b0aa166676d611ec4e953966aed8",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7WW_B8",
+      "databaseId": 3596349564,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-3596349564",
+      "createdAt": "2025-12-01T12:38:37Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7fyfaH",
+      "databaseId": 3754555015,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-3754555015",
+      "createdAt": "2026-01-15T12:41:15Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue was closed because it has been stalled for 45 days with no activity.",
+      "bodyHTML": "<p dir=\"auto\">This issue was closed because it has been stalled for 45 days with no activity.</p>",
+      "bodyVersion": "2ebf833f90f878eff9039e2c6cb637ca3b662f79161cd2a020a36f04c154f883",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7nBuly",
+      "databaseId": 3875989874,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-3875989874",
+      "createdAt": "2026-02-10T08:00:49Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "https://github.com/ros-controls/ros2_control/issues/3024",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3919630478\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3024\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3024/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3024\">#3024</a></p>",
+      "bodyVersion": "d755e7983e2f79fe5311573a9c5e5ded7d19fb9adb8188c9f64195fa98681b28",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7xmHB-",
+      "databaseId": 4053299326,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-4053299326",
+      "createdAt": "2026-03-13T07:26:13Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "https://github.com/ros-controls/ros2_control/issues/3121",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4068663387\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3121\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3121/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3121\">#3121</a></p>",
+      "bodyVersion": "2e6afd4e9df408b6047f2518019b55896eaec944ae52079d2f790476024ba963",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc77JVwa",
+      "databaseId": 4213529626,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-4213529626",
+      "createdAt": "2026-04-09T10:45:36Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "https://github.com/ros-controls/ros2_control/issues/3194",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4209536408\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3194\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3194/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3194\">#3194</a></p>",
+      "bodyVersion": "14c527732d7cdbedf82c0e8407d73aeac0f15ca132b89974fa68af2cb2079774",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABDlDDPA",
+      "databaseId": 4535141180,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-4535141180",
+      "createdAt": "2026-05-25T14:48:57Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "AssignedEvent",
+      "id": "AE_lADOBiM5Uc7RwqTUzwAAAAS6K0XL",
+      "databaseId": 20303267275,
+      "createdAt": "2025-10-15T18:51:41Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "assignee": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "resourcePath": "/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7RwqTUzwAAAAS6K0cE",
+      "databaseId": 20303267588,
+      "createdAt": "2025-10-15T18:51:43Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7LNoag",
+      "databaseId": 3409348256,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-3409348256",
+      "createdAt": "2025-10-16T06:20:45Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "https://github.com/ros-controls/ros2_control/actions/runs/18538727857/job/52840519388?pr=2678",
+      "bodyHTML": "<p dir=\"auto\"><a href=\"https://github.com/ros-controls/ros2_control/actions/runs/18538727857/job/52840519388?pr=2678\">https://github.com/ros-controls/ros2_control/actions/runs/18538727857/job/52840519388?pr=2678</a></p>",
+      "bodyVersion": "a1ec6c6d73ed5b214d261dddb8d77990eb32b0aa166676d611ec4e953966aed8",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7WW_B8",
+      "databaseId": 3596349564,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-3596349564",
+      "createdAt": "2025-12-01T12:38:37Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7RwqTUzwAAAAT0Fslp",
+      "databaseId": 21275003241,
+      "createdAt": "2025-12-01T12:38:37Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+        "archivedAt": null,
+        "nameHTML": "stale",
+        "name": "stale",
+        "color": "ededed",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7fyfaH",
+      "databaseId": 3754555015,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-3754555015",
+      "createdAt": "2026-01-15T12:41:15Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue was closed because it has been stalled for 45 days with no activity.",
+      "bodyHTML": "<p dir=\"auto\">This issue was closed because it has been stalled for 45 days with no activity.</p>",
+      "bodyVersion": "2ebf833f90f878eff9039e2c6cb637ca3b662f79161cd2a020a36f04c154f883",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc7RwqTUzwAAAAUjZfSf",
+      "databaseId": 22068720799,
+      "createdAt": "2026-01-15T12:41:16Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "stateReason": "NOT_PLANNED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7nBuly",
+      "databaseId": 3875989874,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-3875989874",
+      "createdAt": "2026-02-10T08:00:49Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "https://github.com/ros-controls/ros2_control/issues/3024",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3919630478\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3024\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3024/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3024\">#3024</a></p>",
+      "bodyVersion": "d755e7983e2f79fe5311573a9c5e5ded7d19fb9adb8188c9f64195fa98681b28",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ReopenedEvent",
+      "id": "REE_lADOBiM5Uc7RwqTUzwAAAAVG_A56",
+      "databaseId": 22665760378,
+      "createdAt": "2026-02-10T08:00:49Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      }
+    },
+    {
+      "__typename": "UnlabeledEvent",
+      "id": "UNLE_lADOBiM5Uc7RwqTUzwAAAAVHdcwr",
+      "databaseId": 22673738795,
+      "createdAt": "2026-02-10T13:08:23Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+        "archivedAt": null,
+        "nameHTML": "stale",
+        "name": "stale",
+        "color": "ededed",
+        "description": null
+      }
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7xmHB-",
+      "databaseId": 4053299326,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-4053299326",
+      "createdAt": "2026-03-13T07:26:13Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "https://github.com/ros-controls/ros2_control/issues/3121",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4068663387\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3121\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3121/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3121\">#3121</a></p>",
+      "bodyVersion": "2e6afd4e9df408b6047f2518019b55896eaec944ae52079d2f790476024ba963",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc77JVwa",
+      "databaseId": 4213529626,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-4213529626",
+      "createdAt": "2026-04-09T10:45:36Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "https://github.com/ros-controls/ros2_control/issues/3194",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4209536408\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3194\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3194/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3194\">#3194</a></p>",
+      "bodyVersion": "14c527732d7cdbedf82c0e8407d73aeac0f15ca132b89974fa68af2cb2079774",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABDlDDPA",
+      "databaseId": 4535141180,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7RwqTU",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2680,
+        "locked": false,
+        "databaseId": 3519194324
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2680#issuecomment-4535141180",
+      "createdAt": "2026-05-25T14:48:57Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7RwqTUzwAAAAYJlO2z",
+      "databaseId": 25930558899,
+      "createdAt": "2026-05-25T14:48:57Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+        "archivedAt": null,
+        "nameHTML": "stale",
+        "name": "stale",
+        "color": "ededed",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc7RwqTUzwAAAAYfMNm5",
+      "databaseId": 26293098937,
+      "createdAt": "2026-06-03T15:17:01Z",
+      "actor": {
+        "id": "MDQ6VXNlcjM1MjQ1Nzc=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3524577?s=64&u=8f938d2dcacdcbb54f3977d6356cef945a6eb6ed&v=4",
+        "login": "bmagyar",
+        "profileResourcePath": "/bmagyar",
+        "__typename": "User",
+        "name": "Bence Magyar"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOBiM5Uc7ccVN0",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-controls/ros2_control/pull/3321",
+        "number": 3321,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+          "name": "ros2_control",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+            "login": "ros-controls"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmek2tkgBqzIwMzAzMjY3Mjc1",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABno4PMcgBqzI2MjkzMDk4OTM3"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmek2tkgBqzIwMzAzMjY3Mjc1",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABno4PMcgBqzI2MjkzMDk4OTM3"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOBiM5Uc7ccVN0",
+      "url": "https://github.com/ros-controls/ros2_control/pull/3321",
+      "number": 3321,
+      "title": "Fix pure virtual error in the hardware component with async mode",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-05-17T21:18:30Z",
+      "databaseId": 3698414452,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3321",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3321.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3321.changes.json"
+    }
+  ]
+}

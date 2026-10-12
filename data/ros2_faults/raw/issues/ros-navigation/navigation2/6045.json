@@ -1,0 +1,783 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-navigation/navigation2",
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/issues/6045",
+    "final_url": "https://github.com/ros-navigation/navigation2/issues/6045",
+    "fetched_at": "2026-10-11T11:22:09.729160+00:00",
+    "http_status": 200,
+    "response_sha256": "d50c312d3f5842e4759f155cce72f5071300a898a3d7f6c8206f1f3f301fd7a0"
+  },
+  "issue": {
+    "id": "I_kwDOCBF7SM71LU6-",
+    "databaseId": 4113387198,
+    "number": 6045,
+    "title": "question about SimpleChargingDock external detection rotation",
+    "url": "https://github.com/ros-navigation/navigation2/issues/6045",
+    "body": "<!--\nFor general questions, please ask on Robotics Stack Exchange: https://robotics.stackexchange.com/, make sure to include at least the `ros2` and `nav2` tags and the rosdistro version you are running, e.g. `ardent`.\nFor general design discussions, please post on discourse: https://discourse.ros.org/c/ng-ros\nNot sure if this is the right repository? Open an issue on https://github.com/ros-navigation/navigation2\nFor Bug report or feature requests, please fill out the relevant category below\n-->\n\n## Bug report\n\n**Required Info:**\n\n- Operating System:\n  - Ubuntu 22.04\n- Computer:\n  - x86\n- ROS2 Version:\n  - Ros Iron\n- Version or commit hash:\n  - 1.2.10-1jammy.20241126.215637\n\n#### Question\n\nHello!\n\nI see the following in [simple_charging_dock.cpp](https://github.com/ros-navigation/navigation2/blob/6fd9ae37cdff2011b005f1078c514043863bf146/nav2_docking/opennav_docking/src/simple_charging_dock.cpp#L128):\n\n```cpp\nSimpleChargingDock::configure()\n  external_detection_rotation_.setEuler(pitch, roll, yaw);\n```\nShouldn't the order be yaw-pitch-roll, as specified in [tf2/LinearMath/Quaternion.h](https://github.com/ros/geometry2/blob/8fef92a6b56a26e2b5be58d4d5c84dc4de5ee696/tf2/include/tf2/LinearMath/Quaternion.h#L75)?\n\n```cpp \n  void setEuler(const tf2Scalar& yaw, const tf2Scalar& pitch, const tf2Scalar& roll)\n```\n\nOne can still compute the desired dock pose from the detected pose by defining appropriate `external_detection_rotation_*` parameters in `nav2_params.yaml`, but I was wondering if these are two errors correcting each other, or if I'm missing something.\n\nThanks!",
+    "bodyHTML": "\n<h2 dir=\"auto\">Bug report</h2>\n<p dir=\"auto\"><strong>Required Info:</strong></p>\n<ul dir=\"auto\">\n<li>Operating System:\n<ul dir=\"auto\">\n<li>Ubuntu 22.04</li>\n</ul>\n</li>\n<li>Computer:\n<ul dir=\"auto\">\n<li>x86</li>\n</ul>\n</li>\n<li>ROS2 Version:\n<ul dir=\"auto\">\n<li>Ros Iron</li>\n</ul>\n</li>\n<li>Version or commit hash:\n<ul dir=\"auto\">\n<li>1.2.10-1jammy.20241126.215637</li>\n</ul>\n</li>\n</ul>\n<h4 dir=\"auto\">Question</h4>\n<p dir=\"auto\">Hello!</p>\n<p dir=\"auto\">I see the following in <a href=\"https://github.com/ros-navigation/navigation2/blob/6fd9ae37cdff2011b005f1078c514043863bf146/nav2_docking/opennav_docking/src/simple_charging_dock.cpp#L128\">simple_charging_dock.cpp</a>:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"SimpleChargingDock::configure()\n  external_detection_rotation_.setEuler(pitch, roll, yaw);\"><pre class=\"notranslate\"><span class=\"pl-en\">SimpleChargingDock::configure</span>()\n  external_detection_rotation_.setEuler(pitch, roll, yaw);</pre></div>\n<p dir=\"auto\">Shouldn't the order be yaw-pitch-roll, as specified in <a href=\"https://github.com/ros/geometry2/blob/8fef92a6b56a26e2b5be58d4d5c84dc4de5ee696/tf2/include/tf2/LinearMath/Quaternion.h#L75\">tf2/LinearMath/Quaternion.h</a>?</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"  void setEuler(const tf2Scalar&amp; yaw, const tf2Scalar&amp; pitch, const tf2Scalar&amp; roll)\"><pre class=\"notranslate\">  <span class=\"pl-k\">void</span> <span class=\"pl-en\">setEuler</span>(<span class=\"pl-k\">const</span> tf2Scalar&amp; yaw, <span class=\"pl-k\">const</span> tf2Scalar&amp; pitch, <span class=\"pl-k\">const</span> tf2Scalar&amp; roll)</pre></div>\n<p dir=\"auto\">One can still compute the desired dock pose from the detected pose by defining appropriate <code class=\"notranslate\">external_detection_rotation_*</code> parameters in <code class=\"notranslate\">nav2_params.yaml</code>, but I was wondering if these are two errors correcting each other, or if I'm missing something.</p>\n<p dir=\"auto\">Thanks!</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-03-21T18:51:36Z",
+    "updatedAt": "2026-04-09T20:49:36Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/241738555?v=4",
+      "login": "nikolaos-drosinos",
+      "id": "U_kgDODmijOw",
+      "profileUrl": "https://github.com/nikolaos-drosinos",
+      "name": "Nikolaos Drosinos",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+            "fullDatabaseId": "948691578",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros-navigation/navigation2/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 2,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM71IZpm",
+      "databaseId": 4112620134,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM71LU6-",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDODmijOw",
+          "login": "nikolaos-drosinos"
+        },
+        "number": 6045,
+        "locked": false,
+        "databaseId": 4113387198
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6045#issuecomment-4112620134",
+      "createdAt": "2026-03-23T17:57:32Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This does seem to be a real issue, yes. Can you open a PR + put a loud message in the docs.nav2.org migration guide mentioning this and how to migrate (switch which parameter fields to be correct for new implementation fix)? ",
+      "bodyHTML": "<p dir=\"auto\">This does seem to be a real issue, yes. Can you open a PR + put a loud message in the docs.nav2.org migration guide mentioning this and how to migrate (switch which parameter fields to be correct for new implementation fix)?</p>",
+      "bodyVersion": "1747f2e9d7c468b59d94634f02e3875eca47cde82aacb0d1a3dfbfde4d4f8fdf",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM717KCt",
+      "databaseId": 4125925549,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM71LU6-",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDODmijOw",
+          "login": "nikolaos-drosinos"
+        },
+        "number": 6045,
+        "locked": false,
+        "databaseId": 4113387198
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDODmijOw",
+        "login": "nikolaos-drosinos",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/241738555?v=4",
+        "profileUrl": "https://github.com/nikolaos-drosinos",
+        "name": "Nikolaos Drosinos"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6045#issuecomment-4125925549",
+      "createdAt": "2026-03-25T11:42:41Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thanks for the reply, Steve! I just opened a PR, please let me know if it is in the right direction.",
+      "bodyHTML": "<p dir=\"auto\">Thanks for the reply, Steve! I just opened a PR, please let me know if it is in the right direction.</p>",
+      "bodyVersion": "57424f8124e7ea9c20208d41d9129e9d690ca3910b4bfc8e6dac9a0b9021d7e6",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM71IZpm",
+      "databaseId": 4112620134,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM71LU6-",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDODmijOw",
+          "login": "nikolaos-drosinos"
+        },
+        "number": 6045,
+        "locked": false,
+        "databaseId": 4113387198
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6045#issuecomment-4112620134",
+      "createdAt": "2026-03-23T17:57:32Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This does seem to be a real issue, yes. Can you open a PR + put a loud message in the docs.nav2.org migration guide mentioning this and how to migrate (switch which parameter fields to be correct for new implementation fix)? ",
+      "bodyHTML": "<p dir=\"auto\">This does seem to be a real issue, yes. Can you open a PR + put a loud message in the docs.nav2.org migration guide mentioning this and how to migrate (switch which parameter fields to be correct for new implementation fix)?</p>",
+      "bodyVersion": "1747f2e9d7c468b59d94634f02e3875eca47cde82aacb0d1a3dfbfde4d4f8fdf",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM71LU6-zwAAAAWL-N4o",
+      "databaseId": 23823179304,
+      "createdAt": "2026-03-23T17:57:36Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "ReferencedEvent",
+      "id": "REFE_lADOCBF7SM71LU6-zwAAAAWPzANA",
+      "databaseId": 23887348544,
+      "createdAt": "2026-03-25T11:32:58Z",
+      "actor": {
+        "id": "U_kgDODmijOw",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/241738555?s=64&v=4",
+        "login": "nikolaos-drosinos",
+        "profileResourcePath": "/nikolaos-drosinos",
+        "__typename": "User",
+        "name": "Nikolaos Drosinos"
+      },
+      "willCloseSubject": true,
+      "subject": {
+        "id": "I_kwDOCBF7SM71LU6-",
+        "__typename": "Issue"
+      },
+      "commit": {
+        "id": "C_kwDORwX38toAKDY3MjE1NGQxMzQ3MDk4MTI1NTVkMzk2YzczYjMzOWQxODU0NzM1OTU",
+        "message": "fix: correct external detection rotation in opennav_docking\n\n* correct argument order in tf2::Quaternion::setEuler() calls\n  - previous order: (pitch, roll, yaw)\n  - correct order: (yaw, pitch, roll)\n* preserve previous behavior in external_detection_rotation_ parameters:\n  - external_detection_rotation_yaw: set to old pitch value\n  - external_detection_rotation_pitch: set to old roll value\n  - external_detection_rotation_roll: set to old yaw value\n* update documentation for backwards incompatible change\n\nFixes #6045\n\nSigned-off-by: Nikolaos Drosinos <nikolaos.drosinos@ocado.com>",
+        "messageHeadlineHTML": "fix: correct external detection rotation in opennav_docking",
+        "messageBodyHTML": "* correct argument order in tf2::Quaternion::setEuler() calls\n  - previous order: (pitch, roll, yaw)\n  - correct order: (yaw, pitch, roll)\n* preserve previous behavior in external_detection_rotation_ parameters:\n  - external_detection_rotation_yaw: set to old pitch value\n  - external_detection_rotation_pitch: set to old roll value\n  - external_detection_rotation_roll: set to old yaw value\n* update documentation for backwards incompatible change\n\n<span class=\"issue-keyword tooltipped tooltipped-se\" aria-label=\"This commit closes issue #6045.\">Fixes</span> <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4113387198\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6045\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/6045/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/6045\">ros-navigation#6045</a>\n\nSigned-off-by: Nikolaos Drosinos &lt;nikolaos.drosinos@ocado.com&gt;",
+        "url": "https://github.com/nikolaos-drosinos/navigation2/commit/672154d134709812555d396c73b339d185473595",
+        "abbreviatedOid": "672154d",
+        "repository": {
+          "id": "R_kgDORwX38g",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "User",
+            "id": "U_kgDODmijOw",
+            "login": "nikolaos-drosinos"
+          },
+          "defaultBranch": "main"
+        }
+      }
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM717KCt",
+      "databaseId": 4125925549,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM71LU6-",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDODmijOw",
+          "login": "nikolaos-drosinos"
+        },
+        "number": 6045,
+        "locked": false,
+        "databaseId": 4113387198
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDODmijOw",
+        "login": "nikolaos-drosinos",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/241738555?v=4",
+        "profileUrl": "https://github.com/nikolaos-drosinos",
+        "name": "Nikolaos Drosinos"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6045#issuecomment-4125925549",
+      "createdAt": "2026-03-25T11:42:41Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thanks for the reply, Steve! I just opened a PR, please let me know if it is in the right direction.",
+      "bodyHTML": "<p dir=\"auto\">Thanks for the reply, Steve! I just opened a PR, please let me know if it is in the right direction.</p>",
+      "bodyVersion": "57424f8124e7ea9c20208d41d9129e9d690ca3910b4bfc8e6dac9a0b9021d7e6",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ReferencedEvent",
+      "id": "REFE_lADOCBF7SM71LU6-zwAAAAWWhuib",
+      "databaseId": 24000260251,
+      "createdAt": "2026-03-28T17:05:27Z",
+      "actor": {
+        "id": "U_kgDODmijOw",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/241738555?s=64&v=4",
+        "login": "nikolaos-drosinos",
+        "profileResourcePath": "/nikolaos-drosinos",
+        "__typename": "User",
+        "name": "Nikolaos Drosinos"
+      },
+      "willCloseSubject": true,
+      "subject": {
+        "id": "I_kwDOCBF7SM71LU6-",
+        "__typename": "Issue"
+      },
+      "commit": {
+        "id": "C_kwDORwX38toAKDE4OTU0MjhiY2I4NGNiMWU2MzZlYTA5M2Y1YzljODA1ZTM3N2FhMTI",
+        "message": "fix: correct external detection rotation in opennav_docking\n\n* replace tf2::Quaternion::setEuler() with tf2::Quaternion::setRPY()\n  - setEuler(p, r, y) rotation order: Rz(y) -> Rx(r) -> Ry(p)\n  - setRPY(r, p, y) rotation order: Rx(r) -> Ry(p) -> Rz(y)\n* the computed rotation remains the same in the following cases:\n  - when yaw rotation equals 0.0, or\n  - when roll and pitch rotations both equal 0.0\n* non-default rotation that differs from the above cases will break\n\nFixes #6045\n\nSigned-off-by: Nikolaos Drosinos <nikolaos.drosinos@ocado.com>",
+        "messageHeadlineHTML": "fix: correct external detection rotation in opennav_docking",
+        "messageBodyHTML": "* replace tf2::Quaternion::setEuler() with tf2::Quaternion::setRPY()\n  - setEuler(p, r, y) rotation order: Rz(y) -&gt; Rx(r) -&gt; Ry(p)\n  - setRPY(r, p, y) rotation order: Rx(r) -&gt; Ry(p) -&gt; Rz(y)\n* the computed rotation remains the same in the following cases:\n  - when yaw rotation equals 0.0, or\n  - when roll and pitch rotations both equal 0.0\n* non-default rotation that differs from the above cases will break\n\n<span class=\"issue-keyword tooltipped tooltipped-se\" aria-label=\"This commit closes issue #6045.\">Fixes</span> <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4113387198\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6045\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/6045/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/6045\">ros-navigation#6045</a>\n\nSigned-off-by: Nikolaos Drosinos &lt;nikolaos.drosinos@ocado.com&gt;",
+        "url": "https://github.com/nikolaos-drosinos/navigation2/commit/1895428bcb84cb1e636ea093f5c9c805e377aa12",
+        "abbreviatedOid": "1895428",
+        "repository": {
+          "id": "R_kgDORwX38g",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "User",
+            "id": "U_kgDODmijOw",
+            "login": "nikolaos-drosinos"
+          },
+          "defaultBranch": "main"
+        }
+      }
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOCBF7SM71LU6-zwAAAAWrb5wr",
+      "databaseId": 24351054891,
+      "createdAt": "2026-04-09T20:49:36Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "C_kwDOCBF7SNoAKGE2NTYzOGQ1OGU5NWJiNzFhYjMzZjU0NDFlYzcwMjJjNGM3Zjk4NGI",
+        "__typename": "Commit",
+        "url": "https://github.com/ros-navigation/navigation2/commit/a65638d58e95bb71ab33f5441ec7022c4c7f984b",
+        "abbreviatedOid": "a65638d",
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      },
+      "intent": null
+    },
+    {
+      "__typename": "ReferencedEvent",
+      "id": "REFE_lADOCBF7SM71LU6-zwAAAAWrdDVD",
+      "databaseId": 24351356227,
+      "createdAt": "2026-04-09T21:00:58Z",
+      "actor": {
+        "id": "MDQ6VXNlcjc0MTYyNDcz",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/74162473?s=64&u=b0a30a9aa7b7a228cc8ead33868580be5c7ff1b2&v=4",
+        "login": "silanus23",
+        "profileResourcePath": "/silanus23",
+        "__typename": "User",
+        "name": "silanus"
+      },
+      "willCloseSubject": true,
+      "subject": {
+        "id": "I_kwDOCBF7SM71LU6-",
+        "__typename": "Issue"
+      },
+      "commit": {
+        "id": "C_kwDOPFnvStoAKGE2NTYzOGQ1OGU5NWJiNzFhYjMzZjU0NDFlYzcwMjJjNGM3Zjk4NGI",
+        "message": "fix: correct external detection rotation in opennav_docking (#6047)\n\n* replace tf2::Quaternion::setEuler() with tf2::Quaternion::setRPY()\n  - setEuler(p, r, y) rotation order: Rz(y) -> Rx(r) -> Ry(p)\n  - setRPY(r, p, y) rotation order: Rx(r) -> Ry(p) -> Rz(y)\n* the computed rotation remains the same in the following cases:\n  - when yaw rotation equals 0.0, or\n  - when roll and pitch rotations both equal 0.0\n* non-default rotation that differs from the above cases will break\n\nFixes #6045\n\nSigned-off-by: Nikolaos Drosinos <nikolaos.drosinos@ocado.com>",
+        "messageHeadlineHTML": "fix: correct external detection rotation in opennav_docking (<a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4134761311\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6047\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6047/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/6047\">ros-navi…</a>",
+        "messageBodyHTML": "<a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4134761311\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6047\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6047/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/6047\">…gation#6047</a>)\n\n* replace tf2::Quaternion::setEuler() with tf2::Quaternion::setRPY()\n  - setEuler(p, r, y) rotation order: Rz(y) -&gt; Rx(r) -&gt; Ry(p)\n  - setRPY(r, p, y) rotation order: Rx(r) -&gt; Ry(p) -&gt; Rz(y)\n* the computed rotation remains the same in the following cases:\n  - when yaw rotation equals 0.0, or\n  - when roll and pitch rotations both equal 0.0\n* non-default rotation that differs from the above cases will break\n\n<span class=\"issue-keyword tooltipped tooltipped-se\" aria-label=\"This commit closes issue #6045.\">Fixes</span> <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4113387198\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6045\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/6045/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/6045\">ros-navigation#6045</a>\n\nSigned-off-by: Nikolaos Drosinos &lt;nikolaos.drosinos@ocado.com&gt;",
+        "url": "https://github.com/silanus23/navigation2/commit/a65638d58e95bb71ab33f5441ec7022c4c7f984b",
+        "abbreviatedOid": "a65638d",
+        "repository": {
+          "id": "R_kgDOPFnvSg",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "User",
+            "id": "MDQ6VXNlcjc0MTYyNDcz",
+            "login": "silanus23"
+          },
+          "defaultBranch": "main"
+        }
+      }
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnRvYRuAAqjQxMTI2MjAxMzQ=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnXQMUxABqzI0MzUxMzU2MjI3"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnRvYRuAAqjQxMTI2MjAxMzQ=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnXQMUxABqzI0MzUxMzU2MjI3"
+    }
+  },
+  "linked_pull_requests": [],
+  "comments_complete": true,
+  "linked_pr_fetches": []
+}

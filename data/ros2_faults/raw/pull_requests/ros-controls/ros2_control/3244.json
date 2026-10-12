@@ -1,0 +1,25 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3244",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3244",
+    "fetched_at": "2026-10-11T11:24:45.533313+00:00",
+    "http_status": 200,
+    "response_sha256": "c2f4dba255e7c3fa7e4294ae74e711ba23f9d9d26bd7b45d1b9cc02de2211a2d"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3244",
+  "title": "Fix C++20 behavior changes of `std::from_chars` by christophfroehlich · Pull Request #3244 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nIt seems that there is a behavior change in C++20, fixes #3240\n\n\nThis is not reflected in our PR CI jobs, but I was able to reproduce it locally with\n\n\n\n```\ncolcon build --packages-up-to hardware_interface --cmake-clean-cache --cmake-args -DCMAKE_CXX_STANDARD=20 -DCMAKE_BUILD_TYPE=RelWithDebInfo\ncolcon test --packages-select hardware_interface\n\n```\n\n\n\nand this PR fixes the test failures.\n\n\n\nDid you use Generative AI?\n\n\nGPT 5.3 codex",
+  "discussion_rendered_text": [
+    "Codecov Report\n\n\n✅ All modified and coverable lines are covered by tests.\n\n✅ Project coverage is 89.12%. Comparing base (c178e16) to head (0fe20e4).\n\n⚠️ Report is 2 commits behind head on master.\n\nAdditional details and impacted files\n\n\n```\n@@            Coverage Diff             @@\n##           master    #3244      +/-   ##\n==========================================\n+ Coverage   89.10%   89.12%   +0.02%     \n==========================================\n  Files         160      160              \n  Lines       19753    19754       +1     \n  Branches     1597     1597              \n==========================================\n+ Hits        17600    17605       +5     \n+ Misses       1486     1483       -3     \n+ Partials      667      666       -1     \n```\n\n\n\n\n\n\nFlag\nCoverage Δ\n\n\n\n\n\n\nunittests\n89.12% <ø> (+0.02%)\n⬆️\n\n\n\n\nFlags with carried forward coverage won't be shown. Click here to find out more.\n\n\n\n\n\nFiles with missing lines\nCoverage Δ\n\n\n\n\n\n\nhardware_interface/src/lexical_casts.cpp\n83.78% <ø> (ø)\n\n\n\n\n\n... and 4 files with indirect coverage changes\n\n\n 🚀 New features to boost your workflow: \n\n\n❄️ Test Analytics: Detect flaky tests, report on failures, and find test suite problems."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/commit/6b58637b57230dc38aa94155824e298965be3e4e",
+    "https://github.com/ros-controls/ros2_control/commit/7db37fdd94b9a9fcba058137aabaab595d6dde9c",
+    "https://github.com/ros-controls/ros2_control/commit/f01595e2732234a678db7787b01b815b6de895f2",
+    "https://github.com/ros-controls/ros2_control/pull/3244/commits/0fe20e461e093d096917bcaa99f8aef7903667d1",
+    "https://github.com/ros-controls/ros2_control/pull/3244/commits/cf58c70afb531d64c806cf17e8637f273ffd42a6"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

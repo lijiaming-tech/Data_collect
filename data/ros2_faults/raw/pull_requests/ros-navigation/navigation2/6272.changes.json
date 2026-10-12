@@ -1,0 +1,26 @@
+{
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/pull/6272/files",
+    "final_url": "https://github.com/ros-navigation/navigation2/pull/6272/files",
+    "fetched_at": "2026-10-11T11:23:47.683336+00:00",
+    "http_status": 200,
+    "response_sha256": "ae58f2fa3ab2c50e4d490316e76e84d123b782f72a80a11be1ac32dc842c3067"
+  },
+  "files": {
+    "nav2_costmap_2d/src/costmap_2d_publisher.cpp": [
+      "@@ -248,8 +248,8 @@ void Costmap2DPublisher::publishCostmap()",
+      "     saved_origin_x_ != costmap_->getOriginX() ||",
+      "     saved_origin_y_ != costmap_->getOriginY())",
+      "   {",
+      "-    updateGridParams();",
+      "     if (costmap_pub_->get_subscription_count() > 0) {",
+      "+      updateGridParams();",
+      "       prepareGrid();",
+      "       costmap_pub_->publish(std::move(grid_));",
+      "     }"
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

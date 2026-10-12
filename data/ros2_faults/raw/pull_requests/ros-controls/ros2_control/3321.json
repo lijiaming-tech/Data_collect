@@ -1,0 +1,28 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3321",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3321",
+    "fetched_at": "2026-10-11T11:24:33.753698+00:00",
+    "http_status": 200,
+    "response_sha256": "8faad31f864893481ed533c4bdf8bd877d6c08506edb28e626009179e1eb2f4d"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3321",
+  "title": "Fix pure virtual error in the hardware component with async mode by saikishor · Pull Request #3321 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nFixes #2680\n\n\nIs this user-facing behavior change?\n\n\nNO\n\n\nDid you use Generative AI?\n\n\nClaude Code Sonnet 4.6",
+  "discussion_rendered_text": [
+    "Please reduce the comments to 2 lines approx. Don't want to start hosting overly detailed text from Claude in the codebase"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/commit/11ddd15dec208c914ae8a2b1f0f159a4920876c8",
+    "https://github.com/ros-controls/ros2_control/commit/88b5b8aa664737585c70642f659fd5d280bd6be9",
+    "https://github.com/ros-controls/ros2_control/commit/c9b8c1e5aa263f1cb6279c4e7d3d337749e64d97",
+    "https://github.com/ros-controls/ros2_control/pull/3321/commits/2b4ef4306dd84ef853524c22162c02efa8cb0007",
+    "https://github.com/ros-controls/ros2_control/pull/3321/commits/2df783a46249f276a40da2cfe7a759bf8c13cf6a",
+    "https://github.com/ros-controls/ros2_control/pull/3321/commits/9fe19a2abd7e39550d1564d45ec22a8729d45043",
+    "https://github.com/ros-controls/ros2_control/pull/3321/commits/b65e4fbe7be30a0b61f813b6a67192c0333f2b38",
+    "https://github.com/ros-controls/ros2_control/pull/3321/commits/c7e947699d271d264340b9eaab5eab9f12493fcd"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

@@ -1,0 +1,2564 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-navigation/navigation2",
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/issues/6030",
+    "final_url": "https://github.com/ros-navigation/navigation2/issues/6030",
+    "fetched_at": "2026-10-11T11:22:08.633660+00:00",
+    "http_status": 200,
+    "response_sha256": "a55411a0a0e0c87b48d3a7dad7bd8edb47d7bc0cfb6df1df7b636471695ecb58"
+  },
+  "issue": {
+    "id": "I_kwDOCBF7SM7yjK7O",
+    "databaseId": 4069306062,
+    "number": 6030,
+    "title": "bad_weak_ptr and Race Condition on ARM64",
+    "url": "https://github.com/ros-navigation/navigation2/issues/6030",
+    "body": "# Nav2 Issues Report: bad_weak_ptr and Race Condition on ARM64\n\n**Report Date**: 2026-03-13\n**Affected Platform**: ARM64/aarch64 (openEuler 24.03)\n**ROS2 Version**: Humble (built from source)\n**Nav2 Version**: Humble (built from source)\n\n---\n\n## Problem Statement\n\nWe encountered two distinct issues when running Nav2 Humble on an ARM64 platform with openEuler 24.03:\n\n### Issue 1: bad_weak_ptr Error in Lifecycle Nodes\n\n**Startup command:**\n```bash\nros2 launch nav2_bringup bringup_launch.py \\\n  use_composition:=False \\\n  map:=/path/to/map.yaml\n```\n\n**Error:**\n```\n[map_server-1] [ERROR] [map_server]: Original error: bad_weak_ptr\n[map_server-1] [ERROR] [map_server]: Unable to start bond. Exception: bad_weak_ptr\n[lifecycle_manager-3] [ERROR] [lifecycle_manager_localization]: Failed to change state for node: map_server\n[lifecycle_manager-3] [ERROR] [lifecycle_manager_localization]: Failed to bring up all requested nodes. Aborting bringup.\n```\n\n**Affected nodes:** All Nav2 lifecycle nodes (map_server, amcl, controller_server, planner_server, behavior_server, bt_navigator, smoother_server, waypoint_follower)\n\n---\n\n### Issue 2: Race Condition in Composed Architecture\n\n**Startup command (default composed):**\n```bash\nros2 launch nav2_bringup bringup_launch.py \\\n  map:=/path/to/map.yaml\n```\n\n**Error:**\n```\n[component_container_isolated-1] [ERROR] Failed to change state for node: amcl\n[component_container_isolated-1] [ERROR] Failed to bring up all requested nodes. Aborting bringup.\n[component_container_isolated-1] [ERROR] Failed to change state for node: controller_server\n[component_container_isolated-1] [ERROR] Failed to bring up all requested nodes. Aborting bringup.\n```\n\n**Observation:** Using `use_composition:=False` works around this issue.\n\n---\n\n## Background\n\n### Build Environment\n\n- **Operating System**: openEuler 24.03 (Linux kernel 6.6.0-132.0.0.111.oe2403sp3.aarch64)\n- **Architecture**: aarch64 (ARM64)\n- **ROS2 Distribution**: Humble (built from source, not from binary packages)\n- **Nav2 Version**: Humble (built from source, cloned from ros-planning/navigation2)\n- **Compiler**: GCC 13.2.1\n- **Build Type**: Release\n\n### Build Configuration\n\n```bash\n# Environment\nexport CMAKE_CXX_FLAGS=\"-O2 -g -DNDEBUG -Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual\"\nexport CMAKE_C_FLAGS=\"-O2 -g -DNDEBUG -Wall -Wextra -Wpedantic\"\nexport CMAKE_BUILD_TYPE=Release\n\n# ROS2 Humble build\ncd ~/ros2\nsrc/checkout_ros2_humble.py\ncolcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release\n\n# Nav2 build\ncd ~/ros2_ws\nsource ~/ros2/install/setup.bash\ncolcon build --parallel-workers 2 --cmake-args \\\n  -DCMAKE_BUILD_TYPE=Release \\\n  -DBUILD_TESTING=OFF\n```\n\n### Why We Are Building from Source\n\nWe are deploying ROS2 Humble on openEuler 24.03 (a Chinese Linux distribution), which does not provide official ROS2 binary packages. Therefore, we must build ROS2 core, Nav2, and all dependencies from source.\n\n---\n\n## Analysis\n\n### Issue 1: bad_weak_ptr Root Cause\n\nThe error occurs in `nav2_util/src/lifecycle_node.cpp` in the `createBond()` method:\n\n**Current code (INCORRECT):**\n```cpp\n// nav2_util/include/nav2_util/lifecycle_node.hpp:207\nstd::unique_ptr<bond::Bond> bond_{nullptr};\n\n// nav2_util/src/lifecycle_node.cpp\nbond_ = std::make_unique<bond::Bond>(\n  std::string(\"bond\"),\n  this->get_name(),\n  shared_from_this()\n);\n```\n\n**Why this fails:**\n\n1. The `bond::Bond` class inherits from `std::enable_shared_from_this<Bond>`\n2. Inside `Bond::start()`, it calls `shared_from_this()` to pass a `shared_ptr` to the subscription callback:\n   ```cpp\n   // In bondcpp library\n   void Bond::start() {\n     sub_ = rclcpp::create_subscription<bond::msg::Status>(\n       ...,\n       createSafeSubscriptionMemFuncCallback(\n         shared_from_this(),  // ← This requires enable_shared_from_this to be initialized\n         &Bond::bondStatusCB\n       )\n     );\n   }\n   ```\n3. **Critical C++ behavior**: `std::make_unique` does **NOT** initialize the internal `weak_ptr` in `std::enable_shared_from_this`. Only `std::make_shared` or explicitly constructing a `std::shared_ptr` initializes it.\n4. When `bond->start()` is called later, `shared_from_this()` throws `bad_weak_ptr` because the internal `weak_ptr` was never initialized.\n\n**Reference:** [cppreference - std::enable_shared_from_this](https://en.cppreference.com/w/cpp/memory/enable_shared_from_this)\n> The object must be managed by a `std::shared_ptr`, not `std::unique_ptr` or stack allocation.\n\n**Proposed Fix:**\n\n```cpp\n// Change 1 - nav2_util/include/nav2_util/lifecycle_node.hpp:207\n// From:\nstd::unique_ptr<bond::Bond> bond_{nullptr};\n// To:\nstd::shared_ptr<bond::Bond> bond_{nullptr};\n\n// Change 2 - nav2_util/src/lifecycle_node.cpp\n// From:\nbond_ = std::make_unique<bond::Bond>(...);\n// To:\nbond_ = std::make_shared<bond::Bond>(...);\n```\n\n---\n\n### Issue 2: Race Condition Root Cause\n\n**Timeline analysis from actual logs:**\n\n```\nComposed Architecture (FAILURE):\nt=0ms      Start loading components into container\nt=16ms     amcl starts construction\nt=53ms     amcl: \"Creating\"\nt=54ms     lifecycle_manager created\nt=56ms     lifecycle_manager starts configuration (only 2ms later!) ❌\nt=70ms     ERROR: Failed to change state for node: amcl\nt=124ms    amcl construction completes (too late, already failed)\n\nNon-Composed Architecture (SUCCESS):\nt=0ms      All processes fork() and start in parallel\nt=2000ms   lifecycle_manager starts (2-second delay built into launch system)\nt=2124ms   All nodes successfully configured ✅\n```\n\n**Code in `nav2_lifecycle_manager/src/lifecycle_manager.cpp`:**\n\n```cpp\n// When autostart=true (default):\nif (autostart_) {\n  init_timer_ = this->create_wall_timer(\n    0s,  // ← PROBLEM: Zero delay, starts immediately\n    [this]() -> void {\n      init_timer_->cancel();\n      startup();  // Immediately starts configuring all nodes\n    },\n    callback_group_);\n}\n```\n\n**Why composed architecture fails on ARM64:**\n\n| Factor | Non-Composed | Composed |\n|--------|--------------|----------|\n| **Process model** | Separate processes | Single process container |\n| **Node startup** | Parallel via fork() | Serial via load_library() |\n| **Delay before config** | ~2 seconds (launch system) | 0 seconds (immediate) |\n| **ARM64 loading time** | Fast enough | Slower, triggers race |\n\nOn ARM64 platforms, shared library loading (`.so` files) is slower than on x86_64. When using composed architecture, lifecycle_manager starts configuration immediately after being created (0ms delay), but other components like `amcl` and `controller_server` are still being constructed. This causes the configuration request to fail because the nodes aren't ready yet.\n\n**Why non-composed works:**\n\nThe ROS2 launch system has a built-in ~2 second delay when launching nodes as separate processes. This gives all nodes enough time to initialize before lifecycle_manager attempts to configure them.\n\n**Proposed Solution:**\n\nAdd a configurable startup delay parameter in `lifecycle_manager.cpp`:\n\n```cpp\n// Add parameter\nthis->declare_parameter(\"startup_delay_s\", 0.0);\ndouble startup_delay = this->get_parameter(\"startup_delay_s\").as_double();\n\ninit_timer_ = this->create_wall_timer(\n  std::chrono::duration<double>(startup_delay),  // Use parameter instead of hardcoded 0s\n  [this]() -> void {\n    init_timer_->cancel();\n    startup();\n  },\n  callback_group_\n);\n```\n\nThis allows ARM64 users to set `startup_delay_s:=2.0` in their launch files while maintaining backward compatibility (default 0 for x86_64).\n\n---\n\n## Impact\n\n- **Issue 1 Severity**: High - prevents all Nav2 lifecycle nodes from starting\n- **Issue 2 Severity**: Medium - workaround available (`use_composition:=False`)\n- **Affected Platforms**: Both issues may affect any non-x86 platform building from source, but most commonly ARM64\n\n---\n\n## Verification\n\nAfter applying the fix for Issue 1 (changing `unique_ptr` to `shared_ptr`):\n\n```bash\ncolcon build --packages-select nav2_util --cmake-clean-first\nros2 launch nav2_bringup bringup_launch.py \\\n  use_composition:=False \\\n  map:=/path/to/map.yaml\n```\n\n**Result:** ✅ All nodes start successfully, bonds are created, no `bad_weak_ptr` errors.\n\n---\n\n## Related Files\n\n- `nav2_util/include/nav2_util/lifecycle_node.hpp` - Bond member declaration\n- `nav2_util/src/lifecycle_node.cpp` - Bond creation\n- `nav2_lifecycle_manager/src/lifecycle_manager.cpp` - Startup timer with 0s delay\n- `nav2_bringup/launch/bringup_launch.py` - Main launch file\n\n---\n\n## References\n\n1. [std::enable_shared_from_this - cppreference](https://en.cppreference.com/w/cpp/memory/enable_shared_from_this)\n2. [bond_core repository](https://github.com/ros/bond_core)\n3. [navigation2 repository](https://github.com/ros-planning/navigation2)\n",
+    "bodyHTML": "<h1 dir=\"auto\">Nav2 Issues Report: bad_weak_ptr and Race Condition on ARM64</h1>\n<p dir=\"auto\"><strong>Report Date</strong>: 2026-03-13<br>\n<strong>Affected Platform</strong>: ARM64/aarch64 (openEuler 24.03)<br>\n<strong>ROS2 Version</strong>: Humble (built from source)<br>\n<strong>Nav2 Version</strong>: Humble (built from source)</p>\n<hr>\n<h2 dir=\"auto\">Problem Statement</h2>\n<p dir=\"auto\">We encountered two distinct issues when running Nav2 Humble on an ARM64 platform with openEuler 24.03:</p>\n<h3 dir=\"auto\">Issue 1: bad_weak_ptr Error in Lifecycle Nodes</h3>\n<p dir=\"auto\"><strong>Startup command:</strong></p>\n<div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"ros2 launch nav2_bringup bringup_launch.py \\\n  use_composition:=False \\\n  map:=/path/to/map.yaml\"><pre class=\"notranslate\">ros2 launch nav2_bringup bringup_launch.py \\\n  use_composition:=False \\\n  map:=/path/to/map.yaml</pre></div>\n<p dir=\"auto\"><strong>Error:</strong></p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"[map_server-1] [ERROR] [map_server]: Original error: bad_weak_ptr\n[map_server-1] [ERROR] [map_server]: Unable to start bond. Exception: bad_weak_ptr\n[lifecycle_manager-3] [ERROR] [lifecycle_manager_localization]: Failed to change state for node: map_server\n[lifecycle_manager-3] [ERROR] [lifecycle_manager_localization]: Failed to bring up all requested nodes. Aborting bringup.\"><pre class=\"notranslate\"><code class=\"notranslate\">[map_server-1] [ERROR] [map_server]: Original error: bad_weak_ptr\n[map_server-1] [ERROR] [map_server]: Unable to start bond. Exception: bad_weak_ptr\n[lifecycle_manager-3] [ERROR] [lifecycle_manager_localization]: Failed to change state for node: map_server\n[lifecycle_manager-3] [ERROR] [lifecycle_manager_localization]: Failed to bring up all requested nodes. Aborting bringup.\n</code></pre></div>\n<p dir=\"auto\"><strong>Affected nodes:</strong> All Nav2 lifecycle nodes (map_server, amcl, controller_server, planner_server, behavior_server, bt_navigator, smoother_server, waypoint_follower)</p>\n<hr>\n<h3 dir=\"auto\">Issue 2: Race Condition in Composed Architecture</h3>\n<p dir=\"auto\"><strong>Startup command (default composed):</strong></p>\n<div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"ros2 launch nav2_bringup bringup_launch.py \\\n  map:=/path/to/map.yaml\"><pre class=\"notranslate\">ros2 launch nav2_bringup bringup_launch.py \\\n  map:=/path/to/map.yaml</pre></div>\n<p dir=\"auto\"><strong>Error:</strong></p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"[component_container_isolated-1] [ERROR] Failed to change state for node: amcl\n[component_container_isolated-1] [ERROR] Failed to bring up all requested nodes. Aborting bringup.\n[component_container_isolated-1] [ERROR] Failed to change state for node: controller_server\n[component_container_isolated-1] [ERROR] Failed to bring up all requested nodes. Aborting bringup.\"><pre class=\"notranslate\"><code class=\"notranslate\">[component_container_isolated-1] [ERROR] Failed to change state for node: amcl\n[component_container_isolated-1] [ERROR] Failed to bring up all requested nodes. Aborting bringup.\n[component_container_isolated-1] [ERROR] Failed to change state for node: controller_server\n[component_container_isolated-1] [ERROR] Failed to bring up all requested nodes. Aborting bringup.\n</code></pre></div>\n<p dir=\"auto\"><strong>Observation:</strong> Using <code class=\"notranslate\">use_composition:=False</code> works around this issue.</p>\n<hr>\n<h2 dir=\"auto\">Background</h2>\n<h3 dir=\"auto\">Build Environment</h3>\n<ul dir=\"auto\">\n<li><strong>Operating System</strong>: openEuler 24.03 (Linux kernel 6.6.0-132.0.0.111.oe2403sp3.aarch64)</li>\n<li><strong>Architecture</strong>: aarch64 (ARM64)</li>\n<li><strong>ROS2 Distribution</strong>: Humble (built from source, not from binary packages)</li>\n<li><strong>Nav2 Version</strong>: Humble (built from source, cloned from ros-planning/navigation2)</li>\n<li><strong>Compiler</strong>: GCC 13.2.1</li>\n<li><strong>Build Type</strong>: Release</li>\n</ul>\n<h3 dir=\"auto\">Build Configuration</h3>\n<div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"# Environment\nexport CMAKE_CXX_FLAGS=&quot;-O2 -g -DNDEBUG -Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual&quot;\nexport CMAKE_C_FLAGS=&quot;-O2 -g -DNDEBUG -Wall -Wextra -Wpedantic&quot;\nexport CMAKE_BUILD_TYPE=Release\n\n# ROS2 Humble build\ncd ~/ros2\nsrc/checkout_ros2_humble.py\ncolcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release\n\n# Nav2 build\ncd ~/ros2_ws\nsource ~/ros2/install/setup.bash\ncolcon build --parallel-workers 2 --cmake-args \\\n  -DCMAKE_BUILD_TYPE=Release \\\n  -DBUILD_TESTING=OFF\"><pre class=\"notranslate\"><span class=\"pl-c\"><span class=\"pl-c\">#</span> Environment</span>\n<span class=\"pl-k\">export</span> CMAKE_CXX_FLAGS=<span class=\"pl-s\"><span class=\"pl-pds\">\"</span>-O2 -g -DNDEBUG -Wall -Wextra -Wpedantic -Wnon-virtual-dtor -Woverloaded-virtual<span class=\"pl-pds\">\"</span></span>\n<span class=\"pl-k\">export</span> CMAKE_C_FLAGS=<span class=\"pl-s\"><span class=\"pl-pds\">\"</span>-O2 -g -DNDEBUG -Wall -Wextra -Wpedantic<span class=\"pl-pds\">\"</span></span>\n<span class=\"pl-k\">export</span> CMAKE_BUILD_TYPE=Release\n\n<span class=\"pl-c\"><span class=\"pl-c\">#</span> ROS2 Humble build</span>\n<span class=\"pl-c1\">cd</span> <span class=\"pl-k\">~</span>/ros2\nsrc/checkout_ros2_humble.py\ncolcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release\n\n<span class=\"pl-c\"><span class=\"pl-c\">#</span> Nav2 build</span>\n<span class=\"pl-c1\">cd</span> <span class=\"pl-k\">~</span>/ros2_ws\n<span class=\"pl-c1\">source</span> <span class=\"pl-k\">~</span>/ros2/install/setup.bash\ncolcon build --parallel-workers 2 --cmake-args \\\n  -DCMAKE_BUILD_TYPE=Release \\\n  -DBUILD_TESTING=OFF</pre></div>\n<h3 dir=\"auto\">Why We Are Building from Source</h3>\n<p dir=\"auto\">We are deploying ROS2 Humble on openEuler 24.03 (a Chinese Linux distribution), which does not provide official ROS2 binary packages. Therefore, we must build ROS2 core, Nav2, and all dependencies from source.</p>\n<hr>\n<h2 dir=\"auto\">Analysis</h2>\n<h3 dir=\"auto\">Issue 1: bad_weak_ptr Root Cause</h3>\n<p dir=\"auto\">The error occurs in <code class=\"notranslate\">nav2_util/src/lifecycle_node.cpp</code> in the <code class=\"notranslate\">createBond()</code> method:</p>\n<p dir=\"auto\"><strong>Current code (INCORRECT):</strong></p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"// nav2_util/include/nav2_util/lifecycle_node.hpp:207\nstd::unique_ptr&lt;bond::Bond&gt; bond_{nullptr};\n\n// nav2_util/src/lifecycle_node.cpp\nbond_ = std::make_unique&lt;bond::Bond&gt;(\n  std::string(&quot;bond&quot;),\n  this-&gt;get_name(),\n  shared_from_this()\n);\"><pre class=\"notranslate\"><span class=\"pl-c\"><span class=\"pl-c\">//</span> nav2_util/include/nav2_util/lifecycle_node.hpp:207</span>\nstd::unique_ptr&lt;bond::Bond&gt; bond_{<span class=\"pl-c1\">nullptr</span>};\n\n<span class=\"pl-c\"><span class=\"pl-c\">//</span> nav2_util/src/lifecycle_node.cpp</span>\nbond_ = std::make_unique&lt;bond::Bond&gt;(\n  <span class=\"pl-en\">std::string</span>(<span class=\"pl-s\"><span class=\"pl-pds\">\"</span>bond<span class=\"pl-pds\">\"</span></span>),\n  this-&gt;get_name(),\n  shared_from_this()\n);</pre></div>\n<p dir=\"auto\"><strong>Why this fails:</strong></p>\n<ol dir=\"auto\">\n<li>The <code class=\"notranslate\">bond::Bond</code> class inherits from <code class=\"notranslate\">std::enable_shared_from_this&lt;Bond&gt;</code></li>\n<li>Inside <code class=\"notranslate\">Bond::start()</code>, it calls <code class=\"notranslate\">shared_from_this()</code> to pass a <code class=\"notranslate\">shared_ptr</code> to the subscription callback:\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"// In bondcpp library\nvoid Bond::start() {\n  sub_ = rclcpp::create_subscription&lt;bond::msg::Status&gt;(\n    ...,\n    createSafeSubscriptionMemFuncCallback(\n      shared_from_this(),  // ← This requires enable_shared_from_this to be initialized\n      &amp;Bond::bondStatusCB\n    )\n  );\n}\"><pre class=\"notranslate\"><span class=\"pl-c\"><span class=\"pl-c\">//</span> In bondcpp library</span>\n<span class=\"pl-k\">void</span> <span class=\"pl-en\">Bond::start</span>() {\n  sub_ = rclcpp::create_subscription&lt;bond::msg::Status&gt;(\n    ...,\n    <span class=\"pl-c1\">createSafeSubscriptionMemFuncCallback</span>(\n      <span class=\"pl-c1\">shared_from_this</span>(),  <span class=\"pl-c\"><span class=\"pl-c\">//</span> ← This requires enable_shared_from_this to be initialized</span>\n      &amp;Bond::bondStatusCB\n    )\n  );\n}</pre></div>\n</li>\n<li><strong>Critical C++ behavior</strong>: <code class=\"notranslate\">std::make_unique</code> does <strong>NOT</strong> initialize the internal <code class=\"notranslate\">weak_ptr</code> in <code class=\"notranslate\">std::enable_shared_from_this</code>. Only <code class=\"notranslate\">std::make_shared</code> or explicitly constructing a <code class=\"notranslate\">std::shared_ptr</code> initializes it.</li>\n<li>When <code class=\"notranslate\">bond-&gt;start()</code> is called later, <code class=\"notranslate\">shared_from_this()</code> throws <code class=\"notranslate\">bad_weak_ptr</code> because the internal <code class=\"notranslate\">weak_ptr</code> was never initialized.</li>\n</ol>\n<p dir=\"auto\"><strong>Reference:</strong> <a href=\"https://en.cppreference.com/w/cpp/memory/enable_shared_from_this\" rel=\"nofollow\">cppreference - std::enable_shared_from_this</a></p>\n<blockquote>\n<p dir=\"auto\">The object must be managed by a <code class=\"notranslate\">std::shared_ptr</code>, not <code class=\"notranslate\">std::unique_ptr</code> or stack allocation.</p>\n</blockquote>\n<p dir=\"auto\"><strong>Proposed Fix:</strong></p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"// Change 1 - nav2_util/include/nav2_util/lifecycle_node.hpp:207\n// From:\nstd::unique_ptr&lt;bond::Bond&gt; bond_{nullptr};\n// To:\nstd::shared_ptr&lt;bond::Bond&gt; bond_{nullptr};\n\n// Change 2 - nav2_util/src/lifecycle_node.cpp\n// From:\nbond_ = std::make_unique&lt;bond::Bond&gt;(...);\n// To:\nbond_ = std::make_shared&lt;bond::Bond&gt;(...);\"><pre class=\"notranslate\"><span class=\"pl-c\"><span class=\"pl-c\">//</span> Change 1 - nav2_util/include/nav2_util/lifecycle_node.hpp:207</span>\n<span class=\"pl-c\"><span class=\"pl-c\">//</span> From:</span>\nstd::unique_ptr&lt;bond::Bond&gt; bond_{<span class=\"pl-c1\">nullptr</span>};\n<span class=\"pl-c\"><span class=\"pl-c\">//</span> To:</span>\nstd::shared_ptr&lt;bond::Bond&gt; bond_{<span class=\"pl-c1\">nullptr</span>};\n\n<span class=\"pl-c\"><span class=\"pl-c\">//</span> Change 2 - nav2_util/src/lifecycle_node.cpp</span>\n<span class=\"pl-c\"><span class=\"pl-c\">//</span> From:</span>\nbond_ = std::make_unique&lt;bond::Bond&gt;(...);\n<span class=\"pl-c\"><span class=\"pl-c\">//</span> To:</span>\nbond_ = std::make_shared&lt;bond::Bond&gt;(...);</pre></div>\n<hr>\n<h3 dir=\"auto\">Issue 2: Race Condition Root Cause</h3>\n<p dir=\"auto\"><strong>Timeline analysis from actual logs:</strong></p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"Composed Architecture (FAILURE):\nt=0ms      Start loading components into container\nt=16ms     amcl starts construction\nt=53ms     amcl: &quot;Creating&quot;\nt=54ms     lifecycle_manager created\nt=56ms     lifecycle_manager starts configuration (only 2ms later!) ❌\nt=70ms     ERROR: Failed to change state for node: amcl\nt=124ms    amcl construction completes (too late, already failed)\n\nNon-Composed Architecture (SUCCESS):\nt=0ms      All processes fork() and start in parallel\nt=2000ms   lifecycle_manager starts (2-second delay built into launch system)\nt=2124ms   All nodes successfully configured ✅\"><pre class=\"notranslate\"><code class=\"notranslate\">Composed Architecture (FAILURE):\nt=0ms      Start loading components into container\nt=16ms     amcl starts construction\nt=53ms     amcl: \"Creating\"\nt=54ms     lifecycle_manager created\nt=56ms     lifecycle_manager starts configuration (only 2ms later!) ❌\nt=70ms     ERROR: Failed to change state for node: amcl\nt=124ms    amcl construction completes (too late, already failed)\n\nNon-Composed Architecture (SUCCESS):\nt=0ms      All processes fork() and start in parallel\nt=2000ms   lifecycle_manager starts (2-second delay built into launch system)\nt=2124ms   All nodes successfully configured ✅\n</code></pre></div>\n<p dir=\"auto\"><strong>Code in <code class=\"notranslate\">nav2_lifecycle_manager/src/lifecycle_manager.cpp</code>:</strong></p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"// When autostart=true (default):\nif (autostart_) {\n  init_timer_ = this-&gt;create_wall_timer(\n    0s,  // ← PROBLEM: Zero delay, starts immediately\n    [this]() -&gt; void {\n      init_timer_-&gt;cancel();\n      startup();  // Immediately starts configuring all nodes\n    },\n    callback_group_);\n}\"><pre class=\"notranslate\"><span class=\"pl-c\"><span class=\"pl-c\">//</span> When autostart=true (default):</span>\n<span class=\"pl-k\">if</span> (autostart_) {\n  init_timer_ = <span class=\"pl-c1\">this</span>-&gt;<span class=\"pl-c1\">create_wall_timer</span>(\n    0s,  <span class=\"pl-c\"><span class=\"pl-c\">//</span> ← PROBLEM: Zero delay, starts immediately</span>\n    [<span class=\"pl-c1\">this</span>]() -&gt; <span class=\"pl-k\">void</span> {\n      init_timer_-&gt;<span class=\"pl-c1\">cancel</span>();\n      <span class=\"pl-c1\">startup</span>();  <span class=\"pl-c\"><span class=\"pl-c\">//</span> Immediately starts configuring all nodes</span>\n    },\n    callback_group_);\n}</pre></div>\n<p dir=\"auto\"><strong>Why composed architecture fails on ARM64:</strong></p>\n<markdown-accessiblity-table><table role=\"table\">\n<thead>\n<tr>\n<th>Factor</th>\n<th>Non-Composed</th>\n<th>Composed</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><strong>Process model</strong></td>\n<td>Separate processes</td>\n<td>Single process container</td>\n</tr>\n<tr>\n<td><strong>Node startup</strong></td>\n<td>Parallel via fork()</td>\n<td>Serial via load_library()</td>\n</tr>\n<tr>\n<td><strong>Delay before config</strong></td>\n<td>~2 seconds (launch system)</td>\n<td>0 seconds (immediate)</td>\n</tr>\n<tr>\n<td><strong>ARM64 loading time</strong></td>\n<td>Fast enough</td>\n<td>Slower, triggers race</td>\n</tr>\n</tbody>\n</table></markdown-accessiblity-table>\n<p dir=\"auto\">On ARM64 platforms, shared library loading (<code class=\"notranslate\">.so</code> files) is slower than on x86_64. When using composed architecture, lifecycle_manager starts configuration immediately after being created (0ms delay), but other components like <code class=\"notranslate\">amcl</code> and <code class=\"notranslate\">controller_server</code> are still being constructed. This causes the configuration request to fail because the nodes aren't ready yet.</p>\n<p dir=\"auto\"><strong>Why non-composed works:</strong></p>\n<p dir=\"auto\">The ROS2 launch system has a built-in ~2 second delay when launching nodes as separate processes. This gives all nodes enough time to initialize before lifecycle_manager attempts to configure them.</p>\n<p dir=\"auto\"><strong>Proposed Solution:</strong></p>\n<p dir=\"auto\">Add a configurable startup delay parameter in <code class=\"notranslate\">lifecycle_manager.cpp</code>:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"// Add parameter\nthis-&gt;declare_parameter(&quot;startup_delay_s&quot;, 0.0);\ndouble startup_delay = this-&gt;get_parameter(&quot;startup_delay_s&quot;).as_double();\n\ninit_timer_ = this-&gt;create_wall_timer(\n  std::chrono::duration&lt;double&gt;(startup_delay),  // Use parameter instead of hardcoded 0s\n  [this]() -&gt; void {\n    init_timer_-&gt;cancel();\n    startup();\n  },\n  callback_group_\n);\"><pre class=\"notranslate\"><span class=\"pl-c\"><span class=\"pl-c\">//</span> Add parameter</span>\n<span class=\"pl-c1\">this</span>-&gt;<span class=\"pl-en\">declare_parameter</span>(<span class=\"pl-s\"><span class=\"pl-pds\">\"</span>startup_delay_s<span class=\"pl-pds\">\"</span></span>, <span class=\"pl-c1\">0.0</span>);\n<span class=\"pl-k\">double</span> startup_delay = <span class=\"pl-c1\">this</span>-&gt;<span class=\"pl-en\">get_parameter</span>(<span class=\"pl-s\"><span class=\"pl-pds\">\"</span>startup_delay_s<span class=\"pl-pds\">\"</span></span>).as_double();\n\ninit_timer_ = <span class=\"pl-c1\">this</span>-&gt;<span class=\"pl-en\">create_wall_timer</span>(\n  std::chrono::duration&lt;<span class=\"pl-k\">double</span>&gt;(startup_delay),  <span class=\"pl-c\"><span class=\"pl-c\">//</span> Use parameter instead of hardcoded 0s</span>\n  [this]() -&gt; void {\n    init_timer_-&gt;<span class=\"pl-c1\">cancel</span>();\n    <span class=\"pl-c1\">startup</span>();\n  },\n  callback_group_\n);</pre></div>\n<p dir=\"auto\">This allows ARM64 users to set <code class=\"notranslate\">startup_delay_s:=2.0</code> in their launch files while maintaining backward compatibility (default 0 for x86_64).</p>\n<hr>\n<h2 dir=\"auto\">Impact</h2>\n<ul dir=\"auto\">\n<li><strong>Issue 1 Severity</strong>: High - prevents all Nav2 lifecycle nodes from starting</li>\n<li><strong>Issue 2 Severity</strong>: Medium - workaround available (<code class=\"notranslate\">use_composition:=False</code>)</li>\n<li><strong>Affected Platforms</strong>: Both issues may affect any non-x86 platform building from source, but most commonly ARM64</li>\n</ul>\n<hr>\n<h2 dir=\"auto\">Verification</h2>\n<p dir=\"auto\">After applying the fix for Issue 1 (changing <code class=\"notranslate\">unique_ptr</code> to <code class=\"notranslate\">shared_ptr</code>):</p>\n<div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"colcon build --packages-select nav2_util --cmake-clean-first\nros2 launch nav2_bringup bringup_launch.py \\\n  use_composition:=False \\\n  map:=/path/to/map.yaml\"><pre class=\"notranslate\">colcon build --packages-select nav2_util --cmake-clean-first\nros2 launch nav2_bringup bringup_launch.py \\\n  use_composition:=False \\\n  map:=/path/to/map.yaml</pre></div>\n<p dir=\"auto\"><strong>Result:</strong> ✅ All nodes start successfully, bonds are created, no <code class=\"notranslate\">bad_weak_ptr</code> errors.</p>\n<hr>\n<h2 dir=\"auto\">Related Files</h2>\n<ul dir=\"auto\">\n<li><code class=\"notranslate\">nav2_util/include/nav2_util/lifecycle_node.hpp</code> - Bond member declaration</li>\n<li><code class=\"notranslate\">nav2_util/src/lifecycle_node.cpp</code> - Bond creation</li>\n<li><code class=\"notranslate\">nav2_lifecycle_manager/src/lifecycle_manager.cpp</code> - Startup timer with 0s delay</li>\n<li><code class=\"notranslate\">nav2_bringup/launch/bringup_launch.py</code> - Main launch file</li>\n</ul>\n<hr>\n<h2 dir=\"auto\">References</h2>\n<ol dir=\"auto\">\n<li><a href=\"https://en.cppreference.com/w/cpp/memory/enable_shared_from_this\" rel=\"nofollow\">std::enable_shared_from_this - cppreference</a></li>\n<li><a href=\"https://github.com/ros/bond_core\">bond_core repository</a></li>\n<li><a href=\"https://github.com/ros-planning/navigation2\">navigation2 repository</a></li>\n</ol>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-03-13T06:53:19Z",
+    "updatedAt": "2026-04-20T10:02:10Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/48848062?v=4",
+      "login": "Xu1024",
+      "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+      "profileUrl": "https://github.com/Xu1024",
+      "name": null,
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+            "fullDatabaseId": "948691578",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros-navigation/navigation2/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 9,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7x4r9l",
+      "databaseId": 4058169189,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4058169189",
+      "createdAt": "2026-03-13T21:47:13Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Issue 1 - please submit a PR and that's an easy merge. I know for a fact this does work on ARM since I have Jetsons on Humble myself, but happy to solve it if its causing you issues. \n\nIssue 2 - How did you come up with 2 seconds? That's a long delay. Does something in the 200ms range work? ",
+      "bodyHTML": "<p dir=\"auto\">Issue 1 - please submit a PR and that's an easy merge. I know for a fact this does work on ARM since I have Jetsons on Humble myself, but happy to solve it if its causing you issues.</p>\n<p dir=\"auto\">Issue 2 - How did you come up with 2 seconds? That's a long delay. Does something in the 200ms range work?</p>",
+      "bodyVersion": "c27ee31109584e4bfcfb124b8c5a60df636dcfafcc4777ec71d233b79f9ded10",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7yWZMd",
+      "databaseId": 4065956637,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+        "login": "Xu1024",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/48848062?v=4",
+        "profileUrl": "https://github.com/Xu1024",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4065956637",
+      "createdAt": "2026-03-16T08:30:12Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": " Hi, thank you for the response!                                                                                                                                              \n                                                                                                                                                                               \n  Regarding Issue 1 (bad_weak_ptr):                         \n\n  I've prepared the fix for this issue. The changes are:\n\n  Modified files:\n  - nav2_util/include/nav2_util/lifecycle_node.hpp (line 207)\n  - nav2_util/src/lifecycle_node.cpp (line 60)\n\n  Changes:\n\n  lifecycle_node.hpp:207\n  // Before\n  std::unique_ptr<bond::Bond> bond_{nullptr};\n\n  // After\n  std::shared_ptr<bond::Bond> bond_{nullptr};\n\n  lifecycle_node.cpp:60\n  // Before\n  bond_ = std::make_unique<bond::Bond>(...);\n\n  // After\n  bond_ = std::make_shared<bond::Bond>(...);\n\n  Root cause: bond::Bond inherits from std::enable_shared_from_this and calls shared_from_this() in its start() method. According to C++ standards, std::make_unique does not\n  initialize the internal weak_ptr in enable_shared_from_this - only std::make_shared or explicit shared_ptr construction does. This causes bad_weak_ptr to be thrown when the\n  bond tries to call shared_from_this().\n\n  Question: Which branch should I submit this PR to? (humble? main?)\n\n  ---\n  Regarding Issue 2 (Race condition in composed architecture):\n\n  I need to clarify that the 2-second delay approach was initially suggested by an AI assistant (Claude), but our validation shows this approach does NOT actually solve the\n  composed architecture issue on ARM64.\n\n  Validation results on ARM64 (openEuler 24.03):\n  - ❌ Composed mode (use_composition:=True): STILL FAILS even with 2.5s delay\n    - The error changed from \"nodes not ready\" to \"costmap plugin loading failed\"\n    - The delay only changes which error occurs, not whether composed mode works\n  - ✅ Non-composed mode (use_composition:=False): Works\n    - But this defeats the purpose since the original issue is specifically about composed mode failing\n\n  About testing shorter delays (e.g., 200ms):\n  The root issue is not about finding the \"right\" delay duration. The fact that even a 2.5s delay doesn't fix composed mode, while non-composed mode works with no delay at\n  all, suggests the problem is not a simple timing issue that can be solved by adjusting delays.\n\n  We hope the Nav2 team can investigate why composed mode doesn't work on our ARM64 platform and help us understand the root cause, since this mode works fine on your Jetson\n  boards but fails on ours.",
+      "bodyHTML": "<p dir=\"auto\">Hi, thank you for the response!</p>\n<p dir=\"auto\">Regarding Issue 1 (bad_weak_ptr):</p>\n<p dir=\"auto\">I've prepared the fix for this issue. The changes are:</p>\n<p dir=\"auto\">Modified files:</p>\n<ul dir=\"auto\">\n<li>nav2_util/include/nav2_util/lifecycle_node.hpp (line 207)</li>\n<li>nav2_util/src/lifecycle_node.cpp (line 60)</li>\n</ul>\n<p dir=\"auto\">Changes:</p>\n<p dir=\"auto\">lifecycle_node.hpp:207<br>\n// Before<br>\nstd::unique_ptrbond::Bond bond_{nullptr};</p>\n<p dir=\"auto\">// After<br>\nstd::shared_ptrbond::Bond bond_{nullptr};</p>\n<p dir=\"auto\">lifecycle_node.cpp:60<br>\n// Before<br>\nbond_ = std::make_uniquebond::Bond(...);</p>\n<p dir=\"auto\">// After<br>\nbond_ = std::make_sharedbond::Bond(...);</p>\n<p dir=\"auto\">Root cause: bond::Bond inherits from std::enable_shared_from_this and calls shared_from_this() in its start() method. According to C++ standards, std::make_unique does not<br>\ninitialize the internal weak_ptr in enable_shared_from_this - only std::make_shared or explicit shared_ptr construction does. This causes bad_weak_ptr to be thrown when the<br>\nbond tries to call shared_from_this().</p>\n<p dir=\"auto\">Question: Which branch should I submit this PR to? (humble? main?)</p>\n<hr>\n<p dir=\"auto\">Regarding Issue 2 (Race condition in composed architecture):</p>\n<p dir=\"auto\">I need to clarify that the 2-second delay approach was initially suggested by an AI assistant (Claude), but our validation shows this approach does NOT actually solve the<br>\ncomposed architecture issue on ARM64.</p>\n<p dir=\"auto\">Validation results on ARM64 (openEuler 24.03):</p>\n<ul dir=\"auto\">\n<li>❌ Composed mode (use_composition:=True): STILL FAILS even with 2.5s delay\n<ul dir=\"auto\">\n<li>The error changed from \"nodes not ready\" to \"costmap plugin loading failed\"</li>\n<li>The delay only changes which error occurs, not whether composed mode works</li>\n</ul>\n</li>\n<li>✅ Non-composed mode (use_composition:=False): Works\n<ul dir=\"auto\">\n<li>But this defeats the purpose since the original issue is specifically about composed mode failing</li>\n</ul>\n</li>\n</ul>\n<p dir=\"auto\">About testing shorter delays (e.g., 200ms):<br>\nThe root issue is not about finding the \"right\" delay duration. The fact that even a 2.5s delay doesn't fix composed mode, while non-composed mode works with no delay at<br>\nall, suggests the problem is not a simple timing issue that can be solved by adjusting delays.</p>\n<p dir=\"auto\">We hope the Nav2 team can investigate why composed mode doesn't work on our ARM64 platform and help us understand the root cause, since this mode works fine on your Jetson<br>\nboards but fails on ours.</p>",
+      "bodyVersion": "abb576846cd0bac1059efc7c8de63410381512d62c81240d0bd9e277c33efd4f",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7yX4Mj",
+      "databaseId": 4066345763,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4066345763",
+      "createdAt": "2026-03-16T09:39:18Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "A bit late to the party, but I wanted to add that for issue 1, this has already been raised by a few users, e.g. in https://github.com/ros-navigation/navigation2/pull/5562 and https://github.com/ros-navigation/navigation2/issues/5618 when switching to shared pointers. I am not entirely sure whether we should make these changes",
+      "bodyHTML": "<p dir=\"auto\">A bit late to the party, but I wanted to add that for issue 1, this has already been raised by a few users, e.g. in <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3467049337\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5562\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/5562/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/5562\">#5562</a> and <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3521266582\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5618\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5618/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5618\">#5618</a> when switching to shared pointers. I am not entirely sure whether we should make these changes</p>",
+      "bodyVersion": "acb0bc88f69e225742e59908cd62f23456e7d7187da9b310f4a409a01344e1b6",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7yiaPB",
+      "databaseId": 4069106625,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4069106625",
+      "createdAt": "2026-03-16T16:48:20Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> Question: Which branch should I submit this PR to? (humble? main?)\n\nHumble nominally. If you see it in Main still, there too, but I think that's been long since resolved.\n\nOn issue 2: please don't propose changes as functional until you've actually tested them. Validating AI's thoughts is something you should be doing :-) ",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">Question: Which branch should I submit this PR to? (humble? main?)</p>\n</blockquote>\n<p dir=\"auto\">Humble nominally. If you see it in Main still, there too, but I think that's been long since resolved.</p>\n<p dir=\"auto\">On issue 2: please don't propose changes as functional until you've actually tested them. Validating AI's thoughts is something you should be doing :-)</p>",
+      "bodyVersion": "bb2a9d5188d2a4fe988f56036c07d1a5818e64e8b3ab12f431516c73b7bfb0cf",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7y1E0x",
+      "databaseId": 4073999665,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4073999665",
+      "createdAt": "2026-03-17T10:41:47Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2026-03-17T10:41:53Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM7y1E0xzqLzaD4",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjU4NDMzNTkx",
+          "url": "https://github.com/mini-1235",
+          "login": "mini-1235"
+        }
+      },
+      "pinnedBy": null,
+      "body": "Possibly related to https://github.com/ros/bond_core/pull/108#issuecomment-4073997099 (?)",
+      "bodyHTML": "<p dir=\"auto\">Possibly related to <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2781696733\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros/bond_core/issues/108\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros/bond_core/pull/108/hovercard?comment_id=4073997099&amp;comment_type=issue_comment\" href=\"https://github.com/ros/bond_core/pull/108#issuecomment-4073997099\">ros/bond_core#108 (comment)</a> (?)</p>",
+      "bodyVersion": "4c33864cf31adcc3cd58dd1f9056ece9d511abd443986ab208913fcf264b9173",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7zC5Lf",
+      "databaseId": 4077621983,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4077621983",
+      "createdAt": "2026-03-17T19:53:24Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Can you open the PR for humble on issue 1?",
+      "bodyHTML": "<p dir=\"auto\">Can you open the PR for humble on issue 1?</p>",
+      "bodyVersion": "a41ee1c147527c07fa801d728540ee2340b47162517f04833da66eed07162485",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM72BK0h",
+      "databaseId": 4127501601,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4127501601",
+      "createdAt": "2026-03-25T15:25:18Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Based on the issue description, it looks like it's building against the wrong commit in bond_core, which should be fixed now after the humble branch is properly set up. \n\nIssue 2 is still a bit unclear to me",
+      "bodyHTML": "<p dir=\"auto\">Based on the issue description, it looks like it's building against the wrong commit in bond_core, which should be fixed now after the humble branch is properly set up.</p>\n<p dir=\"auto\">Issue 2 is still a bit unclear to me</p>",
+      "bodyVersion": "c0546b9f3004e726e16b568e10607262c72daf64d9887328919f2aa3f30e2eda",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM76yn6A",
+      "databaseId": 4207574656,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4207574656",
+      "createdAt": "2026-04-08T15:49:57Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@Xu1024 any updates on the second issue?",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/Xu1024/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/Xu1024\">@Xu1024</a> any updates on the second issue?</p>",
+      "bodyVersion": "39f5ffacbfc6ab36c49b52726f7040668591dc077fefaaedf5cb7ae28de2c6e3",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7_FgGU",
+      "databaseId": 4279632276,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4279632276",
+      "createdAt": "2026-04-20T10:02:10Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I am going to close this for now since we haven't heard back in about a month. Issue 1 was related to the bond repository and has already been resolved. For issue 2, it is not clear whether it is specific to Nav2. Please feel free to reopen this once you can provide more details.",
+      "bodyHTML": "<p dir=\"auto\">I am going to close this for now since we haven't heard back in about a month. Issue 1 was related to the bond repository and has already been resolved. For issue 2, it is not clear whether it is specific to Nav2. Please feel free to reopen this once you can provide more details.</p>",
+      "bodyVersion": "f71b3dc58eb31b7a1ba83b84f591c44fb4b092d6967bdfd01d241138b8a22f4b",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7x4r9l",
+      "databaseId": 4058169189,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4058169189",
+      "createdAt": "2026-03-13T21:47:13Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Issue 1 - please submit a PR and that's an easy merge. I know for a fact this does work on ARM since I have Jetsons on Humble myself, but happy to solve it if its causing you issues. \n\nIssue 2 - How did you come up with 2 seconds? That's a long delay. Does something in the 200ms range work? ",
+      "bodyHTML": "<p dir=\"auto\">Issue 1 - please submit a PR and that's an easy merge. I know for a fact this does work on ARM since I have Jetsons on Humble myself, but happy to solve it if its causing you issues.</p>\n<p dir=\"auto\">Issue 2 - How did you come up with 2 seconds? That's a long delay. Does something in the 200ms range work?</p>",
+      "bodyVersion": "c27ee31109584e4bfcfb124b8c5a60df636dcfafcc4777ec71d233b79f9ded10",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM7yjK7OzwAAAAV8Vilm",
+      "databaseId": 23560857958,
+      "createdAt": "2026-03-13T21:47:17Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7yWZMd",
+      "databaseId": 4065956637,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+        "login": "Xu1024",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/48848062?v=4",
+        "profileUrl": "https://github.com/Xu1024",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4065956637",
+      "createdAt": "2026-03-16T08:30:12Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": " Hi, thank you for the response!                                                                                                                                              \n                                                                                                                                                                               \n  Regarding Issue 1 (bad_weak_ptr):                         \n\n  I've prepared the fix for this issue. The changes are:\n\n  Modified files:\n  - nav2_util/include/nav2_util/lifecycle_node.hpp (line 207)\n  - nav2_util/src/lifecycle_node.cpp (line 60)\n\n  Changes:\n\n  lifecycle_node.hpp:207\n  // Before\n  std::unique_ptr<bond::Bond> bond_{nullptr};\n\n  // After\n  std::shared_ptr<bond::Bond> bond_{nullptr};\n\n  lifecycle_node.cpp:60\n  // Before\n  bond_ = std::make_unique<bond::Bond>(...);\n\n  // After\n  bond_ = std::make_shared<bond::Bond>(...);\n\n  Root cause: bond::Bond inherits from std::enable_shared_from_this and calls shared_from_this() in its start() method. According to C++ standards, std::make_unique does not\n  initialize the internal weak_ptr in enable_shared_from_this - only std::make_shared or explicit shared_ptr construction does. This causes bad_weak_ptr to be thrown when the\n  bond tries to call shared_from_this().\n\n  Question: Which branch should I submit this PR to? (humble? main?)\n\n  ---\n  Regarding Issue 2 (Race condition in composed architecture):\n\n  I need to clarify that the 2-second delay approach was initially suggested by an AI assistant (Claude), but our validation shows this approach does NOT actually solve the\n  composed architecture issue on ARM64.\n\n  Validation results on ARM64 (openEuler 24.03):\n  - ❌ Composed mode (use_composition:=True): STILL FAILS even with 2.5s delay\n    - The error changed from \"nodes not ready\" to \"costmap plugin loading failed\"\n    - The delay only changes which error occurs, not whether composed mode works\n  - ✅ Non-composed mode (use_composition:=False): Works\n    - But this defeats the purpose since the original issue is specifically about composed mode failing\n\n  About testing shorter delays (e.g., 200ms):\n  The root issue is not about finding the \"right\" delay duration. The fact that even a 2.5s delay doesn't fix composed mode, while non-composed mode works with no delay at\n  all, suggests the problem is not a simple timing issue that can be solved by adjusting delays.\n\n  We hope the Nav2 team can investigate why composed mode doesn't work on our ARM64 platform and help us understand the root cause, since this mode works fine on your Jetson\n  boards but fails on ours.",
+      "bodyHTML": "<p dir=\"auto\">Hi, thank you for the response!</p>\n<p dir=\"auto\">Regarding Issue 1 (bad_weak_ptr):</p>\n<p dir=\"auto\">I've prepared the fix for this issue. The changes are:</p>\n<p dir=\"auto\">Modified files:</p>\n<ul dir=\"auto\">\n<li>nav2_util/include/nav2_util/lifecycle_node.hpp (line 207)</li>\n<li>nav2_util/src/lifecycle_node.cpp (line 60)</li>\n</ul>\n<p dir=\"auto\">Changes:</p>\n<p dir=\"auto\">lifecycle_node.hpp:207<br>\n// Before<br>\nstd::unique_ptrbond::Bond bond_{nullptr};</p>\n<p dir=\"auto\">// After<br>\nstd::shared_ptrbond::Bond bond_{nullptr};</p>\n<p dir=\"auto\">lifecycle_node.cpp:60<br>\n// Before<br>\nbond_ = std::make_uniquebond::Bond(...);</p>\n<p dir=\"auto\">// After<br>\nbond_ = std::make_sharedbond::Bond(...);</p>\n<p dir=\"auto\">Root cause: bond::Bond inherits from std::enable_shared_from_this and calls shared_from_this() in its start() method. According to C++ standards, std::make_unique does not<br>\ninitialize the internal weak_ptr in enable_shared_from_this - only std::make_shared or explicit shared_ptr construction does. This causes bad_weak_ptr to be thrown when the<br>\nbond tries to call shared_from_this().</p>\n<p dir=\"auto\">Question: Which branch should I submit this PR to? (humble? main?)</p>\n<hr>\n<p dir=\"auto\">Regarding Issue 2 (Race condition in composed architecture):</p>\n<p dir=\"auto\">I need to clarify that the 2-second delay approach was initially suggested by an AI assistant (Claude), but our validation shows this approach does NOT actually solve the<br>\ncomposed architecture issue on ARM64.</p>\n<p dir=\"auto\">Validation results on ARM64 (openEuler 24.03):</p>\n<ul dir=\"auto\">\n<li>❌ Composed mode (use_composition:=True): STILL FAILS even with 2.5s delay\n<ul dir=\"auto\">\n<li>The error changed from \"nodes not ready\" to \"costmap plugin loading failed\"</li>\n<li>The delay only changes which error occurs, not whether composed mode works</li>\n</ul>\n</li>\n<li>✅ Non-composed mode (use_composition:=False): Works\n<ul dir=\"auto\">\n<li>But this defeats the purpose since the original issue is specifically about composed mode failing</li>\n</ul>\n</li>\n</ul>\n<p dir=\"auto\">About testing shorter delays (e.g., 200ms):<br>\nThe root issue is not about finding the \"right\" delay duration. The fact that even a 2.5s delay doesn't fix composed mode, while non-composed mode works with no delay at<br>\nall, suggests the problem is not a simple timing issue that can be solved by adjusting delays.</p>\n<p dir=\"auto\">We hope the Nav2 team can investigate why composed mode doesn't work on our ARM64 platform and help us understand the root cause, since this mode works fine on your Jetson<br>\nboards but fails on ours.</p>",
+      "bodyVersion": "abb576846cd0bac1059efc7c8de63410381512d62c81240d0bd9e277c33efd4f",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7yX4Mj",
+      "databaseId": 4066345763,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4066345763",
+      "createdAt": "2026-03-16T09:39:18Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "A bit late to the party, but I wanted to add that for issue 1, this has already been raised by a few users, e.g. in https://github.com/ros-navigation/navigation2/pull/5562 and https://github.com/ros-navigation/navigation2/issues/5618 when switching to shared pointers. I am not entirely sure whether we should make these changes",
+      "bodyHTML": "<p dir=\"auto\">A bit late to the party, but I wanted to add that for issue 1, this has already been raised by a few users, e.g. in <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3467049337\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5562\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/5562/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/5562\">#5562</a> and <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3521266582\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5618\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5618/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5618\">#5618</a> when switching to shared pointers. I am not entirely sure whether we should make these changes</p>",
+      "bodyVersion": "acb0bc88f69e225742e59908cd62f23456e7d7187da9b310f4a409a01344e1b6",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7yiaPB",
+      "databaseId": 4069106625,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4069106625",
+      "createdAt": "2026-03-16T16:48:20Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> Question: Which branch should I submit this PR to? (humble? main?)\n\nHumble nominally. If you see it in Main still, there too, but I think that's been long since resolved.\n\nOn issue 2: please don't propose changes as functional until you've actually tested them. Validating AI's thoughts is something you should be doing :-) ",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">Question: Which branch should I submit this PR to? (humble? main?)</p>\n</blockquote>\n<p dir=\"auto\">Humble nominally. If you see it in Main still, there too, but I think that's been long since resolved.</p>\n<p dir=\"auto\">On issue 2: please don't propose changes as functional until you've actually tested them. Validating AI's thoughts is something you should be doing :-)</p>",
+      "bodyVersion": "bb2a9d5188d2a4fe988f56036c07d1a5818e64e8b3ab12f431516c73b7bfb0cf",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7y1E0x",
+      "databaseId": 4073999665,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4073999665",
+      "createdAt": "2026-03-17T10:41:47Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2026-03-17T10:41:53Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM7y1E0xzqLzaD4",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjU4NDMzNTkx",
+          "url": "https://github.com/mini-1235",
+          "login": "mini-1235"
+        }
+      },
+      "pinnedBy": null,
+      "body": "Possibly related to https://github.com/ros/bond_core/pull/108#issuecomment-4073997099 (?)",
+      "bodyHTML": "<p dir=\"auto\">Possibly related to <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2781696733\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros/bond_core/issues/108\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros/bond_core/pull/108/hovercard?comment_id=4073997099&amp;comment_type=issue_comment\" href=\"https://github.com/ros/bond_core/pull/108#issuecomment-4073997099\">ros/bond_core#108 (comment)</a> (?)</p>",
+      "bodyVersion": "4c33864cf31adcc3cd58dd1f9056ece9d511abd443986ab208913fcf264b9173",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7zC5Lf",
+      "databaseId": 4077621983,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4077621983",
+      "createdAt": "2026-03-17T19:53:24Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Can you open the PR for humble on issue 1?",
+      "bodyHTML": "<p dir=\"auto\">Can you open the PR for humble on issue 1?</p>",
+      "bodyVersion": "a41ee1c147527c07fa801d728540ee2340b47162517f04833da66eed07162485",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM72BK0h",
+      "databaseId": 4127501601,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4127501601",
+      "createdAt": "2026-03-25T15:25:18Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Based on the issue description, it looks like it's building against the wrong commit in bond_core, which should be fixed now after the humble branch is properly set up. \n\nIssue 2 is still a bit unclear to me",
+      "bodyHTML": "<p dir=\"auto\">Based on the issue description, it looks like it's building against the wrong commit in bond_core, which should be fixed now after the humble branch is properly set up.</p>\n<p dir=\"auto\">Issue 2 is still a bit unclear to me</p>",
+      "bodyVersion": "c0546b9f3004e726e16b568e10607262c72daf64d9887328919f2aa3f30e2eda",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM76yn6A",
+      "databaseId": 4207574656,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4207574656",
+      "createdAt": "2026-04-08T15:49:57Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@Xu1024 any updates on the second issue?",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/Xu1024/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/Xu1024\">@Xu1024</a> any updates on the second issue?</p>",
+      "bodyVersion": "39f5ffacbfc6ab36c49b52726f7040668591dc077fefaaedf5cb7ae28de2c6e3",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOCBF7SM7yjK7OzwAAAAW-jq6J",
+      "databaseId": 24671858313,
+      "createdAt": "2026-04-20T10:02:10Z",
+      "actor": {
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?s=64&u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "login": "mini-1235",
+        "profileResourcePath": "/mini-1235",
+        "__typename": "User",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7_FgGU",
+      "databaseId": 4279632276,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7yjK7O",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4ODQ4MDYy",
+          "login": "Xu1024"
+        },
+        "number": 6030,
+        "locked": false,
+        "databaseId": 4069306062
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6030#issuecomment-4279632276",
+      "createdAt": "2026-04-20T10:02:10Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I am going to close this for now since we haven't heard back in about a month. Issue 1 was related to the bond repository and has already been resolved. For issue 2, it is not clear whether it is specific to Nav2. Please feel free to reopen this once you can provide more details.",
+      "bodyHTML": "<p dir=\"auto\">I am going to close this for now since we haven't heard back in about a month. Issue 1 was related to the bond repository and has already been resolved. For issue 2, it is not clear whether it is specific to Nav2. Please feel free to reopen this once you can provide more details.</p>",
+      "bodyVersion": "f71b3dc58eb31b7a1ba83b84f591c44fb4b092d6967bdfd01d241138b8a22f4b",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnOkq9ugAqjQwNTgxNjkxODk=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnapXINABqzI0NjcxODU4MzEz"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnOkq9ugAqjQwNTgxNjkxODk=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnapXINABqzI0NjcxODU4MzEz"
+    }
+  },
+  "linked_pull_requests": [],
+  "comments_complete": true,
+  "linked_pr_fetches": []
+}

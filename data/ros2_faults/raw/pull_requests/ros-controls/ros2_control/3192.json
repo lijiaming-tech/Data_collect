@@ -1,0 +1,40 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3192",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3192",
+    "fetched_at": "2026-10-11T11:24:37.521289+00:00",
+    "http_status": 200,
+    "response_sha256": "feffcc55916e005f76f4c65a785eb084d5d0d0ff4177779303f0ddec8fcd5baf"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3192",
+  "title": "Enforce cleanup_controller on more exit points of configure_controller by vectorcrumb · Pull Request #3192 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Two of the possible early return paths on controller_manager::configure_controller led to controllers being left in an INACTIVE state instead of rolling back to the UNCONFIGURED state. This specifically affected controllers that were chainable that:\n\n\n\ndidn't export any state nor reference interfaces\n\n\nraised an exception while querying their state/reference interfaces\n\n\n\nTwo tests were added to the controller_manager/test_cleanup_controller test suite for these cases.\n\n\nThis PR should solve #3153\n\n\n\nTo send us a pull request, please:\n\n\n\n Fork the repository.\n\n\n Modify the source; please focus on the specific change you are contributing. If you also reformat all the code, it will be hard for us to focus on your change.\n\n\n Ensure local tests pass. (colcon test and pre-commit run (requires you to install pre-commit by pip3 install pre-commit)\n\n\n Commit to your fork using clear commit messages.\n\n\n Send a pull request, answering any default questions in the pull request interface.\n\n\n Pay attention to any automated CI failures reported in the pull request, and stay involved in the conversation.",
+  "discussion_rendered_text": [
+    "Codecov Report\n\n\n❌ Patch coverage is 85.71429% with 2 lines in your changes missing coverage. Please review.\n\n✅ Project coverage is 89.10%. Comparing base (bb07fdd) to head (99b5dbf).\n\n\n\n\n\nFiles with missing lines\nPatch %\nLines\n\n\n\n\n\n...ontroller_manager/test/test_cleanup_controller.cpp\n83.33%\n2 Missing ⚠️ \n\n\n\nAdditional details and impacted files\n\n\n```\n@@            Coverage Diff             @@\n##           master    #3192      +/-   ##\n==========================================\n- Coverage   89.12%   89.10%   -0.03%     \n==========================================\n  Files         158      158              \n  Lines       19587    19601      +14     \n  Branches     1589     1590       +1     \n==========================================\n+ Hits        17457    17465       +8     \n- Misses       1471     1476       +5     \n- Partials      659      660       +1     \n```\n\n\n\n\n\n\nFlag\nCoverage Δ\n\n\n\n\n\n\nunittests\n89.10% <85.71%> (-0.03%)\n⬇️\n\n\n\n\nFlags with carried forward coverage won't be shown. Click here to find out more.\n\n\n\n\n\nFiles with missing lines\nCoverage Δ\n\n\n\n\n\n\ncontroller_manager/src/controller_manager.cpp\n75.85% <100.00%> (-0.27%)\n⬇️\n\n\n\n...ontroller_manager/test/test_cleanup_controller.cpp\n94.59% <83.33%> (-5.41%)\n⬇️\n\n\n\n\n... and 1 file with indirect coverage changes\n\n\n 🚀 New features to boost your workflow: \n\n\n❄️ Test Analytics: Detect flaky tests, report on failures, and find test suite problems.",
+    "Hi, I have some tests failing due to timing issues, could somebody lend me a hand?",
+    "Hi, I have some tests failing due to timing issues, could somebody lend me a hand?\n\n\n\nThese are known flaky tests and not related, don't worry.",
+    "These are known flaky tests and not related, don't worry.\n\n\n\nUnderstood, thanks! Anything else I should be doing (eg reaching out to people some channel)? I didn't find any discord or similar in the contribution guide.",
+    "There is no need to tag anyone, we will come back when we will have time. You always can help in reviewing one of the many other open PRs ;)",
+    "Rest LGTM. Just one minor nit in the tests",
+    "LGTM.\n\n\nP.S. Do not force push the PRs again, this makes the maintainers to review all the codebase again. Moreover, we will squash the commits",
+    "Got it, I'll refrain from doing that. What if I want to rebase on top of master though? Do you need anything else from my side to get this merged? Thanks for the feedback!",
+    "Got it, I'll refrain from doing that. What if I want to rebase on top of master though? Do you need anything else from my side to get this merged? Thanks for the feedback!\n\n\n\nYou can just sync those commits using the GitHub UI from your fork or from the PR",
+    "Got it, I'll refrain from doing that. What if I want to rebase on top of master though? Do you need anything else from my side to get this merged? Thanks for the feedback!\n\n\n\nYou can just sync those commits using the GitHub UI from your fork or from the PR\n\n\n\n\nusing merge strategy instead of rebase",
+    "Please fix the failing pre-commit job, I suggest to install pre-commit permanently in this repo."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/commit/025d259a40283d6e20086f92216ee75698a005f2",
+    "https://github.com/ros-controls/ros2_control/commit/17aadfb9d8d7e5139bfdd24af2661813db3b0b5c",
+    "https://github.com/ros-controls/ros2_control/commit/346fd3134992c615cbe5c3485edde07960d1bb90",
+    "https://github.com/ros-controls/ros2_control/commit/369c53cea4026a4794890b61149aefaf27f7b3db",
+    "https://github.com/ros-controls/ros2_control/commit/4499776916c5cc6bc5ebee58413b1234c2d1a573",
+    "https://github.com/ros-controls/ros2_control/commit/5084cdc63a123b149907fd40847a5256983913a0",
+    "https://github.com/ros-controls/ros2_control/commit/99b5dbfb13b1e69065debf5579330086d97505a9",
+    "https://github.com/ros-controls/ros2_control/pull/3192/commits/025d259a40283d6e20086f92216ee75698a005f2",
+    "https://github.com/ros-controls/ros2_control/pull/3192/commits/119b85c207a4e2d2c9a4f8bef3e0cf73e12c885d",
+    "https://github.com/ros-controls/ros2_control/pull/3192/commits/369c53cea4026a4794890b61149aefaf27f7b3db"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

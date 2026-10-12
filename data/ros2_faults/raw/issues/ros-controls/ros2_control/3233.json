@@ -1,0 +1,182 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3233",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3233",
+    "fetched_at": "2026-10-11T11:24:46.684904+00:00",
+    "http_status": 200,
+    "response_sha256": "317c9a0176cae61cca80fe10406a70db1c09f01c96108a5a038ae5f93008b5a9"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc7_7xjz",
+    "databaseId": 4293859571,
+    "number": 3233,
+    "title": "`from_chars` is not a member of `std`",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3233",
+    "body": "**Describe the bug**\n```\n2026-04-20T06:42:13.2427986Z -- Build files have been written to: /__w/ros2_control/ros2_control/ros_ws/build/hardware_interface\n2026-04-20T06:42:13.2428933Z [  3%] Generating hardware_interface/version.h\n2026-04-20T06:42:13.2429710Z [  3%] Built target ament_generate_version_header__hardware_interface\n2026-04-20T06:42:13.2430669Z [  6%] Building CXX object CMakeFiles/test_macros.dir/test/test_macros.cpp.o\n2026-04-20T06:42:13.2431422Z [  9%] Linking CXX executable test_macros\n2026-04-20T06:42:13.2431950Z [  9%] Built target test_macros\n2026-04-20T06:42:13.2432793Z [ 12%] Building CXX object CMakeFiles/hardware_interface.dir/src/component_parser.cpp.o\n2026-04-20T06:42:13.2434088Z [ 15%] Building CXX object CMakeFiles/hardware_interface.dir/src/hardware_component_interface.cpp.o\n2026-04-20T06:42:13.2435358Z [ 18%] Building CXX object CMakeFiles/hardware_interface.dir/src/hardware_component.cpp.o\n2026-04-20T06:42:13.2436555Z [ 21%] Building CXX object CMakeFiles/hardware_interface.dir/src/resource_manager.cpp.o\n2026-04-20T06:42:13.2437682Z [ 24%] Building CXX object CMakeFiles/hardware_interface.dir/src/lexical_casts.cpp.o\n2026-04-20T06:42:13.2440745Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp: In function ‘std::optional<double> hardware_interface::impl::stod(const std::string&)’:\n2026-04-20T06:42:13.2443660Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp:48:34: error: ‘from_chars’ is not a member of ‘std’\n2026-04-20T06:42:13.2445343Z    48 |   const auto parse_result = std::from_chars(s.data(), s.data() + s.size(), result_value);\n2026-04-20T06:42:13.2446185Z       |                                  ^~~~~~~~~~\n2026-04-20T06:42:13.2448725Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp: In function ‘std::optional<float> hardware_interface::impl::stof(const std::string&)’:\n2026-04-20T06:42:13.2451505Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp:74:34: error: ‘from_chars’ is not a member of ‘std’\n2026-04-20T06:42:13.2453300Z    74 |   const auto parse_result = std::from_chars(s.data(), s.data() + s.size(), result_value);\n2026-04-20T06:42:13.2454265Z       |                                  ^~~~~~~~~~\n2026-04-20T06:42:13.2455595Z gmake[2]: *** [CMakeFiles/hardware_interface.dir/build.make:132: CMakeFiles/hardware_interface.dir/src/lexical_casts.cpp.o] Error 1\n2026-04-20T06:42:13.2456795Z gmake[2]: *** Waiting for unfinished jobs....\n2026-04-20T06:42:13.2458045Z gmake[1]: *** [CMakeFiles/Makefile2:161: CMakeFiles/hardware_interface.dir/all] Error 2\n2026-04-20T06:42:13.2458944Z gmake: *** [Makefile:146: all] Error 2\n2026-04-20T06:42:13.2459366Z ---\n2026-04-20T06:42:13.2459743Z --- stderr: hardware_interface\n2026-04-20T06:42:13.2461994Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp: In function ‘std::optional<double> hardware_interface::impl::stod(const std::string&)’:\n2026-04-20T06:42:13.2464866Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp:48:34: error: ‘from_chars’ is not a member of ‘std’\n2026-04-20T06:42:13.2466597Z    48 |   const auto parse_result = std::from_chars(s.data(), s.data() + s.size(), result_value);\n2026-04-20T06:42:13.2467449Z       |                                  ^~~~~~~~~~\n2026-04-20T06:42:13.2470099Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp: In function ‘std::optional<float> hardware_interface::impl::stof(const std::string&)’:\n2026-04-20T06:42:13.2472925Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp:74:34: error: ‘from_chars’ is not a member of ‘std’\n2026-04-20T06:42:13.2474596Z    74 |   const auto parse_result = std::from_chars(s.data(), s.data() + s.size(), result_value);\n2026-04-20T06:42:13.2475619Z       |                                  ^~~~~~~~~~\n2026-04-20T06:42:13.2476923Z gmake[2]: *** [CMakeFiles/hardware_interface.dir/build.make:132: CMakeFiles/hardware_interface.dir/src/lexical_casts.cpp.o] Error 1\n2026-04-20T06:42:13.2478439Z gmake[2]: *** Waiting for unfinished jobs....\n2026-04-20T06:42:13.2479395Z gmake[1]: *** [CMakeFiles/Makefile2:161: CMakeFiles/hardware_interface.dir/all] Error 2\n2026-04-20T06:42:13.2480248Z gmake: *** [Makefile:146: all] Error 2\n2026-04-20T06:42:13.2480689Z ---\n2026-04-20T06:42:13.2481211Z Failed   <<< hardware_interface [31.2s, exited with code 2]\n```\n\n**To Reproduce**\n\n- https://github.com/ros-controls/ros2_control/issues/3232\n- https://github.com/ros-controls/topic_based_hardware_interfaces/issues/116\n- https://github.com/ros-controls/ros2_controllers/issues/2319\n",
+    "bodyHTML": "<p dir=\"auto\"><strong>Describe the bug</strong></p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"2026-04-20T06:42:13.2427986Z -- Build files have been written to: /__w/ros2_control/ros2_control/ros_ws/build/hardware_interface\n2026-04-20T06:42:13.2428933Z [  3%] Generating hardware_interface/version.h\n2026-04-20T06:42:13.2429710Z [  3%] Built target ament_generate_version_header__hardware_interface\n2026-04-20T06:42:13.2430669Z [  6%] Building CXX object CMakeFiles/test_macros.dir/test/test_macros.cpp.o\n2026-04-20T06:42:13.2431422Z [  9%] Linking CXX executable test_macros\n2026-04-20T06:42:13.2431950Z [  9%] Built target test_macros\n2026-04-20T06:42:13.2432793Z [ 12%] Building CXX object CMakeFiles/hardware_interface.dir/src/component_parser.cpp.o\n2026-04-20T06:42:13.2434088Z [ 15%] Building CXX object CMakeFiles/hardware_interface.dir/src/hardware_component_interface.cpp.o\n2026-04-20T06:42:13.2435358Z [ 18%] Building CXX object CMakeFiles/hardware_interface.dir/src/hardware_component.cpp.o\n2026-04-20T06:42:13.2436555Z [ 21%] Building CXX object CMakeFiles/hardware_interface.dir/src/resource_manager.cpp.o\n2026-04-20T06:42:13.2437682Z [ 24%] Building CXX object CMakeFiles/hardware_interface.dir/src/lexical_casts.cpp.o\n2026-04-20T06:42:13.2440745Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp: In function ‘std::optional&lt;double&gt; hardware_interface::impl::stod(const std::string&amp;)’:\n2026-04-20T06:42:13.2443660Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp:48:34: error: ‘from_chars’ is not a member of ‘std’\n2026-04-20T06:42:13.2445343Z    48 |   const auto parse_result = std::from_chars(s.data(), s.data() + s.size(), result_value);\n2026-04-20T06:42:13.2446185Z       |                                  ^~~~~~~~~~\n2026-04-20T06:42:13.2448725Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp: In function ‘std::optional&lt;float&gt; hardware_interface::impl::stof(const std::string&amp;)’:\n2026-04-20T06:42:13.2451505Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp:74:34: error: ‘from_chars’ is not a member of ‘std’\n2026-04-20T06:42:13.2453300Z    74 |   const auto parse_result = std::from_chars(s.data(), s.data() + s.size(), result_value);\n2026-04-20T06:42:13.2454265Z       |                                  ^~~~~~~~~~\n2026-04-20T06:42:13.2455595Z gmake[2]: *** [CMakeFiles/hardware_interface.dir/build.make:132: CMakeFiles/hardware_interface.dir/src/lexical_casts.cpp.o] Error 1\n2026-04-20T06:42:13.2456795Z gmake[2]: *** Waiting for unfinished jobs....\n2026-04-20T06:42:13.2458045Z gmake[1]: *** [CMakeFiles/Makefile2:161: CMakeFiles/hardware_interface.dir/all] Error 2\n2026-04-20T06:42:13.2458944Z gmake: *** [Makefile:146: all] Error 2\n2026-04-20T06:42:13.2459366Z ---\n2026-04-20T06:42:13.2459743Z --- stderr: hardware_interface\n2026-04-20T06:42:13.2461994Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp: In function ‘std::optional&lt;double&gt; hardware_interface::impl::stod(const std::string&amp;)’:\n2026-04-20T06:42:13.2464866Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp:48:34: error: ‘from_chars’ is not a member of ‘std’\n2026-04-20T06:42:13.2466597Z    48 |   const auto parse_result = std::from_chars(s.data(), s.data() + s.size(), result_value);\n2026-04-20T06:42:13.2467449Z       |                                  ^~~~~~~~~~\n2026-04-20T06:42:13.2470099Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp: In function ‘std::optional&lt;float&gt; hardware_interface::impl::stof(const std::string&amp;)’:\n2026-04-20T06:42:13.2472925Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp:74:34: error: ‘from_chars’ is not a member of ‘std’\n2026-04-20T06:42:13.2474596Z    74 |   const auto parse_result = std::from_chars(s.data(), s.data() + s.size(), result_value);\n2026-04-20T06:42:13.2475619Z       |                                  ^~~~~~~~~~\n2026-04-20T06:42:13.2476923Z gmake[2]: *** [CMakeFiles/hardware_interface.dir/build.make:132: CMakeFiles/hardware_interface.dir/src/lexical_casts.cpp.o] Error 1\n2026-04-20T06:42:13.2478439Z gmake[2]: *** Waiting for unfinished jobs....\n2026-04-20T06:42:13.2479395Z gmake[1]: *** [CMakeFiles/Makefile2:161: CMakeFiles/hardware_interface.dir/all] Error 2\n2026-04-20T06:42:13.2480248Z gmake: *** [Makefile:146: all] Error 2\n2026-04-20T06:42:13.2480689Z ---\n2026-04-20T06:42:13.2481211Z Failed   &lt;&lt;&lt; hardware_interface [31.2s, exited with code 2]\"><pre class=\"notranslate\"><code class=\"notranslate\">2026-04-20T06:42:13.2427986Z -- Build files have been written to: /__w/ros2_control/ros2_control/ros_ws/build/hardware_interface\n2026-04-20T06:42:13.2428933Z [  3%] Generating hardware_interface/version.h\n2026-04-20T06:42:13.2429710Z [  3%] Built target ament_generate_version_header__hardware_interface\n2026-04-20T06:42:13.2430669Z [  6%] Building CXX object CMakeFiles/test_macros.dir/test/test_macros.cpp.o\n2026-04-20T06:42:13.2431422Z [  9%] Linking CXX executable test_macros\n2026-04-20T06:42:13.2431950Z [  9%] Built target test_macros\n2026-04-20T06:42:13.2432793Z [ 12%] Building CXX object CMakeFiles/hardware_interface.dir/src/component_parser.cpp.o\n2026-04-20T06:42:13.2434088Z [ 15%] Building CXX object CMakeFiles/hardware_interface.dir/src/hardware_component_interface.cpp.o\n2026-04-20T06:42:13.2435358Z [ 18%] Building CXX object CMakeFiles/hardware_interface.dir/src/hardware_component.cpp.o\n2026-04-20T06:42:13.2436555Z [ 21%] Building CXX object CMakeFiles/hardware_interface.dir/src/resource_manager.cpp.o\n2026-04-20T06:42:13.2437682Z [ 24%] Building CXX object CMakeFiles/hardware_interface.dir/src/lexical_casts.cpp.o\n2026-04-20T06:42:13.2440745Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp: In function ‘std::optional&lt;double&gt; hardware_interface::impl::stod(const std::string&amp;)’:\n2026-04-20T06:42:13.2443660Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp:48:34: error: ‘from_chars’ is not a member of ‘std’\n2026-04-20T06:42:13.2445343Z    48 |   const auto parse_result = std::from_chars(s.data(), s.data() + s.size(), result_value);\n2026-04-20T06:42:13.2446185Z       |                                  ^~~~~~~~~~\n2026-04-20T06:42:13.2448725Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp: In function ‘std::optional&lt;float&gt; hardware_interface::impl::stof(const std::string&amp;)’:\n2026-04-20T06:42:13.2451505Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp:74:34: error: ‘from_chars’ is not a member of ‘std’\n2026-04-20T06:42:13.2453300Z    74 |   const auto parse_result = std::from_chars(s.data(), s.data() + s.size(), result_value);\n2026-04-20T06:42:13.2454265Z       |                                  ^~~~~~~~~~\n2026-04-20T06:42:13.2455595Z gmake[2]: *** [CMakeFiles/hardware_interface.dir/build.make:132: CMakeFiles/hardware_interface.dir/src/lexical_casts.cpp.o] Error 1\n2026-04-20T06:42:13.2456795Z gmake[2]: *** Waiting for unfinished jobs....\n2026-04-20T06:42:13.2458045Z gmake[1]: *** [CMakeFiles/Makefile2:161: CMakeFiles/hardware_interface.dir/all] Error 2\n2026-04-20T06:42:13.2458944Z gmake: *** [Makefile:146: all] Error 2\n2026-04-20T06:42:13.2459366Z ---\n2026-04-20T06:42:13.2459743Z --- stderr: hardware_interface\n2026-04-20T06:42:13.2461994Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp: In function ‘std::optional&lt;double&gt; hardware_interface::impl::stod(const std::string&amp;)’:\n2026-04-20T06:42:13.2464866Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp:48:34: error: ‘from_chars’ is not a member of ‘std’\n2026-04-20T06:42:13.2466597Z    48 |   const auto parse_result = std::from_chars(s.data(), s.data() + s.size(), result_value);\n2026-04-20T06:42:13.2467449Z       |                                  ^~~~~~~~~~\n2026-04-20T06:42:13.2470099Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp: In function ‘std::optional&lt;float&gt; hardware_interface::impl::stof(const std::string&amp;)’:\n2026-04-20T06:42:13.2472925Z /__w/ros2_control/ros2_control/ros_ws/src/v4zl7emx1p/ros2_control/hardware_interface/src/lexical_casts.cpp:74:34: error: ‘from_chars’ is not a member of ‘std’\n2026-04-20T06:42:13.2474596Z    74 |   const auto parse_result = std::from_chars(s.data(), s.data() + s.size(), result_value);\n2026-04-20T06:42:13.2475619Z       |                                  ^~~~~~~~~~\n2026-04-20T06:42:13.2476923Z gmake[2]: *** [CMakeFiles/hardware_interface.dir/build.make:132: CMakeFiles/hardware_interface.dir/src/lexical_casts.cpp.o] Error 1\n2026-04-20T06:42:13.2478439Z gmake[2]: *** Waiting for unfinished jobs....\n2026-04-20T06:42:13.2479395Z gmake[1]: *** [CMakeFiles/Makefile2:161: CMakeFiles/hardware_interface.dir/all] Error 2\n2026-04-20T06:42:13.2480248Z gmake: *** [Makefile:146: all] Error 2\n2026-04-20T06:42:13.2480689Z ---\n2026-04-20T06:42:13.2481211Z Failed   &lt;&lt;&lt; hardware_interface [31.2s, exited with code 2]\n</code></pre></div>\n<p dir=\"auto\"><strong>To Reproduce</strong></p>\n<ul dir=\"auto\">\n<li><span class=\"reference\"><svg data-component=\"Octicon\" class=\"octicon octicon-issue-closed closed mr-1\" title=\"Closed\" viewBox=\"0 0 16 16\" version=\"1.1\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M11.28 6.78a.75.75 0 0 0-1.06-1.06L7.25 8.69 5.78 7.22a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l3.5-3.5Z\"></path><path d=\"M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0Zm-1.5 0a6.5 6.5 0 1 0-13 0 6.5 6.5 0 0 0 13 0Z\"></path></svg><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4293629093\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3232\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3232/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3232\">CI build job rolling/source failed!<span class=\"issue-shorthand\"> #3232</span></a></span></li>\n<li><span class=\"reference\"><svg data-component=\"Octicon\" class=\"octicon octicon-issue-closed closed mr-1\" title=\"Closed\" viewBox=\"0 0 16 16\" version=\"1.1\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M11.28 6.78a.75.75 0 0 0-1.06-1.06L7.25 8.69 5.78 7.22a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l3.5-3.5Z\"></path><path d=\"M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0Zm-1.5 0a6.5 6.5 0 1 0-13 0 6.5 6.5 0 0 0 13 0Z\"></path></svg><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4293614330\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/topic_based_hardware_interfaces/issues/116\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/topic_based_hardware_interfaces/issues/116/hovercard\" href=\"https://github.com/ros-controls/topic_based_hardware_interfaces/issues/116\">CI build job rolling/source failed!<span class=\"issue-shorthand\"> topic_based_hardware_interfaces#116</span></a></span></li>\n<li><span class=\"reference\"><svg data-component=\"Octicon\" class=\"octicon octicon-issue-closed closed mr-1\" title=\"Closed\" viewBox=\"0 0 16 16\" version=\"1.1\" width=\"16\" height=\"16\" aria-hidden=\"true\"><path d=\"M11.28 6.78a.75.75 0 0 0-1.06-1.06L7.25 8.69 5.78 7.22a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l3.5-3.5Z\"></path><path d=\"M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0Zm-1.5 0a6.5 6.5 0 1 0-13 0 6.5 6.5 0 0 0 13 0Z\"></path></svg><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4293691159\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_controllers/issues/2319\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_controllers/issues/2319/hovercard\" href=\"https://github.com/ros-controls/ros2_controllers/issues/2319\">CI build job rolling/source failed!<span class=\"issue-shorthand\"> ros2_controllers#2319</span></a></span></li>\n</ul>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-04-20T07:25:21Z",
+    "updatedAt": "2026-04-20T19:22:40Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+      "login": "christophfroehlich",
+      "id": "MDQ6VXNlcjMzNjcyNDQ=",
+      "profileUrl": "https://github.com/christophfroehlich",
+      "name": "Christoph Fröhlich",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 0,
+    "duplicateOf": null
+  },
+  "comments": [],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7_7xjzzwAAAAW-NO3H",
+      "databaseId": 24665976263,
+      "createdAt": "2026-04-20T07:25:23Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "RenamedTitleEvent",
+      "id": "RTE_lADOBiM5Uc7_7xjzzwAAAAW-NRsy",
+      "databaseId": 24665987890,
+      "createdAt": "2026-04-20T07:25:43Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "currentTitle": "`from_chars` is not a member of `std`",
+      "previousTitle": "‘from_chars’ is not a member of ‘std’"
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc7_7xjzzwAAAAW_uONG",
+      "databaseId": 24691401542,
+      "createdAt": "2026-04-20T19:22:40Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOBiM5Uc7T2z7O",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-controls/ros2_control/pull/3234",
+        "number": 3234,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+          "name": "ros2_control",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+            "login": "ros-controls"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnanHlrgBqzI0NjY1OTc2MjYz",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnaxYSAABqzI0NjkxNDAxNTQy"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnanHlrgBqzI0NjY1OTc2MjYz",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnaxYSAABqzI0NjkxNDAxNTQy"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOBiM5Uc7T2z7O",
+      "url": "https://github.com/ros-controls/ros2_control/pull/3234",
+      "number": 3234,
+      "title": "Add missing `charconv` header",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-04-20T07:30:11Z",
+      "databaseId": 3554361038,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3234",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3234.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3234.changes.json"
+    }
+  ]
+}

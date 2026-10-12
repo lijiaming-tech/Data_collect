@@ -1,0 +1,34 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3270/files",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3270/files",
+    "fetched_at": "2026-10-11T11:24:39.521186+00:00",
+    "http_status": 200,
+    "response_sha256": "b457b76b2eb6d1436b7e4c7b723e97c104d7819a58af26ad9dcd3450ee7e0663"
+  },
+  "files": {
+    "controller_manager/src/controller_manager.cpp": [
+      "@@ -1283,7 +1283,7 @@ controller_interface::ControllerInterfaceBaseSharedPtr ControllerManager::load_c",
+      "   std::vector<std::string> fallback_controllers;",
+      "   if (!has_parameter(fallback_ctrl_param))",
+      "   {",
+      "-    declare_parameter(fallback_ctrl_param, rclcpp::ParameterType::PARAMETER_STRING_ARRAY);",
+      "+    declare_parameter(fallback_ctrl_param, std::vector<std::string>{});",
+      "   }",
+      "   if (get_parameter(fallback_ctrl_param, fallback_controllers) && !fallback_controllers.empty())",
+      "   {",
+      "@@ -1304,7 +1304,7 @@ controller_interface::ControllerInterfaceBaseSharedPtr ControllerManager::load_c",
+      "   std::vector<std::string> node_options_args;",
+      "   if (!has_parameter(node_options_args_param))",
+      "   {",
+      "-    declare_parameter(node_options_args_param, rclcpp::ParameterType::PARAMETER_STRING_ARRAY);",
+      "+    declare_parameter(node_options_args_param, std::vector<std::string>{});",
+      "   }",
+      "   if (get_parameter(node_options_args_param, node_options_args) && !node_options_args.empty())",
+      "   {"
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

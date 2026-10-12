@@ -1,0 +1,1624 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/2508",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/2508",
+    "fetched_at": "2026-10-11T11:24:29.278327+00:00",
+    "http_status": 200,
+    "response_sha256": "180cfb5db6d328de47be35a7dd3f4d78d80e73c5c97d37f15a3b29f9e19a1bb8"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc7JCg2w",
+    "databaseId": 3372879280,
+    "number": 2508,
+    "title": "Deactivate controllers when hardware component is inactive",
+    "url": "https://github.com/ros-controls/ros2_control/issues/2508",
+    "body": "**Describe the bug**\n\nFollowing this https://github.com/ros-controls/ros2_controllers/pull/1666#issuecomment-3044384471. After https://github.com/ros-controls/ros2_control/pull/2334 the controller should be deactivated if the hardware component it depends on becomes inactive. There are few issues with current implementation:\n1. The controller is only deactivated if the hardware component returns `return_type::DEACTIVATE` in write method. If deactivating using CLI the the controller stays active.\n2. This probably depends on above, but It is possible to activate the controller even if the hardware component is still in INACTIVE state.\n3. Only the controller that has claimed hardware interfaces is being deactivated. Other controllers that are chained are still active. All preeceding controllers should be also deactivated. If you try to deactivate the controller that is chained using CLI it will throw the following error:\n  ```\n  [WARN] [1751882846.567267619] [controller_manager]: Unable to deactivate controller with name 'drive_controller' because preceding controller with name 'velocity_input_controller' is currently active and will not be deactivated.\n  [WARN] [1751882846.567294092] [controller_manager]: Could not deactivate controller with name 'drive_controller'. Check above warnings for more details. Check the state of the controllers and their required interfaces using `ros2 control list_controllers -v` CLI to get more information.\n  [ERROR] [1751882846.567311243] [controller_manager]: Aborting, no controller is switched! (::STRICT switch)\n  ```\n4. Right now to resolve the inactive state you have to activate the hardware component and then activate the controller. It would be nice if this could be automated. The implementation details are open for discussion, here are a few possible approaches:\n\t- Allow to define a \"system group\" that defines all dependent hardware components and controllers. Then you could call activate on a group and manager would attempt to activate all hardware components and controllers.\n\t-  When calling activate on the controller also try to activate hardware component it depends on. \n\t- Allow auto reactivation of controller if hardware becomes active again. \n\nTested on ROS 2 Jazzy\n",
+    "bodyHTML": "<p dir=\"auto\"><strong>Describe the bug</strong></p>\n<p dir=\"auto\">Following this <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3027976633\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_controllers/issues/1666\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-controls/ros2_controllers/pull/1666/hovercard?comment_id=3044384471&amp;comment_type=issue_comment\" href=\"https://github.com/ros-controls/ros2_controllers/pull/1666#issuecomment-3044384471\">ros-controls/ros2_controllers#1666 (comment)</a>. After <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3164125223\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/2334\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-controls/ros2_control/pull/2334/hovercard\" href=\"https://github.com/ros-controls/ros2_control/pull/2334\">#2334</a> the controller should be deactivated if the hardware component it depends on becomes inactive. There are few issues with current implementation:</p>\n<ol dir=\"auto\">\n<li>The controller is only deactivated if the hardware component returns <code class=\"notranslate\">return_type::DEACTIVATE</code> in write method. If deactivating using CLI the the controller stays active.</li>\n<li>This probably depends on above, but It is possible to activate the controller even if the hardware component is still in INACTIVE state.</li>\n<li>Only the controller that has claimed hardware interfaces is being deactivated. Other controllers that are chained are still active. All preeceding controllers should be also deactivated. If you try to deactivate the controller that is chained using CLI it will throw the following error:</li>\n</ol>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"[WARN] [1751882846.567267619] [controller_manager]: Unable to deactivate controller with name 'drive_controller' because preceding controller with name 'velocity_input_controller' is currently active and will not be deactivated.\n[WARN] [1751882846.567294092] [controller_manager]: Could not deactivate controller with name 'drive_controller'. Check above warnings for more details. Check the state of the controllers and their required interfaces using `ros2 control list_controllers -v` CLI to get more information.\n[ERROR] [1751882846.567311243] [controller_manager]: Aborting, no controller is switched! (::STRICT switch)\"><pre class=\"notranslate\"><code class=\"notranslate\">[WARN] [1751882846.567267619] [controller_manager]: Unable to deactivate controller with name 'drive_controller' because preceding controller with name 'velocity_input_controller' is currently active and will not be deactivated.\n[WARN] [1751882846.567294092] [controller_manager]: Could not deactivate controller with name 'drive_controller'. Check above warnings for more details. Check the state of the controllers and their required interfaces using `ros2 control list_controllers -v` CLI to get more information.\n[ERROR] [1751882846.567311243] [controller_manager]: Aborting, no controller is switched! (::STRICT switch)\n</code></pre></div>\n<ol start=\"4\" dir=\"auto\">\n<li>Right now to resolve the inactive state you have to activate the hardware component and then activate the controller. It would be nice if this could be automated. The implementation details are open for discussion, here are a few possible approaches:\n<ul dir=\"auto\">\n<li>Allow to define a \"system group\" that defines all dependent hardware components and controllers. Then you could call activate on a group and manager would attempt to activate all hardware components and controllers.</li>\n<li>When calling activate on the controller also try to activate hardware component it depends on.</li>\n<li>Allow auto reactivation of controller if hardware becomes active again.</li>\n</ul>\n</li>\n</ol>\n<p dir=\"auto\">Tested on ROS 2 Jazzy</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2025-07-08T06:36:03Z",
+    "updatedAt": "2026-07-04T21:11:37Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/73443304?u=99c58d54b35133f2cba73c5418b5a8237fbb193b&v=4",
+      "login": "KmakD",
+      "id": "MDQ6VXNlcjczNDQzMzA0",
+      "profileUrl": "https://github.com/KmakD",
+      "name": "Dawid Kmak",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "LA_kwDOBiM5Uc8AAAAB8jMACQ",
+            "fullDatabaseId": "8358395913",
+            "color": "C706F5",
+            "name": "persistent",
+            "nameHTML": "persistent",
+            "description": "Issue won't get marked as stale",
+            "url": "https://github.com/ros-controls/ros2_control/labels/persistent",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 5,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7BRVFJ",
+      "databaseId": 3242545481,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7JCg2w",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjczNDQzMzA0",
+          "login": "KmakD"
+        },
+        "number": 2508,
+        "locked": false,
+        "databaseId": 3372879280
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2508#issuecomment-3242545481",
+      "createdAt": "2025-08-22T12:43:22Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7BRVPQ",
+      "databaseId": 3242546128,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7JCg2w",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjczNDQzMzA0",
+          "login": "KmakD"
+        },
+        "number": 2508,
+        "locked": false,
+        "databaseId": 3372879280
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2508#issuecomment-3242546128",
+      "createdAt": "2025-09-01T14:16:39Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "fyi @saikishor @MarqRazz ",
+      "bodyHTML": "<p dir=\"auto\">fyi <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/saikishor/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/saikishor\">@saikishor</a> <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/MarqRazz/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/MarqRazz\">@MarqRazz</a></p>",
+      "bodyVersion": "52f174c909f9a078d97303ba55197cfec9fb94b7f277fc6e67fb908bbd57ac6a",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7IWxV5",
+      "databaseId": 3361412473,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7JCg2w",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjczNDQzMzA0",
+          "login": "KmakD"
+        },
+        "number": 2508,
+        "locked": false,
+        "databaseId": 3372879280
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjI1MDU4Nzk0",
+        "login": "MarqRazz",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/25058794?u=73e4c0be67427f7fa3cb356021a63b0fd1271b62&v=4",
+        "profileUrl": "https://github.com/MarqRazz",
+        "name": "Marq Rasmussen"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2508#issuecomment-3361412473",
+      "createdAt": "2025-10-02T14:13:21Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Can we can close this issue now that users can choose which behavior they would like at run time?",
+      "bodyHTML": "<p dir=\"auto\">Can we can close this issue now that users can choose which behavior they would like at run time?</p>",
+      "bodyVersion": "1e6fcb87220cbc7a74eef4055fc2cf846f8663163bf2a3c0fba5c5fb528e1f61",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7IY9Md",
+      "databaseId": 3361985309,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7JCg2w",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjczNDQzMzA0",
+          "login": "KmakD"
+        },
+        "number": 2508,
+        "locked": false,
+        "databaseId": 3372879280
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2508#issuecomment-3361985309",
+      "createdAt": "2025-10-02T15:59:08Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> Can we can close this issue now that users can choose which behavior they would like at run time?\n\nSure\n\n",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">Can we can close this issue now that users can choose which behavior they would like at run time?</p>\n</blockquote>\n<p dir=\"auto\">Sure</p>",
+      "bodyVersion": "b012c9639c95b057abb493305292addf37ce820813007cc6c68e2e7f68f16766",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjI1MDU4Nzk0",
+                "login": "MarqRazz",
+                "name": "Marq Rasmussen",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/25058794?s=64&u=73e4c0be67427f7fa3cb356021a63b0fd1271b62&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABBq7pRA",
+      "databaseId": 4407093572,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7JCg2w",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjczNDQzMzA0",
+          "login": "KmakD"
+        },
+        "number": 2508,
+        "locked": false,
+        "databaseId": 3372879280
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjg3MTQwNQ==",
+        "login": "T045T",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/871405?v=4",
+        "profileUrl": "https://github.com/T045T",
+        "name": "Nils Berg"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2508#issuecomment-4407093572",
+      "createdAt": "2026-05-08T14:14:55Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> Can we can close this issue now that users can choose which behavior they would like at run time?\n\nDo you mean the `defaults.allow_controller_activation_with_inactive_hardware` and `defaults.deactivate_controllers_on_hardware_self_deactivate` parameters?\n\nIt seems to me like those don't fully address this Issue. I'm running ros2_control on `jazzy` with default parameters (i.e. `allow_controller_activation_with_inactive_hardware = false` and `deactivate_controllers_on_hardware_self_deactivate = true`, and observe the following:\n\nWhen I manually deactivate a HardwareComponent (`ros2 control set_hardware_component_state r6bot inactive`), \n* Any controllers using that component's interfaces **stay active**\n* Consequently the interfaces **stay claimed**\n\nWhen I manually de-activate the *Controller*, I can then no longer re-activate it (this is as expected).\n\nIs there a reason to leave the controller active if a HardwareComponent becomes inactive due to a user command, rather than because it returned `return_type::DEACTIVATE` from one of its methods?",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">Can we can close this issue now that users can choose which behavior they would like at run time?</p>\n</blockquote>\n<p dir=\"auto\">Do you mean the <code class=\"notranslate\">defaults.allow_controller_activation_with_inactive_hardware</code> and <code class=\"notranslate\">defaults.deactivate_controllers_on_hardware_self_deactivate</code> parameters?</p>\n<p dir=\"auto\">It seems to me like those don't fully address this Issue. I'm running ros2_control on <code class=\"notranslate\">jazzy</code> with default parameters (i.e. <code class=\"notranslate\">allow_controller_activation_with_inactive_hardware = false</code> and <code class=\"notranslate\">deactivate_controllers_on_hardware_self_deactivate = true</code>, and observe the following:</p>\n<p dir=\"auto\">When I manually deactivate a HardwareComponent (<code class=\"notranslate\">ros2 control set_hardware_component_state r6bot inactive</code>),</p>\n<ul dir=\"auto\">\n<li>Any controllers using that component's interfaces <strong>stay active</strong></li>\n<li>Consequently the interfaces <strong>stay claimed</strong></li>\n</ul>\n<p dir=\"auto\">When I manually de-activate the <em>Controller</em>, I can then no longer re-activate it (this is as expected).</p>\n<p dir=\"auto\">Is there a reason to leave the controller active if a HardwareComponent becomes inactive due to a user command, rather than because it returned <code class=\"notranslate\">return_type::DEACTIVATE</code> from one of its methods?</p>",
+      "bodyVersion": "e7df08fa2f8357085b2002709467bd59fbf01242201598a83a1c391cf74957b2",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7JCg2wzwAAAASG7C5g",
+      "databaseId": 19443494496,
+      "createdAt": "2025-07-08T06:36:04Z",
+      "actor": {
+        "id": "MDQ6VXNlcjczNDQzMzA0",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/73443304?s=64&u=99c58d54b35133f2cba73c5418b5a8237fbb193b&v=4",
+        "login": "KmakD",
+        "profileResourcePath": "/KmakD",
+        "__typename": "User",
+        "name": "Dawid Kmak"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7BRVFJ",
+      "databaseId": 3242545481,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7JCg2w",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjczNDQzMzA0",
+          "login": "KmakD"
+        },
+        "number": 2508,
+        "locked": false,
+        "databaseId": 3372879280
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2508#issuecomment-3242545481",
+      "createdAt": "2025-08-22T12:43:22Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7JCg2wzwAAAASG7C6G",
+      "databaseId": 19443494534,
+      "createdAt": "2025-08-22T12:43:23Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+        "archivedAt": null,
+        "nameHTML": "stale",
+        "name": "stale",
+        "color": "ededed",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "TransferredEvent",
+      "id": "TRE_lADOBiM5Uc7JCg2wzwAAAASG7C76",
+      "databaseId": 19443494650,
+      "createdAt": "2025-09-01T14:16:26Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "fromRepository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3NDM=",
+        "nameWithOwner": "ros-controls/ros2_controllers",
+        "url": "https://github.com/ros-controls/ros2_controllers"
+      }
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7BRVPQ",
+      "databaseId": 3242546128,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7JCg2w",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjczNDQzMzA0",
+          "login": "KmakD"
+        },
+        "number": 2508,
+        "locked": false,
+        "databaseId": 3372879280
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2508#issuecomment-3242546128",
+      "createdAt": "2025-09-01T14:16:39Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "fyi @saikishor @MarqRazz ",
+      "bodyHTML": "<p dir=\"auto\">fyi <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/saikishor/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/saikishor\">@saikishor</a> <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/MarqRazz/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/MarqRazz\">@MarqRazz</a></p>",
+      "bodyVersion": "52f174c909f9a078d97303ba55197cfec9fb94b7f277fc6e67fb908bbd57ac6a",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7JCg2wzwAAAASG87mz",
+      "databaseId": 19443988915,
+      "createdAt": "2025-09-01T14:45:32Z",
+      "actor": {
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?s=64&u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "login": "saikishor",
+        "profileResourcePath": "/saikishor",
+        "__typename": "User",
+        "name": "Sai Kishor Kothakota"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB8jMACQ",
+        "archivedAt": null,
+        "nameHTML": "persistent",
+        "name": "persistent",
+        "color": "C706F5",
+        "description": "Issue won't get marked as stale"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "UnlabeledEvent",
+      "id": "UNLE_lADOBiM5Uc7JCg2wzwAAAASG87mr",
+      "databaseId": 19443988907,
+      "createdAt": "2025-09-01T14:45:32Z",
+      "actor": {
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?s=64&u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "login": "saikishor",
+        "profileResourcePath": "/saikishor",
+        "__typename": "User",
+        "name": "Sai Kishor Kothakota"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+        "archivedAt": null,
+        "nameHTML": "stale",
+        "name": "stale",
+        "color": "ededed",
+        "description": null
+      }
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7IWxV5",
+      "databaseId": 3361412473,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7JCg2w",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjczNDQzMzA0",
+          "login": "KmakD"
+        },
+        "number": 2508,
+        "locked": false,
+        "databaseId": 3372879280
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjI1MDU4Nzk0",
+        "login": "MarqRazz",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/25058794?u=73e4c0be67427f7fa3cb356021a63b0fd1271b62&v=4",
+        "profileUrl": "https://github.com/MarqRazz",
+        "name": "Marq Rasmussen"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2508#issuecomment-3361412473",
+      "createdAt": "2025-10-02T14:13:21Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Can we can close this issue now that users can choose which behavior they would like at run time?",
+      "bodyHTML": "<p dir=\"auto\">Can we can close this issue now that users can choose which behavior they would like at run time?</p>",
+      "bodyVersion": "1e6fcb87220cbc7a74eef4055fc2cf846f8663163bf2a3c0fba5c5fb528e1f61",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7IY9Md",
+      "databaseId": 3361985309,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7JCg2w",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjczNDQzMzA0",
+          "login": "KmakD"
+        },
+        "number": 2508,
+        "locked": false,
+        "databaseId": 3372879280
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2508#issuecomment-3361985309",
+      "createdAt": "2025-10-02T15:59:08Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> Can we can close this issue now that users can choose which behavior they would like at run time?\n\nSure\n\n",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">Can we can close this issue now that users can choose which behavior they would like at run time?</p>\n</blockquote>\n<p dir=\"auto\">Sure</p>",
+      "bodyVersion": "b012c9639c95b057abb493305292addf37ce820813007cc6c68e2e7f68f16766",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjI1MDU4Nzk0",
+                "login": "MarqRazz",
+                "name": "Marq Rasmussen",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/25058794?s=64&u=73e4c0be67427f7fa3cb356021a63b0fd1271b62&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc7JCg2wzwAAAASr3Kcp",
+      "databaseId": 20063233833,
+      "createdAt": "2025-10-02T15:59:18Z",
+      "actor": {
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?s=64&u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "login": "saikishor",
+        "profileResourcePath": "/saikishor",
+        "__typename": "User",
+        "name": "Sai Kishor Kothakota"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABBq7pRA",
+      "databaseId": 4407093572,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7JCg2w",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjczNDQzMzA0",
+          "login": "KmakD"
+        },
+        "number": 2508,
+        "locked": false,
+        "databaseId": 3372879280
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjg3MTQwNQ==",
+        "login": "T045T",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/871405?v=4",
+        "profileUrl": "https://github.com/T045T",
+        "name": "Nils Berg"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2508#issuecomment-4407093572",
+      "createdAt": "2026-05-08T14:14:55Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> Can we can close this issue now that users can choose which behavior they would like at run time?\n\nDo you mean the `defaults.allow_controller_activation_with_inactive_hardware` and `defaults.deactivate_controllers_on_hardware_self_deactivate` parameters?\n\nIt seems to me like those don't fully address this Issue. I'm running ros2_control on `jazzy` with default parameters (i.e. `allow_controller_activation_with_inactive_hardware = false` and `deactivate_controllers_on_hardware_self_deactivate = true`, and observe the following:\n\nWhen I manually deactivate a HardwareComponent (`ros2 control set_hardware_component_state r6bot inactive`), \n* Any controllers using that component's interfaces **stay active**\n* Consequently the interfaces **stay claimed**\n\nWhen I manually de-activate the *Controller*, I can then no longer re-activate it (this is as expected).\n\nIs there a reason to leave the controller active if a HardwareComponent becomes inactive due to a user command, rather than because it returned `return_type::DEACTIVATE` from one of its methods?",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">Can we can close this issue now that users can choose which behavior they would like at run time?</p>\n</blockquote>\n<p dir=\"auto\">Do you mean the <code class=\"notranslate\">defaults.allow_controller_activation_with_inactive_hardware</code> and <code class=\"notranslate\">defaults.deactivate_controllers_on_hardware_self_deactivate</code> parameters?</p>\n<p dir=\"auto\">It seems to me like those don't fully address this Issue. I'm running ros2_control on <code class=\"notranslate\">jazzy</code> with default parameters (i.e. <code class=\"notranslate\">allow_controller_activation_with_inactive_hardware = false</code> and <code class=\"notranslate\">deactivate_controllers_on_hardware_self_deactivate = true</code>, and observe the following:</p>\n<p dir=\"auto\">When I manually deactivate a HardwareComponent (<code class=\"notranslate\">ros2 control set_hardware_component_state r6bot inactive</code>),</p>\n<ul dir=\"auto\">\n<li>Any controllers using that component's interfaces <strong>stay active</strong></li>\n<li>Consequently the interfaces <strong>stay claimed</strong></li>\n</ul>\n<p dir=\"auto\">When I manually de-activate the <em>Controller</em>, I can then no longer re-activate it (this is as expected).</p>\n<p dir=\"auto\">Is there a reason to leave the controller active if a HardwareComponent becomes inactive due to a user command, rather than because it returned <code class=\"notranslate\">return_type::DEACTIVATE</code> from one of its methods?</p>",
+      "bodyVersion": "e7df08fa2f8357085b2002709467bd59fbf01242201598a83a1c391cf74957b2",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ReopenedEvent",
+      "id": "REE_lADOBiM5Uc7JCg2wzwAAAAZq5wj6",
+      "databaseId": 27563329786,
+      "createdAt": "2026-07-04T21:11:24Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      }
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc7JCg2wzwAAAAZq5xOf",
+      "databaseId": 27563332511,
+      "createdAt": "2026-07-04T21:11:37Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABl-i_qCABqzE5NDQzNDk0NDk2",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABny74-ygBqzI3NTYzMzMyNTEx"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABl-i_qCABqzE5NDQzNDk0NDk2",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABny74-ygBqzI3NTYzMzMyNTEx"
+    }
+  },
+  "linked_pull_requests": [],
+  "comments_complete": true,
+  "linked_pr_fetches": []
+}

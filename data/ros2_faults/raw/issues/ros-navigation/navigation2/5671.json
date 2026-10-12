@@ -1,0 +1,1635 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-navigation/navigation2",
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/issues/5671",
+    "final_url": "https://github.com/ros-navigation/navigation2/issues/5671",
+    "fetched_at": "2026-10-11T11:22:16.112292+00:00",
+    "http_status": 200,
+    "response_sha256": "e3ee59684b10f4b87efcfe5967c89e42f58995b82c00c282d190c6850b5b088c"
+  },
+  "issue": {
+    "id": "I_kwDOCBF7SM7WA05F",
+    "databaseId": 3590540869,
+    "number": 5671,
+    "title": "SMAC Hybrid Visualization Offset from Expansions to Path",
+    "url": "https://github.com/ros-navigation/navigation2/issues/5671",
+    "body": "In the SMAC Hybrid Planner, there is a systematic offset between the visualized expansions and the unsmoothed path the planner returns. \n\nThis comes from the implementation of `populateExpansionsLog()` in a_star.cpp.\nWe believe that in the original SMAC 2D function, this had the purpose of setting the arrows into the center of the costmap grid cells. \nHowever in SMAC Hybrid, the actual continuous coordinates are used, therefore, the offset does not make sense and only leads to confusion. \n\n```cpp\n// In a_star.cpp: line 165-187\ntemplate<>\nvoid AStarAlgorithm<Node2D>::populateExpansionsLog(\n  const NodePtr & node,\n  std::vector<std::tuple<float, float, float>> * expansions_log)\n{\n  Node2D::Coordinates coords = node->getCoords(node->getIndex());\n  expansions_log->emplace_back(\n    _costmap->getOriginX() + ((coords.x + 0.5) * _costmap->getResolution()), // Implementation for SMAC 2D\n    _costmap->getOriginY() + ((coords.y + 0.5) * _costmap->getResolution()),\n    0.0);\n}\n\ntemplate<typename NodeT>\nvoid AStarAlgorithm<NodeT>::populateExpansionsLog(\n  const NodePtr & node,\n  std::vector<std::tuple<float, float, float>> * expansions_log)\n{\n  typename NodeT::Coordinates coords = node->pose;\n  expansions_log->emplace_back(\n    _costmap->getOriginX() + ((coords.x + 0.5) * _costmap->getResolution()), // Issue here\n    _costmap->getOriginY() + ((coords.y + 0.5) * _costmap->getResolution()), // Issue here\n    NodeT::motion_table.getAngleFromBin(coords.theta));\n}\n```\nThe image shows the planed unsmoothed path in green, and the expansions with a constant offset in x and y direction.\nIn a more cluttered planning scenario, one cannot determine which expansions led to the resulting path.\n<img width=\"1508\" height=\"959\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e4fa6bd5-df6d-4895-945d-f6c38443bd5f\" />\n\nThe suggested fix removes the hardcoded offset of half a grid cell length:\n```cpp\ntemplate<typename NodeT>\nvoid AStarAlgorithm<NodeT>::populateExpansionsLog(\n  const NodePtr & node,\n  std::vector<std::tuple<float, float, float>> * expansions_log)\n{\n  typename NodeT::Coordinates coords = node->pose;\n  expansions_log->emplace_back(\n    _costmap->getOriginX() + (coords.x * _costmap->getResolution()), // Fixed line\n    _costmap->getOriginY() + (coords.y * _costmap->getResolution()), // Fixed line\n    NodeT::motion_table.getAngleFromBin(coords.theta));\n}\n```",
+    "bodyHTML": "<p dir=\"auto\">In the SMAC Hybrid Planner, there is a systematic offset between the visualized expansions and the unsmoothed path the planner returns.</p>\n<p dir=\"auto\">This comes from the implementation of <code class=\"notranslate\">populateExpansionsLog()</code> in a_star.cpp.<br>\nWe believe that in the original SMAC 2D function, this had the purpose of setting the arrows into the center of the costmap grid cells.<br>\nHowever in SMAC Hybrid, the actual continuous coordinates are used, therefore, the offset does not make sense and only leads to confusion.</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"// In a_star.cpp: line 165-187\ntemplate&lt;&gt;\nvoid AStarAlgorithm&lt;Node2D&gt;::populateExpansionsLog(\n  const NodePtr &amp; node,\n  std::vector&lt;std::tuple&lt;float, float, float&gt;&gt; * expansions_log)\n{\n  Node2D::Coordinates coords = node-&gt;getCoords(node-&gt;getIndex());\n  expansions_log-&gt;emplace_back(\n    _costmap-&gt;getOriginX() + ((coords.x + 0.5) * _costmap-&gt;getResolution()), // Implementation for SMAC 2D\n    _costmap-&gt;getOriginY() + ((coords.y + 0.5) * _costmap-&gt;getResolution()),\n    0.0);\n}\n\ntemplate&lt;typename NodeT&gt;\nvoid AStarAlgorithm&lt;NodeT&gt;::populateExpansionsLog(\n  const NodePtr &amp; node,\n  std::vector&lt;std::tuple&lt;float, float, float&gt;&gt; * expansions_log)\n{\n  typename NodeT::Coordinates coords = node-&gt;pose;\n  expansions_log-&gt;emplace_back(\n    _costmap-&gt;getOriginX() + ((coords.x + 0.5) * _costmap-&gt;getResolution()), // Issue here\n    _costmap-&gt;getOriginY() + ((coords.y + 0.5) * _costmap-&gt;getResolution()), // Issue here\n    NodeT::motion_table.getAngleFromBin(coords.theta));\n}\"><pre class=\"notranslate\"><span class=\"pl-c\"><span class=\"pl-c\">//</span> In a_star.cpp: line 165-187</span>\n<span class=\"pl-k\">template</span>&lt;&gt;\n<span class=\"pl-k\">void</span> AStarAlgorithm&lt;Node2D&gt;::populateExpansionsLog(\n  <span class=\"pl-k\">const</span> NodePtr &amp; node,\n  std::vector&lt;std::tuple&lt;<span class=\"pl-k\">float</span>, <span class=\"pl-k\">float</span>, <span class=\"pl-k\">float</span>&gt;&gt; * expansions_log)\n{\n  Node2D::Coordinates coords = node-&gt;<span class=\"pl-c1\">getCoords</span>(node-&gt;<span class=\"pl-c1\">getIndex</span>());\n  expansions_log-&gt;<span class=\"pl-c1\">emplace_back</span>(\n    _costmap-&gt;<span class=\"pl-c1\">getOriginX</span>() + ((coords.<span class=\"pl-smi\">x</span> + <span class=\"pl-c1\">0.5</span>) * _costmap-&gt;<span class=\"pl-c1\">getResolution</span>()), <span class=\"pl-c\"><span class=\"pl-c\">//</span> Implementation for SMAC 2D</span>\n    _costmap-&gt;<span class=\"pl-c1\">getOriginY</span>() + ((coords.<span class=\"pl-smi\">y</span> + <span class=\"pl-c1\">0.5</span>) * _costmap-&gt;<span class=\"pl-c1\">getResolution</span>()),\n    <span class=\"pl-c1\">0.0</span>);\n}\n\n<span class=\"pl-k\">template</span>&lt;<span class=\"pl-k\">typename</span> NodeT&gt;\n<span class=\"pl-k\">void</span> AStarAlgorithm&lt;NodeT&gt;::populateExpansionsLog(\n  <span class=\"pl-k\">const</span> NodePtr &amp; node,\n  std::vector&lt;std::tuple&lt;<span class=\"pl-k\">float</span>, <span class=\"pl-k\">float</span>, <span class=\"pl-k\">float</span>&gt;&gt; * expansions_log)\n{\n  <span class=\"pl-k\">typename</span> NodeT::Coordinates coords = node-&gt;<span class=\"pl-smi\">pose</span>;\n  expansions_log-&gt;<span class=\"pl-c1\">emplace_back</span>(\n    _costmap-&gt;<span class=\"pl-c1\">getOriginX</span>() + ((coords.<span class=\"pl-smi\">x</span> + <span class=\"pl-c1\">0.5</span>) * _costmap-&gt;<span class=\"pl-c1\">getResolution</span>()), <span class=\"pl-c\"><span class=\"pl-c\">//</span> Issue here</span>\n    _costmap-&gt;<span class=\"pl-c1\">getOriginY</span>() + ((coords.<span class=\"pl-smi\">y</span> + <span class=\"pl-c1\">0.5</span>) * _costmap-&gt;<span class=\"pl-c1\">getResolution</span>()), <span class=\"pl-c\"><span class=\"pl-c\">//</span> Issue here</span>\n    NodeT::motion_table.<span class=\"pl-c1\">getAngleFromBin</span>(coords.<span class=\"pl-smi\">theta</span>));\n}</pre></div>\n<p dir=\"auto\">The image shows the planed unsmoothed path in green, and the expansions with a constant offset in x and y direction.<br>\nIn a more cluttered planning scenario, one cannot determine which expansions led to the resulting path.<br>\n<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://private-user-images.githubusercontent.com/137277489/510088333-e4fa6bd5-df6d-4895-945d-f6c38443bd5f.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgwMzUsIm5iZiI6MTc5MTcxNzczNSwicGF0aCI6Ii8xMzcyNzc0ODkvNTEwMDg4MzMzLWU0ZmE2YmQ1LWRmNmQtNDg5NS05NDVkLWY2YzM4NDQzYmQ1Zi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYxMDExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MTAxMVQxMTIyMTVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kMzExYzI2MzJmMzk0MDE2MmEyZmY5ZWU0YjA2NDY1ZTUxZTM0MWQ0MjFlZWNlN2JhNWRhOTA3MDYxZDdkYWIxJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.KklAw4tBwd34IFuUaYGbiGZ3GP3pNE_wfjS_I-W7Ggk\"><img width=\"1508\" height=\"959\" alt=\"Image\" src=\"https://private-user-images.githubusercontent.com/137277489/510088333-e4fa6bd5-df6d-4895-945d-f6c38443bd5f.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgwMzUsIm5iZiI6MTc5MTcxNzczNSwicGF0aCI6Ii8xMzcyNzc0ODkvNTEwMDg4MzMzLWU0ZmE2YmQ1LWRmNmQtNDg5NS05NDVkLWY2YzM4NDQzYmQ1Zi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYxMDExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MTAxMVQxMTIyMTVaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kMzExYzI2MzJmMzk0MDE2MmEyZmY5ZWU0YjA2NDY1ZTUxZTM0MWQ0MjFlZWNlN2JhNWRhOTA3MDYxZDdkYWIxJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.KklAw4tBwd34IFuUaYGbiGZ3GP3pNE_wfjS_I-W7Ggk\" style=\"max-width: 100%; height: auto; max-height: 959px;; aspect-ratio: 1508 / 959; background-color: var(--bgColor-muted); border-radius: 6px\" class=\"js-gh-image-fallback\"></a></p>\n<p dir=\"auto\">The suggested fix removes the hardcoded offset of half a grid cell length:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"template&lt;typename NodeT&gt;\nvoid AStarAlgorithm&lt;NodeT&gt;::populateExpansionsLog(\n  const NodePtr &amp; node,\n  std::vector&lt;std::tuple&lt;float, float, float&gt;&gt; * expansions_log)\n{\n  typename NodeT::Coordinates coords = node-&gt;pose;\n  expansions_log-&gt;emplace_back(\n    _costmap-&gt;getOriginX() + (coords.x * _costmap-&gt;getResolution()), // Fixed line\n    _costmap-&gt;getOriginY() + (coords.y * _costmap-&gt;getResolution()), // Fixed line\n    NodeT::motion_table.getAngleFromBin(coords.theta));\n}\"><pre class=\"notranslate\"><span class=\"pl-k\">template</span>&lt;<span class=\"pl-k\">typename</span> NodeT&gt;\n<span class=\"pl-k\">void</span> AStarAlgorithm&lt;NodeT&gt;::populateExpansionsLog(\n  <span class=\"pl-k\">const</span> NodePtr &amp; node,\n  std::vector&lt;std::tuple&lt;<span class=\"pl-k\">float</span>, <span class=\"pl-k\">float</span>, <span class=\"pl-k\">float</span>&gt;&gt; * expansions_log)\n{\n  <span class=\"pl-k\">typename</span> NodeT::Coordinates coords = node-&gt;<span class=\"pl-smi\">pose</span>;\n  expansions_log-&gt;<span class=\"pl-c1\">emplace_back</span>(\n    _costmap-&gt;<span class=\"pl-c1\">getOriginX</span>() + (coords.<span class=\"pl-smi\">x</span> * _costmap-&gt;<span class=\"pl-c1\">getResolution</span>()), <span class=\"pl-c\"><span class=\"pl-c\">//</span> Fixed line</span>\n    _costmap-&gt;<span class=\"pl-c1\">getOriginY</span>() + (coords.<span class=\"pl-smi\">y</span> * _costmap-&gt;<span class=\"pl-c1\">getResolution</span>()), <span class=\"pl-c\"><span class=\"pl-c\">//</span> Fixed line</span>\n    NodeT::motion_table.<span class=\"pl-c1\">getAngleFromBin</span>(coords.<span class=\"pl-smi\">theta</span>));\n}</pre></div>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2025-11-05T11:21:58Z",
+    "updatedAt": "2026-04-08T17:59:10Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/137277489?v=4",
+      "login": "sebatztian",
+      "id": "U_kgDOCC6wMQ",
+      "profileUrl": "https://github.com/sebatztian",
+      "name": "Sebastian Niklas Schreck",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mw"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+            "fullDatabaseId": "948691578",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros-navigation/navigation2/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1ODI=",
+            "fullDatabaseId": "948691582",
+            "color": "7057ff",
+            "name": "good first issue",
+            "nameHTML": "good first issue",
+            "description": "Good for newcomers",
+            "url": "https://github.com/ros-navigation/navigation2/labels/good%20first%20issue",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1ODE=",
+            "fullDatabaseId": "948691581",
+            "color": "008672",
+            "name": "help wanted",
+            "nameHTML": "help wanted",
+            "description": "Extra attention is needed",
+            "url": "https://github.com/ros-navigation/navigation2/labels/help%20wanted",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 5,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7TjVAM",
+      "databaseId": 3549253644,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7WA05F",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCC6wMQ",
+          "login": "sebatztian"
+        },
+        "number": 5671,
+        "locked": false,
+        "databaseId": 3590540869
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5671#issuecomment-3549253644",
+      "createdAt": "2025-11-18T19:29:13Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Please submit a PR! Seems reasonable. Did you test this against 2D and the Hybrid or Lattice to make sure they all work well (if lattice or hybrid does; its counterpart will as well, just want to know that 2D + the SE2 ones both work correctly)",
+      "bodyHTML": "<p dir=\"auto\">Please submit a PR! Seems reasonable. Did you test this against 2D and the Hybrid or Lattice to make sure they all work well (if lattice or hybrid does; its counterpart will as well, just want to know that 2D + the SE2 ones both work correctly)</p>",
+      "bodyVersion": "ea97508db4b15f47cc6d6c02d26f5db02cc4b6ee9141c4d5832ebb5558767360",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7Vj8Yp",
+      "databaseId": 3582969385,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7WA05F",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCC6wMQ",
+          "login": "sebatztian"
+        },
+        "number": 5671,
+        "locked": false,
+        "databaseId": 3590540869
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5671#issuecomment-3582969385",
+      "createdAt": "2025-11-26T19:43:37Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@sebatztian any update?",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/sebatztian/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/sebatztian\">@sebatztian</a> any update?</p>",
+      "bodyVersion": "c0e4c9cd593349b83c750dd1251421f6d8694bab109c5b210d676e98fe7d88a3",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7frE8V",
+      "databaseId": 3752611605,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7WA05F",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCC6wMQ",
+          "login": "sebatztian"
+        },
+        "number": 5671,
+        "locked": false,
+        "databaseId": 3590540869
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5671#issuecomment-3752611605",
+      "createdAt": "2026-01-15T02:38:18Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@sebatztian any update?",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/sebatztian/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/sebatztian\">@sebatztian</a> any update?</p>",
+      "bodyVersion": "c0e4c9cd593349b83c750dd1251421f6d8694bab109c5b210d676e98fe7d88a3",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7vJrcM",
+      "databaseId": 4012291852,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7WA05F",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCC6wMQ",
+          "login": "sebatztian"
+        },
+        "number": 5671,
+        "locked": false,
+        "databaseId": 3590540869
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBv2_8Q",
+        "login": "omjadhav9271",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/117293041?u=e41edee04db56399024b5385c5419ee37ed6a9ce&v=4",
+        "profileUrl": "https://github.com/omjadhav9271",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5671#issuecomment-4012291852",
+      "createdAt": "2026-03-06T15:07:26Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2026-03-06T15:14:45Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM7vJrcMzp9ZOJA",
+        "editor": {
+          "__typename": "User",
+          "id": "U_kgDOBv2_8Q",
+          "url": "https://github.com/omjadhav9271",
+          "login": "omjadhav9271"
+        }
+      },
+      "pinnedBy": null,
+      "body": "@mini-1235 @SteveMacenski \nHi, I would like to work on this issue.",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/mini-1235/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/mini-1235\">@mini-1235</a> <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/SteveMacenski/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/SteveMacenski\">@SteveMacenski</a><br>\nHi, I would like to work on this issue.</p>",
+      "bodyVersion": "acb2df7a112c5dc86dad1169d0df14d7d832cbb42431c8463db4e7a6f54378b7",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+                "login": "SteveMacenski",
+                "name": "Steve Macenski",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7viuwX",
+      "databaseId": 4018859031,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7WA05F",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCC6wMQ",
+          "login": "sebatztian"
+        },
+        "number": 5671,
+        "locked": false,
+        "databaseId": 3590540869
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5671#issuecomment-4018859031",
+      "createdAt": "2026-03-08T11:13:40Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@omjadhav9271 feel free to work on it and let us know if you have any questions :)",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/omjadhav9271/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/omjadhav9271\">@omjadhav9271</a> feel free to work on it and let us know if you have any questions :)</p>",
+      "bodyVersion": "1dbac436ab75c45881f70228e13fe8697f8e2e8d720940d4ef6d849664035389",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "U_kgDOBv2_8Q",
+                "login": "omjadhav9271",
+                "name": null,
+                "avatarUrl": "https://avatars.githubusercontent.com/u/117293041?s=64&u=e41edee04db56399024b5385c5419ee37ed6a9ce&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7TjVAM",
+      "databaseId": 3549253644,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7WA05F",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCC6wMQ",
+          "login": "sebatztian"
+        },
+        "number": 5671,
+        "locked": false,
+        "databaseId": 3590540869
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5671#issuecomment-3549253644",
+      "createdAt": "2025-11-18T19:29:13Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Please submit a PR! Seems reasonable. Did you test this against 2D and the Hybrid or Lattice to make sure they all work well (if lattice or hybrid does; its counterpart will as well, just want to know that 2D + the SE2 ones both work correctly)",
+      "bodyHTML": "<p dir=\"auto\">Please submit a PR! Seems reasonable. Did you test this against 2D and the Hybrid or Lattice to make sure they all work well (if lattice or hybrid does; its counterpart will as well, just want to know that 2D + the SE2 ones both work correctly)</p>",
+      "bodyVersion": "ea97508db4b15f47cc6d6c02d26f5db02cc4b6ee9141c4d5832ebb5558767360",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM7WA05FzwAAAATlLswU",
+      "databaseId": 21024918548,
+      "createdAt": "2025-11-18T19:29:17Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7Vj8Yp",
+      "databaseId": 3582969385,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7WA05F",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCC6wMQ",
+          "login": "sebatztian"
+        },
+        "number": 5671,
+        "locked": false,
+        "databaseId": 3590540869
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5671#issuecomment-3582969385",
+      "createdAt": "2025-11-26T19:43:37Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@sebatztian any update?",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/sebatztian/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/sebatztian\">@sebatztian</a> any update?</p>",
+      "bodyVersion": "c0e4c9cd593349b83c750dd1251421f6d8694bab109c5b210d676e98fe7d88a3",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7frE8V",
+      "databaseId": 3752611605,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7WA05F",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCC6wMQ",
+          "login": "sebatztian"
+        },
+        "number": 5671,
+        "locked": false,
+        "databaseId": 3590540869
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5671#issuecomment-3752611605",
+      "createdAt": "2026-01-15T02:38:18Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@sebatztian any update?",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/sebatztian/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/sebatztian\">@sebatztian</a> any update?</p>",
+      "bodyVersion": "c0e4c9cd593349b83c750dd1251421f6d8694bab109c5b210d676e98fe7d88a3",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM7WA05FzwAAAAVekvM4",
+      "databaseId": 23061525304,
+      "createdAt": "2026-02-25T09:25:44Z",
+      "actor": {
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?s=64&u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "login": "mini-1235",
+        "profileResourcePath": "/mini-1235",
+        "__typename": "User",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1ODI=",
+        "archivedAt": null,
+        "nameHTML": "good first issue",
+        "name": "good first issue",
+        "color": "7057ff",
+        "description": "Good for newcomers"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM7WA05FzwAAAAVekvMk",
+      "databaseId": 23061525284,
+      "createdAt": "2026-02-25T09:25:44Z",
+      "actor": {
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?s=64&u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "login": "mini-1235",
+        "profileResourcePath": "/mini-1235",
+        "__typename": "User",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1ODE=",
+        "archivedAt": null,
+        "nameHTML": "help wanted",
+        "name": "help wanted",
+        "color": "008672",
+        "description": "Extra attention is needed"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7vJrcM",
+      "databaseId": 4012291852,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7WA05F",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCC6wMQ",
+          "login": "sebatztian"
+        },
+        "number": 5671,
+        "locked": false,
+        "databaseId": 3590540869
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBv2_8Q",
+        "login": "omjadhav9271",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/117293041?u=e41edee04db56399024b5385c5419ee37ed6a9ce&v=4",
+        "profileUrl": "https://github.com/omjadhav9271",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5671#issuecomment-4012291852",
+      "createdAt": "2026-03-06T15:07:26Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2026-03-06T15:14:45Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM7vJrcMzp9ZOJA",
+        "editor": {
+          "__typename": "User",
+          "id": "U_kgDOBv2_8Q",
+          "url": "https://github.com/omjadhav9271",
+          "login": "omjadhav9271"
+        }
+      },
+      "pinnedBy": null,
+      "body": "@mini-1235 @SteveMacenski \nHi, I would like to work on this issue.",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/mini-1235/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/mini-1235\">@mini-1235</a> <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/SteveMacenski/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/SteveMacenski\">@SteveMacenski</a><br>\nHi, I would like to work on this issue.</p>",
+      "bodyVersion": "acb2df7a112c5dc86dad1169d0df14d7d832cbb42431c8463db4e7a6f54378b7",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+                "login": "SteveMacenski",
+                "name": "Steve Macenski",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7viuwX",
+      "databaseId": 4018859031,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7WA05F",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCC6wMQ",
+          "login": "sebatztian"
+        },
+        "number": 5671,
+        "locked": false,
+        "databaseId": 3590540869
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5671#issuecomment-4018859031",
+      "createdAt": "2026-03-08T11:13:40Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@omjadhav9271 feel free to work on it and let us know if you have any questions :)",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/omjadhav9271/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/omjadhav9271\">@omjadhav9271</a> feel free to work on it and let us know if you have any questions :)</p>",
+      "bodyVersion": "1dbac436ab75c45881f70228e13fe8697f8e2e8d720940d4ef6d849664035389",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "U_kgDOBv2_8Q",
+                "login": "omjadhav9271",
+                "name": null,
+                "avatarUrl": "https://avatars.githubusercontent.com/u/117293041?s=64&u=e41edee04db56399024b5385c5419ee37ed6a9ce&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOCBF7SM7WA05FzwAAAAWov4lK",
+      "databaseId": 24305961290,
+      "createdAt": "2026-04-08T17:59:10Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOCBF7SM7Leplk",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-navigation/navigation2/pull/6040",
+        "number": 6040,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmphxSygAqjM1NDkyNTM2NDQ=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnW4_hbABqzI0MzA1OTYxMjkw"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmphxSygAqjM1NDkyNTM2NDQ=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnW4_hbABqzI0MzA1OTYxMjkw"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOCBF7SM7Leplk",
+      "url": "https://github.com/ros-navigation/navigation2/pull/6040",
+      "number": 6040,
+      "title": "Fix SMAC Hybrid visualization offset from expansions to path",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-03-18T09:27:45Z",
+      "databaseId": 3413809508,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6040",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6040.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6040.changes.json"
+    }
+  ]
+}

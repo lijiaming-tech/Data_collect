@@ -1,0 +1,30 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3223",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3223",
+    "fetched_at": "2026-10-11T11:20:20.479350+00:00",
+    "http_status": 200,
+    "response_sha256": "7f08322138b08e421efe585b4855df910d26cae65623d0806ebd85401ac7bfce"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/3223",
+  "title": "Fix race condition when creating isolated component container by tonynajjar · Pull Request #3223 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nFix race condition when creating isolated component container\n\n\nWhat\n\n\nThe isolated component_container created a throwaway ComponentManager solely to read the thread_num parameter, then destroyed it and re-created the real ComponentManagerIsolated. This briefly advertised the container's ~/_container/load_node service and tore it down, racing LoadComposableNodes clients and silently dropping load requests.\n\n\nChanges\n\n\n\ncomponent_container.cpp: construct the manager once, directly as its final type. Isolated managers are now built with num_threads == 0 (\"auto\").\n\n\ncomponent_manager_isolated.hpp: in add_node_to_executor, num_threads_ == 0 now resolves the thread_num parameter itself (defaults to hardware concurrency), so the container no longer needs to read it up front.\n\n\nAdded a regression test (isolated_multi_threaded_auto_thread_num) covering the isolated multi-threaded \"auto\" path.\n\n\n\nNotes\n\n\n\nABI-safe: only an executable and an inline template method body change; ComponentManager's layout is untouched.\n\n\nBehavior preserved, including -p thread_num:=N for isolated multi-threaded/events executors.\n\n\nCleanly backportable to lyrical (identical baseline).\n\n\n\n\nFixes #3222\n\n\nIs this user-facing behavior change?\n\n\n\nDid you use Generative AI?\n\n\n\nAdditional Information",
+  "discussion_rendered_text": [
+    "@skyegalaxy 🙏",
+    "Tick the box to add this pull request to the merge queue (same as @mergifyio queue).\n\n\n\n Queue this pull request",
+    "Pulls: #3223, ros2/launch_ros#563\n\nGist: https://gist.githubusercontent.com/skyegalaxy/5232fda883b941f580d1e2a05fb88104/raw/06dc7d1a96039fe48d3fc8d422cbe562820d1792/ros2.repos\n\nBUILD args:\n\nTEST args:\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/20066\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "https://github.com/Mergifyio backport lyrical",
+    "backport lyrical\n\n\n✅ Backports have been created\nDetails\n\n\n#3228 Fix race condition when creating isolated component container (backport #3223) has been created for branch lyrical",
+    "lgtm with green CI.",
+    "ah, sorry one step behind. the comment was cached in the browser."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros2/rclcpp/commit/76dd3604043681ad204bffe6e2611218591b3d6f",
+    "https://github.com/ros2/rclcpp/commit/81ec3e30bf6ae79c903cc2fc5daa30ec5f53041d",
+    "https://github.com/ros2/rclcpp/pull/3223/commits/01bc12f80d384edafd34f8f268a99b0acc08c118",
+    "https://github.com/ros2/rclcpp/pull/3223/commits/19cfbf1ea1cc5f25c9ad52d8ebb402c31518f999"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

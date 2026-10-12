@@ -1,0 +1,24 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3234",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3234",
+    "fetched_at": "2026-10-11T11:24:48.000054+00:00",
+    "http_status": 200,
+    "response_sha256": "ccb979676519816fe2a931a1d461e097d52a7bf77799565440385ce450ca1b93"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3234",
+  "title": "Add missing `charconv` header by christophfroehlich · Pull Request #3234 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Fixes #3233",
+  "discussion_rendered_text": [
+    "Codecov Report\n\n\n✅ All modified and coverable lines are covered by tests.\n\n✅ Project coverage is 89.08%. Comparing base (35c8db9) to head (9473b52).\n\n⚠️ Report is 2 commits behind head on master.\n\nAdditional details and impacted files\n\n\n```\n@@            Coverage Diff             @@\n##           master    #3234      +/-   ##\n==========================================\n+ Coverage   89.06%   89.08%   +0.01%     \n==========================================\n  Files         160      160              \n  Lines       19751    19751              \n  Branches     1597     1597              \n==========================================\n+ Hits        17592    17595       +3     \n+ Misses       1493     1488       -5     \n- Partials      666      668       +2     \n```\n\n\n\n\n\n\nFlag\nCoverage Δ\n\n\n\n\n\n\nunittests\n89.08% <ø> (+0.01%)\n⬆️\n\n\n\n\nFlags with carried forward coverage won't be shown. Click here to find out more.\n\n\n\n\n\nFiles with missing lines\nCoverage Δ\n\n\n\n\n\n\nhardware_interface/src/lexical_casts.cpp\n83.78% <ø> (ø)\n\n\n\n\n\n... and 3 files with indirect coverage changes\n\n\n 🚀 New features to boost your workflow: \n\n\n❄️ Test Analytics: Detect flaky tests, report on failures, and find test suite problems."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/commit/1d473949d9344b9f9112dcebbbf1f8fb415b5f29",
+    "https://github.com/ros-controls/ros2_control/commit/71ac550bb88b3e3612984b00c4fce41647064995",
+    "https://github.com/ros-controls/ros2_control/commit/c178e16cc0fcaf6b929d9321bbf51ba377f4370a",
+    "https://github.com/ros-controls/ros2_control/pull/3234/commits/9473b5206a37d5210cf51a8807144f7f00e9d5c7"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

@@ -1,0 +1,44 @@
+{
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/pull/5616/files",
+    "final_url": "https://github.com/ros-navigation/navigation2/pull/5616/files",
+    "fetched_at": "2026-10-11T11:23:55.400991+00:00",
+    "http_status": 200,
+    "response_sha256": "11f671c0fffe7eb9bc414cf892ceea3452fe5b81977620daf6b07eb6d879235f"
+  },
+  "files": {
+    "nav2_regulated_pure_pursuit_controller/src/collision_checker.cpp": [
+      "@@ -98,7 +98,8 @@ bool CollisionChecker::isCollisionImminent(",
+      "         params_->min_distance_to_obstacle / std::max(std::abs(linear_vel),",
+      "         params_->min_approach_linear_velocity)",
+      "     );",
+      "-    simulation_distance_limit = std::max(carrot_dist, params_->min_distance_to_obstacle);",
+      "+    simulation_distance_limit = std::min(std::max(carrot_dist, params_->min_distance_to_obstacle),",
+      "+                                params_->max_lookahead_dist);",
+      "   }",
+      "   int i = 1;",
+      "   while (i * projection_time < max_allowed_time_to_collision_check) {"
+    ],
+    "nav2_regulated_pure_pursuit_controller/src/parameter_handler.cpp": [
+      "@@ -189,6 +189,15 @@ ParameterHandler::ParameterHandler(",
+      "   node->get_parameter(",
+      "     plugin_name_ + \".use_collision_detection\",",
+      "     params_.use_collision_detection);",
+      "+  if (params_.use_collision_detection &&",
+      "+    params_.min_distance_to_obstacle > params_.max_lookahead_dist)",
+      "+  {",
+      "+    RCLCPP_WARN(",
+      "+      logger_,",
+      "+      \"min_distance_to_obstacle (%.02f) is greater than max_lookahead_dist (%.02f). \"",
+      "+      \"The collision check distance will be capped by max_lookahead_dist.\",",
+      "+      params_.min_distance_to_obstacle, params_.max_lookahead_dist);",
+      "+  }",
+      "   node->get_parameter(plugin_name_ + \".stateful\", params_.stateful);",
+      " ",
+      "   if (params_.inflation_cost_scaling_factor <= 0.0) {"
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

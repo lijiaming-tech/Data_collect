@@ -1,0 +1,21 @@
+{
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/pull/5527",
+    "final_url": "https://github.com/ros-navigation/navigation2/pull/5527",
+    "fetched_at": "2026-10-11T11:22:57.446651+00:00",
+    "http_status": 200,
+    "response_sha256": "ef9f739428d42e0d99c2275e5047d789de20d0e086aaa7389a3467f6d6ba0839"
+  },
+  "url": "https://github.com/ros-navigation/navigation2/pull/5527",
+  "title": "Reverting ad2f9602f03ba688c34df7f903a118b6898ef0ce on Humble by SteveMacenski · Pull Request #5527 · ros-navigation/navigation2 · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Reverting ad2f960 on Humble due to bug that was fixed on Main but is not backward compatible with Humble, so the entire feature should be removed.\n\n\nFYI @redvinaa\n\n\nCloses #5503",
+  "discussion_rendered_text": [],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-navigation/navigation2/commit/ad2f9602f03ba688c34df7f903a118b6898ef0ce",
+    "https://github.com/ros-navigation/navigation2/commit/d0add845b63f5eb02f19648c5201b84e3065f084",
+    "https://github.com/ros-navigation/navigation2/pull/5527/commits/5245cf8ea1ecc379d737af4787671b6f3ed85c2b"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

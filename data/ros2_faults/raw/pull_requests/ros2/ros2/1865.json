@@ -1,0 +1,32 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/ros2/pull/1865",
+    "final_url": "https://github.com/ros2/ros2/pull/1865",
+    "fetched_at": "2026-10-11T11:19:11.847896+00:00",
+    "http_status": 200,
+    "response_sha256": "6f41b65637d6142044e9a5211b0f655811b27e2b2064e0f50a85c53d25d57286"
+  },
+  "url": "https://github.com/ros2/ros2/pull/1865",
+  "title": "use clang-tools instead of clang-format (rolling) by dskkato · Pull Request #1865 · ros2/ros2 · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nclang-tidy is missing in pixi environment. Since clang-tools contains both clang-format and clang-tidy, I suggest to use clang-tools instead of clang-format\n\n\nFixes #1864\n\n\nIs this user-facing behavior change?\n\n\nYes. Uses can use clang-tidy in pixi environment.\n\n\nDid you use Generative AI?\n\n\nAssisted by CodeX, Luna.\n\n\nAdditional Information\n\n\nclang-tools installs following packages/tools. The reason I didn't specify clang-tidy is that it is missing in conda-forge registry.\n\n\n\nclang-tidy\n\n\nclangd\n\n\nclang-check\n\n\nclang-query\n\n\nclang-rename\n\n\nclang-repl\n\n\nclang-doc\n\n\nclang-include-fixer\n\n\nclang-include-cleaner\n\n\nclang-apply-replacements\n\n\nclang-change-namespace\n\n\nclang-move\n\n\nclang-reorder-fields\n\n\nclang-scan-deps\n\n\nscan-build\n\n\nscan-view\n\n\nrun-clang-tidy\n\n\nintercept-build\n\n\nfind-all-symbols\n\n\nmodularize\n\n\ndiagtool",
+  "discussion_rendered_text": [
+    "How is this kind of dependency maintenance backported to other distros?\n\n\nI prepared the changes for the Lyrical version in #1866 as a draft PR, but let me know if this is handled automatically (e.g., by Mergify?) or if I should do something else.",
+    "we use Mergify semi-automatically: we tell it to create backport PRs when we think it's needed. We'll probably backport this to all distros that have a pixi.toml file.",
+    "CI is at ament/ament_lint#563 (comment)",
+    "Looks good on my end. This allows ament/ament_lint#563 (comment) to pass on Windows.",
+    "@mjcarroll @knmcguire any thoughts or objections about switching from clang-format instead of clang-tools and thus installing a lot more dependencies?",
+    "I think it is fine myself. The extra space the packages takes up is neglectable compared the space of building ROS itself\n\n\nFYI, here is a rolling build with the pixi.toml file:",
+    "the Windows test failures look unrelated, merging.",
+    "@Mergifyio backport lyrical",
+    "backport lyrical\n\n\n✅ Backports have been created\nDetails\n\n\n#1867 use clang-tools instead of clang-format (rolling) (backport #1865) has been created for branch lyrical but encountered conflicts\n\n\n\nCherry-pick of d8bbb0e has failed:\n\n\n\n```\nOn branch mergify/bp/lyrical/pr-1865\nYour branch is up to date with 'origin/lyrical'.\n\nYou are currently cherry-picking commit d8bbb0e.\n  (fix conflicts and run \"git cherry-pick --continue\")\n  (use \"git cherry-pick --skip\" to skip this patch)\n  (use \"git cherry-pick --abort\" to cancel the cherry-pick operation)\n\nUnmerged paths:\n  (use \"git add/rm <file>...\" as appropriate to mark resolution)\n\tdeleted by us:   pixi.lock\n\tboth modified:   pixi.toml\n\nno changes added to commit (use \"git add\" and/or \"git commit -a\")\n\n```\n\n\n\nTo fix up this pull request, you can check it out locally. See documentation: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/checking-out-pull-requests-locally"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros2/ros2/commit/291c596150d2c75cd5d4ea68c6690cbd85f27956",
+    "https://github.com/ros2/ros2/commit/d8bbb0e05c14849c13f2cf994d959393aa564474",
+    "https://github.com/ros2/ros2/pull/1865/commits/81b06d45b089a217eae2ad30a6f77d6c26ba0c96",
+    "https://github.com/ros2/ros2/pull/1865/commits/f8d7237536495c917395457be2c6560448201a27"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

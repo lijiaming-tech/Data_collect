@@ -1,0 +1,3712 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros2/ros2",
+  "source": {
+    "url": "https://github.com/ros2/ros2/issues/1613",
+    "final_url": "https://github.com/ros2/ros2/issues/1613",
+    "fetched_at": "2026-10-11T11:19:29.880605+00:00",
+    "http_status": 200,
+    "response_sha256": "65d200a93b8afb734e0bdd6c2721ada20839a9e1bb808131187d21065de3cfe3"
+  },
+  "issue": {
+    "id": "I_kwDOAd1its6a4cS9",
+    "databaseId": 2598487229,
+    "number": 1613,
+    "title": "DSV files are not sourced in binary workspace",
+    "url": "https://github.com/ros2/ros2/issues/1613",
+    "body": "## Bug report\r\n\r\n**Required Info:**\r\n\r\n- Operating System:\r\n  - Ubuntu 24.04\r\n- Installation type:\r\n  - binaries\r\n- Version or commit hash:\r\n  - latest jazzy (ros2cli is 0.32.1)\r\n- DDS implementation:\r\n  - default (fastdds)\r\n\r\n#### Steps to reproduce issue\r\nInstall a package that uses dsv to generically modify environment variables as described [here](https://colcon.readthedocs.io/en/released/developer/environment.html#dsv-files).\r\nE.g. [qml_ros2_plugin](https://github.com/StefanFabian/qml_ros2_plugin/blob/master/environment_setup.dsv.in)\r\n\r\n#### Expected behavior\r\nThe variable QML2_IMPORT_PATH exists and has the added value as defined in the dsv after the binary is ` ros-jazzy-qml-ros2-plugin` is installed and the setup.bash is sourced.\r\n\r\n#### Actual behavior\r\nThe variable is missing and based on my investigation .dsv environment hooks are generally not processed.\r\n",
+    "bodyHTML": "<h2 dir=\"auto\">Bug report</h2>\n<p dir=\"auto\"><strong>Required Info:</strong></p>\n<ul dir=\"auto\">\n<li>Operating System:\n<ul dir=\"auto\">\n<li>Ubuntu 24.04</li>\n</ul>\n</li>\n<li>Installation type:\n<ul dir=\"auto\">\n<li>binaries</li>\n</ul>\n</li>\n<li>Version or commit hash:\n<ul dir=\"auto\">\n<li>latest jazzy (ros2cli is 0.32.1)</li>\n</ul>\n</li>\n<li>DDS implementation:\n<ul dir=\"auto\">\n<li>default (fastdds)</li>\n</ul>\n</li>\n</ul>\n<h4 dir=\"auto\">Steps to reproduce issue</h4>\n<p dir=\"auto\">Install a package that uses dsv to generically modify environment variables as described <a href=\"https://colcon.readthedocs.io/en/released/developer/environment.html#dsv-files\" rel=\"nofollow\">here</a>.<br>\nE.g. <a href=\"https://github.com/StefanFabian/qml_ros2_plugin/blob/master/environment_setup.dsv.in\">qml_ros2_plugin</a></p>\n<h4 dir=\"auto\">Expected behavior</h4>\n<p dir=\"auto\">The variable QML2_IMPORT_PATH exists and has the added value as defined in the dsv after the binary is <code class=\"notranslate\"> ros-jazzy-qml-ros2-plugin</code> is installed and the setup.bash is sourced.</p>\n<h4 dir=\"auto\">Actual behavior</h4>\n<p dir=\"auto\">The variable is missing and based on my investigation .dsv environment hooks are generally not processed.</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2024-10-18T22:25:15Z",
+    "updatedAt": "2026-01-28T02:51:00Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4",
+      "login": "StefanFabian",
+      "id": "MDQ6VXNlcjIwOTA1MjA=",
+      "profileUrl": "https://github.com/StefanFabian",
+      "name": "Stefan Fabian",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWwxODA1NTM0MTU=",
+            "fullDatabaseId": "180553415",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros2/ros2/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 13,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6Qdmvc",
+      "databaseId": 2423679964,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjIwOTA1MjA=",
+        "login": "StefanFabian",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4",
+        "profileUrl": "https://github.com/StefanFabian",
+        "name": "Stefan Fabian"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2423679964",
+      "createdAt": "2024-10-19T08:09:46Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2024-10-19T08:13:25Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOAd1its6QdmvczlLCq88",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "url": "https://github.com/StefanFabian",
+          "login": "StefanFabian"
+        }
+      },
+      "pinnedBy": null,
+      "body": "A working fix would be to change the following block in the `_local_setup.py` (currently line 253) in `/opt/ros/jazzy` from\r\n\r\n```python\r\n           # group remaining source lines by basename\r\n            path_without_ext, ext = os.path.splitext(remainder)\r\n            assert ext.startswith('.')\r\n            ext = ext[1:]\r\n            if ext in (primary_extension, additional_extension):\r\n                if path_without_ext not in basenames:\r\n                    basenames[path_without_ext] = set()\r\n                basenames[path_without_ext].add(ext)\r\n```\r\n\r\nto \r\n\r\n```python\r\n           # group remaining source lines by basename\r\n            path_without_ext, ext = os.path.splitext(remainder)\r\n            assert ext.startswith('.')\r\n            ext = ext[1:]\r\n            if ext in (primary_extension, additional_extension, \"dsv\"):\r\n                if path_without_ext not in basenames:\r\n                    basenames[path_without_ext] = set()\r\n                basenames[path_without_ext].add(ext)\r\n```\r\n\r\nHowever, this looks to be a bit of a hack, and there is probably a cleaner solution.\r\nI honestly don't understand the logic behind the code in some parts of that file.\r\nIt could probably use some refactoring.",
+      "bodyHTML": "<p dir=\"auto\">A working fix would be to change the following block in the <code class=\"notranslate\">_local_setup.py</code> (currently line 253) in <code class=\"notranslate\">/opt/ros/jazzy</code> from</p>\n<div class=\"highlight highlight-source-python notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"           # group remaining source lines by basename\n            path_without_ext, ext = os.path.splitext(remainder)\n            assert ext.startswith('.')\n            ext = ext[1:]\n            if ext in (primary_extension, additional_extension):\n                if path_without_ext not in basenames:\n                    basenames[path_without_ext] = set()\n                basenames[path_without_ext].add(ext)\"><pre class=\"notranslate\">           <span class=\"pl-c\"># group remaining source lines by basename</span>\n            <span class=\"pl-s1\">path_without_ext</span>, <span class=\"pl-s1\">ext</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">os</span>.<span class=\"pl-c1\">path</span>.<span class=\"pl-c1\">splitext</span>(<span class=\"pl-s1\">remainder</span>)\n            <span class=\"pl-k\">assert</span> <span class=\"pl-s1\">ext</span>.<span class=\"pl-c1\">startswith</span>(<span class=\"pl-s\">'.'</span>)\n            <span class=\"pl-s1\">ext</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">ext</span>[<span class=\"pl-c1\">1</span>:]\n            <span class=\"pl-k\">if</span> <span class=\"pl-s1\">ext</span> <span class=\"pl-c1\">in</span> (<span class=\"pl-s1\">primary_extension</span>, <span class=\"pl-s1\">additional_extension</span>):\n                <span class=\"pl-k\">if</span> <span class=\"pl-s1\">path_without_ext</span> <span class=\"pl-c1\"><span class=\"pl-c1\">not</span> <span class=\"pl-c1\">in</span></span> <span class=\"pl-s1\">basenames</span>:\n                    <span class=\"pl-s1\">basenames</span>[<span class=\"pl-s1\">path_without_ext</span>] <span class=\"pl-c1\">=</span> <span class=\"pl-en\">set</span>()\n                <span class=\"pl-s1\">basenames</span>[<span class=\"pl-s1\">path_without_ext</span>].<span class=\"pl-c1\">add</span>(<span class=\"pl-s1\">ext</span>)</pre></div>\n<p dir=\"auto\">to</p>\n<div class=\"highlight highlight-source-python notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"           # group remaining source lines by basename\n            path_without_ext, ext = os.path.splitext(remainder)\n            assert ext.startswith('.')\n            ext = ext[1:]\n            if ext in (primary_extension, additional_extension, &quot;dsv&quot;):\n                if path_without_ext not in basenames:\n                    basenames[path_without_ext] = set()\n                basenames[path_without_ext].add(ext)\"><pre class=\"notranslate\">           <span class=\"pl-c\"># group remaining source lines by basename</span>\n            <span class=\"pl-s1\">path_without_ext</span>, <span class=\"pl-s1\">ext</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">os</span>.<span class=\"pl-c1\">path</span>.<span class=\"pl-c1\">splitext</span>(<span class=\"pl-s1\">remainder</span>)\n            <span class=\"pl-k\">assert</span> <span class=\"pl-s1\">ext</span>.<span class=\"pl-c1\">startswith</span>(<span class=\"pl-s\">'.'</span>)\n            <span class=\"pl-s1\">ext</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">ext</span>[<span class=\"pl-c1\">1</span>:]\n            <span class=\"pl-k\">if</span> <span class=\"pl-s1\">ext</span> <span class=\"pl-c1\">in</span> (<span class=\"pl-s1\">primary_extension</span>, <span class=\"pl-s1\">additional_extension</span>, <span class=\"pl-s\">\"dsv\"</span>):\n                <span class=\"pl-k\">if</span> <span class=\"pl-s1\">path_without_ext</span> <span class=\"pl-c1\"><span class=\"pl-c1\">not</span> <span class=\"pl-c1\">in</span></span> <span class=\"pl-s1\">basenames</span>:\n                    <span class=\"pl-s1\">basenames</span>[<span class=\"pl-s1\">path_without_ext</span>] <span class=\"pl-c1\">=</span> <span class=\"pl-en\">set</span>()\n                <span class=\"pl-s1\">basenames</span>[<span class=\"pl-s1\">path_without_ext</span>].<span class=\"pl-c1\">add</span>(<span class=\"pl-s1\">ext</span>)</pre></div>\n<p dir=\"auto\">However, this looks to be a bit of a hack, and there is probably a cleaner solution.<br>\nI honestly don't understand the logic behind the code in some parts of that file.<br>\nIt could probably use some refactoring.</p>",
+      "bodyVersion": "95e7a515d9bcb4fcac2aac582c1c3c2adb0107381ae81658eafd6c45e6213e9e",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6SMCsy",
+      "databaseId": 2452630322,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjExNDQ1ODg=",
+        "login": "cottsay",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/1144588?v=4",
+        "profileUrl": "https://github.com/cottsay",
+        "name": "Scott K Logan"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2452630322",
+      "createdAt": "2024-11-01T21:42:12Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "To be clear, are you suggesting the change to `_local_setup.py` as is distributed by the debs? Do you see the same problem if you build ROS 2 entirely from source without any of the buildfarm's debs?",
+      "bodyHTML": "<p dir=\"auto\">To be clear, are you suggesting the change to <code class=\"notranslate\">_local_setup.py</code> as is distributed by the debs? Do you see the same problem if you build ROS 2 entirely from source without any of the buildfarm's debs?</p>",
+      "bodyVersion": "c815507b14f7b0f8bec6b98a36603d8a0b87ad20bb2e98a69fe0468326e0bfd4",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6SMDqN",
+      "databaseId": 2452634253,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjIwOTA1MjA=",
+        "login": "StefanFabian",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4",
+        "profileUrl": "https://github.com/StefanFabian",
+        "name": "Stefan Fabian"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2452634253",
+      "createdAt": "2024-11-01T21:46:12Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Yes, that is what I'm suggesting.\r\nI have not tried building ROS 2 entirely from source but if I build the linked package in my source workspace, it works as expected.",
+      "bodyHTML": "<p dir=\"auto\">Yes, that is what I'm suggesting.<br>\nI have not tried building ROS 2 entirely from source but if I build the linked package in my source workspace, it works as expected.</p>",
+      "bodyVersion": "8e35b3fc5b2d5a4ce4106dbef6f14f7a65536e9ac8012fc4c9e65aaf1b566601",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6SMEXu",
+      "databaseId": 2452637166,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjExNDQ1ODg=",
+        "login": "cottsay",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/1144588?v=4",
+        "profileUrl": "https://github.com/cottsay",
+        "name": "Scott K Logan"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2452637166",
+      "createdAt": "2024-11-01T21:49:01Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> if I build the linked package in my source workspace, it works as expected.\r\n\r\nThat's valuable information, thanks. If it's working with a colcon workspace but not the ament workspace created by the debs, then it's almost certainly a bug. I'll try to take a look soon.",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">if I build the linked package in my source workspace, it works as expected.</p>\n</blockquote>\n<p dir=\"auto\">That's valuable information, thanks. If it's working with a colcon workspace but not the ament workspace created by the debs, then it's almost certainly a bug. I'll try to take a look soon.</p>",
+      "bodyVersion": "2f6ff5a025f6cae6eb2d739b6f8958bd4a1598eb3efa08b1a6acc2c1776cce08",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6ZHSW6",
+      "databaseId": 2568824250,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjIwOTA1MjA=",
+        "login": "StefanFabian",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4",
+        "profileUrl": "https://github.com/StefanFabian",
+        "name": "Stefan Fabian"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2568824250",
+      "createdAt": "2025-01-03T08:05:40Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@cottsay Any updates here?\r\nThis breaks at least the discovery of one of my packages because I use the dsv to register my library for an external application.\r\nI would assume other packages use it for its intended and officially documented use case as well and don't expect it just not to work.\r\nSo IMHO this is a huge issue.",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/cottsay/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/cottsay\">@cottsay</a> Any updates here?<br>\nThis breaks at least the discovery of one of my packages because I use the dsv to register my library for an external application.<br>\nI would assume other packages use it for its intended and officially documented use case as well and don't expect it just not to work.<br>\nSo IMHO this is a huge issue.</p>",
+      "bodyVersion": "2eb7016dc60e3e6cf7537b9cb022ce5b81257a1703ca64919c93779c1f719585",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6arMF4",
+      "databaseId": 2595012984,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjYwNzU4ODk0",
+        "login": "ros-discourse",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/60758894?u=3af3f346600c87810e2ebb8db9529234fe9c5fe3&v=4",
+        "profileUrl": "https://github.com/ros-discourse",
+        "name": null
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2595012984",
+      "createdAt": "2025-01-16T09:34:51Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue has been mentioned on **ROS Discourse**. There might be relevant details there:\n\nhttps://discourse.ros.org/t/the-forgotten-gem-that-is-environment-hooks-and-dsv/41581/1\n",
+      "bodyHTML": "<p dir=\"auto\">This issue has been mentioned on <strong>ROS Discourse</strong>. There might be relevant details there:</p>\n<p dir=\"auto\"><a href=\"https://discourse.ros.org/t/the-forgotten-gem-that-is-environment-hooks-and-dsv/41581/1\" rel=\"nofollow\">https://discourse.ros.org/t/the-forgotten-gem-that-is-environment-hooks-and-dsv/41581/1</a></p>",
+      "bodyVersion": "61debc80385735a362be69f762f353eeaca9528f817cf94d7837009ae0d8eeba",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6awqYU",
+      "databaseId": 2596447764,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjIwNjExNg==",
+        "login": "azeey",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/206116?u=ead1c8357bc3753d37b705eb212e7c92dcea214b&v=4",
+        "profileUrl": "https://github.com/azeey",
+        "name": "Addisu Z. Taddese"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2596447764",
+      "createdAt": "2025-01-16T18:38:26Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This seems similar to https://github.com/ament/ament_package/issues/145, and I believe it's fixed by https://github.com/ament/ament_package/pull/147. But that's only available in `rolling`, so the temporary work around we use in gz_vendor packages (e.g. https://github.com/gazebo-release/gz_sim_vendor/blob/1c2182a5991f2e83dc10e723303ce920e116bceb/CMakeLists.txt#L91-L95) is to create a dummy `.sh` file with the same name as the `.dsv` file.",
+      "bodyHTML": "<p dir=\"auto\">This seems similar to <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2224139336\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ament/ament_package/issues/145\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ament/ament_package/issues/145/hovercard\" href=\"https://github.com/ament/ament_package/issues/145\">ament/ament_package#145</a>, and I believe it's fixed by <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2251547409\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ament/ament_package/issues/147\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ament/ament_package/pull/147/hovercard\" href=\"https://github.com/ament/ament_package/pull/147\">ament/ament_package#147</a>. But that's only available in <code class=\"notranslate\">rolling</code>, so the temporary work around we use in gz_vendor packages (e.g. <a href=\"https://github.com/gazebo-release/gz_sim_vendor/blob/1c2182a5991f2e83dc10e723303ce920e116bceb/CMakeLists.txt#L91-L95\">https://github.com/gazebo-release/gz_sim_vendor/blob/1c2182a5991f2e83dc10e723303ce920e116bceb/CMakeLists.txt#L91-L95</a>) is to create a dummy <code class=\"notranslate\">.sh</code> file with the same name as the <code class=\"notranslate\">.dsv</code> file.</p>",
+      "bodyVersion": "e1787efef2e85091b1e3a3684a278b2461ee74b84c8516cc77aafbbe88e385f1",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 2,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjExNDQ1ODg=",
+                "login": "cottsay",
+                "name": "Scott K Logan",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/1144588?s=64&v=4"
+              },
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjIwOTA1MjA=",
+                "login": "StefanFabian",
+                "name": "Stefan Fabian",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?s=64&u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6a6yac",
+      "databaseId": 2599102108,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjIwOTA1MjA=",
+        "login": "StefanFabian",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4",
+        "profileUrl": "https://github.com/StefanFabian",
+        "name": "Stefan Fabian"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2599102108",
+      "createdAt": "2025-01-17T20:01:39Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Yes, thank you @azeey! I tried it and this would indeed fix it.\nThis should definitely be backported to all currently supported Distros.\nI don't understand why this wasn't done immediately in the first place.",
+      "bodyHTML": "<p dir=\"auto\">Yes, thank you <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/azeey/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/azeey\">@azeey</a>! I tried it and this would indeed fix it.<br>\nThis should definitely be backported to all currently supported Distros.<br>\nI don't understand why this wasn't done immediately in the first place.</p>",
+      "bodyVersion": "7be67929854faa87c2d943ad2315c5adbcdc29c2d61602d0517569d0d1172726",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6a6zAx",
+      "databaseId": 2599104561,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjYwNzU4ODk0",
+        "login": "ros-discourse",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/60758894?u=3af3f346600c87810e2ebb8db9529234fe9c5fe3&v=4",
+        "profileUrl": "https://github.com/ros-discourse",
+        "name": null
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2599104561",
+      "createdAt": "2025-01-17T20:03:25Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue has been mentioned on **ROS Discourse**. There might be relevant details there:\n\nhttps://discourse.ros.org/t/the-forgotten-gem-that-is-environment-hooks-and-dsv/41581/5\n",
+      "bodyHTML": "<p dir=\"auto\">This issue has been mentioned on <strong>ROS Discourse</strong>. There might be relevant details there:</p>\n<p dir=\"auto\"><a href=\"https://discourse.ros.org/t/the-forgotten-gem-that-is-environment-hooks-and-dsv/41581/5\" rel=\"nofollow\">https://discourse.ros.org/t/the-forgotten-gem-that-is-environment-hooks-and-dsv/41581/5</a></p>",
+      "bodyVersion": "b23939a23af1a2d48fde43fa9b94ca87652804ea7d8fbee6eee2a4aecc0d88b4",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6a60Hv",
+      "databaseId": 2599109103,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjExNDQ1ODg=",
+        "login": "cottsay",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/1144588?v=4",
+        "profileUrl": "https://github.com/cottsay",
+        "name": "Scott K Logan"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2599109103",
+      "createdAt": "2025-01-17T20:06:39Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> I don't understand why this wasn't done immediately in the first place.\n\nLooks like the original change came in during a freeze, so it probably just fell through the cracks. The original colcon change was shipped as a bugfix and I don't see any reasons not to backport this fix.",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">I don't understand why this wasn't done immediately in the first place.</p>\n</blockquote>\n<p dir=\"auto\">Looks like the original change came in during a freeze, so it probably just fell through the cracks. The original colcon change was shipped as a bugfix and I don't see any reasons not to backport this fix.</p>",
+      "bodyVersion": "17cbd943294925e5b44949ad64491bba6f9506dc1b271da4215c43c5c205e9d2",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjIwOTA1MjA=",
+                "login": "StefanFabian",
+                "name": "Stefan Fabian",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?s=64&u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its7Ux3kl",
+      "databaseId": 3569842469,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE1MDc1NjEz",
+        "login": "Flova",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/15075613?u=8cf022a4f7e3b5ae932007fa3cf6c603bc200722&v=4",
+        "profileUrl": "https://github.com/Flova",
+        "name": "Florian Vahl"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-3569842469",
+      "createdAt": "2025-11-24T09:54:12Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": ">             path_without_ext, ext = os.path.splitext(remainder)\n>             assert ext.startswith('.')\n>             ext = ext[1:]\n>             if ext in (primary_extension, additional_extension, \"dsv\"):\n>                 if path_without_ext not in basenames:\n>                     basenames[path_without_ext] = set()\n>                 basenames[path_without_ext].add(ext)\n> However, this looks to be a bit of a hack...\n\nThis explicitly looks for dsv files, but there are also shell scripts that can be registered in a similar way (https://docs.ros.org/en/rolling/How-To-Guides/Ament-CMake-Documentation.html#about-environment-hooks) and I think that they are not executed as well for e.g. binary installed packages.\n\n",
+      "bodyHTML": "<blockquote>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"        path_without_ext, ext = os.path.splitext(remainder)\n        assert ext.startswith('.')\n        ext = ext[1:]\n        if ext in (primary_extension, additional_extension, &quot;dsv&quot;):\n            if path_without_ext not in basenames:\n                basenames[path_without_ext] = set()\n            basenames[path_without_ext].add(ext)\"><pre class=\"notranslate\"><code class=\"notranslate\">        path_without_ext, ext = os.path.splitext(remainder)\n        assert ext.startswith('.')\n        ext = ext[1:]\n        if ext in (primary_extension, additional_extension, \"dsv\"):\n            if path_without_ext not in basenames:\n                basenames[path_without_ext] = set()\n            basenames[path_without_ext].add(ext)\n</code></pre></div>\n<p dir=\"auto\">However, this looks to be a bit of a hack...</p>\n</blockquote>\n<p dir=\"auto\">This explicitly looks for dsv files, but there are also shell scripts that can be registered in a similar way (<a href=\"https://docs.ros.org/en/rolling/How-To-Guides/Ament-CMake-Documentation.html#about-environment-hooks\" rel=\"nofollow\">https://docs.ros.org/en/rolling/How-To-Guides/Ament-CMake-Documentation.html#about-environment-hooks</a>) and I think that they are not executed as well for e.g. binary installed packages.</p>",
+      "bodyVersion": "028f389c4fd24baa9d6477f5fbe3a9256abf1b8a0c2d7fd716c54f6f12c383db",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its7Uya6o",
+      "databaseId": 3569987240,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjIwOTA1MjA=",
+        "login": "StefanFabian",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4",
+        "profileUrl": "https://github.com/StefanFabian",
+        "name": "Stefan Fabian"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-3569987240",
+      "createdAt": "2025-11-24T10:25:12Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This seems to work now at least from jazzy upwards, so I'm closing this.\nPlease open a new issue @Flova. I think .sh scripts worked back then, so if they aren't executed now, this is a new bug.",
+      "bodyHTML": "<p dir=\"auto\">This seems to work now at least from jazzy upwards, so I'm closing this.<br>\nPlease open a new issue <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/Flova/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/Flova\">@Flova</a>. I think .sh scripts worked back then, so if they aren't executed now, this is a new bug.</p>",
+      "bodyVersion": "e7eea2e313425d5ff10962c333376199287016f2605b625ae73d8a025bd803f1",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its7jA4JZ",
+      "databaseId": 3808658009,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDODdg53g",
+        "login": "ntak17",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/232274398?u=bb2270c111e07f3f973093e162ef0dbeea3576ca&v=4",
+        "profileUrl": "https://github.com/ntak17",
+        "name": "Nguyễn Tấn Anh Khoa"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-3808658009",
+      "createdAt": "2026-01-28T02:51:00Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "how to use with ament_cmake_python ? I don't see anything with problem \n",
+      "bodyHTML": "<p dir=\"auto\">how to use with ament_cmake_python ? I don't see anything with problem</p>",
+      "bodyVersion": "3f035d74d5bb0148d9af782bebec2b10c941070046d55a56c01e51c129bddfab",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6Qdmvc",
+      "databaseId": 2423679964,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjIwOTA1MjA=",
+        "login": "StefanFabian",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4",
+        "profileUrl": "https://github.com/StefanFabian",
+        "name": "Stefan Fabian"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2423679964",
+      "createdAt": "2024-10-19T08:09:46Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2024-10-19T08:13:25Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOAd1its6QdmvczlLCq88",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "url": "https://github.com/StefanFabian",
+          "login": "StefanFabian"
+        }
+      },
+      "pinnedBy": null,
+      "body": "A working fix would be to change the following block in the `_local_setup.py` (currently line 253) in `/opt/ros/jazzy` from\r\n\r\n```python\r\n           # group remaining source lines by basename\r\n            path_without_ext, ext = os.path.splitext(remainder)\r\n            assert ext.startswith('.')\r\n            ext = ext[1:]\r\n            if ext in (primary_extension, additional_extension):\r\n                if path_without_ext not in basenames:\r\n                    basenames[path_without_ext] = set()\r\n                basenames[path_without_ext].add(ext)\r\n```\r\n\r\nto \r\n\r\n```python\r\n           # group remaining source lines by basename\r\n            path_without_ext, ext = os.path.splitext(remainder)\r\n            assert ext.startswith('.')\r\n            ext = ext[1:]\r\n            if ext in (primary_extension, additional_extension, \"dsv\"):\r\n                if path_without_ext not in basenames:\r\n                    basenames[path_without_ext] = set()\r\n                basenames[path_without_ext].add(ext)\r\n```\r\n\r\nHowever, this looks to be a bit of a hack, and there is probably a cleaner solution.\r\nI honestly don't understand the logic behind the code in some parts of that file.\r\nIt could probably use some refactoring.",
+      "bodyHTML": "<p dir=\"auto\">A working fix would be to change the following block in the <code class=\"notranslate\">_local_setup.py</code> (currently line 253) in <code class=\"notranslate\">/opt/ros/jazzy</code> from</p>\n<div class=\"highlight highlight-source-python notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"           # group remaining source lines by basename\n            path_without_ext, ext = os.path.splitext(remainder)\n            assert ext.startswith('.')\n            ext = ext[1:]\n            if ext in (primary_extension, additional_extension):\n                if path_without_ext not in basenames:\n                    basenames[path_without_ext] = set()\n                basenames[path_without_ext].add(ext)\"><pre class=\"notranslate\">           <span class=\"pl-c\"># group remaining source lines by basename</span>\n            <span class=\"pl-s1\">path_without_ext</span>, <span class=\"pl-s1\">ext</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">os</span>.<span class=\"pl-c1\">path</span>.<span class=\"pl-c1\">splitext</span>(<span class=\"pl-s1\">remainder</span>)\n            <span class=\"pl-k\">assert</span> <span class=\"pl-s1\">ext</span>.<span class=\"pl-c1\">startswith</span>(<span class=\"pl-s\">'.'</span>)\n            <span class=\"pl-s1\">ext</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">ext</span>[<span class=\"pl-c1\">1</span>:]\n            <span class=\"pl-k\">if</span> <span class=\"pl-s1\">ext</span> <span class=\"pl-c1\">in</span> (<span class=\"pl-s1\">primary_extension</span>, <span class=\"pl-s1\">additional_extension</span>):\n                <span class=\"pl-k\">if</span> <span class=\"pl-s1\">path_without_ext</span> <span class=\"pl-c1\"><span class=\"pl-c1\">not</span> <span class=\"pl-c1\">in</span></span> <span class=\"pl-s1\">basenames</span>:\n                    <span class=\"pl-s1\">basenames</span>[<span class=\"pl-s1\">path_without_ext</span>] <span class=\"pl-c1\">=</span> <span class=\"pl-en\">set</span>()\n                <span class=\"pl-s1\">basenames</span>[<span class=\"pl-s1\">path_without_ext</span>].<span class=\"pl-c1\">add</span>(<span class=\"pl-s1\">ext</span>)</pre></div>\n<p dir=\"auto\">to</p>\n<div class=\"highlight highlight-source-python notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"           # group remaining source lines by basename\n            path_without_ext, ext = os.path.splitext(remainder)\n            assert ext.startswith('.')\n            ext = ext[1:]\n            if ext in (primary_extension, additional_extension, &quot;dsv&quot;):\n                if path_without_ext not in basenames:\n                    basenames[path_without_ext] = set()\n                basenames[path_without_ext].add(ext)\"><pre class=\"notranslate\">           <span class=\"pl-c\"># group remaining source lines by basename</span>\n            <span class=\"pl-s1\">path_without_ext</span>, <span class=\"pl-s1\">ext</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">os</span>.<span class=\"pl-c1\">path</span>.<span class=\"pl-c1\">splitext</span>(<span class=\"pl-s1\">remainder</span>)\n            <span class=\"pl-k\">assert</span> <span class=\"pl-s1\">ext</span>.<span class=\"pl-c1\">startswith</span>(<span class=\"pl-s\">'.'</span>)\n            <span class=\"pl-s1\">ext</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">ext</span>[<span class=\"pl-c1\">1</span>:]\n            <span class=\"pl-k\">if</span> <span class=\"pl-s1\">ext</span> <span class=\"pl-c1\">in</span> (<span class=\"pl-s1\">primary_extension</span>, <span class=\"pl-s1\">additional_extension</span>, <span class=\"pl-s\">\"dsv\"</span>):\n                <span class=\"pl-k\">if</span> <span class=\"pl-s1\">path_without_ext</span> <span class=\"pl-c1\"><span class=\"pl-c1\">not</span> <span class=\"pl-c1\">in</span></span> <span class=\"pl-s1\">basenames</span>:\n                    <span class=\"pl-s1\">basenames</span>[<span class=\"pl-s1\">path_without_ext</span>] <span class=\"pl-c1\">=</span> <span class=\"pl-en\">set</span>()\n                <span class=\"pl-s1\">basenames</span>[<span class=\"pl-s1\">path_without_ext</span>].<span class=\"pl-c1\">add</span>(<span class=\"pl-s1\">ext</span>)</pre></div>\n<p dir=\"auto\">However, this looks to be a bit of a hack, and there is probably a cleaner solution.<br>\nI honestly don't understand the logic behind the code in some parts of that file.<br>\nIt could probably use some refactoring.</p>",
+      "bodyVersion": "95e7a515d9bcb4fcac2aac582c1c3c2adb0107381ae81658eafd6c45e6213e9e",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "AssignedEvent",
+      "id": "AE_lADOAd1its6a4cS9zwAAAAOCi9gW",
+      "databaseId": 15075104790,
+      "createdAt": "2024-11-01T21:41:13Z",
+      "actor": {
+        "id": "MDQ6VXNlcjExNDQ1ODg=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/1144588?s=64&v=4",
+        "login": "cottsay",
+        "profileResourcePath": "/cottsay",
+        "__typename": "User",
+        "name": "Scott K Logan"
+      },
+      "assignee": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjExNDQ1ODg=",
+        "login": "cottsay",
+        "resourcePath": "/cottsay",
+        "name": "Scott K Logan"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6SMCsy",
+      "databaseId": 2452630322,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjExNDQ1ODg=",
+        "login": "cottsay",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/1144588?v=4",
+        "profileUrl": "https://github.com/cottsay",
+        "name": "Scott K Logan"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2452630322",
+      "createdAt": "2024-11-01T21:42:12Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "To be clear, are you suggesting the change to `_local_setup.py` as is distributed by the debs? Do you see the same problem if you build ROS 2 entirely from source without any of the buildfarm's debs?",
+      "bodyHTML": "<p dir=\"auto\">To be clear, are you suggesting the change to <code class=\"notranslate\">_local_setup.py</code> as is distributed by the debs? Do you see the same problem if you build ROS 2 entirely from source without any of the buildfarm's debs?</p>",
+      "bodyVersion": "c815507b14f7b0f8bec6b98a36603d8a0b87ad20bb2e98a69fe0468326e0bfd4",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6SMDqN",
+      "databaseId": 2452634253,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjIwOTA1MjA=",
+        "login": "StefanFabian",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4",
+        "profileUrl": "https://github.com/StefanFabian",
+        "name": "Stefan Fabian"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2452634253",
+      "createdAt": "2024-11-01T21:46:12Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Yes, that is what I'm suggesting.\r\nI have not tried building ROS 2 entirely from source but if I build the linked package in my source workspace, it works as expected.",
+      "bodyHTML": "<p dir=\"auto\">Yes, that is what I'm suggesting.<br>\nI have not tried building ROS 2 entirely from source but if I build the linked package in my source workspace, it works as expected.</p>",
+      "bodyVersion": "8e35b3fc5b2d5a4ce4106dbef6f14f7a65536e9ac8012fc4c9e65aaf1b566601",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6SMEXu",
+      "databaseId": 2452637166,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjExNDQ1ODg=",
+        "login": "cottsay",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/1144588?v=4",
+        "profileUrl": "https://github.com/cottsay",
+        "name": "Scott K Logan"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2452637166",
+      "createdAt": "2024-11-01T21:49:01Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> if I build the linked package in my source workspace, it works as expected.\r\n\r\nThat's valuable information, thanks. If it's working with a colcon workspace but not the ament workspace created by the debs, then it's almost certainly a bug. I'll try to take a look soon.",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">if I build the linked package in my source workspace, it works as expected.</p>\n</blockquote>\n<p dir=\"auto\">That's valuable information, thanks. If it's working with a colcon workspace but not the ament workspace created by the debs, then it's almost certainly a bug. I'll try to take a look soon.</p>",
+      "bodyVersion": "2f6ff5a025f6cae6eb2d739b6f8958bd4a1598eb3efa08b1a6acc2c1776cce08",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOAd1its6a4cS9zwAAAAOCjI5m",
+      "databaseId": 15075151462,
+      "createdAt": "2024-11-01T21:49:08Z",
+      "actor": {
+        "id": "MDQ6VXNlcjExNDQ1ODg=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/1144588?s=64&v=4",
+        "login": "cottsay",
+        "profileResourcePath": "/cottsay",
+        "__typename": "User",
+        "name": "Scott K Logan"
+      },
+      "label": {
+        "id": "MDU6TGFiZWwxODA1NTM0MTU=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6ZHSW6",
+      "databaseId": 2568824250,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjIwOTA1MjA=",
+        "login": "StefanFabian",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4",
+        "profileUrl": "https://github.com/StefanFabian",
+        "name": "Stefan Fabian"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2568824250",
+      "createdAt": "2025-01-03T08:05:40Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@cottsay Any updates here?\r\nThis breaks at least the discovery of one of my packages because I use the dsv to register my library for an external application.\r\nI would assume other packages use it for its intended and officially documented use case as well and don't expect it just not to work.\r\nSo IMHO this is a huge issue.",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/cottsay/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/cottsay\">@cottsay</a> Any updates here?<br>\nThis breaks at least the discovery of one of my packages because I use the dsv to register my library for an external application.<br>\nI would assume other packages use it for its intended and officially documented use case as well and don't expect it just not to work.<br>\nSo IMHO this is a huge issue.</p>",
+      "bodyVersion": "2eb7016dc60e3e6cf7537b9cb022ce5b81257a1703ca64919c93779c1f719585",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6arMF4",
+      "databaseId": 2595012984,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjYwNzU4ODk0",
+        "login": "ros-discourse",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/60758894?u=3af3f346600c87810e2ebb8db9529234fe9c5fe3&v=4",
+        "profileUrl": "https://github.com/ros-discourse",
+        "name": null
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2595012984",
+      "createdAt": "2025-01-16T09:34:51Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue has been mentioned on **ROS Discourse**. There might be relevant details there:\n\nhttps://discourse.ros.org/t/the-forgotten-gem-that-is-environment-hooks-and-dsv/41581/1\n",
+      "bodyHTML": "<p dir=\"auto\">This issue has been mentioned on <strong>ROS Discourse</strong>. There might be relevant details there:</p>\n<p dir=\"auto\"><a href=\"https://discourse.ros.org/t/the-forgotten-gem-that-is-environment-hooks-and-dsv/41581/1\" rel=\"nofollow\">https://discourse.ros.org/t/the-forgotten-gem-that-is-environment-hooks-and-dsv/41581/1</a></p>",
+      "bodyVersion": "61debc80385735a362be69f762f353eeaca9528f817cf94d7837009ae0d8eeba",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6awqYU",
+      "databaseId": 2596447764,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjIwNjExNg==",
+        "login": "azeey",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/206116?u=ead1c8357bc3753d37b705eb212e7c92dcea214b&v=4",
+        "profileUrl": "https://github.com/azeey",
+        "name": "Addisu Z. Taddese"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2596447764",
+      "createdAt": "2025-01-16T18:38:26Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This seems similar to https://github.com/ament/ament_package/issues/145, and I believe it's fixed by https://github.com/ament/ament_package/pull/147. But that's only available in `rolling`, so the temporary work around we use in gz_vendor packages (e.g. https://github.com/gazebo-release/gz_sim_vendor/blob/1c2182a5991f2e83dc10e723303ce920e116bceb/CMakeLists.txt#L91-L95) is to create a dummy `.sh` file with the same name as the `.dsv` file.",
+      "bodyHTML": "<p dir=\"auto\">This seems similar to <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2224139336\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ament/ament_package/issues/145\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ament/ament_package/issues/145/hovercard\" href=\"https://github.com/ament/ament_package/issues/145\">ament/ament_package#145</a>, and I believe it's fixed by <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2251547409\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ament/ament_package/issues/147\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ament/ament_package/pull/147/hovercard\" href=\"https://github.com/ament/ament_package/pull/147\">ament/ament_package#147</a>. But that's only available in <code class=\"notranslate\">rolling</code>, so the temporary work around we use in gz_vendor packages (e.g. <a href=\"https://github.com/gazebo-release/gz_sim_vendor/blob/1c2182a5991f2e83dc10e723303ce920e116bceb/CMakeLists.txt#L91-L95\">https://github.com/gazebo-release/gz_sim_vendor/blob/1c2182a5991f2e83dc10e723303ce920e116bceb/CMakeLists.txt#L91-L95</a>) is to create a dummy <code class=\"notranslate\">.sh</code> file with the same name as the <code class=\"notranslate\">.dsv</code> file.</p>",
+      "bodyVersion": "e1787efef2e85091b1e3a3684a278b2461ee74b84c8516cc77aafbbe88e385f1",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 2,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjExNDQ1ODg=",
+                "login": "cottsay",
+                "name": "Scott K Logan",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/1144588?s=64&v=4"
+              },
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjIwOTA1MjA=",
+                "login": "StefanFabian",
+                "name": "Stefan Fabian",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?s=64&u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6a6yac",
+      "databaseId": 2599102108,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjIwOTA1MjA=",
+        "login": "StefanFabian",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4",
+        "profileUrl": "https://github.com/StefanFabian",
+        "name": "Stefan Fabian"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2599102108",
+      "createdAt": "2025-01-17T20:01:39Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Yes, thank you @azeey! I tried it and this would indeed fix it.\nThis should definitely be backported to all currently supported Distros.\nI don't understand why this wasn't done immediately in the first place.",
+      "bodyHTML": "<p dir=\"auto\">Yes, thank you <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/azeey/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/azeey\">@azeey</a>! I tried it and this would indeed fix it.<br>\nThis should definitely be backported to all currently supported Distros.<br>\nI don't understand why this wasn't done immediately in the first place.</p>",
+      "bodyVersion": "7be67929854faa87c2d943ad2315c5adbcdc29c2d61602d0517569d0d1172726",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6a6zAx",
+      "databaseId": 2599104561,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjYwNzU4ODk0",
+        "login": "ros-discourse",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/60758894?u=3af3f346600c87810e2ebb8db9529234fe9c5fe3&v=4",
+        "profileUrl": "https://github.com/ros-discourse",
+        "name": null
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2599104561",
+      "createdAt": "2025-01-17T20:03:25Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue has been mentioned on **ROS Discourse**. There might be relevant details there:\n\nhttps://discourse.ros.org/t/the-forgotten-gem-that-is-environment-hooks-and-dsv/41581/5\n",
+      "bodyHTML": "<p dir=\"auto\">This issue has been mentioned on <strong>ROS Discourse</strong>. There might be relevant details there:</p>\n<p dir=\"auto\"><a href=\"https://discourse.ros.org/t/the-forgotten-gem-that-is-environment-hooks-and-dsv/41581/5\" rel=\"nofollow\">https://discourse.ros.org/t/the-forgotten-gem-that-is-environment-hooks-and-dsv/41581/5</a></p>",
+      "bodyVersion": "b23939a23af1a2d48fde43fa9b94ca87652804ea7d8fbee6eee2a4aecc0d88b4",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6a60Hv",
+      "databaseId": 2599109103,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjExNDQ1ODg=",
+        "login": "cottsay",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/1144588?v=4",
+        "profileUrl": "https://github.com/cottsay",
+        "name": "Scott K Logan"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-2599109103",
+      "createdAt": "2025-01-17T20:06:39Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> I don't understand why this wasn't done immediately in the first place.\n\nLooks like the original change came in during a freeze, so it probably just fell through the cracks. The original colcon change was shipped as a bugfix and I don't see any reasons not to backport this fix.",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">I don't understand why this wasn't done immediately in the first place.</p>\n</blockquote>\n<p dir=\"auto\">Looks like the original change came in during a freeze, so it probably just fell through the cracks. The original colcon change was shipped as a bugfix and I don't see any reasons not to backport this fix.</p>",
+      "bodyVersion": "17cbd943294925e5b44949ad64491bba6f9506dc1b271da4215c43c5c205e9d2",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjIwOTA1MjA=",
+                "login": "StefanFabian",
+                "name": "Stefan Fabian",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?s=64&u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its7Ux3kl",
+      "databaseId": 3569842469,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE1MDc1NjEz",
+        "login": "Flova",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/15075613?u=8cf022a4f7e3b5ae932007fa3cf6c603bc200722&v=4",
+        "profileUrl": "https://github.com/Flova",
+        "name": "Florian Vahl"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-3569842469",
+      "createdAt": "2025-11-24T09:54:12Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": ">             path_without_ext, ext = os.path.splitext(remainder)\n>             assert ext.startswith('.')\n>             ext = ext[1:]\n>             if ext in (primary_extension, additional_extension, \"dsv\"):\n>                 if path_without_ext not in basenames:\n>                     basenames[path_without_ext] = set()\n>                 basenames[path_without_ext].add(ext)\n> However, this looks to be a bit of a hack...\n\nThis explicitly looks for dsv files, but there are also shell scripts that can be registered in a similar way (https://docs.ros.org/en/rolling/How-To-Guides/Ament-CMake-Documentation.html#about-environment-hooks) and I think that they are not executed as well for e.g. binary installed packages.\n\n",
+      "bodyHTML": "<blockquote>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"        path_without_ext, ext = os.path.splitext(remainder)\n        assert ext.startswith('.')\n        ext = ext[1:]\n        if ext in (primary_extension, additional_extension, &quot;dsv&quot;):\n            if path_without_ext not in basenames:\n                basenames[path_without_ext] = set()\n            basenames[path_without_ext].add(ext)\"><pre class=\"notranslate\"><code class=\"notranslate\">        path_without_ext, ext = os.path.splitext(remainder)\n        assert ext.startswith('.')\n        ext = ext[1:]\n        if ext in (primary_extension, additional_extension, \"dsv\"):\n            if path_without_ext not in basenames:\n                basenames[path_without_ext] = set()\n            basenames[path_without_ext].add(ext)\n</code></pre></div>\n<p dir=\"auto\">However, this looks to be a bit of a hack...</p>\n</blockquote>\n<p dir=\"auto\">This explicitly looks for dsv files, but there are also shell scripts that can be registered in a similar way (<a href=\"https://docs.ros.org/en/rolling/How-To-Guides/Ament-CMake-Documentation.html#about-environment-hooks\" rel=\"nofollow\">https://docs.ros.org/en/rolling/How-To-Guides/Ament-CMake-Documentation.html#about-environment-hooks</a>) and I think that they are not executed as well for e.g. binary installed packages.</p>",
+      "bodyVersion": "028f389c4fd24baa9d6477f5fbe3a9256abf1b8a0c2d7fd716c54f6f12c383db",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOAd1its6a4cS9zwAAAATrskFV",
+      "databaseId": 21134197077,
+      "createdAt": "2025-11-24T10:25:12Z",
+      "actor": {
+        "id": "MDQ6VXNlcjIwOTA1MjA=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?s=64&u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4",
+        "login": "StefanFabian",
+        "profileResourcePath": "/StefanFabian",
+        "__typename": "User",
+        "name": "Stefan Fabian"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its7Uya6o",
+      "databaseId": 3569987240,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjIwOTA1MjA=",
+        "login": "StefanFabian",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/2090520?u=c99cdc273927e95b7aad468f46aa30e0933f0ce4&v=4",
+        "profileUrl": "https://github.com/StefanFabian",
+        "name": "Stefan Fabian"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-3569987240",
+      "createdAt": "2025-11-24T10:25:12Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This seems to work now at least from jazzy upwards, so I'm closing this.\nPlease open a new issue @Flova. I think .sh scripts worked back then, so if they aren't executed now, this is a new bug.",
+      "bodyHTML": "<p dir=\"auto\">This seems to work now at least from jazzy upwards, so I'm closing this.<br>\nPlease open a new issue <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/Flova/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/Flova\">@Flova</a>. I think .sh scripts worked back then, so if they aren't executed now, this is a new bug.</p>",
+      "bodyVersion": "e7eea2e313425d5ff10962c333376199287016f2605b625ae73d8a025bd803f1",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its7jA4JZ",
+      "databaseId": 3808658009,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6a4cS9",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjIwOTA1MjA=",
+          "login": "StefanFabian"
+        },
+        "number": 1613,
+        "locked": false,
+        "databaseId": 2598487229
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDODdg53g",
+        "login": "ntak17",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/232274398?u=bb2270c111e07f3f973093e162ef0dbeea3576ca&v=4",
+        "profileUrl": "https://github.com/ntak17",
+        "name": "Nguyễn Tấn Anh Khoa"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1613#issuecomment-3808658009",
+      "createdAt": "2026-01-28T02:51:00Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "how to use with ament_cmake_python ? I don't see anything with problem \n",
+      "bodyHTML": "<p dir=\"auto\">how to use with ament_cmake_python ? I don't see anything with problem</p>",
+      "bodyVersion": "3f035d74d5bb0148d9af782bebec2b10c941070046d55a56c01e51c129bddfab",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": true,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABkqPTSRAAqjI0MjM2Nzk5NjQ=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABmrVlY0ABqzIxMTM0MTk3MDc3"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABkqPTSRAAqjI0MjM2Nzk5NjQ=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnAKC6iAAqjM4MDg2NTgwMDk="
+    }
+  },
+  "linked_pull_requests": [],
+  "comments_complete": true,
+  "linked_pr_fetches": []
+}

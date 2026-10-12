@@ -1,0 +1,46 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3143",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3143",
+    "fetched_at": "2026-10-11T11:20:46.472386+00:00",
+    "http_status": 200,
+    "response_sha256": "aee718f443d984ee27bff92b52d0e14a666352494da8a3c15734f6ae3428a982"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/3143",
+  "title": "node_parameters: reject non-finite values in floating-point range check by bartalor · Pull Request #3143 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nFixes #2898. __check_double_range accepted +inf, -inf, and NaN for parameters declared with a floating_point_range. Fix guards __are_doubles_equal against non-finite operands and rewrites the bound check so NaN is rejected.\n\n\nIs this user-facing behavior change?\n\n\nYes. set_parameter with +inf, -inf, or NaN on a parameter with a floating_point_range now returns successful=false.\n\n\nDid you use Generative AI?\n\n\nYes — Claude Opus 4.7.\n\n\nAdditional Information\n\n\nAdds a regression test in test_node.cpp for the three non-finite cases. The new scope block pushes the existing TEST_F over cpplint's 800-line limit, so a // NOLINT(readability/fn_size) is added on its closing brace — same pattern other ROS 2 packages use for this case.",
+  "discussion_rendered_text": [
+    "Pulls: #3143\n\nGist: https://gist.githubusercontent.com/fujitatomoya/e96e535bdc812744725b6237e9eb22e6/raw/ab84ebe82133d581d33d732a722c20660dfc487c/ros2.repos\n\nBUILD args:  --packages-above-and-dependencies rclcpp\n\nTEST args:  --packages-above rclcpp\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/19255\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "Windows",
+    "Windows \n\n\n\n\nI haven't yet been able to reproduce the RHEL and Windows failures through GitHub Actions builds, but I'm actively investigating. I'll post an update here once I have findings.",
+    "The windows Ci failures are unrelated you can ignore them",
+    "Same for rhel this pr is good to be merged",
+    "@jmachowinski thanks for checking that!",
+    "Hi, @fujitatomoya, could this be backported?",
+    "@Mergifyio backport kilted jazzy",
+    "backport kilted jazzy\n\n\n✅ Backports have been created\nDetails\n\n\n#3159 node_parameters: reject non-finite values in floating-point range check (backport #3143) has been created for branch kilted but encountered conflicts\n\n\n\nCherry-pick of fa8478f has failed:\n\n\n\n```\nOn branch mergify/bp/kilted/pr-3143\nYour branch is up to date with 'origin/kilted'.\n\nYou are currently cherry-picking commit fa8478f.\n  (fix conflicts and run \"git cherry-pick --continue\")\n  (use \"git cherry-pick --skip\" to skip this patch)\n  (use \"git cherry-pick --abort\" to cancel the cherry-pick operation)\n\nUnmerged paths:\n  (use \"git add <file>...\" to mark resolution)\n\tboth modified:   rclcpp/src/rclcpp/node_interfaces/node_parameters.cpp\n\tboth modified:   rclcpp/test/rclcpp/test_node.cpp\n\nno changes added to commit (use \"git add\" and/or \"git commit -a\")\n\n```\n\n\n\nTo fix up this pull request, you can check it out locally. See documentation: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/checking-out-pull-requests-locally\n\n\n\n#3160 node_parameters: reject non-finite values in floating-point range check (backport #3143) has been created for branch jazzy but encountered conflicts\n\n\n\nCherry-pick of fa8478f has failed:\n\n\n\n```\nOn branch mergify/bp/jazzy/pr-3143\nYour branch is up to date with 'origin/jazzy'.\n\nYou are currently cherry-picking commit fa8478f.\n  (fix conflicts and run \"git cherry-pick --continue\")\n  (use \"git cherry-pick --skip\" to skip this patch)\n  (use \"git cherry-pick --abort\" to cancel the cherry-pick operation)\n\nUnmerged paths:\n  (use \"git add <file>...\" to mark resolution)\n\tboth modified:   rclcpp/src/rclcpp/node_interfaces/node_parameters.cpp\n\tboth modified:   rclcpp/test/rclcpp/test_node.cpp\n\nno changes added to commit (use \"git add\" and/or \"git commit -a\")\n\n```\n\n\n\nTo fix up this pull request, you can check it out locally. See documentation: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/checking-out-pull-requests-locally",
+    "Was lyrical skipped intentionally?",
+    "Nope, it is just too new and not in the muscle memory 😜\n\n\n@Mergifyio backport lyrical",
+    "@Mergifyio backport lyrical",
+    "backport lyrical\n\n\n✅ Backports have been created\nDetails\n\n\n#3161 node_parameters: reject non-finite values in floating-point range check (backport #3143) has been created for branch lyrical",
+    "Why are inf values not valid?\n\n\nI get that it fixed the issue. But there might be solutions that keep the inf?",
+    "I don't think it made infs invalid in general. Just when you set a finite range for validation.",
+    "Thank you for the test, I would have to dive deeper!"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/bartalor/rclcpp/commit/2732751f58d3078f69668504f30ffa9b03da55ad",
+    "https://github.com/bartalor/rclcpp/commit/4badd07be367f49ee818c47ce97c746e04754a52",
+    "https://github.com/bartalor/rclcpp/commit/c2631de8bf60feda48c238129cb23a1586913aa7",
+    "https://github.com/bartalor/rclcpp/commit/d5bef527f60901594062ee5bcb6d817d3188bdbd",
+    "https://github.com/bartalor/rclcpp/commit/d7c7b69e6f667cbab2c30a62343e049f5bb5ff8e",
+    "https://github.com/ros2/rclcpp/commit/0bdfeb53c4dd13a9a426a5e4ee70aaf28b18fe8f",
+    "https://github.com/ros2/rclcpp/commit/1d0f30be0fd8a43cb73950bb6de7d79ab6194cd5",
+    "https://github.com/ros2/rclcpp/commit/2e67977d4418a72d222a87f5a0cb04a251c1d232",
+    "https://github.com/ros2/rclcpp/commit/815b22e36c992414286987cc316301f56b1233bf",
+    "https://github.com/ros2/rclcpp/commit/fa8478fc5824cc59687691d6edf1ddff8fcb39ae",
+    "https://github.com/ros2/rclcpp/pull/3143/commits/0bdfeb53c4dd13a9a426a5e4ee70aaf28b18fe8f"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

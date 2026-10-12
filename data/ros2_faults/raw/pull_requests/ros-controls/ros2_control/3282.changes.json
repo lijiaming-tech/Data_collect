@@ -1,0 +1,25 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3282/files",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3282/files",
+    "fetched_at": "2026-10-11T11:24:42.616879+00:00",
+    "http_status": 200,
+    "response_sha256": "d320edffdcfd9641a9839c38ca75d3796afcd3cae15b0f5999ff65a18064a580"
+  },
+  "files": {
+    "hardware_interface/src/mock_components/generic_system.cpp": [
+      "@@ -467,7 +467,7 @@ return_type GenericSystem::read(const rclcpp::Time & /*time*/, const rclcpp::Dur",
+      "         }",
+      "       }",
+      "       // mirror them back",
+      "-      for (size_t i = 0; i < standard_interfaces_.size(); ++i)",
+      "+      for (size_t i = 0; i < joint_state_values_.size(); ++i)",
+      "       {",
+      "         if (",
+      "           std::isfinite(joint_state_values_[i]) &&"
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/ament_cmake_ros/pull/60",
+    "final_url": "https://github.com/ros2/ament_cmake_ros/pull/60",
+    "fetched_at": "2026-10-11T11:19:41.795604+00:00",
+    "http_status": 200,
+    "response_sha256": "b375868599eb80f9e98decf3dc87b0133837e6844e3b6825f7888701bf03aa60"
+  },
+  "url": "https://github.com/ros2/ament_cmake_ros/pull/60",
+  "title": "Drop group dependency on test fixtures by cottsay · Pull Request #60 · ros2/ament_cmake_ros · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nAt the moment, all providers of test fixtures have implemented the fixture in the same package which provides the RMW itself, meaning that we don't need to use a dependency to ensure that the plugin is present when the RMW is tested.\n\n\nHaving the dependency here means that all packages which implement a plugin are upstream of this package, which inflates the dependency tree in an undesirable way.\n\n\nFixes ros2/ros2#1770\n\n\nIs this user-facing behavior change?\n\n\nNo\n\n\nDid you use Generative AI?\n\n\nNo\n\n\nAdditional Information\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+  "discussion_rendered_text": [
+    "https://github.com/Mergifyio backport kilted",
+    "backport kilted\n\n\n✅ Backports have been created\nDetails\n\n\n#61 Drop group dependency on test fixtures (backport #60) has been created for branch kilted"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros2/ament_cmake_ros/commit/536586a0cbcabfd6383c7c84471d5cce50fd8b32",
+    "https://github.com/ros2/ament_cmake_ros/commit/82ad4410338e699d9032a6be184710a10180b7cd",
+    "https://github.com/ros2/ament_cmake_ros/commit/d346c033c7214739b03cf86bb8295fc893de43f3",
+    "https://github.com/ros2/ament_cmake_ros/pull/60/commits/9289485725ba01230f24b0b0894c34cf50387664"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

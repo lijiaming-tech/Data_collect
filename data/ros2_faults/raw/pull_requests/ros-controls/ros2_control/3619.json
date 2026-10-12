@@ -1,0 +1,25 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3619",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3619",
+    "fetched_at": "2026-10-11T11:24:15.999621+00:00",
+    "http_status": 200,
+    "response_sha256": "d1f6a33ebc5e540105e15576f94baf14d26e95bc5fa0cb6f54062f592d79663a"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3619",
+  "title": "Fix data race in overrun warning parameter by Quchaosheng · Pull Request #3619 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Cache overruns.print_warnings in an atomic so the real-time write loop does not read the parameter snapshot while diagnostics refresh it.\n\n\nFixes #3612.\n\n\n\nDescription\n\n\n\n\nFixes # (issue)\n\n\nIs this user-facing behavior change?\n\n\n\nDid you use Generative AI?\n\n\n\nAdditional Information\n\n\n\nTODOs\n\n\nTo send us a pull request, please:\n\n\n\n Fork the repository.\n\n\n Modify the source; please focus on the specific change you are contributing. If you also reformat all the code, it will be hard for us to focus on your change.\n\n\n Ensure local tests pass. (colcon test and pre-commit run (requires you to install pre-commit by pip3 install pre-commit)\n\n\n Commit to your fork using clear commit messages.\n\n\n Send a pull request, answering any default questions in the pull request interface.\n\n\n Pay attention to any automated CI failures reported in the pull request, and stay involved in the conversation.",
+  "discussion_rendered_text": [
+    "Codecov Report\n\n\n❌ Patch coverage is 85.71429% with 1 line in your changes missing coverage. Please review.\n\n✅ Project coverage is 89.59%. Comparing base (eb41c99) to head (6e3415b).\n\n⚠️ Report is 1 commits behind head on master.\n\n\n\n\n\nFiles with missing lines\nPatch %\nLines\n\n\n\n\n\ncontroller_manager/src/controller_manager.cpp\n85.71%\n1 Missing ⚠️ \n\n\n\nAdditional details and impacted files\n\n\n```\n@@            Coverage Diff             @@\n##           master    #3619      +/-   ##\n==========================================\n- Coverage   89.59%   89.59%   -0.01%     \n==========================================\n  Files         170      170              \n  Lines       21527    21534       +7     \n  Branches     1668     1667       -1     \n==========================================\n+ Hits        19287    19293       +6     \n- Misses       1531     1532       +1     \n  Partials      709      709              \n```\n\n\n\n\n\n\nFlag\nCoverage Δ\n\n\n\n\n\n\nunittests\n89.59% <85.71%> (-0.01%)\n⬇️\n\n\n\n\nFlags with carried forward coverage won't be shown. Click here to find out more.\n\n\n\n\n\nFiles with missing lines\nCoverage Δ\n\n\n\n\n\n\n.../include/controller_manager/controller_manager.hpp\n97.22% <ø> (ø)\n\n\n\n\ncontroller_manager/src/controller_manager.cpp\n75.99% <85.71%> (-0.07%)\n⬇️\n\n\n\n\n... and 1 file with indirect coverage changes\n\n\n 🚀 New features to boost your workflow: \n\n\n❄️ Test Analytics: Detect flaky tests, report on failures, and find test suite problems.",
+    "LGTM"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/commit/17e2c1a85452c94e9024c62ca097e37f3a27e2fc",
+    "https://github.com/ros-controls/ros2_control/commit/9cd913119129ecd7cbda5ed0385fbcc1c62ea152",
+    "https://github.com/ros-controls/ros2_control/commit/c76b15d98c3414f3a2b039c31afba02be61a8de6",
+    "https://github.com/ros-controls/ros2_control/pull/3619/commits/6e3415b1088fad3f2e135bd1d96c678000f02072"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

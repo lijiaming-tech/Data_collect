@@ -1,0 +1,1298 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros2/rclcpp",
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/issues/1698",
+    "final_url": "https://github.com/ros2/rclcpp/issues/1698",
+    "fetched_at": "2026-10-11T11:21:16.260438+00:00",
+    "http_status": 200,
+    "response_sha256": "563bb9cd99d3d719e4a8b841b9c94d5543f729524aa0417ee543f96931a92f5d"
+  },
+  "issue": {
+    "id": "MDU6SXNzdWU5MjUwNTkzNTI=",
+    "databaseId": 925059352,
+    "number": 1698,
+    "title": "rclcpp_components_register_nodes() fails if not in the project's root CMakeLists.txt",
+    "url": "https://github.com/ros2/rclcpp/issues/1698",
+    "body": "## Bug report\r\n\r\n**Required Info:**\r\n\r\n- Operating System:\r\n  - Ubuntu 18.04, Dashing\r\n- Installation type:\r\n  - Binaries and source\r\n- Version or commit hash:\r\n  - Released binary and branch\r\n- DDS implementation:\r\n  - Fast-RTPS\r\n- Client library (if applicable):\r\n  - rclcpp\r\n\r\n#### Steps to reproduce issue\r\n\r\n* Create a nested `CMakeLists.txt` in the [demos/composition](https://github.com/ros2/demos/tree/dashing/composition) package\r\n* Move the `talker_component` logic into the nested CMakeLists.txt (be sure to include the registering macro)\r\n* Build and install\r\n\r\n#### Expected behavior\r\n\r\nThe talker component will be present in `share/ament_index/resource_index/rclcpp_components/composition`, or at least, an error at `CMake` configure time.\r\n\r\n#### Actual behavior\r\n\r\nThe talker component is missing.\r\n",
+    "bodyHTML": "<h2 dir=\"auto\">Bug report</h2>\n<p dir=\"auto\"><strong>Required Info:</strong></p>\n<ul dir=\"auto\">\n<li>Operating System:\n<ul dir=\"auto\">\n<li>Ubuntu 18.04, Dashing</li>\n</ul>\n</li>\n<li>Installation type:\n<ul dir=\"auto\">\n<li>Binaries and source</li>\n</ul>\n</li>\n<li>Version or commit hash:\n<ul dir=\"auto\">\n<li>Released binary and branch</li>\n</ul>\n</li>\n<li>DDS implementation:\n<ul dir=\"auto\">\n<li>Fast-RTPS</li>\n</ul>\n</li>\n<li>Client library (if applicable):\n<ul dir=\"auto\">\n<li>rclcpp</li>\n</ul>\n</li>\n</ul>\n<h4 dir=\"auto\">Steps to reproduce issue</h4>\n<ul dir=\"auto\">\n<li>Create a nested <code class=\"notranslate\">CMakeLists.txt</code> in the <a href=\"https://github.com/ros2/demos/tree/dashing/composition\">demos/composition</a> package</li>\n<li>Move the <code class=\"notranslate\">talker_component</code> logic into the nested CMakeLists.txt (be sure to include the registering macro)</li>\n<li>Build and install</li>\n</ul>\n<h4 dir=\"auto\">Expected behavior</h4>\n<p dir=\"auto\">The talker component will be present in <code class=\"notranslate\">share/ament_index/resource_index/rclcpp_components/composition</code>, or at least, an error at <code class=\"notranslate\">CMake</code> configure time.</p>\n<h4 dir=\"auto\">Actual behavior</h4>\n<p dir=\"auto\">The talker component is missing.</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2021-06-18T16:40:24Z",
+    "updatedAt": "2026-02-19T09:03:09Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/687378?v=4",
+      "login": "stonier",
+      "id": "MDQ6VXNlcjY4NzM3OA==",
+      "profileUrl": "https://github.com/stonier",
+      "name": "Daniel Stonier",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWwxMjAzMjg4Mjc=",
+            "fullDatabaseId": "120328827",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros2/rclcpp/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "MDU6TGFiZWwxMjAzMjg4MzA=",
+            "fullDatabaseId": "120328830",
+            "color": "008672",
+            "name": "help wanted",
+            "nameHTML": "help wanted",
+            "description": "Extra attention is needed",
+            "url": "https://github.com/ros2/rclcpp/labels/help%20wanted",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 4,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "MDEyOklzc3VlQ29tbWVudDg2NTg3MzIwNg==",
+      "databaseId": 865873206,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "MDU6SXNzdWU5MjUwNTkzNTI=",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjY4NzM3OA==",
+          "login": "stonier"
+        },
+        "number": 1698,
+        "locked": false,
+        "databaseId": 925059352
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjY0MTkxMDIz",
+        "login": "iuhilnehc-ynos",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/64191023?v=4",
+        "profileUrl": "https://github.com/iuhilnehc-ynos",
+        "name": "Chen Lihui"
+      },
+      "url": "https://github.com/ros2/rclcpp/issues/1698#issuecomment-865873206",
+      "createdAt": "2021-06-22T10:42:44Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> * Create a nested `CMakeLists.txt` in the [demos/composition](https://github.com/ros2/demos/tree/dashing/composition) package\r\n> * Move the `talker_component` logic into the nested CMakeLists.txt (be sure to include the registering macro)\r\n\r\nHi, @stonier \r\n\r\nI suppose you want to use the subdirectory to organize the source code. I think you could refer to this [link](https://answers.ros.org/question/361289/ros2-components-registration-from-subdirectory-cmakelists-file/?answer=361439#post-id-361439) firstly.\r\n(FYI: I have tried the workaround (the method might be a little different from the above link) for the [demo](https://github.com/ros2/demos/commit/e9d69ddcd29732c483386abbcb3856d304a71a11) and it seems working.)\r\n",
+      "bodyHTML": "<blockquote>\n<ul dir=\"auto\">\n<li>Create a nested <code class=\"notranslate\">CMakeLists.txt</code> in the <a href=\"https://github.com/ros2/demos/tree/dashing/composition\">demos/composition</a> package</li>\n<li>Move the <code class=\"notranslate\">talker_component</code> logic into the nested CMakeLists.txt (be sure to include the registering macro)</li>\n</ul>\n</blockquote>\n<p dir=\"auto\">Hi, <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/stonier/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/stonier\">@stonier</a></p>\n<p dir=\"auto\">I suppose you want to use the subdirectory to organize the source code. I think you could refer to this <a href=\"https://answers.ros.org/question/361289/ros2-components-registration-from-subdirectory-cmakelists-file/?answer=361439#post-id-361439\" rel=\"nofollow\">link</a> firstly.<br>\n(FYI: I have tried the workaround (the method might be a little different from the above link) for the <a href=\"https://github.com/ros2/demos/commit/e9d69ddcd29732c483386abbcb3856d304a71a11\">demo</a> and it seems working.)</p>",
+      "bodyVersion": "05c6273c02d5a77251852919bb6e6e61b684ddf1c7b561e7a243c252944e1390",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkyMjczNzMzMw==",
+        "name": "rclcpp",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/rclcpp",
+        "databaseId": 22737333
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "MDEyOklzc3VlQ29tbWVudDg2NjM0MjU3OQ==",
+      "databaseId": 866342579,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "MDU6SXNzdWU5MjUwNTkzNTI=",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjY4NzM3OA==",
+          "login": "stonier"
+        },
+        "number": 1698,
+        "locked": false,
+        "databaseId": 925059352
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDQyNw==",
+        "login": "wjwwood",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/100427?v=4",
+        "profileUrl": "https://github.com/wjwwood",
+        "name": "William Woodall"
+      },
+      "url": "https://github.com/ros2/rclcpp/issues/1698#issuecomment-866342579",
+      "createdAt": "2021-06-22T21:21:05Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I think it should be technically possible to support what @stonier is doing, and probably a good idea to do so as well. @sloretz's workaround will work, but is somewhat fragile because it depends on a cmake variable name that we otherwise don't expose and could be changed in the future. I don't have time to work on this at the moment, but we could consider changing how we set/get that variable to work around the scoping, or maybe we could add a macro that must be called in the child scope to make this work (a less-fragile form of the `PARENT_SCOPE` workaround).",
+      "bodyHTML": "<p dir=\"auto\">I think it should be technically possible to support what <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/stonier/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/stonier\">@stonier</a> is doing, and probably a good idea to do so as well. <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/sloretz/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/sloretz\">@sloretz</a>'s workaround will work, but is somewhat fragile because it depends on a cmake variable name that we otherwise don't expose and could be changed in the future. I don't have time to work on this at the moment, but we could consider changing how we set/get that variable to work around the scoping, or maybe we could add a macro that must be called in the child scope to make this work (a less-fragile form of the <code class=\"notranslate\">PARENT_SCOPE</code> workaround).</p>",
+      "bodyVersion": "464885e7733b7b3eb57bd72c9f76f1b7586516177bbedfa5bf3b98432fa6e4ce",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkyMjczNzMzMw==",
+        "name": "rclcpp",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/rclcpp",
+        "databaseId": 22737333
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "MDEyOklzc3VlQ29tbWVudDg2ODIwMzU3MQ==",
+      "databaseId": 868203571,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "MDU6SXNzdWU5MjUwNTkzNTI=",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjY4NzM3OA==",
+          "login": "stonier"
+        },
+        "number": 1698,
+        "locked": false,
+        "databaseId": 925059352
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjY0MTkxMDIz",
+        "login": "iuhilnehc-ynos",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/64191023?v=4",
+        "profileUrl": "https://github.com/iuhilnehc-ynos",
+        "name": "Chen Lihui"
+      },
+      "url": "https://github.com/ros2/rclcpp/issues/1698#issuecomment-868203571",
+      "createdAt": "2021-06-25T04:56:15Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> we could add a macro that must be called in the child scope to make this work\r\n\r\nYeah, this could be a method.\r\nBut I think users want to use `rclcpp_components_register_nodes` in subdirectories in the same way as the root directory.\r\n\r\nPatches that I am not sure if it's the right way.\r\n<details><summary> rclcpp </summary>\r\n<p>\r\n\r\n```shell\r\n\r\ndiff --git a/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake b/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\r\nindex e80550a3..74045f99 100644\r\n--- a/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\r\n+++ b/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\r\n@@ -67,6 +67,15 @@ macro(rclcpp_components_register_nodes target)\r\n         \"${_RCLCPP_COMPONENTS_${resource_index}__NODES}${_arg};${_path}/$<TARGET_FILE_NAME:${target}>\\n\")\r\n       list(APPEND _RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES ${resource_index})\r\n     endforeach()\r\n-  endif()\r\n-endmacro()\r\n \r\n+    # Check if current scope is subdirectory or not\r\n+    if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\r\n+      set(_RCLCPP_COMPONENTS_${resource_index}__NODES\r\n+        \"${_RCLCPP_COMPONENTS_${resource_index}__NODES}\"\r\n+        PARENT_SCOPE)\r\n+      set(_RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES\r\n+        ${_RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES}\r\n+        PARENT_SCOPE)\r\n+    endif()\r\n+  endif()\r\n+endmacro()\r\n\\ No newline at end of file\r\ndiff --git a/rclcpp_components/rclcpp_components-extras.cmake.in b/rclcpp_components/rclcpp_components-extras.cmake.in\r\nindex 45a4e5ac..5dc33d9b 100644\r\n--- a/rclcpp_components/rclcpp_components-extras.cmake.in\r\n+++ b/rclcpp_components/rclcpp_components-extras.cmake.in\r\n@@ -17,7 +17,11 @@\r\n # register ament_package() hook for node plugins once.\r\n macro(_rclcpp_components_register_package_hook)\r\n   if(NOT DEFINED _RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED)\r\n-    set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE)\r\n+    if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\r\n+      set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE)\r\n+    else()\r\n+      set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE PARENT_SCOPE)\r\n+    endif()\r\n \r\n     find_package(ament_cmake_core QUIET REQUIRED)\r\n     ament_register_extension(\"ament_package\" \"rclcpp_components\"\r\n```\r\n\r\n</p>\r\n</details>\r\n\r\n<details><summary> ament_cmake_core </summary>\r\n<p>\r\n\r\n```shell\r\ndiff --git a/ament_cmake_core/cmake/core/ament_register_extension.cmake b/ament_cmake_core/cmake/core/ament_register_extension.cmake\r\nindex 45effb2..b4118a4 100644\r\n--- a/ament_cmake_core/cmake/core/ament_register_extension.cmake\r\n+++ b/ament_cmake_core/cmake/core/ament_register_extension.cmake\r\n@@ -30,4 +30,10 @@\r\n macro(ament_register_extension extension_point package_name cmake_filename)\r\n   list(APPEND AMENT_EXTENSIONS_${extension_point}\r\n     \"${package_name}:${cmake_filename}\")\r\n+\r\n+  if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\r\n+    set(AMENT_EXTENSIONS_${extension_point}\r\n+      ${AMENT_EXTENSIONS_${extension_point}}\r\n+      PARENT_SCOPE)\r\n+  endif()\r\n endmacro()\r\n\r\n```\r\n\r\n</p>\r\n</details>\r\n",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">we could add a macro that must be called in the child scope to make this work</p>\n</blockquote>\n<p dir=\"auto\">Yeah, this could be a method.<br>\nBut I think users want to use <code class=\"notranslate\">rclcpp_components_register_nodes</code> in subdirectories in the same way as the root directory.</p>\n<p dir=\"auto\">Patches that I am not sure if it's the right way.</p>\n<details><summary> rclcpp </summary>\n<p dir=\"auto\">\n</p><div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"\ndiff --git a/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake b/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\nindex e80550a3..74045f99 100644\n--- a/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\n+++ b/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\n@@ -67,6 +67,15 @@ macro(rclcpp_components_register_nodes target)\n         &quot;${_RCLCPP_COMPONENTS_${resource_index}__NODES}${_arg};${_path}/$&lt;TARGET_FILE_NAME:${target}&gt;\\n&quot;)\n       list(APPEND _RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES ${resource_index})\n     endforeach()\n-  endif()\n-endmacro()\n \n+    # Check if current scope is subdirectory or not\n+    if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\n+      set(_RCLCPP_COMPONENTS_${resource_index}__NODES\n+        &quot;${_RCLCPP_COMPONENTS_${resource_index}__NODES}&quot;\n+        PARENT_SCOPE)\n+      set(_RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES\n+        ${_RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES}\n+        PARENT_SCOPE)\n+    endif()\n+  endif()\n+endmacro()\n\\ No newline at end of file\ndiff --git a/rclcpp_components/rclcpp_components-extras.cmake.in b/rclcpp_components/rclcpp_components-extras.cmake.in\nindex 45a4e5ac..5dc33d9b 100644\n--- a/rclcpp_components/rclcpp_components-extras.cmake.in\n+++ b/rclcpp_components/rclcpp_components-extras.cmake.in\n@@ -17,7 +17,11 @@\n # register ament_package() hook for node plugins once.\n macro(_rclcpp_components_register_package_hook)\n   if(NOT DEFINED _RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED)\n-    set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE)\n+    if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\n+      set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE)\n+    else()\n+      set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE PARENT_SCOPE)\n+    endif()\n \n     find_package(ament_cmake_core QUIET REQUIRED)\n     ament_register_extension(&quot;ament_package&quot; &quot;rclcpp_components&quot;\"><pre class=\"notranslate\">diff --git a/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake b/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\nindex e80550a3..74045f99 100644\n--- a/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\n+++ b/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\n@@ -67,6 +67,15 @@ macro(rclcpp_components_register_nodes target)\n         <span class=\"pl-s\"><span class=\"pl-pds\">\"</span><span class=\"pl-smi\">${_RCLCPP_COMPONENTS_<span class=\"pl-smi\">${resource_index}</span>__NODES}${_arg}</span>;<span class=\"pl-smi\">${_path}</span>/$&lt;TARGET_FILE_NAME:<span class=\"pl-smi\">${target}</span>&gt;\\n<span class=\"pl-pds\">\"</span></span>)\n       list(APPEND _RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES <span class=\"pl-smi\">${resource_index}</span>)\n     <span class=\"pl-en\">endforeach</span>()\n-  <span class=\"pl-en\">endif</span>()\n<span class=\"pl-en\">-endmacro</span>()\n \n+    <span class=\"pl-c\"><span class=\"pl-c\">#</span> Check if current scope is subdirectory or not</span>\n+    if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\n+      set(_RCLCPP_COMPONENTS_<span class=\"pl-smi\">${resource_index}</span>__NODES\n+        <span class=\"pl-s\"><span class=\"pl-pds\">\"</span><span class=\"pl-smi\">${_RCLCPP_COMPONENTS_<span class=\"pl-smi\">${resource_index}</span>__NODES}</span><span class=\"pl-pds\">\"</span></span>\n+        PARENT_SCOPE)\n+      set(_RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES\n+        <span class=\"pl-smi\">${_RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES}</span>\n+        PARENT_SCOPE)\n+    <span class=\"pl-en\">endif</span>()\n+  <span class=\"pl-en\">endif</span>()\n<span class=\"pl-en\">+endmacro</span>()\n<span class=\"pl-cce\">\\ </span>No newline at end of file\ndiff --git a/rclcpp_components/rclcpp_components-extras.cmake.in b/rclcpp_components/rclcpp_components-extras.cmake.in\nindex 45a4e5ac..5dc33d9b 100644\n--- a/rclcpp_components/rclcpp_components-extras.cmake.in\n+++ b/rclcpp_components/rclcpp_components-extras.cmake.in\n@@ -17,7 +17,11 @@\n <span class=\"pl-c\"><span class=\"pl-c\">#</span> register ament_package() hook for node plugins once.</span>\n macro(_rclcpp_components_register_package_hook)\n   if(NOT DEFINED _RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED)\n-    set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE)\n+    if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\n+      set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE)\n+    <span class=\"pl-en\">else</span>()\n+      set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE PARENT_SCOPE)\n+    <span class=\"pl-en\">endif</span>()\n \n     find_package(ament_cmake_core QUIET REQUIRED)\n     ament_register_extension(<span class=\"pl-s\"><span class=\"pl-pds\">\"</span>ament_package<span class=\"pl-pds\">\"</span></span> <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>rclcpp_components<span class=\"pl-pds\">\"</span></span></pre></div>\n<p dir=\"auto\"></p>\n</details>\n<details><summary> ament_cmake_core </summary>\n<p dir=\"auto\">\n</p><div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"diff --git a/ament_cmake_core/cmake/core/ament_register_extension.cmake b/ament_cmake_core/cmake/core/ament_register_extension.cmake\nindex 45effb2..b4118a4 100644\n--- a/ament_cmake_core/cmake/core/ament_register_extension.cmake\n+++ b/ament_cmake_core/cmake/core/ament_register_extension.cmake\n@@ -30,4 +30,10 @@\n macro(ament_register_extension extension_point package_name cmake_filename)\n   list(APPEND AMENT_EXTENSIONS_${extension_point}\n     &quot;${package_name}:${cmake_filename}&quot;)\n+\n+  if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\n+    set(AMENT_EXTENSIONS_${extension_point}\n+      ${AMENT_EXTENSIONS_${extension_point}}\n+      PARENT_SCOPE)\n+  endif()\n endmacro()\n\"><pre class=\"notranslate\">diff --git a/ament_cmake_core/cmake/core/ament_register_extension.cmake b/ament_cmake_core/cmake/core/ament_register_extension.cmake\nindex 45effb2..b4118a4 100644\n--- a/ament_cmake_core/cmake/core/ament_register_extension.cmake\n+++ b/ament_cmake_core/cmake/core/ament_register_extension.cmake\n@@ -30,4 +30,10 @@\n macro(ament_register_extension extension_point package_name cmake_filename)\n   list(APPEND AMENT_EXTENSIONS_<span class=\"pl-smi\">${extension_point}</span>\n     <span class=\"pl-s\"><span class=\"pl-pds\">\"</span><span class=\"pl-smi\">${package_name}</span>:<span class=\"pl-smi\">${cmake_filename}</span><span class=\"pl-pds\">\"</span></span>)\n+\n+  if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\n+    set(AMENT_EXTENSIONS_<span class=\"pl-smi\">${extension_point}</span>\n+      <span class=\"pl-smi\">${AMENT_EXTENSIONS_<span class=\"pl-smi\">${extension_point}</span>}</span>\n+      PARENT_SCOPE)\n+  <span class=\"pl-en\">endif</span>()\n <span class=\"pl-en\">endmacro</span>()\n</pre></div>\n<p dir=\"auto\"></p>\n</details>",
+      "bodyVersion": "694442bc9a1c0bfcf69372551dafa3e96b6fa3d64f72462a78e51da4954b8d06",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkyMjczNzMzMw==",
+        "name": "rclcpp",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/rclcpp",
+        "databaseId": 22737333
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjU1NDM2NTQz",
+                "login": "realysy",
+                "name": null,
+                "avatarUrl": "https://avatars.githubusercontent.com/u/55436543?s=64&u=f45af369dd3659caa71f89592b1c7a9e964703f0&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAVrxtc47a4_5",
+      "databaseId": 996904953,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "MDU6SXNzdWU5MjUwNTkzNTI=",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjY4NzM3OA==",
+          "login": "stonier"
+        },
+        "number": 1698,
+        "locked": false,
+        "databaseId": 925059352
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDkwMTk3",
+        "login": "HighPriest",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58490197?u=0f7f5aa76d24916729be26acaabcfdd681273833&v=4",
+        "profileUrl": "https://github.com/HighPriest",
+        "name": "Kamil"
+      },
+      "url": "https://github.com/ros2/rclcpp/issues/1698#issuecomment-996904953",
+      "createdAt": "2021-12-17T17:44:06Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I think I am having the same issue, where my component is closely based on the [DEMO](https://github.com/ros2/demos/commit/e9d69ddcd29732c483386abbcb3856d304a71a11), but the only thing which is returned by the `ros2 pkg executables` command and is linked to the _project_  is a `.so` file with the name of the library created in CMakeLists.txt.\r\n\r\nIn my case I have two levels of `add_subdirectory`. One for the `project` level, which adds the `src` level, which adds all the `components`.",
+      "bodyHTML": "<p dir=\"auto\">I think I am having the same issue, where my component is closely based on the <a href=\"https://github.com/ros2/demos/commit/e9d69ddcd29732c483386abbcb3856d304a71a11\">DEMO</a>, but the only thing which is returned by the <code class=\"notranslate\">ros2 pkg executables</code> command and is linked to the <em>project</em>  is a <code class=\"notranslate\">.so</code> file with the name of the library created in CMakeLists.txt.</p>\n<p dir=\"auto\">In my case I have two levels of <code class=\"notranslate\">add_subdirectory</code>. One for the <code class=\"notranslate\">project</code> level, which adds the <code class=\"notranslate\">src</code> level, which adds all the <code class=\"notranslate\">components</code>.</p>",
+      "bodyVersion": "3a4ab07bcabc538bfa2d685130688eb2186498c4d9d66dc4a3d944bad45c7dad",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkyMjczNzMzMw==",
+        "name": "rclcpp",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/rclcpp",
+        "databaseId": 22737333
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "IssueComment",
+      "id": "MDEyOklzc3VlQ29tbWVudDg2NTg3MzIwNg==",
+      "databaseId": 865873206,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "MDU6SXNzdWU5MjUwNTkzNTI=",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjY4NzM3OA==",
+          "login": "stonier"
+        },
+        "number": 1698,
+        "locked": false,
+        "databaseId": 925059352
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjY0MTkxMDIz",
+        "login": "iuhilnehc-ynos",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/64191023?v=4",
+        "profileUrl": "https://github.com/iuhilnehc-ynos",
+        "name": "Chen Lihui"
+      },
+      "url": "https://github.com/ros2/rclcpp/issues/1698#issuecomment-865873206",
+      "createdAt": "2021-06-22T10:42:44Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> * Create a nested `CMakeLists.txt` in the [demos/composition](https://github.com/ros2/demos/tree/dashing/composition) package\r\n> * Move the `talker_component` logic into the nested CMakeLists.txt (be sure to include the registering macro)\r\n\r\nHi, @stonier \r\n\r\nI suppose you want to use the subdirectory to organize the source code. I think you could refer to this [link](https://answers.ros.org/question/361289/ros2-components-registration-from-subdirectory-cmakelists-file/?answer=361439#post-id-361439) firstly.\r\n(FYI: I have tried the workaround (the method might be a little different from the above link) for the [demo](https://github.com/ros2/demos/commit/e9d69ddcd29732c483386abbcb3856d304a71a11) and it seems working.)\r\n",
+      "bodyHTML": "<blockquote>\n<ul dir=\"auto\">\n<li>Create a nested <code class=\"notranslate\">CMakeLists.txt</code> in the <a href=\"https://github.com/ros2/demos/tree/dashing/composition\">demos/composition</a> package</li>\n<li>Move the <code class=\"notranslate\">talker_component</code> logic into the nested CMakeLists.txt (be sure to include the registering macro)</li>\n</ul>\n</blockquote>\n<p dir=\"auto\">Hi, <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/stonier/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/stonier\">@stonier</a></p>\n<p dir=\"auto\">I suppose you want to use the subdirectory to organize the source code. I think you could refer to this <a href=\"https://answers.ros.org/question/361289/ros2-components-registration-from-subdirectory-cmakelists-file/?answer=361439#post-id-361439\" rel=\"nofollow\">link</a> firstly.<br>\n(FYI: I have tried the workaround (the method might be a little different from the above link) for the <a href=\"https://github.com/ros2/demos/commit/e9d69ddcd29732c483386abbcb3856d304a71a11\">demo</a> and it seems working.)</p>",
+      "bodyVersion": "05c6273c02d5a77251852919bb6e6e61b684ddf1c7b561e7a243c252944e1390",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkyMjczNzMzMw==",
+        "name": "rclcpp",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/rclcpp",
+        "databaseId": 22737333
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "MDEyOklzc3VlQ29tbWVudDg2NjM0MjU3OQ==",
+      "databaseId": 866342579,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "MDU6SXNzdWU5MjUwNTkzNTI=",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjY4NzM3OA==",
+          "login": "stonier"
+        },
+        "number": 1698,
+        "locked": false,
+        "databaseId": 925059352
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDQyNw==",
+        "login": "wjwwood",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/100427?v=4",
+        "profileUrl": "https://github.com/wjwwood",
+        "name": "William Woodall"
+      },
+      "url": "https://github.com/ros2/rclcpp/issues/1698#issuecomment-866342579",
+      "createdAt": "2021-06-22T21:21:05Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I think it should be technically possible to support what @stonier is doing, and probably a good idea to do so as well. @sloretz's workaround will work, but is somewhat fragile because it depends on a cmake variable name that we otherwise don't expose and could be changed in the future. I don't have time to work on this at the moment, but we could consider changing how we set/get that variable to work around the scoping, or maybe we could add a macro that must be called in the child scope to make this work (a less-fragile form of the `PARENT_SCOPE` workaround).",
+      "bodyHTML": "<p dir=\"auto\">I think it should be technically possible to support what <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/stonier/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/stonier\">@stonier</a> is doing, and probably a good idea to do so as well. <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/sloretz/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/sloretz\">@sloretz</a>'s workaround will work, but is somewhat fragile because it depends on a cmake variable name that we otherwise don't expose and could be changed in the future. I don't have time to work on this at the moment, but we could consider changing how we set/get that variable to work around the scoping, or maybe we could add a macro that must be called in the child scope to make this work (a less-fragile form of the <code class=\"notranslate\">PARENT_SCOPE</code> workaround).</p>",
+      "bodyVersion": "464885e7733b7b3eb57bd72c9f76f1b7586516177bbedfa5bf3b98432fa6e4ce",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkyMjczNzMzMw==",
+        "name": "rclcpp",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/rclcpp",
+        "databaseId": 22737333
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "MDEyOkxhYmVsZWRFdmVudDQ5MjUyNDE3Nzk=",
+      "databaseId": 4925241779,
+      "createdAt": "2021-06-22T21:21:14Z",
+      "actor": {
+        "id": "MDQ6VXNlcjEwMDQyNw==",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/100427?s=64&v=4",
+        "login": "wjwwood",
+        "profileResourcePath": "/wjwwood",
+        "__typename": "User",
+        "name": "William Woodall"
+      },
+      "label": {
+        "id": "MDU6TGFiZWwxMjAzMjg4Mjc=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "MDEyOkxhYmVsZWRFdmVudDQ5MjUyNDE3ODE=",
+      "databaseId": 4925241781,
+      "createdAt": "2021-06-22T21:21:14Z",
+      "actor": {
+        "id": "MDQ6VXNlcjEwMDQyNw==",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/100427?s=64&v=4",
+        "login": "wjwwood",
+        "profileResourcePath": "/wjwwood",
+        "__typename": "User",
+        "name": "William Woodall"
+      },
+      "label": {
+        "id": "MDU6TGFiZWwxMjAzMjg4MzA=",
+        "archivedAt": null,
+        "nameHTML": "help wanted",
+        "name": "help wanted",
+        "color": "008672",
+        "description": "Extra attention is needed"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "MDEyOklzc3VlQ29tbWVudDg2ODIwMzU3MQ==",
+      "databaseId": 868203571,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "MDU6SXNzdWU5MjUwNTkzNTI=",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjY4NzM3OA==",
+          "login": "stonier"
+        },
+        "number": 1698,
+        "locked": false,
+        "databaseId": 925059352
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjY0MTkxMDIz",
+        "login": "iuhilnehc-ynos",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/64191023?v=4",
+        "profileUrl": "https://github.com/iuhilnehc-ynos",
+        "name": "Chen Lihui"
+      },
+      "url": "https://github.com/ros2/rclcpp/issues/1698#issuecomment-868203571",
+      "createdAt": "2021-06-25T04:56:15Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> we could add a macro that must be called in the child scope to make this work\r\n\r\nYeah, this could be a method.\r\nBut I think users want to use `rclcpp_components_register_nodes` in subdirectories in the same way as the root directory.\r\n\r\nPatches that I am not sure if it's the right way.\r\n<details><summary> rclcpp </summary>\r\n<p>\r\n\r\n```shell\r\n\r\ndiff --git a/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake b/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\r\nindex e80550a3..74045f99 100644\r\n--- a/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\r\n+++ b/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\r\n@@ -67,6 +67,15 @@ macro(rclcpp_components_register_nodes target)\r\n         \"${_RCLCPP_COMPONENTS_${resource_index}__NODES}${_arg};${_path}/$<TARGET_FILE_NAME:${target}>\\n\")\r\n       list(APPEND _RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES ${resource_index})\r\n     endforeach()\r\n-  endif()\r\n-endmacro()\r\n \r\n+    # Check if current scope is subdirectory or not\r\n+    if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\r\n+      set(_RCLCPP_COMPONENTS_${resource_index}__NODES\r\n+        \"${_RCLCPP_COMPONENTS_${resource_index}__NODES}\"\r\n+        PARENT_SCOPE)\r\n+      set(_RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES\r\n+        ${_RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES}\r\n+        PARENT_SCOPE)\r\n+    endif()\r\n+  endif()\r\n+endmacro()\r\n\\ No newline at end of file\r\ndiff --git a/rclcpp_components/rclcpp_components-extras.cmake.in b/rclcpp_components/rclcpp_components-extras.cmake.in\r\nindex 45a4e5ac..5dc33d9b 100644\r\n--- a/rclcpp_components/rclcpp_components-extras.cmake.in\r\n+++ b/rclcpp_components/rclcpp_components-extras.cmake.in\r\n@@ -17,7 +17,11 @@\r\n # register ament_package() hook for node plugins once.\r\n macro(_rclcpp_components_register_package_hook)\r\n   if(NOT DEFINED _RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED)\r\n-    set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE)\r\n+    if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\r\n+      set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE)\r\n+    else()\r\n+      set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE PARENT_SCOPE)\r\n+    endif()\r\n \r\n     find_package(ament_cmake_core QUIET REQUIRED)\r\n     ament_register_extension(\"ament_package\" \"rclcpp_components\"\r\n```\r\n\r\n</p>\r\n</details>\r\n\r\n<details><summary> ament_cmake_core </summary>\r\n<p>\r\n\r\n```shell\r\ndiff --git a/ament_cmake_core/cmake/core/ament_register_extension.cmake b/ament_cmake_core/cmake/core/ament_register_extension.cmake\r\nindex 45effb2..b4118a4 100644\r\n--- a/ament_cmake_core/cmake/core/ament_register_extension.cmake\r\n+++ b/ament_cmake_core/cmake/core/ament_register_extension.cmake\r\n@@ -30,4 +30,10 @@\r\n macro(ament_register_extension extension_point package_name cmake_filename)\r\n   list(APPEND AMENT_EXTENSIONS_${extension_point}\r\n     \"${package_name}:${cmake_filename}\")\r\n+\r\n+  if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\r\n+    set(AMENT_EXTENSIONS_${extension_point}\r\n+      ${AMENT_EXTENSIONS_${extension_point}}\r\n+      PARENT_SCOPE)\r\n+  endif()\r\n endmacro()\r\n\r\n```\r\n\r\n</p>\r\n</details>\r\n",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">we could add a macro that must be called in the child scope to make this work</p>\n</blockquote>\n<p dir=\"auto\">Yeah, this could be a method.<br>\nBut I think users want to use <code class=\"notranslate\">rclcpp_components_register_nodes</code> in subdirectories in the same way as the root directory.</p>\n<p dir=\"auto\">Patches that I am not sure if it's the right way.</p>\n<details><summary> rclcpp </summary>\n<p dir=\"auto\">\n</p><div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"\ndiff --git a/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake b/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\nindex e80550a3..74045f99 100644\n--- a/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\n+++ b/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\n@@ -67,6 +67,15 @@ macro(rclcpp_components_register_nodes target)\n         &quot;${_RCLCPP_COMPONENTS_${resource_index}__NODES}${_arg};${_path}/$&lt;TARGET_FILE_NAME:${target}&gt;\\n&quot;)\n       list(APPEND _RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES ${resource_index})\n     endforeach()\n-  endif()\n-endmacro()\n \n+    # Check if current scope is subdirectory or not\n+    if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\n+      set(_RCLCPP_COMPONENTS_${resource_index}__NODES\n+        &quot;${_RCLCPP_COMPONENTS_${resource_index}__NODES}&quot;\n+        PARENT_SCOPE)\n+      set(_RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES\n+        ${_RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES}\n+        PARENT_SCOPE)\n+    endif()\n+  endif()\n+endmacro()\n\\ No newline at end of file\ndiff --git a/rclcpp_components/rclcpp_components-extras.cmake.in b/rclcpp_components/rclcpp_components-extras.cmake.in\nindex 45a4e5ac..5dc33d9b 100644\n--- a/rclcpp_components/rclcpp_components-extras.cmake.in\n+++ b/rclcpp_components/rclcpp_components-extras.cmake.in\n@@ -17,7 +17,11 @@\n # register ament_package() hook for node plugins once.\n macro(_rclcpp_components_register_package_hook)\n   if(NOT DEFINED _RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED)\n-    set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE)\n+    if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\n+      set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE)\n+    else()\n+      set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE PARENT_SCOPE)\n+    endif()\n \n     find_package(ament_cmake_core QUIET REQUIRED)\n     ament_register_extension(&quot;ament_package&quot; &quot;rclcpp_components&quot;\"><pre class=\"notranslate\">diff --git a/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake b/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\nindex e80550a3..74045f99 100644\n--- a/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\n+++ b/rclcpp_components/cmake/rclcpp_components_register_nodes.cmake\n@@ -67,6 +67,15 @@ macro(rclcpp_components_register_nodes target)\n         <span class=\"pl-s\"><span class=\"pl-pds\">\"</span><span class=\"pl-smi\">${_RCLCPP_COMPONENTS_<span class=\"pl-smi\">${resource_index}</span>__NODES}${_arg}</span>;<span class=\"pl-smi\">${_path}</span>/$&lt;TARGET_FILE_NAME:<span class=\"pl-smi\">${target}</span>&gt;\\n<span class=\"pl-pds\">\"</span></span>)\n       list(APPEND _RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES <span class=\"pl-smi\">${resource_index}</span>)\n     <span class=\"pl-en\">endforeach</span>()\n-  <span class=\"pl-en\">endif</span>()\n<span class=\"pl-en\">-endmacro</span>()\n \n+    <span class=\"pl-c\"><span class=\"pl-c\">#</span> Check if current scope is subdirectory or not</span>\n+    if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\n+      set(_RCLCPP_COMPONENTS_<span class=\"pl-smi\">${resource_index}</span>__NODES\n+        <span class=\"pl-s\"><span class=\"pl-pds\">\"</span><span class=\"pl-smi\">${_RCLCPP_COMPONENTS_<span class=\"pl-smi\">${resource_index}</span>__NODES}</span><span class=\"pl-pds\">\"</span></span>\n+        PARENT_SCOPE)\n+      set(_RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES\n+        <span class=\"pl-smi\">${_RCLCPP_COMPONENTS_PACKAGE_RESOURCE_INDICES}</span>\n+        PARENT_SCOPE)\n+    <span class=\"pl-en\">endif</span>()\n+  <span class=\"pl-en\">endif</span>()\n<span class=\"pl-en\">+endmacro</span>()\n<span class=\"pl-cce\">\\ </span>No newline at end of file\ndiff --git a/rclcpp_components/rclcpp_components-extras.cmake.in b/rclcpp_components/rclcpp_components-extras.cmake.in\nindex 45a4e5ac..5dc33d9b 100644\n--- a/rclcpp_components/rclcpp_components-extras.cmake.in\n+++ b/rclcpp_components/rclcpp_components-extras.cmake.in\n@@ -17,7 +17,11 @@\n <span class=\"pl-c\"><span class=\"pl-c\">#</span> register ament_package() hook for node plugins once.</span>\n macro(_rclcpp_components_register_package_hook)\n   if(NOT DEFINED _RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED)\n-    set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE)\n+    if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\n+      set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE)\n+    <span class=\"pl-en\">else</span>()\n+      set(_RCLCPP_COMPONENTS_PACKAGE_HOOK_REGISTERED TRUE PARENT_SCOPE)\n+    <span class=\"pl-en\">endif</span>()\n \n     find_package(ament_cmake_core QUIET REQUIRED)\n     ament_register_extension(<span class=\"pl-s\"><span class=\"pl-pds\">\"</span>ament_package<span class=\"pl-pds\">\"</span></span> <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>rclcpp_components<span class=\"pl-pds\">\"</span></span></pre></div>\n<p dir=\"auto\"></p>\n</details>\n<details><summary> ament_cmake_core </summary>\n<p dir=\"auto\">\n</p><div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"diff --git a/ament_cmake_core/cmake/core/ament_register_extension.cmake b/ament_cmake_core/cmake/core/ament_register_extension.cmake\nindex 45effb2..b4118a4 100644\n--- a/ament_cmake_core/cmake/core/ament_register_extension.cmake\n+++ b/ament_cmake_core/cmake/core/ament_register_extension.cmake\n@@ -30,4 +30,10 @@\n macro(ament_register_extension extension_point package_name cmake_filename)\n   list(APPEND AMENT_EXTENSIONS_${extension_point}\n     &quot;${package_name}:${cmake_filename}&quot;)\n+\n+  if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\n+    set(AMENT_EXTENSIONS_${extension_point}\n+      ${AMENT_EXTENSIONS_${extension_point}}\n+      PARENT_SCOPE)\n+  endif()\n endmacro()\n\"><pre class=\"notranslate\">diff --git a/ament_cmake_core/cmake/core/ament_register_extension.cmake b/ament_cmake_core/cmake/core/ament_register_extension.cmake\nindex 45effb2..b4118a4 100644\n--- a/ament_cmake_core/cmake/core/ament_register_extension.cmake\n+++ b/ament_cmake_core/cmake/core/ament_register_extension.cmake\n@@ -30,4 +30,10 @@\n macro(ament_register_extension extension_point package_name cmake_filename)\n   list(APPEND AMENT_EXTENSIONS_<span class=\"pl-smi\">${extension_point}</span>\n     <span class=\"pl-s\"><span class=\"pl-pds\">\"</span><span class=\"pl-smi\">${package_name}</span>:<span class=\"pl-smi\">${cmake_filename}</span><span class=\"pl-pds\">\"</span></span>)\n+\n+  if(NOT CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)\n+    set(AMENT_EXTENSIONS_<span class=\"pl-smi\">${extension_point}</span>\n+      <span class=\"pl-smi\">${AMENT_EXTENSIONS_<span class=\"pl-smi\">${extension_point}</span>}</span>\n+      PARENT_SCOPE)\n+  <span class=\"pl-en\">endif</span>()\n <span class=\"pl-en\">endmacro</span>()\n</pre></div>\n<p dir=\"auto\"></p>\n</details>",
+      "bodyVersion": "694442bc9a1c0bfcf69372551dafa3e96b6fa3d64f72462a78e51da4954b8d06",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkyMjczNzMzMw==",
+        "name": "rclcpp",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/rclcpp",
+        "databaseId": 22737333
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjU1NDM2NTQz",
+                "login": "realysy",
+                "name": null,
+                "avatarUrl": "https://avatars.githubusercontent.com/u/55436543?s=64&u=f45af369dd3659caa71f89592b1c7a9e964703f0&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAVrxtc47a4_5",
+      "databaseId": 996904953,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "MDU6SXNzdWU5MjUwNTkzNTI=",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjY4NzM3OA==",
+          "login": "stonier"
+        },
+        "number": 1698,
+        "locked": false,
+        "databaseId": 925059352
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDkwMTk3",
+        "login": "HighPriest",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58490197?u=0f7f5aa76d24916729be26acaabcfdd681273833&v=4",
+        "profileUrl": "https://github.com/HighPriest",
+        "name": "Kamil"
+      },
+      "url": "https://github.com/ros2/rclcpp/issues/1698#issuecomment-996904953",
+      "createdAt": "2021-12-17T17:44:06Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I think I am having the same issue, where my component is closely based on the [DEMO](https://github.com/ros2/demos/commit/e9d69ddcd29732c483386abbcb3856d304a71a11), but the only thing which is returned by the `ros2 pkg executables` command and is linked to the _project_  is a `.so` file with the name of the library created in CMakeLists.txt.\r\n\r\nIn my case I have two levels of `add_subdirectory`. One for the `project` level, which adds the `src` level, which adds all the `components`.",
+      "bodyHTML": "<p dir=\"auto\">I think I am having the same issue, where my component is closely based on the <a href=\"https://github.com/ros2/demos/commit/e9d69ddcd29732c483386abbcb3856d304a71a11\">DEMO</a>, but the only thing which is returned by the <code class=\"notranslate\">ros2 pkg executables</code> command and is linked to the <em>project</em>  is a <code class=\"notranslate\">.so</code> file with the name of the library created in CMakeLists.txt.</p>\n<p dir=\"auto\">In my case I have two levels of <code class=\"notranslate\">add_subdirectory</code>. One for the <code class=\"notranslate\">project</code> level, which adds the <code class=\"notranslate\">src</code> level, which adds all the <code class=\"notranslate\">components</code>.</p>",
+      "bodyVersion": "3a4ab07bcabc538bfa2d685130688eb2186498c4d9d66dc4a3d944bad45c7dad",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkyMjczNzMzMw==",
+        "name": "rclcpp",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/rclcpp",
+        "databaseId": 22737333
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOAVrxtc43I0kYzwAAAAVVcKQQ",
+      "databaseId": 22908281872,
+      "createdAt": "2026-02-19T09:03:10Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE5MzM5MDc=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/1933907?s=64&u=8b6fd963c321f00713621094b86dd86874e6b219&v=4",
+        "login": "ahcorde",
+        "profileResourcePath": "/ahcorde",
+        "__typename": "User",
+        "name": "Alejandro Hernández Cordero"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOAVrxtc7D743F",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros2/rclcpp/pull/3064",
+        "number": 3064,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkyMjczNzMzMw==",
+          "name": "rclcpp",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+            "login": "ros2"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABejNQsKAAqTg2NTg3MzIwNg==",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnHUjjLABqzIyOTA4MjgxODcy"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABejNQsKAAqTg2NTg3MzIwNg==",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnHUjjLABqzIyOTA4MjgxODcy"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOAVrxtc7D743F",
+      "url": "https://github.com/ros2/rclcpp/pull/3064",
+      "number": 3064,
+      "title": "Fix component registering in subdirectories",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-02-15T17:32:00Z",
+      "databaseId": 3287256517,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkyMjczNzMzMw==",
+        "name": "rclcpp",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3064",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3064.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3064.changes.json"
+    }
+  ]
+}

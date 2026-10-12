@@ -1,0 +1,37 @@
+{
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/pull/6039/files",
+    "final_url": "https://github.com/ros-navigation/navigation2/pull/6039/files",
+    "fetched_at": "2026-10-11T11:23:52.361852+00:00",
+    "http_status": 200,
+    "response_sha256": "2ad229c839e72d14fc2d72dba08a08c2345c016d26b70aeae93912f1ad089531"
+  },
+  "files": {
+    "nav2_costmap_2d/plugins/static_layer.cpp": [
+      "@@ -207,6 +207,20 @@ StaticLayer::processMap(const nav_msgs::msg::OccupancyGrid & new_map)",
+      "       logger_,",
+      "       \"StaticLayer: Resizing costmap to %d X %d at %f m/pix\", size_x, size_y,",
+      "       new_map.info.resolution);",
+      "+",
+      "+    double fmod_x = std::fmod(new_map.info.origin.position.x, new_map.info.resolution);",
+      "+    double fmod_y = std::fmod(new_map.info.origin.position.y, new_map.info.resolution);",
+      "+",
+      "+    if (std::abs(fmod_x) > EPSILON || std::abs(fmod_y) > EPSILON) {",
+      "+      RCLCPP_WARN(",
+      "+        logger_,",
+      "+        \"StaticLayer: Costmap origin coordinates are not perfectly aligned with the resolution. \"",
+      "+        \"This may cause misalignment aliasing between rolling and non-rolling costmaps.\\n\"",
+      "+        \"Map origin: (%.f, %.f) | Resolution: %.f\",",
+      "+        new_map.info.origin.position.x, new_map.info.origin.position.y,",
+      "+        new_map.info.resolution);",
+      "+    }",
+      "+",
+      "     layered_costmap_->resizeMap(",
+      "       size_x, size_y, new_map.info.resolution,",
+      "       new_map.info.origin.position.x,"
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

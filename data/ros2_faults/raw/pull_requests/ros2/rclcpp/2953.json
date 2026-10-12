@@ -1,0 +1,28 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/2953",
+    "final_url": "https://github.com/ros2/rclcpp/pull/2953",
+    "fetched_at": "2026-10-11T11:20:56.725820+00:00",
+    "http_status": 200,
+    "response_sha256": "4f957d5392ca697d20230923ff755f212e9ce27756c0e1b1a1bbc102518cc2fc"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/2953",
+  "title": "try aborting before canceling 1st on dtor of ServerGoalHandle. by fujitatomoya · Pull Request #2953 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\n\n\nDepends on ros2/rcl#1257\n\n\nFixes #2948 and #2757\n\n\nIs this user-facing behavior change?\n\n\n\nYes.\n\n\nbefore, on the destruction of ServerGoalHandle, it only tries to cancel the goal.\n\nafter, it tries to abort the goal 1st, and if not possible in the current state, it then falls back to cancel the goal.\n\n\nthe goal should be aborted if possible in the 1st place on destruction rather than canceled to match design spec as following.\n\n\n\nABORTED: The goal was terminated by the action server without an external request.\n\n\nCANCELED: The goal was canceled after an external request from an action client.\n\n\n\nhttps://design.ros2.org/articles/actions.html\n\n\nDid you use Generative AI?\n\n\n\nNo\n\n\nAdditional Information",
+  "discussion_rendered_text": [
+    "Pull Request Overview\n\n\nThis PR modifies the behavior of ServerGoalHandle destruction to prioritize aborting goals before attempting to cancel them, aligning with ROS2 design specifications. The change ensures that goals are marked as \"ABORTED\" (terminated by server) rather than \"CANCELED\" (terminated by client request) when appropriate.\n\n\n\nImplements try_aborting() method to attempt goal abortion before cancellation\n\n\nUpdates destructor to try aborting first, then fall back to canceling if abortion isn't possible\n\n\nAdds comprehensive test coverage for the new try_abort() functionality\n\n\n\nReviewed Changes\n\n\nCopilot reviewed 3 out of 3 changed files in this pull request and generated 1 comment.\n\n\n\n\n\nFile\nDescription\n\n\n\n\n\nrclcpp_action/include/rclcpp_action/server_goal_handle.hpp\nAdds try_aborting() method declaration and updates destructor logic to prioritize abortion over cancellation\n\n\n\nrclcpp_action/src/server_goal_handle.cpp\nImplements the try_aborting() method with proper state checking and RCL API calls\n\n\n\nrclcpp_action/test/test_server_goal_handle.cpp\nAdds test coverage for the new try_abort() functionality with both success and error scenarios\n\n\n\n\n\nTip: Customize your code reviews with copilot-instructions.md. Create the file or learn how to get started.",
+    "@sloretz @ahcorde @Barry-Xu-2018 can either of you take a look at this?",
+    "Pulls: ros2/rcl#1257, #2953\n\nGist: https://gist.githubusercontent.com/fujitatomoya/139c87a7db7c064754bb468fff43a36b/raw/b9b000f0c877922d50ccf5d8cbf6b9acf832c901/ros2.repos\n\nBUILD args:  --packages-above-and-dependencies rcl_action rclcpp_action\n\nTEST args:  --packages-above rcl_action rclcpp_action\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/16943\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "Pulls: #2953, ros2/rcl#1257\n\nGist: https://gist.githubusercontent.com/fujitatomoya/29eaa6283bf89601bd57b2b78c56ebde/raw/b9b000f0c877922d50ccf5d8cbf6b9acf832c901/ros2.repos\n\nBUILD args:  --packages-up-to rcl_action rclcpp_action\n\nTEST args:  --packages-select rcl_action rclcpp_action\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/16963\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/bartalor/rclcpp/commit/44a89c54aac635882582add4cba31dc15d8960db",
+    "https://github.com/ros2/rclcpp/commit/b14af74a4c9b8683e72b15d61d0ed9121d883973",
+    "https://github.com/ros2/rclcpp/pull/2953/commits/8fc9c075c746378da8bd39bd6cc268c1b3189868",
+    "https://github.com/ros2/rclcpp/pull/2953/commits/b1d935edb9d102ac913a278b840dabd87746c5b6",
+    "https://github.com/ros2/rclcpp/pull/2953/commits/d24a45caf58d4a8266df62df2b2acd55f777a9d3"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

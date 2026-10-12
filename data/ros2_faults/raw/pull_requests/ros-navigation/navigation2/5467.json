@@ -1,0 +1,29 @@
+{
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/pull/5467",
+    "final_url": "https://github.com/ros-navigation/navigation2/pull/5467",
+    "fetched_at": "2026-10-11T11:23:08.921153+00:00",
+    "http_status": 200,
+    "response_sha256": "63e6881095a372f9682ea6b26d50682d72aaabc89c64708358c8a3c543100e86"
+  },
+  "url": "https://github.com/ros-navigation/navigation2/pull/5467",
+  "title": "Revert \"Unclamp noise velocity.\" by SteveMacenski · Pull Request #5467 · ros-navigation/navigation2 · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Reverts #5266\n\n\n@chanhhoang99  @tonynajjar @adivardi",
+  "discussion_rendered_text": [
+    "Codecov Report\n\n\n✅ All modified and coverable lines are covered by tests.\n\n\n\n\n\nFiles with missing lines\nCoverage Δ\n\n\n\n\n\n\n...ler/include/nav2_mppi_controller/motion_models.hpp\n100.00% <100.00%> (ø)\n\n\n\n\n\n... and 2 files with indirect coverage changes\n\n 🚀 New features to boost your workflow: \n\n\n❄️ Test Analytics: Detect flaky tests, report on failures, and find test suite problems."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/BCKSELFDRIVEWORLD/navigation2/commit/aac76e48c2f3413f6a052e4320aefddc35d660f5",
+    "https://github.com/BCKSELFDRIVEWORLD/navigation2/commit/fb25b2fcc4fa41d00754a048753acb3ef6ee52d3",
+    "https://github.com/bkoensgen/navigation2/commit/3f0ba16bc2aac33915162f77d80c1bdac922ee5a",
+    "https://github.com/bkoensgen/navigation2/commit/fb25b2fcc4fa41d00754a048753acb3ef6ee52d3",
+    "https://github.com/ros-navigation/navigation2/commit/16acda895280e8b1e11db575d964bd717fb35b93",
+    "https://github.com/ros-navigation/navigation2/commit/fb25b2fcc4fa41d00754a048753acb3ef6ee52d3",
+    "https://github.com/ros-navigation/navigation2/pull/5467/commits/ee194b6350d9fa1cd791c1f92a0a817d5817a7eb",
+    "https://github.com/silanus23/navigation2/commit/65e4027bdc65222782da2517808a8d47ca7d58c4",
+    "https://github.com/silanus23/navigation2/commit/fb25b2fcc4fa41d00754a048753acb3ef6ee52d3"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

@@ -1,0 +1,801 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3364",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3364",
+    "fetched_at": "2026-10-11T11:24:32.062203+00:00",
+    "http_status": 200,
+    "response_sha256": "38237035f6459f036b9937f9713a6c515d8926c0db27ae5d5ff24a9b2e99ed16"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc8AAAABDtuuLw",
+    "databaseId": 4544245295,
+    "number": 3364,
+    "title": "rqt_controller_manager crash on lyrical",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3364",
+    "body": "**Describe the bug**\nThe plugin crashes on lyrical.\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. `rqt --standalone rqt_controller_manager.controller_manager.ControllerManager`\n2. see crash with `AttributeError: type object 'Qt' has no attribute 'CustomContextMenu'`\n\n\n**Expected behavior**\nno crash\n\n**Screenshots**\n```\nPluginManager._load_plugin() could not load plugin \"rqt_controller_manager/ControllerManager\":\nTraceback (most recent call last):\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/plugin_handler.py\", line 102, in load\n    self._load()\n    ~~~~~~~~~~^^\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/plugin_handler_direct.py\", line 55, in _load\n    self._plugin = self._plugin_provider.load(self._instance_id.plugin_id, self._context)\n                   ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/composite_plugin_provider.py\", line 72, in load\n    instance = plugin_provider.load(plugin_id, plugin_context)\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/composite_plugin_provider.py\", line 72, in load\n    instance = plugin_provider.load(plugin_id, plugin_context)\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/rqt_gui_py/ros_py_plugin_provider.py\", line 69, in load\n    return super(RosPyPluginProvider, self).load(plugin_id, ros_plugin_context)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/composite_plugin_provider.py\", line 72, in load\n    instance = plugin_provider.load(plugin_id, plugin_context)\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/rqt_gui/ros_plugin_provider.py\", line 107, in load\n    return class_ref(plugin_context)\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/rqt_controller_manager/controller_manager.py\", line 105, in __init__\n    ctrl_table_view.setContextMenuPolicy(Qt.CustomContextMenu)\n                                         ^^^^^^^^^^^^^^^^^^^^\nAttributeError: type object 'Qt' has no attribute 'CustomContextMenu'\n```\n\n**Environment (please complete the following information):**\n - OS: Ubuntu 26.04\n - Version Lyrical\n- Anything that may be unusual about your environment\n\n**Additional context**\nAdd any other context about the problem here, especially include any modifications to ros2_control that relate to this issue.\n",
+    "bodyHTML": "<p dir=\"auto\"><strong>Describe the bug</strong><br>\nThe plugin crashes on lyrical.</p>\n<p dir=\"auto\"><strong>To Reproduce</strong><br>\nSteps to reproduce the behavior:</p>\n<ol dir=\"auto\">\n<li><code class=\"notranslate\">rqt --standalone rqt_controller_manager.controller_manager.ControllerManager</code></li>\n<li>see crash with <code class=\"notranslate\">AttributeError: type object 'Qt' has no attribute 'CustomContextMenu'</code></li>\n</ol>\n<p dir=\"auto\"><strong>Expected behavior</strong><br>\nno crash</p>\n<p dir=\"auto\"><strong>Screenshots</strong></p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"PluginManager._load_plugin() could not load plugin &quot;rqt_controller_manager/ControllerManager&quot;:\nTraceback (most recent call last):\n  File &quot;/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/plugin_handler.py&quot;, line 102, in load\n    self._load()\n    ~~~~~~~~~~^^\n  File &quot;/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/plugin_handler_direct.py&quot;, line 55, in _load\n    self._plugin = self._plugin_provider.load(self._instance_id.plugin_id, self._context)\n                   ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File &quot;/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/composite_plugin_provider.py&quot;, line 72, in load\n    instance = plugin_provider.load(plugin_id, plugin_context)\n  File &quot;/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/composite_plugin_provider.py&quot;, line 72, in load\n    instance = plugin_provider.load(plugin_id, plugin_context)\n  File &quot;/opt/ros/lyrical/lib/python3.14/site-packages/rqt_gui_py/ros_py_plugin_provider.py&quot;, line 69, in load\n    return super(RosPyPluginProvider, self).load(plugin_id, ros_plugin_context)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File &quot;/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/composite_plugin_provider.py&quot;, line 72, in load\n    instance = plugin_provider.load(plugin_id, plugin_context)\n  File &quot;/opt/ros/lyrical/lib/python3.14/site-packages/rqt_gui/ros_plugin_provider.py&quot;, line 107, in load\n    return class_ref(plugin_context)\n  File &quot;/opt/ros/lyrical/lib/python3.14/site-packages/rqt_controller_manager/controller_manager.py&quot;, line 105, in __init__\n    ctrl_table_view.setContextMenuPolicy(Qt.CustomContextMenu)\n                                         ^^^^^^^^^^^^^^^^^^^^\nAttributeError: type object 'Qt' has no attribute 'CustomContextMenu'\"><pre class=\"notranslate\"><code class=\"notranslate\">PluginManager._load_plugin() could not load plugin \"rqt_controller_manager/ControllerManager\":\nTraceback (most recent call last):\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/plugin_handler.py\", line 102, in load\n    self._load()\n    ~~~~~~~~~~^^\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/plugin_handler_direct.py\", line 55, in _load\n    self._plugin = self._plugin_provider.load(self._instance_id.plugin_id, self._context)\n                   ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/composite_plugin_provider.py\", line 72, in load\n    instance = plugin_provider.load(plugin_id, plugin_context)\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/composite_plugin_provider.py\", line 72, in load\n    instance = plugin_provider.load(plugin_id, plugin_context)\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/rqt_gui_py/ros_py_plugin_provider.py\", line 69, in load\n    return super(RosPyPluginProvider, self).load(plugin_id, ros_plugin_context)\n           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/qt_gui/composite_plugin_provider.py\", line 72, in load\n    instance = plugin_provider.load(plugin_id, plugin_context)\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/rqt_gui/ros_plugin_provider.py\", line 107, in load\n    return class_ref(plugin_context)\n  File \"/opt/ros/lyrical/lib/python3.14/site-packages/rqt_controller_manager/controller_manager.py\", line 105, in __init__\n    ctrl_table_view.setContextMenuPolicy(Qt.CustomContextMenu)\n                                         ^^^^^^^^^^^^^^^^^^^^\nAttributeError: type object 'Qt' has no attribute 'CustomContextMenu'\n</code></pre></div>\n<p dir=\"auto\"><strong>Environment (please complete the following information):</strong></p>\n<ul dir=\"auto\">\n<li>OS: Ubuntu 26.04</li>\n<li>Version Lyrical</li>\n<li>Anything that may be unusual about your environment</li>\n</ul>\n<p dir=\"auto\"><strong>Additional context</strong><br>\nAdd any other context about the problem here, especially include any modifications to ros2_control that relate to this issue.</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-05-28T22:25:56Z",
+    "updatedAt": "2026-06-06T11:45:35Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/8573621?v=4",
+      "login": "christianrauch",
+      "id": "MDQ6VXNlcjg1NzM2MjE=",
+      "profileUrl": "https://github.com/christianrauch",
+      "name": "Christian Rauch",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NTE=",
+            "fullDatabaseId": "687920451",
+            "color": "33aa3f",
+            "name": "help wanted",
+            "nameHTML": "help wanted",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/help%20wanted",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 2,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABENbUmQ",
+      "databaseId": 4577481881,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABDtuuLw",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 3364,
+        "locked": false,
+        "databaseId": 4544245295
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3364#issuecomment-4577481881",
+      "createdAt": "2026-05-29T16:24:25Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "never launched it like this, `ros2 run rqt_controller_manager rqt_controller_manager` gives the same?\nI read somewhere something about a switch to QT6, but never have checked if this is API breaking on our side.",
+      "bodyHTML": "<p dir=\"auto\">never launched it like this, <code class=\"notranslate\">ros2 run rqt_controller_manager rqt_controller_manager</code> gives the same?<br>\nI read somewhere something about a switch to QT6, but never have checked if this is API breaking on our side.</p>",
+      "bodyVersion": "0cdd1c96e53fb3bccc7114387093656771d674876d69c2cbe39edb6b357d2e27",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABENeV7g",
+      "databaseId": 4577531374,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABDtuuLw",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 3364,
+        "locked": false,
+        "databaseId": 4544245295
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjg1NzM2MjE=",
+        "login": "christianrauch",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/8573621?v=4",
+        "profileUrl": "https://github.com/christianrauch",
+        "name": "Christian Rauch"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3364#issuecomment-4577531374",
+      "createdAt": "2026-05-29T16:30:45Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Yes. I get the same `AttributeError: type object 'Qt' has no attribute 'CustomContextMenu'`.",
+      "bodyHTML": "<p dir=\"auto\">Yes. I get the same <code class=\"notranslate\">AttributeError: type object 'Qt' has no attribute 'CustomContextMenu'</code>.</p>",
+      "bodyVersion": "4e7e8ef3551ba68ce9307dce6b3a489299ad4027660ab3af079a93be1cc99d66",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc8AAAABDtuuL88AAAAGEtDbdg",
+      "databaseId": 26085481334,
+      "createdAt": "2026-05-28T22:25:57Z",
+      "actor": {
+        "id": "MDQ6VXNlcjg1NzM2MjE=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/8573621?s=64&v=4",
+        "login": "christianrauch",
+        "profileResourcePath": "/christianrauch",
+        "__typename": "User",
+        "name": "Christian Rauch"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABENbUmQ",
+      "databaseId": 4577481881,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABDtuuLw",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 3364,
+        "locked": false,
+        "databaseId": 4544245295
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3364#issuecomment-4577481881",
+      "createdAt": "2026-05-29T16:24:25Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "never launched it like this, `ros2 run rqt_controller_manager rqt_controller_manager` gives the same?\nI read somewhere something about a switch to QT6, but never have checked if this is API breaking on our side.",
+      "bodyHTML": "<p dir=\"auto\">never launched it like this, <code class=\"notranslate\">ros2 run rqt_controller_manager rqt_controller_manager</code> gives the same?<br>\nI read somewhere something about a switch to QT6, but never have checked if this is API breaking on our side.</p>",
+      "bodyVersion": "0cdd1c96e53fb3bccc7114387093656771d674876d69c2cbe39edb6b357d2e27",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABENeV7g",
+      "databaseId": 4577531374,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABDtuuLw",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 3364,
+        "locked": false,
+        "databaseId": 4544245295
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjg1NzM2MjE=",
+        "login": "christianrauch",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/8573621?v=4",
+        "profileUrl": "https://github.com/christianrauch",
+        "name": "Christian Rauch"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3364#issuecomment-4577531374",
+      "createdAt": "2026-05-29T16:30:45Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Yes. I get the same `AttributeError: type object 'Qt' has no attribute 'CustomContextMenu'`.",
+      "bodyHTML": "<p dir=\"auto\">Yes. I get the same <code class=\"notranslate\">AttributeError: type object 'Qt' has no attribute 'CustomContextMenu'</code>.</p>",
+      "bodyVersion": "4e7e8ef3551ba68ce9307dce6b3a489299ad4027660ab3af079a93be1cc99d66",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc8AAAABDtuuL88AAAAGFfrmXw",
+      "databaseId": 26138568287,
+      "createdAt": "2026-05-30T07:25:48Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NTE=",
+        "archivedAt": null,
+        "nameHTML": "help wanted",
+        "name": "help wanted",
+        "color": "33aa3f",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "AddedToProjectV2Event",
+      "id": "ATPVTE_lADOBiM5Uc8AAAABDtuuL88AAAAGFfrrGw",
+      "databaseId": 26138569499,
+      "createdAt": "2026-05-30T07:25:53Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "project": {
+        "id": "PVT_kwDOAEmpm84A15HW",
+        "title": "Contributing",
+        "url": "https://github.com/orgs/ros-controls/projects/11"
+      }
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc8AAAABDtuuL88AAAAGJrR_Fw",
+      "databaseId": 26419166999,
+      "createdAt": "2026-06-06T11:45:35Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOBiM5Uc7hFlJZ",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-controls/ros2_control/pull/3367",
+        "number": 3367,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+          "name": "ros2_control",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+            "login": "ros-controls"
+          }
+        }
+      },
+      "intent": null
+    },
+    {
+      "__typename": "ProjectV2ItemStatusChangedEvent",
+      "id": "PVTISC_lADOBiM5Uc8AAAABDtuuL88AAAAGJrSHKA",
+      "databaseId": 26419169064,
+      "createdAt": "2026-06-06T11:45:36Z",
+      "actor": {
+        "id": "BOT_kgDOBr0Lng",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/235829?s=64&v=4",
+        "login": "github-project-automation",
+        "profileResourcePath": "/apps/github-project-automation",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-project-automation[bot]"
+      },
+      "project": {
+        "id": "PVT_kwDOAEmpm84A15HW",
+        "title": "Contributing",
+        "url": "https://github.com/orgs/ros-controls/projects/11"
+      },
+      "previousStatus": "",
+      "status": "Done"
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnnCxvQgBqzI2MDg1NDgxMzM0",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnpzAtwABqzI2NDE5MTY5MDY0"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnnCxvQgBqzI2MDg1NDgxMzM0",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnpzAtwABqzI2NDE5MTY5MDY0"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOBiM5Uc7hFlJZ",
+      "url": "https://github.com/ros-controls/ros2_control/pull/3367",
+      "number": 3367,
+      "title": "fix Qt API",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-05-31T12:22:44Z",
+      "databaseId": 3776336473,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    },
+    {
+      "id": "PR_kwDOBiM5Uc7g8eNA",
+      "number": 3366,
+      "url": "https://github.com/ros-controls/ros2_control/pull/3366",
+      "state": "CLOSED",
+      "databaseId": 3773948736,
+      "relation_types": [
+        "closedByPullRequestsReferences"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3367",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3367.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3367.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3366",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3366.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3366.changes.json"
+    }
+  ]
+}

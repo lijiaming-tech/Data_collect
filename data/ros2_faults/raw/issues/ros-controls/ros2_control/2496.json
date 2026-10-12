@@ -1,0 +1,472 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/2496",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/2496",
+    "fetched_at": "2026-10-11T11:24:24.197372+00:00",
+    "http_status": 200,
+    "response_sha256": "fb6020742d1998b08388a96bad20e69f9c575ccda2709840107ffe151ac44812"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc7INcSu",
+    "databaseId": 3358966958,
+    "number": 2496,
+    "title": "Coverage report is missing some files",
+    "url": "https://github.com/ros-controls/ros2_control/issues/2496",
+    "body": "For example the range_sensor.hpp is missing (and there is no test for it!)\n\nhttps://app.codecov.io/gh/ros-controls/ros2_control/tree/master/controller_interface%2Finclude%2Fsemantic_components\n\n<img width=\"885\" height=\"563\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f80616a1-211d-480c-b550-d5ee73f4c10a\" />\n\n<img width=\"720\" height=\"541\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/3165a51b-cc25-4b8e-b1d8-7ef1fc7ca79c\" />",
+    "bodyHTML": "<p dir=\"auto\">For example the range_sensor.hpp is missing (and there is no test for it!)</p>\n<p dir=\"auto\"><a href=\"https://app.codecov.io/gh/ros-controls/ros2_control/tree/master/controller_interface%2Finclude%2Fsemantic_components\" rel=\"nofollow\">https://app.codecov.io/gh/ros-controls/ros2_control/tree/master/controller_interface%2Finclude%2Fsemantic_components</a></p>\n<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://private-user-images.githubusercontent.com/3367244/482628352-f80616a1-211d-480c-b550-d5ee73f4c10a.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgxNjMsIm5iZiI6MTc5MTcxNzg2MywicGF0aCI6Ii8zMzY3MjQ0LzQ4MjYyODM1Mi1mODA2MTZhMS0yMTFkLTQ4MGMtYjU1MC1kNWVlNzNmNGMxMGEucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MTAxMSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjEwMTFUMTEyNDIzWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9ZGUyNzIyMzUxZTU3MGY0NDRjY2VhNDNlMmVkOTQ5MmI2MzYzZWI3M2JmZTFiY2YxMGZhMmVjMjI0YzE0YWJiNCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.hLu5BkcfRWwhTr7qogTVWtjvMrBUR79NrNhI-WEec9k\"><img width=\"885\" height=\"563\" alt=\"Image\" src=\"https://private-user-images.githubusercontent.com/3367244/482628352-f80616a1-211d-480c-b550-d5ee73f4c10a.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgxNjMsIm5iZiI6MTc5MTcxNzg2MywicGF0aCI6Ii8zMzY3MjQ0LzQ4MjYyODM1Mi1mODA2MTZhMS0yMTFkLTQ4MGMtYjU1MC1kNWVlNzNmNGMxMGEucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MTAxMSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjEwMTFUMTEyNDIzWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9ZGUyNzIyMzUxZTU3MGY0NDRjY2VhNDNlMmVkOTQ5MmI2MzYzZWI3M2JmZTFiY2YxMGZhMmVjMjI0YzE0YWJiNCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.hLu5BkcfRWwhTr7qogTVWtjvMrBUR79NrNhI-WEec9k\" style=\"max-width: 100%; height: auto; max-height: 563px;; aspect-ratio: 885 / 563; background-color: var(--bgColor-muted); border-radius: 6px\" class=\"js-gh-image-fallback\"></a>\n<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://private-user-images.githubusercontent.com/3367244/482628531-3165a51b-cc25-4b8e-b1d8-7ef1fc7ca79c.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgxNjMsIm5iZiI6MTc5MTcxNzg2MywicGF0aCI6Ii8zMzY3MjQ0LzQ4MjYyODUzMS0zMTY1YTUxYi1jYzI1LTRiOGUtYjFkOC03ZWYxZmM3Y2E3OWMucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MTAxMSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjEwMTFUMTEyNDIzWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9YTIzM2QzMmJiMDU0YjA3MTJmYThlMTU5YzMzMDRjZTdlMGM1NThhYjE5ZjEwZTI3MTViZDBiZDRmN2NiZTRjNiZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.HRiUUb_NDi_WUXW-JHaYF7CnGKS0nKDxisr_Ri4Vl5I\"><img width=\"720\" height=\"541\" alt=\"Image\" src=\"https://private-user-images.githubusercontent.com/3367244/482628531-3165a51b-cc25-4b8e-b1d8-7ef1fc7ca79c.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgxNjMsIm5iZiI6MTc5MTcxNzg2MywicGF0aCI6Ii8zMzY3MjQ0LzQ4MjYyODUzMS0zMTY1YTUxYi1jYzI1LTRiOGUtYjFkOC03ZWYxZmM3Y2E3OWMucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MTAxMSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjEwMTFUMTEyNDIzWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9YTIzM2QzMmJiMDU0YjA3MTJmYThlMTU5YzMzMDRjZTdlMGM1NThhYjE5ZjEwZTI3MTViZDBiZDRmN2NiZTRjNiZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.HRiUUb_NDi_WUXW-JHaYF7CnGKS0nKDxisr_Ri4Vl5I\" style=\"max-width: 100%; height: auto; max-height: 541px;; aspect-ratio: 720 / 541; background-color: var(--bgColor-muted); border-radius: 6px\" class=\"js-gh-image-fallback\"></a>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2025-08-27T11:11:48Z",
+    "updatedAt": "2026-08-07T08:28:43Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+      "login": "christophfroehlich",
+      "id": "MDQ6VXNlcjMzNjcyNDQ=",
+      "profileUrl": "https://github.com/christophfroehlich",
+      "name": "Christoph Fröhlich",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "LA_kwDOBiM5Uc8AAAAB8jMACQ",
+            "fullDatabaseId": "8358395913",
+            "color": "C706F5",
+            "name": "persistent",
+            "nameHTML": "persistent",
+            "description": "Issue won't get marked as stale",
+            "url": "https://github.com/ros-controls/ros2_control/labels/persistent",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 1,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABNlEthA",
+      "databaseId": 5206257028,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7INcSu",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2496,
+        "locked": false,
+        "databaseId": 3358966958
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOCUXPBg",
+        "login": "dlanov",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/155569926?u=d14f85dfa854eff4ced47c113d7c3ad116609437&v=4",
+        "profileUrl": "https://github.com/dlanov",
+        "name": "Dennis Lanov"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2496#issuecomment-5206257028",
+      "createdAt": "2026-08-06T14:43:12Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I would like to work on this. I plan to add focused unit coverage for the RangeSensor semantic component, including interface naming, value retrieval, message population, released interfaces, and unavailable-value behavior.",
+      "bodyHTML": "<p dir=\"auto\">I would like to work on this. I plan to add focused unit coverage for the RangeSensor semantic component, including interface naming, value retrieval, message population, released interfaces, and unavailable-value behavior.</p>",
+      "bodyVersion": "1dae87bcc2f1df0786bcf99e27a62f16a5752184d5e32f58774adff8779418cf",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7INcSuzwAAAASCU71M",
+      "databaseId": 19366395212,
+      "createdAt": "2025-08-27T11:11:49Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7INcSuzwAAAASCU71v",
+      "databaseId": 19366395247,
+      "createdAt": "2025-08-27T11:11:49Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB8jMACQ",
+        "archivedAt": null,
+        "nameHTML": "persistent",
+        "name": "persistent",
+        "color": "C706F5",
+        "description": "Issue won't get marked as stale"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABNlEthA",
+      "databaseId": 5206257028,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7INcSu",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 2496,
+        "locked": false,
+        "databaseId": 3358966958
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOCUXPBg",
+        "login": "dlanov",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/155569926?u=d14f85dfa854eff4ced47c113d7c3ad116609437&v=4",
+        "profileUrl": "https://github.com/dlanov",
+        "name": "Dennis Lanov"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2496#issuecomment-5206257028",
+      "createdAt": "2026-08-06T14:43:12Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I would like to work on this. I plan to add focused unit coverage for the RangeSensor semantic component, including interface naming, value retrieval, message population, released interfaces, and unavailable-value behavior.",
+      "bodyHTML": "<p dir=\"auto\">I would like to work on this. I plan to add focused unit coverage for the RangeSensor semantic component, including interface naming, value retrieval, message population, released interfaces, and unavailable-value behavior.</p>",
+      "bodyVersion": "1dae87bcc2f1df0786bcf99e27a62f16a5752184d5e32f58774adff8779418cf",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc7INcSuzwAAAAbG8OUE",
+      "databaseId": 29107479812,
+      "createdAt": "2026-08-07T08:28:44Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOBiM5Uc77p_NC",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-controls/ros2_control/pull/3522",
+        "number": 3522,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+          "name": "ros2_control",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+            "login": "ros-controls"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmOs6FQgBqzE5MzY2Mzk1MjEy",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABn9tWwmABqzI5MTA3NDc5ODEy"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmOs6FQgBqzE5MzY2Mzk1MjEy",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABn9tWwmABqzI5MTA3NDc5ODEy"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOBiM5Uc77p_NC",
+      "url": "https://github.com/ros-controls/ros2_control/pull/3522",
+      "number": 3522,
+      "title": "Add RangeSensor unit coverage",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-08-06T15:07:08Z",
+      "databaseId": 4222088002,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3522",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3522.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3522.changes.json"
+    }
+  ]
+}

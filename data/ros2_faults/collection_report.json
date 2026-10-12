@@ -1,0 +1,591 @@
+{
+  "started_at": "2026-10-11T11:25:14.986122+00:00",
+  "transport": "github_public_html",
+  "query": "is:issue is:closed label:bug sort:updated-desc",
+  "target_per_repository": 25,
+  "repositories": [
+    "ros2/ros2",
+    "ros2/rclcpp",
+    "ros-navigation/navigation2",
+    "ros-controls/ros2_control"
+  ],
+  "selection": [
+    {
+      "repository": "ros2/ros2",
+      "page": 1,
+      "source": {
+        "url": "https://github.com/ros2/ros2/issues?q=is%3Aissue+is%3Aclosed+label%3Abug+sort%3Aupdated-desc&page=1",
+        "final_url": "https://github.com/ros2/ros2/issues?q=is%3Aissue+is%3Aclosed+label%3Abug+sort%3Aupdated-desc&page=1",
+        "fetched_at": "2026-10-11T11:19:07.740162+00:00",
+        "http_status": 200,
+        "response_sha256": "ccdc9a9ec7d693f6058cba87c1186097614c5f95bd8d3b53cfdc9999f8a4d9e2"
+      },
+      "page_info": {
+        "currentPage": 1,
+        "totalPages": 5,
+        "totalCount": 109
+      }
+    },
+    {
+      "repository": "ros2/rclcpp",
+      "page": 1,
+      "source": {
+        "url": "https://github.com/ros2/rclcpp/issues?q=is%3Aissue+is%3Aclosed+label%3Abug+sort%3Aupdated-desc&page=1",
+        "final_url": "https://github.com/ros2/rclcpp/issues?q=is%3Aissue+is%3Aclosed+label%3Abug+sort%3Aupdated-desc&page=1",
+        "fetched_at": "2026-10-11T11:19:58.908561+00:00",
+        "http_status": 200,
+        "response_sha256": "c45398dc3c8a16fa5ef19bedd1e7bbf48dcba6d7ed0024879e8db63b52c1313a"
+      },
+      "page_info": {
+        "currentPage": 1,
+        "totalPages": 8,
+        "totalCount": 198
+      }
+    },
+    {
+      "repository": "ros-navigation/navigation2",
+      "page": 1,
+      "source": {
+        "url": "https://github.com/ros-navigation/navigation2/issues?q=is%3Aissue+is%3Aclosed+label%3Abug+sort%3Aupdated-desc&page=1",
+        "final_url": "https://github.com/ros-navigation/navigation2/issues?q=is%3Aissue+is%3Aclosed+label%3Abug+sort%3Aupdated-desc&page=1",
+        "fetched_at": "2026-10-11T11:21:37.281556+00:00",
+        "http_status": 200,
+        "response_sha256": "014790fa1115045abbe944875e0a9a6e8ddc69e07fe198a50c4f671788174c0d"
+      },
+      "page_info": {
+        "currentPage": 1,
+        "totalPages": 8,
+        "totalCount": 183
+      }
+    },
+    {
+      "repository": "ros-controls/ros2_control",
+      "page": 1,
+      "source": {
+        "url": "https://github.com/ros-controls/ros2_control/issues?q=is%3Aissue+is%3Aclosed+label%3Abug+sort%3Aupdated-desc&page=1",
+        "final_url": "https://github.com/ros-controls/ros2_control/issues?q=is%3Aissue+is%3Aclosed+label%3Abug+sort%3Aupdated-desc&page=1",
+        "fetched_at": "2026-10-11T11:24:13.647187+00:00",
+        "http_status": 200,
+        "response_sha256": "1ca56f041dea42c2cce21691567d33a2ae52ae06ba09c6550c4ada6c6b8e200b"
+      },
+      "page_info": {
+        "currentPage": 1,
+        "totalPages": 9,
+        "totalCount": 207
+      }
+    }
+  ],
+  "failures": [],
+  "finished_at": "2026-10-11T11:25:19.581034+00:00",
+  "collected_cases": 100,
+  "counts_by_repository": {
+    "ros-controls/ros2_control": 25,
+    "ros-navigation/navigation2": 25,
+    "ros2/rclcpp": 25,
+    "ros2/ros2": 25
+  },
+  "category_hint_counts": {
+    "control_hardware": 30,
+    "build_install": 56,
+    "communication_qos": 70,
+    "parameters_lifecycle": 55,
+    "runtime_crash": 36,
+    "executor_concurrency": 43,
+    "simulation": 15,
+    "tf_time": 21,
+    "navigation": 28
+  },
+  "comments_collected": 514,
+  "cases_with_incomplete_comments": 4,
+  "code_and_log_blocks": 320,
+  "linked_pr_urls": 69,
+  "pr_records_collected": 69,
+  "patches_collected": 0,
+  "rendered_changes_collected": 69,
+  "pr_fetch_failures": [],
+  "patch_fetch_failures": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/2026",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/2026.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/2026.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3522",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3522.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3522.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3321",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3321.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3321.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3109",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3109.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3109.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3192",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3192.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3192.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3212",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3212.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3212.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3454",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3454.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3454.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3234",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3234.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3234.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3244",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3244.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3244.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3275",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3275.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3275.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3282",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3282.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3282.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3287",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3287.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3287.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3270",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3270.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3270.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3367",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3367.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3367.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3366",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3366.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3366.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3596",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3596.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3596.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3619",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3619.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3619.changes.json"
+    },
+    {
+      "url": "https://github.com/Quchaosheng/ros2_control/pull/1",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/Quchaosheng/ros2_control/1.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/Quchaosheng/ros2_control/1.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/4882",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/4882.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/4882.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5105",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5105.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5105.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5106",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5106.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5106.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5171",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5171.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5171.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5207",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5207.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5207.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6039",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6039.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6039.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5326",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5326.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5326.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6257",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6257.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6257.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5462",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5462.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5462.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6202",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6202.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6202.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5467",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5467.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5467.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6072",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6072.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6072.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5473",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5473.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5473.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5527",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5527.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5527.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5598",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5598.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5598.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5616",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5616.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5616.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5802",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5802.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5802.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5653",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5653.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5653.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5669",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5669.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5669.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5670",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5670.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5670.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6040",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6040.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6040.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5974",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5974.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5974.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6242",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6242.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6242.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6324",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6324.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6324.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6272",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6272.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6272.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6401",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6401.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6401.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3064",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3064.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3064.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/2465",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/2465.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/2465.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3121",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3121.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3121.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3143",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3143.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3143.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3130",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3130.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3130.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/2913",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/2913.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/2913.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3043",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3043.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3043.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/2953",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/2953.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/2953.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3021",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3021.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3021.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3085",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3085.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3085.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3118",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3118.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3118.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3174",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3174.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3174.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3178",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3178.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3178.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3183",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3183.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3183.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3223",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3223.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3223.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3241",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3241.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3241.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclcpp/pull/3256",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclcpp/3256.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclcpp/3256.changes.json"
+    },
+    {
+      "url": "https://github.com/ros/urdfdom/pull/222",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros/urdfdom/222.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros/urdfdom/222.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/ros2_documentation/pull/5821",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/ros2_documentation/5821.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/ros2_documentation/5821.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rmw_dds_common/pull/84",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rmw_dds_common/84.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rmw_dds_common/84.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rclpy/pull/1561",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rclpy/1561.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rclpy/1561.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/ament_cmake_ros/pull/60",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/ament_cmake_ros/60.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/ament_cmake_ros/60.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/rcl/pull/1281",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/rcl/1281.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/rcl/1281.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/ros2_documentation/pull/6213",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/ros2_documentation/6213.json",
+      "patch_error": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>",
+      "rendered_changes_file": "raw/pull_requests/ros2/ros2_documentation/6213.changes.json"
+    },
+    {
+      "url": "https://github.com/ros2/ros2/pull/1865",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/ros2/1865.json",
+      "patch_error": "URLError: <urlopen error Tunnel connection failed: 403 Forbidden>",
+      "rendered_changes_file": "raw/pull_requests/ros2/ros2/1865.changes.json"
+    }
+  ]
+}

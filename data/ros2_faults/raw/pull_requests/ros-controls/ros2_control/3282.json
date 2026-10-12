@@ -1,0 +1,26 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3282",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3282",
+    "fetched_at": "2026-10-11T11:24:41.669646+00:00",
+    "http_status": 200,
+    "response_sha256": "bb4f3074dac6b01b93dc903d42e7f4f9c2f951f398eca4a521ac11f2ad483739"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3282",
+  "title": "fix(generic_system): Fix loop bound of states by christophfroehlich · Pull Request #3282 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nFixes #3279\n\n\nIs this user-facing behavior change?\n\n\nno\n\n\n\nDid you use Generative AI?\n\n\nGitHub Copilot, GPT-5.3 Codex",
+  "discussion_rendered_text": [
+    "We are still accessing indexes of standard_interfaces_ within the for loop. not sure about the fix.\n\n\nBut I trust the great Codex",
+    "We are still accessing indexes of standard_interfaces_ within the for loop. not sure about the fix.\n\n\nBut I trust the great Codex\n\n\n\nbut standard_interfaces has size 4, joint_state_values_ has size 3.",
+    "but standard_interfaces has size 4, joint_state_values_ has size 3.\n\n\n\nGot it"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/commit/ac32a96dc923779d3d94bd7e8c61f1af751d7cee",
+    "https://github.com/ros-controls/ros2_control/commit/dee3ca81a35db382a16ccb3adad720a08475e7f5",
+    "https://github.com/ros-controls/ros2_control/commit/e850a02826bddecb128a63ce591d2e2dd337b869",
+    "https://github.com/ros-controls/ros2_control/pull/3282/commits/2eaf855b9c25af0bf83ec1236384597a6306a987"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

@@ -1,0 +1,27 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3275",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3275",
+    "fetched_at": "2026-10-11T11:24:44.499280+00:00",
+    "http_status": 200,
+    "response_sha256": "4d100645e0487f229e004a02df3123b213eaaaf3d9b43bb1f74c4e520a802ba4"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3275",
+  "title": "Fix std::clamp regression on Ubuntu 26.04 by saikishor · Pull Request #3275 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nThis should fix the issue caused by pos_low > pos_high and triggered a std::clamp assertion in GCC 15 (Ubuntu 26.04 / libstdc++ 15)\n\n\nFixes #3269\n\n\nIs this user-facing behavior change?\n\n\nNo\n\n\nDid you use Generative AI?\n\n\nClaude Code",
+  "discussion_rendered_text": [
+    "Thank you Claude",
+    "This only fixes the first stack trace reported in #3269, I'll open a new issue for the other one."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/commit/2e56273fc5471bb9c52d1d03567ea232b4be8a93",
+    "https://github.com/ros-controls/ros2_control/commit/bc93b0d15646ff7046f21c392b9b82e51350e1c5",
+    "https://github.com/ros-controls/ros2_control/commit/cd632a37ce05920e12917886c76e55003a516b39",
+    "https://github.com/ros-controls/ros2_control/pull/3275/commits/03d8f368e908c371d379d7de0598cc26c3f6a713",
+    "https://github.com/ros-controls/ros2_control/pull/3275/commits/5fb660614ce054b8447697561bbf14684e2dfb5d",
+    "https://github.com/ros-controls/ros2_control/pull/3275/commits/bbdb7038c377973b85150e9f71e92492020d3154"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

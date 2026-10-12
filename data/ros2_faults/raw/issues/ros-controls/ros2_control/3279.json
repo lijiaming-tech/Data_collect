@@ -1,0 +1,437 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3279",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3279",
+    "fetched_at": "2026-10-11T11:24:40.358262+00:00",
+    "http_status": 200,
+    "response_sha256": "8689ff7d81529235a7fa4bd40a5039b319bb0d5969c34323bbb807781dba3d1a"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc8AAAABBhgi2A",
+    "databaseId": 4397212376,
+    "number": 3279,
+    "title": "Issue with `constexpr std::array` on Resolute Racoon",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3279",
+    "body": "```\n2026-05-03T21:34:02.0821516Z     [ RUN      ] TestGenericSystem.simple_dynamics_pos_vel_acc_control_modes_interfaces\n2026-05-03T21:34:02.0821748Z     [INFO] [1777843641.383337222] [TestGenericSystem]: Loading hardware 'MockHardwareSystem' \n2026-05-03T21:34:02.0822127Z     [INFO] [1777843641.383639077] [TestGenericSystem]: Loaded hardware 'MockHardwareSystem' from plugin 'mock_components/GenericSystem'\n2026-05-03T21:34:02.0822515Z     [INFO] [1777843641.383751066] [TestGenericSystem]: Initialize hardware 'MockHardwareSystem' \n2026-05-03T21:34:02.0823194Z     [WARN] [1777843641.383796731] [TestGenericSystem.hardware_component.system.MockHardwareSystem]: Executor is not available during hardware component initialization for 'MockHardwareSystem'. Skipping node creation!\n2026-05-03T21:34:02.0823809Z     [INFO] [1777843641.383822279] [TestGenericSystem.hardware_component.system.MockHardwareSystem]: `status_publish_rate` is set to 0.0, hardware status publisher will not be created.\n2026-05-03T21:34:02.0824105Z     [INFO] [1777843641.383969804] [TestGenericSystem]: Successful initialization of hardware 'MockHardwareSystem'\n2026-05-03T21:34:02.0824336Z     [INFO] [1777843641.384254857] [resource_manager]: 'configure' hardware 'MockHardwareSystem' \n2026-05-03T21:34:02.0824601Z     [INFO] [1777843641.384294090] [resource_manager]: Successful 'configure' of hardware 'MockHardwareSystem'\n2026-05-03T21:34:02.0824823Z     [INFO] [1777843641.384310170] [resource_manager]: 'activate' hardware 'MockHardwareSystem' \n2026-05-03T21:34:02.0825089Z     [INFO] [1777843641.384324126] [resource_manager]: Successful 'activate' of hardware 'MockHardwareSystem'\n2026-05-03T21:34:02.0825349Z     [ERROR] [1777843641.384416799] [TestGenericSystem]: Not acceptable command interfaces combination: \n2026-05-03T21:34:02.0825422Z     Start interfaces: \n2026-05-03T21:34:02.0825483Z     [\n2026-05-03T21:34:02.0825555Z       joint1/unknown\n2026-05-03T21:34:02.0825627Z       joint2/acceleration\n2026-05-03T21:34:02.0825688Z     ]\n2026-05-03T21:34:02.0825761Z     Stop interfaces: \n2026-05-03T21:34:02.0825819Z     [\n2026-05-03T21:34:02.0825879Z     ]\n2026-05-03T21:34:02.0825948Z     Not existing: \n2026-05-03T21:34:02.0826010Z     [\n2026-05-03T21:34:02.0826077Z      joint1/unknown\n2026-05-03T21:34:02.0826136Z     ]\n2026-05-03T21:34:02.0826198Z     \n2026-05-03T21:34:02.0826725Z     [ERROR] [1777843641.384560238] [TestGenericSystem.hardware_component.system.MockHardwareSystem]: Joint 'joint1' has to have 'position', 'velocity', or 'acceleration' interface!\n2026-05-03T21:34:02.0827104Z     [ERROR] [1777843641.384591616] [TestGenericSystem]: Component 'MockHardwareSystem' did not accept command interfaces combination: \n2026-05-03T21:34:02.0827475Z     Start interfaces: \n2026-05-03T21:34:02.0827541Z     [\n2026-05-03T21:34:02.0827616Z       joint2/acceleration\n2026-05-03T21:34:02.0827679Z       joint1/effort\n2026-05-03T21:34:02.0827742Z     ]\n2026-05-03T21:34:02.0827810Z     Stop interfaces: \n2026-05-03T21:34:02.0827867Z     [\n2026-05-03T21:34:02.0828012Z     ]\n2026-05-03T21:34:02.0828076Z     \n2026-05-03T21:34:02.0828732Z     [ERROR] [1777843641.384653041] [TestGenericSystem.hardware_component.system.MockHardwareSystem]: Got multiple (2) starting interfaces for joint 'joint2' - this is not supported!\n2026-05-03T21:34:02.0829106Z     [ERROR] [1777843641.384677727] [TestGenericSystem]: Component 'MockHardwareSystem' did not accept command interfaces combination: \n2026-05-03T21:34:02.0829181Z     Start interfaces: \n2026-05-03T21:34:02.0829238Z     [\n2026-05-03T21:34:02.0829308Z       joint2/acceleration\n2026-05-03T21:34:02.0829377Z       joint1/position\n2026-05-03T21:34:02.0829444Z       joint2/velocity\n2026-05-03T21:34:02.0829500Z     ]\n2026-05-03T21:34:02.0829567Z     Stop interfaces: \n2026-05-03T21:34:02.0829628Z     [\n2026-05-03T21:34:02.0829683Z     ]\n2026-05-03T21:34:02.0829737Z     \n2026-05-03T21:34:02.0830481Z     /usr/include/c++/15/array:210: constexpr std::array<_Tp, _Nm>::value_type& std::array<_Tp, _Nm>::operator[](size_type) [with _Tp = double; long unsigned int _Nm = 3; reference = double&; size_type = long unsigned int]: Assertion '__n < this->size()' failed.\n2026-05-03T21:34:02.0830570Z     Stack trace (most recent call last):\n2026-05-03T21:34:02.0830802Z     #23   Object \"/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2\", at 0xffffffffffffffff, in \n2026-05-03T21:34:02.0831235Z     #22   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x5590320844c4, in _start\n2026-05-03T21:34:02.0831515Z     #21   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f97b03d1717, in __libc_start_main\n2026-05-03T21:34:02.0831734Z     #20   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f97b03d1600, in \n2026-05-03T21:34:02.0832151Z     #19   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x5590320f10fc, in main\n2026-05-03T21:34:02.0832603Z     #18   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x5590320f7ba7, in RUN_ALL_TESTS()\n2026-05-03T21:34:02.0833095Z     #17   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x559032144e89, in testing::UnitTest::Run()\n2026-05-03T21:34:02.0834157Z     #16   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x55903215eca6, in bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*)\n2026-05-03T21:34:02.0834714Z     #15   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x559032154d7b, in testing::internal::UnitTestImpl::RunAllTests()\n2026-05-03T21:34:02.0835201Z     #14   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x55903214fc06, in testing::TestSuite::Run()\n2026-05-03T21:34:02.0835674Z     #13   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x559032144df4, in testing::TestInfo::Run()\n2026-05-03T21:34:02.0836130Z     #12   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x559032144c6d, in testing::Test::Run()\n2026-05-03T21:34:02.0836997Z     #11   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x55903215e646, in void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*)\n2026-05-03T21:34:02.0838011Z     #10   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x5590320ced73, in TestGenericSystem_simple_dynamics_pos_vel_acc_control_modes_interfaces_Test::TestBody()\n2026-05-03T21:34:02.0838823Z     #9    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libhardware_interface.so\", at 0x7f97b0ebb213, in hardware_interface::ResourceManager::read(rclcpp::Time const&, rclcpp::Duration const&)\n2026-05-03T21:34:02.0840457Z     #8    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libhardware_interface.so\", at 0x7f97b0eba3fc, in auto hardware_interface::ResourceManager::read(rclcpp::Time const&, rclcpp::Duration const&)::{lambda(auto:1&, bool)#1}::operator()<std::vector<hardware_interface::HardwareComponent, std::allocator<hardware_interface::HardwareComponent> > >(std::vector<hardware_interface::HardwareComponent, std::allocator<hardware_interface::HardwareComponent> >&, bool) const\n2026-05-03T21:34:02.0841203Z     #7    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libhardware_interface.so\", at 0x7f97b0f3b06b, in hardware_interface::HardwareComponent::read(rclcpp::Time const&, rclcpp::Duration const&)\n2026-05-03T21:34:02.0842007Z     #6    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libhardware_interface.so\", at 0x7f97b0f49e62, in hardware_interface::HardwareComponentInterface::trigger_read(rclcpp::Time const&, rclcpp::Duration const&)\n2026-05-03T21:34:02.0842762Z     #5    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libmock_components.so\", at 0x7f97ac3e5051, in mock_components::GenericSystem::read(rclcpp::Time const&, rclcpp::Duration const&)\n2026-05-03T21:34:02.0843405Z     #4    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libmock_components.so\", at 0x7f97ac3e95ab, in std::array<double, 3ul>::operator[](unsigned long)\n2026-05-03T21:34:02.0843822Z     #3    Object \"/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.35\", at 0x7f97b079c715, in std::__glibcxx_assert_fail(char const*, int, char const*, char const*)\n2026-05-03T21:34:02.0844002Z     #2    Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f97b03cf8eb, in abort\n2026-05-03T21:34:02.0844169Z     #1    Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f97b03ecb7d, in raise\n2026-05-03T21:34:02.0844372Z     #0    Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f97b044d48c, in pthread_kill\n2026-05-03T21:34:02.0844464Z     Aborted (Signal sent by tkill() 7586 0)\n2026-05-03T21:34:02.0844523Z   >>>\n```\n\n**To Reproduce**\nhttps://github.com/ros-controls/ros2_control/actions/runs/25291134652/job/74143007051?pr=3268",
+    "bodyHTML": "<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"2026-05-03T21:34:02.0821516Z     [ RUN      ] TestGenericSystem.simple_dynamics_pos_vel_acc_control_modes_interfaces\n2026-05-03T21:34:02.0821748Z     [INFO] [1777843641.383337222] [TestGenericSystem]: Loading hardware 'MockHardwareSystem' \n2026-05-03T21:34:02.0822127Z     [INFO] [1777843641.383639077] [TestGenericSystem]: Loaded hardware 'MockHardwareSystem' from plugin 'mock_components/GenericSystem'\n2026-05-03T21:34:02.0822515Z     [INFO] [1777843641.383751066] [TestGenericSystem]: Initialize hardware 'MockHardwareSystem' \n2026-05-03T21:34:02.0823194Z     [WARN] [1777843641.383796731] [TestGenericSystem.hardware_component.system.MockHardwareSystem]: Executor is not available during hardware component initialization for 'MockHardwareSystem'. Skipping node creation!\n2026-05-03T21:34:02.0823809Z     [INFO] [1777843641.383822279] [TestGenericSystem.hardware_component.system.MockHardwareSystem]: `status_publish_rate` is set to 0.0, hardware status publisher will not be created.\n2026-05-03T21:34:02.0824105Z     [INFO] [1777843641.383969804] [TestGenericSystem]: Successful initialization of hardware 'MockHardwareSystem'\n2026-05-03T21:34:02.0824336Z     [INFO] [1777843641.384254857] [resource_manager]: 'configure' hardware 'MockHardwareSystem' \n2026-05-03T21:34:02.0824601Z     [INFO] [1777843641.384294090] [resource_manager]: Successful 'configure' of hardware 'MockHardwareSystem'\n2026-05-03T21:34:02.0824823Z     [INFO] [1777843641.384310170] [resource_manager]: 'activate' hardware 'MockHardwareSystem' \n2026-05-03T21:34:02.0825089Z     [INFO] [1777843641.384324126] [resource_manager]: Successful 'activate' of hardware 'MockHardwareSystem'\n2026-05-03T21:34:02.0825349Z     [ERROR] [1777843641.384416799] [TestGenericSystem]: Not acceptable command interfaces combination: \n2026-05-03T21:34:02.0825422Z     Start interfaces: \n2026-05-03T21:34:02.0825483Z     [\n2026-05-03T21:34:02.0825555Z       joint1/unknown\n2026-05-03T21:34:02.0825627Z       joint2/acceleration\n2026-05-03T21:34:02.0825688Z     ]\n2026-05-03T21:34:02.0825761Z     Stop interfaces: \n2026-05-03T21:34:02.0825819Z     [\n2026-05-03T21:34:02.0825879Z     ]\n2026-05-03T21:34:02.0825948Z     Not existing: \n2026-05-03T21:34:02.0826010Z     [\n2026-05-03T21:34:02.0826077Z      joint1/unknown\n2026-05-03T21:34:02.0826136Z     ]\n2026-05-03T21:34:02.0826198Z     \n2026-05-03T21:34:02.0826725Z     [ERROR] [1777843641.384560238] [TestGenericSystem.hardware_component.system.MockHardwareSystem]: Joint 'joint1' has to have 'position', 'velocity', or 'acceleration' interface!\n2026-05-03T21:34:02.0827104Z     [ERROR] [1777843641.384591616] [TestGenericSystem]: Component 'MockHardwareSystem' did not accept command interfaces combination: \n2026-05-03T21:34:02.0827475Z     Start interfaces: \n2026-05-03T21:34:02.0827541Z     [\n2026-05-03T21:34:02.0827616Z       joint2/acceleration\n2026-05-03T21:34:02.0827679Z       joint1/effort\n2026-05-03T21:34:02.0827742Z     ]\n2026-05-03T21:34:02.0827810Z     Stop interfaces: \n2026-05-03T21:34:02.0827867Z     [\n2026-05-03T21:34:02.0828012Z     ]\n2026-05-03T21:34:02.0828076Z     \n2026-05-03T21:34:02.0828732Z     [ERROR] [1777843641.384653041] [TestGenericSystem.hardware_component.system.MockHardwareSystem]: Got multiple (2) starting interfaces for joint 'joint2' - this is not supported!\n2026-05-03T21:34:02.0829106Z     [ERROR] [1777843641.384677727] [TestGenericSystem]: Component 'MockHardwareSystem' did not accept command interfaces combination: \n2026-05-03T21:34:02.0829181Z     Start interfaces: \n2026-05-03T21:34:02.0829238Z     [\n2026-05-03T21:34:02.0829308Z       joint2/acceleration\n2026-05-03T21:34:02.0829377Z       joint1/position\n2026-05-03T21:34:02.0829444Z       joint2/velocity\n2026-05-03T21:34:02.0829500Z     ]\n2026-05-03T21:34:02.0829567Z     Stop interfaces: \n2026-05-03T21:34:02.0829628Z     [\n2026-05-03T21:34:02.0829683Z     ]\n2026-05-03T21:34:02.0829737Z     \n2026-05-03T21:34:02.0830481Z     /usr/include/c++/15/array:210: constexpr std::array&lt;_Tp, _Nm&gt;::value_type&amp; std::array&lt;_Tp, _Nm&gt;::operator[](size_type) [with _Tp = double; long unsigned int _Nm = 3; reference = double&amp;; size_type = long unsigned int]: Assertion '__n &lt; this-&gt;size()' failed.\n2026-05-03T21:34:02.0830570Z     Stack trace (most recent call last):\n2026-05-03T21:34:02.0830802Z     #23   Object &quot;/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2&quot;, at 0xffffffffffffffff, in \n2026-05-03T21:34:02.0831235Z     #22   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system&quot;, at 0x5590320844c4, in _start\n2026-05-03T21:34:02.0831515Z     #21   Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7f97b03d1717, in __libc_start_main\n2026-05-03T21:34:02.0831734Z     #20   Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7f97b03d1600, in \n2026-05-03T21:34:02.0832151Z     #19   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system&quot;, at 0x5590320f10fc, in main\n2026-05-03T21:34:02.0832603Z     #18   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system&quot;, at 0x5590320f7ba7, in RUN_ALL_TESTS()\n2026-05-03T21:34:02.0833095Z     #17   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system&quot;, at 0x559032144e89, in testing::UnitTest::Run()\n2026-05-03T21:34:02.0834157Z     #16   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system&quot;, at 0x55903215eca6, in bool testing::internal::HandleExceptionsInMethodIfSupported&lt;testing::internal::UnitTestImpl, bool&gt;(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*)\n2026-05-03T21:34:02.0834714Z     #15   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system&quot;, at 0x559032154d7b, in testing::internal::UnitTestImpl::RunAllTests()\n2026-05-03T21:34:02.0835201Z     #14   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system&quot;, at 0x55903214fc06, in testing::TestSuite::Run()\n2026-05-03T21:34:02.0835674Z     #13   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system&quot;, at 0x559032144df4, in testing::TestInfo::Run()\n2026-05-03T21:34:02.0836130Z     #12   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system&quot;, at 0x559032144c6d, in testing::Test::Run()\n2026-05-03T21:34:02.0836997Z     #11   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system&quot;, at 0x55903215e646, in void testing::internal::HandleExceptionsInMethodIfSupported&lt;testing::Test, void&gt;(testing::Test*, void (testing::Test::*)(), char const*)\n2026-05-03T21:34:02.0838011Z     #10   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system&quot;, at 0x5590320ced73, in TestGenericSystem_simple_dynamics_pos_vel_acc_control_modes_interfaces_Test::TestBody()\n2026-05-03T21:34:02.0838823Z     #9    Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libhardware_interface.so&quot;, at 0x7f97b0ebb213, in hardware_interface::ResourceManager::read(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n2026-05-03T21:34:02.0840457Z     #8    Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libhardware_interface.so&quot;, at 0x7f97b0eba3fc, in auto hardware_interface::ResourceManager::read(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)::{lambda(auto:1&amp;, bool)#1}::operator()&lt;std::vector&lt;hardware_interface::HardwareComponent, std::allocator&lt;hardware_interface::HardwareComponent&gt; &gt; &gt;(std::vector&lt;hardware_interface::HardwareComponent, std::allocator&lt;hardware_interface::HardwareComponent&gt; &gt;&amp;, bool) const\n2026-05-03T21:34:02.0841203Z     #7    Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libhardware_interface.so&quot;, at 0x7f97b0f3b06b, in hardware_interface::HardwareComponent::read(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n2026-05-03T21:34:02.0842007Z     #6    Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libhardware_interface.so&quot;, at 0x7f97b0f49e62, in hardware_interface::HardwareComponentInterface::trigger_read(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n2026-05-03T21:34:02.0842762Z     #5    Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libmock_components.so&quot;, at 0x7f97ac3e5051, in mock_components::GenericSystem::read(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n2026-05-03T21:34:02.0843405Z     #4    Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libmock_components.so&quot;, at 0x7f97ac3e95ab, in std::array&lt;double, 3ul&gt;::operator[](unsigned long)\n2026-05-03T21:34:02.0843822Z     #3    Object &quot;/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.35&quot;, at 0x7f97b079c715, in std::__glibcxx_assert_fail(char const*, int, char const*, char const*)\n2026-05-03T21:34:02.0844002Z     #2    Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7f97b03cf8eb, in abort\n2026-05-03T21:34:02.0844169Z     #1    Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7f97b03ecb7d, in raise\n2026-05-03T21:34:02.0844372Z     #0    Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7f97b044d48c, in pthread_kill\n2026-05-03T21:34:02.0844464Z     Aborted (Signal sent by tkill() 7586 0)\n2026-05-03T21:34:02.0844523Z   &gt;&gt;&gt;\"><pre class=\"notranslate\"><code class=\"notranslate\">2026-05-03T21:34:02.0821516Z     [ RUN      ] TestGenericSystem.simple_dynamics_pos_vel_acc_control_modes_interfaces\n2026-05-03T21:34:02.0821748Z     [INFO] [1777843641.383337222] [TestGenericSystem]: Loading hardware 'MockHardwareSystem' \n2026-05-03T21:34:02.0822127Z     [INFO] [1777843641.383639077] [TestGenericSystem]: Loaded hardware 'MockHardwareSystem' from plugin 'mock_components/GenericSystem'\n2026-05-03T21:34:02.0822515Z     [INFO] [1777843641.383751066] [TestGenericSystem]: Initialize hardware 'MockHardwareSystem' \n2026-05-03T21:34:02.0823194Z     [WARN] [1777843641.383796731] [TestGenericSystem.hardware_component.system.MockHardwareSystem]: Executor is not available during hardware component initialization for 'MockHardwareSystem'. Skipping node creation!\n2026-05-03T21:34:02.0823809Z     [INFO] [1777843641.383822279] [TestGenericSystem.hardware_component.system.MockHardwareSystem]: `status_publish_rate` is set to 0.0, hardware status publisher will not be created.\n2026-05-03T21:34:02.0824105Z     [INFO] [1777843641.383969804] [TestGenericSystem]: Successful initialization of hardware 'MockHardwareSystem'\n2026-05-03T21:34:02.0824336Z     [INFO] [1777843641.384254857] [resource_manager]: 'configure' hardware 'MockHardwareSystem' \n2026-05-03T21:34:02.0824601Z     [INFO] [1777843641.384294090] [resource_manager]: Successful 'configure' of hardware 'MockHardwareSystem'\n2026-05-03T21:34:02.0824823Z     [INFO] [1777843641.384310170] [resource_manager]: 'activate' hardware 'MockHardwareSystem' \n2026-05-03T21:34:02.0825089Z     [INFO] [1777843641.384324126] [resource_manager]: Successful 'activate' of hardware 'MockHardwareSystem'\n2026-05-03T21:34:02.0825349Z     [ERROR] [1777843641.384416799] [TestGenericSystem]: Not acceptable command interfaces combination: \n2026-05-03T21:34:02.0825422Z     Start interfaces: \n2026-05-03T21:34:02.0825483Z     [\n2026-05-03T21:34:02.0825555Z       joint1/unknown\n2026-05-03T21:34:02.0825627Z       joint2/acceleration\n2026-05-03T21:34:02.0825688Z     ]\n2026-05-03T21:34:02.0825761Z     Stop interfaces: \n2026-05-03T21:34:02.0825819Z     [\n2026-05-03T21:34:02.0825879Z     ]\n2026-05-03T21:34:02.0825948Z     Not existing: \n2026-05-03T21:34:02.0826010Z     [\n2026-05-03T21:34:02.0826077Z      joint1/unknown\n2026-05-03T21:34:02.0826136Z     ]\n2026-05-03T21:34:02.0826198Z     \n2026-05-03T21:34:02.0826725Z     [ERROR] [1777843641.384560238] [TestGenericSystem.hardware_component.system.MockHardwareSystem]: Joint 'joint1' has to have 'position', 'velocity', or 'acceleration' interface!\n2026-05-03T21:34:02.0827104Z     [ERROR] [1777843641.384591616] [TestGenericSystem]: Component 'MockHardwareSystem' did not accept command interfaces combination: \n2026-05-03T21:34:02.0827475Z     Start interfaces: \n2026-05-03T21:34:02.0827541Z     [\n2026-05-03T21:34:02.0827616Z       joint2/acceleration\n2026-05-03T21:34:02.0827679Z       joint1/effort\n2026-05-03T21:34:02.0827742Z     ]\n2026-05-03T21:34:02.0827810Z     Stop interfaces: \n2026-05-03T21:34:02.0827867Z     [\n2026-05-03T21:34:02.0828012Z     ]\n2026-05-03T21:34:02.0828076Z     \n2026-05-03T21:34:02.0828732Z     [ERROR] [1777843641.384653041] [TestGenericSystem.hardware_component.system.MockHardwareSystem]: Got multiple (2) starting interfaces for joint 'joint2' - this is not supported!\n2026-05-03T21:34:02.0829106Z     [ERROR] [1777843641.384677727] [TestGenericSystem]: Component 'MockHardwareSystem' did not accept command interfaces combination: \n2026-05-03T21:34:02.0829181Z     Start interfaces: \n2026-05-03T21:34:02.0829238Z     [\n2026-05-03T21:34:02.0829308Z       joint2/acceleration\n2026-05-03T21:34:02.0829377Z       joint1/position\n2026-05-03T21:34:02.0829444Z       joint2/velocity\n2026-05-03T21:34:02.0829500Z     ]\n2026-05-03T21:34:02.0829567Z     Stop interfaces: \n2026-05-03T21:34:02.0829628Z     [\n2026-05-03T21:34:02.0829683Z     ]\n2026-05-03T21:34:02.0829737Z     \n2026-05-03T21:34:02.0830481Z     /usr/include/c++/15/array:210: constexpr std::array&lt;_Tp, _Nm&gt;::value_type&amp; std::array&lt;_Tp, _Nm&gt;::operator[](size_type) [with _Tp = double; long unsigned int _Nm = 3; reference = double&amp;; size_type = long unsigned int]: Assertion '__n &lt; this-&gt;size()' failed.\n2026-05-03T21:34:02.0830570Z     Stack trace (most recent call last):\n2026-05-03T21:34:02.0830802Z     #23   Object \"/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2\", at 0xffffffffffffffff, in \n2026-05-03T21:34:02.0831235Z     #22   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x5590320844c4, in _start\n2026-05-03T21:34:02.0831515Z     #21   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f97b03d1717, in __libc_start_main\n2026-05-03T21:34:02.0831734Z     #20   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f97b03d1600, in \n2026-05-03T21:34:02.0832151Z     #19   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x5590320f10fc, in main\n2026-05-03T21:34:02.0832603Z     #18   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x5590320f7ba7, in RUN_ALL_TESTS()\n2026-05-03T21:34:02.0833095Z     #17   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x559032144e89, in testing::UnitTest::Run()\n2026-05-03T21:34:02.0834157Z     #16   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x55903215eca6, in bool testing::internal::HandleExceptionsInMethodIfSupported&lt;testing::internal::UnitTestImpl, bool&gt;(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*)\n2026-05-03T21:34:02.0834714Z     #15   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x559032154d7b, in testing::internal::UnitTestImpl::RunAllTests()\n2026-05-03T21:34:02.0835201Z     #14   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x55903214fc06, in testing::TestSuite::Run()\n2026-05-03T21:34:02.0835674Z     #13   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x559032144df4, in testing::TestInfo::Run()\n2026-05-03T21:34:02.0836130Z     #12   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x559032144c6d, in testing::Test::Run()\n2026-05-03T21:34:02.0836997Z     #11   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x55903215e646, in void testing::internal::HandleExceptionsInMethodIfSupported&lt;testing::Test, void&gt;(testing::Test*, void (testing::Test::*)(), char const*)\n2026-05-03T21:34:02.0838011Z     #10   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/hardware_interface/test_generic_system\", at 0x5590320ced73, in TestGenericSystem_simple_dynamics_pos_vel_acc_control_modes_interfaces_Test::TestBody()\n2026-05-03T21:34:02.0838823Z     #9    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libhardware_interface.so\", at 0x7f97b0ebb213, in hardware_interface::ResourceManager::read(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n2026-05-03T21:34:02.0840457Z     #8    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libhardware_interface.so\", at 0x7f97b0eba3fc, in auto hardware_interface::ResourceManager::read(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)::{lambda(auto:1&amp;, bool)#1}::operator()&lt;std::vector&lt;hardware_interface::HardwareComponent, std::allocator&lt;hardware_interface::HardwareComponent&gt; &gt; &gt;(std::vector&lt;hardware_interface::HardwareComponent, std::allocator&lt;hardware_interface::HardwareComponent&gt; &gt;&amp;, bool) const\n2026-05-03T21:34:02.0841203Z     #7    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libhardware_interface.so\", at 0x7f97b0f3b06b, in hardware_interface::HardwareComponent::read(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n2026-05-03T21:34:02.0842007Z     #6    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libhardware_interface.so\", at 0x7f97b0f49e62, in hardware_interface::HardwareComponentInterface::trigger_read(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n2026-05-03T21:34:02.0842762Z     #5    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libmock_components.so\", at 0x7f97ac3e5051, in mock_components::GenericSystem::read(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n2026-05-03T21:34:02.0843405Z     #4    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/hardware_interface/lib/libmock_components.so\", at 0x7f97ac3e95ab, in std::array&lt;double, 3ul&gt;::operator[](unsigned long)\n2026-05-03T21:34:02.0843822Z     #3    Object \"/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.35\", at 0x7f97b079c715, in std::__glibcxx_assert_fail(char const*, int, char const*, char const*)\n2026-05-03T21:34:02.0844002Z     #2    Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f97b03cf8eb, in abort\n2026-05-03T21:34:02.0844169Z     #1    Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f97b03ecb7d, in raise\n2026-05-03T21:34:02.0844372Z     #0    Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f97b044d48c, in pthread_kill\n2026-05-03T21:34:02.0844464Z     Aborted (Signal sent by tkill() 7586 0)\n2026-05-03T21:34:02.0844523Z   &gt;&gt;&gt;\n</code></pre></div>\n<p dir=\"auto\"><strong>To Reproduce</strong><br>\n<a href=\"https://github.com/ros-controls/ros2_control/actions/runs/25291134652/job/74143007051?pr=3268\">https://github.com/ros-controls/ros2_control/actions/runs/25291134652/job/74143007051?pr=3268</a></p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-05-07T08:17:06Z",
+    "updatedAt": "2026-05-07T18:44:41Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+      "login": "christophfroehlich",
+      "id": "MDQ6VXNlcjMzNjcyNDQ=",
+      "profileUrl": "https://github.com/christophfroehlich",
+      "name": "Christoph Fröhlich",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 1,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABBkPyKA",
+      "databaseId": 4400083496,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABBhgi2A",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3279,
+        "locked": false,
+        "databaseId": 4397212376
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjc5NzkzODM4",
+        "login": "Exokern",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/79793838?u=22fb4ec61792caab525b24af0cce98976aeccfb0&v=4",
+        "profileUrl": "https://github.com/Exokern",
+        "name": "EXOKERN"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3279#issuecomment-4400083496",
+      "createdAt": "2026-05-07T18:44:41Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "The abort looks like a real out-of-bounds access in `mock_components::GenericSystem` when `calculate_dynamics_` is enabled.\n\nIn `hardware_interface/src/mock_components/generic_system.cpp`, the dynamics branch stores state/command in:\n\n- `std::array<double, 3> joint_state_values_` (pos/vel/acc)\n\n…but later mirrors values back using `standard_interfaces_` (pos/vel/acc/effort). If the code iterates up to `standard_interfaces_.size()` (4) while indexing `joint_state_values_` (size 3), `std::array::operator[]` will hit `__n < this->size()` and abort (which matches your Resolute/libstdc++ assert).\n\nOn current `master`, this appears to be fixed by iterating up to `joint_state_values_.size()` instead (commit `dee3ca81a`). Cherry-picking that change into whatever branch/PR is running the Resolute CI should turn this into a normal test failure instead of a hard abort.\n",
+      "bodyHTML": "<p dir=\"auto\">The abort looks like a real out-of-bounds access in <code class=\"notranslate\">mock_components::GenericSystem</code> when <code class=\"notranslate\">calculate_dynamics_</code> is enabled.</p>\n<p dir=\"auto\">In <code class=\"notranslate\">hardware_interface/src/mock_components/generic_system.cpp</code>, the dynamics branch stores state/command in:</p>\n<ul dir=\"auto\">\n<li><code class=\"notranslate\">std::array&lt;double, 3&gt; joint_state_values_</code> (pos/vel/acc)</li>\n</ul>\n<p dir=\"auto\">…but later mirrors values back using <code class=\"notranslate\">standard_interfaces_</code> (pos/vel/acc/effort). If the code iterates up to <code class=\"notranslate\">standard_interfaces_.size()</code> (4) while indexing <code class=\"notranslate\">joint_state_values_</code> (size 3), <code class=\"notranslate\">std::array::operator[]</code> will hit <code class=\"notranslate\">__n &lt; this-&gt;size()</code> and abort (which matches your Resolute/libstdc++ assert).</p>\n<p dir=\"auto\">On current <code class=\"notranslate\">master</code>, this appears to be fixed by iterating up to <code class=\"notranslate\">joint_state_values_.size()</code> instead (commit <code class=\"notranslate\">dee3ca81a</code>). Cherry-picking that change into whatever branch/PR is running the Resolute CI should turn this into a normal test failure instead of a hard abort.</p>",
+      "bodyVersion": "eeba7fd747bc671581b06acb4eabf45b7eb207eb34cfb9248a824598a1b0a71a",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc8AAAABBhgi2M8AAAAF4SVL_g",
+      "databaseId": 25252154366,
+      "createdAt": "2026-05-07T08:17:07Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc8AAAABBhgi2M8AAAAF4kMDlQ",
+      "databaseId": 25270879125,
+      "createdAt": "2026-05-07T16:44:10Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOBiM5Uc7ZK02k",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-controls/ros2_control/pull/3282",
+        "number": 3282,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+          "name": "ros2_control",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+            "login": "ros-controls"
+          }
+        }
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABBkPyKA",
+      "databaseId": 4400083496,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABBhgi2A",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3279,
+        "locked": false,
+        "databaseId": 4397212376
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjc5NzkzODM4",
+        "login": "Exokern",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/79793838?u=22fb4ec61792caab525b24af0cce98976aeccfb0&v=4",
+        "profileUrl": "https://github.com/Exokern",
+        "name": "EXOKERN"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3279#issuecomment-4400083496",
+      "createdAt": "2026-05-07T18:44:41Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "The abort looks like a real out-of-bounds access in `mock_components::GenericSystem` when `calculate_dynamics_` is enabled.\n\nIn `hardware_interface/src/mock_components/generic_system.cpp`, the dynamics branch stores state/command in:\n\n- `std::array<double, 3> joint_state_values_` (pos/vel/acc)\n\n…but later mirrors values back using `standard_interfaces_` (pos/vel/acc/effort). If the code iterates up to `standard_interfaces_.size()` (4) while indexing `joint_state_values_` (size 3), `std::array::operator[]` will hit `__n < this->size()` and abort (which matches your Resolute/libstdc++ assert).\n\nOn current `master`, this appears to be fixed by iterating up to `joint_state_values_.size()` instead (commit `dee3ca81a`). Cherry-picking that change into whatever branch/PR is running the Resolute CI should turn this into a normal test failure instead of a hard abort.\n",
+      "bodyHTML": "<p dir=\"auto\">The abort looks like a real out-of-bounds access in <code class=\"notranslate\">mock_components::GenericSystem</code> when <code class=\"notranslate\">calculate_dynamics_</code> is enabled.</p>\n<p dir=\"auto\">In <code class=\"notranslate\">hardware_interface/src/mock_components/generic_system.cpp</code>, the dynamics branch stores state/command in:</p>\n<ul dir=\"auto\">\n<li><code class=\"notranslate\">std::array&lt;double, 3&gt; joint_state_values_</code> (pos/vel/acc)</li>\n</ul>\n<p dir=\"auto\">…but later mirrors values back using <code class=\"notranslate\">standard_interfaces_</code> (pos/vel/acc/effort). If the code iterates up to <code class=\"notranslate\">standard_interfaces_.size()</code> (4) while indexing <code class=\"notranslate\">joint_state_values_</code> (size 3), <code class=\"notranslate\">std::array::operator[]</code> will hit <code class=\"notranslate\">__n &lt; this-&gt;size()</code> and abort (which matches your Resolute/libstdc++ assert).</p>\n<p dir=\"auto\">On current <code class=\"notranslate\">master</code>, this appears to be fixed by iterating up to <code class=\"notranslate\">joint_state_values_.size()</code> instead (commit <code class=\"notranslate\">dee3ca81a</code>). Cherry-picking that change into whatever branch/PR is running the Resolute CI should turn this into a normal test failure instead of a hard abort.</p>",
+      "bodyVersion": "eeba7fd747bc671581b06acb4eabf45b7eb207eb34cfb9248a824598a1b0a71a",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABngGDD7gBqzI1MjUyMTU0MzY2",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABngPBnagAqjQ0MDAwODM0OTY="
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABngGDD7gBqzI1MjUyMTU0MzY2",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABngPBnagAqjQ0MDAwODM0OTY="
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOBiM5Uc7ZK02k",
+      "url": "https://github.com/ros-controls/ros2_control/pull/3282",
+      "number": 3282,
+      "title": "fix(generic_system): Fix loop bound of states",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-05-07T13:52:37Z",
+      "databaseId": 3643493796,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3282",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3282.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3282.changes.json"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3130",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3130",
+    "fetched_at": "2026-10-11T11:20:02.097973+00:00",
+    "http_status": 200,
+    "response_sha256": "64a180c7899c2cfb5524923d645ab4b5031ab8b7f5bab4efc9bd339f7926bd2e"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/3130",
+  "title": "Fix topic statistics for IPC subscriptions by jayyoung · Pull Request #3130 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Continuing on from the discussion here on the original fix: #2913 (comment) which addresses #2911 we are opening this PR at @fujitatomoya request.\n\n\nDescription\n\n\nThe root issue: We discovered that when use_intra_process_comms is enabled, messages are delivered via SubscriptionIntraProcess::execute_impl() which previously never called the topic statistics handler. This causes all statistics to report NaN values, making it impossible for us distinguish a healthy IPC subscription from an unhealthy one.\n\n\nThis fix: Here we add a type-erased StatsHandlerFn function to SubscriptionIntraProcess and connect it up from  the Subscription via a lambda. Using the lambda rather than a pointer to SubscriptionTopicStatistics  avoids a circular include chain we discovered that could occur if subscription_topic_statistics.hpp was included directly from subscription_intra_process.hpp.\n\n\nIn the code, we set source_timestamp  to the receive time so that message_age reports 0ms rather than an un-initialised value. Our reasoning is that: IPC delivery has no or little transport latency, so near-zero age is OK and expected. As discussed in the original fix PR, there is a one-time warning  emit to inform users that message_age is not meaningful for IPC subscriptions.\n\n\nIN summary this PR  is a revised implementation of the original PR #2913 by @roman-y-wu, with the following differences:\n\n\n\nUses std::function type erasure to avoid the circular include issue we found\n\n\nSets source_timestamp to prevent message_age reporting an invalid large value (uninitialised timestamp)\n\n\n\nFrom the original PR, we kept the one-time RCLCPP_WARN_ONCE log message to ensures users are not silently surprised by message_age reading ~0ms when using IPC subscriptions.\n\n\nFixes #2911\n\n\nIs this user-facing behavior change?\n\n\nYeah it is for us, and addresses an issue we find in production. With this fix topic statistics now report valid values for subscriptions using IPC. Previously all statistics were NaN when IPC was enabled, and this behaviour bit us.\n\n\nDid you use Generative AI?\n\n\nNot on our side. This PR is a small adaptation of a older fix that already existed: #2913\n\n\nAdditional Information\n\n\nThis fix was first validated as a backport onto ROS 2 Kilted (rclcpp == 29.5.6) and has been running in production at Dexory across a fleet of 126 autonomous warehouse robots for over one month with no issues. Our robots use IPC-enabled lidar pipelines and rely on topic stats to monitor sensor health. message_period statistics are now correct and our monitoring correctly detects legitimate sensor failures with this fix.",
+  "discussion_rendered_text": [
+    "Could you also add a test that verifies that with IPC enabled the stats handler fires and reports a non-nan age?",
+    "@fujitatomoya we'd love to get this merged in before the freeze of rclcpp, I believe on the 20th April. Anything else you would like modified?",
+    "Could you also add a test that verifies that with IPC enabled the stats handler fires and reports a non-nan age?\n\n\n\nAdded a little one cdf6632",
+    "lgtm, test would be ideal.",
+    "@fujitatomoya a test was added, anything else to test?",
+    "Pulls: #3130\n\nGist: https://gist.githubusercontent.com/fujitatomoya/72662fc102cdd964a64583c3201db0d6/raw/d39d13ab88b54886116348d2fb6418264a592531/ros2.repos\n\nBUILD args:  --packages-above-and-dependencies rclcpp\n\nTEST args:  --packages-above rclcpp\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/18997\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "just added 175ce2f which fixes the linting failure @fujitatomoya, thanks! can you re-trigger CI please?",
+    "@jmachowinski I'm asking you since you are roughly in our timezone, could you please relaunch CI so we can try to get this in before the freeze? Thanks!",
+    "Pulls: #3130\n\nGist: https://gist.githubusercontent.com/jmachowinski/a744ece36c05d299e61f7521a2fcb409/raw/d39d13ab88b54886116348d2fb6418264a592531/ros2.repos\n\nBUILD args:\n\nTEST args:\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/19012\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "@tonynajjar I don't remember Munich to be in a different time zone than Bremen ;-P",
+    "I was including my colleague in the UK in that sentence 😆 Thank you!",
+    "@tonynajjar  @jayyoung  Just ignore the windows build error for now, we are cleaning up the build failures from the MSVC bump.",
+    "Windows rerun - no connext, building up to rclcpp, testing just rclcpp",
+    "Thank you for the push everyone! Happy freeze"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/bartalor/rclcpp/commit/d0f229882dd78e76ff11ffbdec697f792bf66471",
+    "https://github.com/ros2/rclcpp/commit/175ce2fe4604fca591587c4bb59b9418da7a0349",
+    "https://github.com/ros2/rclcpp/commit/59b7c5fc8021a2af83254f23f7223e715b122cf3",
+    "https://github.com/ros2/rclcpp/commit/7df6693cefbe1c8ead97e35232e150a4cf03c8a3",
+    "https://github.com/ros2/rclcpp/commit/cdf6632da4c66a34916b0b2a8b8464756d95c161",
+    "https://github.com/ros2/rclcpp/commit/ce946130f199a53fbe5e87f532349f0ab213465b",
+    "https://github.com/ros2/rclcpp/pull/3130/commits/15caf827e1848ff3619068f36cec50f95193a25a",
+    "https://github.com/ros2/rclcpp/pull/3130/commits/175ce2fe4604fca591587c4bb59b9418da7a0349",
+    "https://github.com/ros2/rclcpp/pull/3130/commits/cdf6632da4c66a34916b0b2a8b8464756d95c161",
+    "https://github.com/ros2/rclcpp/pull/3130/commits/e87ed41ce7296c8d7f4ed98adc50cf90d162121b",
+    "https://github.com/ros2/rclcpp/pull/3130/commits/f12988aadad889f20738410f461b0456f11b3a19"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

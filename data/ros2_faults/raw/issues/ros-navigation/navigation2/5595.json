@@ -1,0 +1,1583 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-navigation/navigation2",
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/issues/5595",
+    "final_url": "https://github.com/ros-navigation/navigation2/issues/5595",
+    "fetched_at": "2026-10-11T11:22:36.831518+00:00",
+    "http_status": 200,
+    "response_sha256": "826318051e7d11f97cccfc50f67b60affe067f1c64833d5d4e1f9b8098a7deb8"
+  },
+  "issue": {
+    "id": "I_kwDOCBF7SM7QkPSs",
+    "databaseId": 3499160748,
+    "number": 5595,
+    "title": "[RPP] min_distance_to_obstacle and velocity_scaled_lookahead dont work well together when min_lookahead < min_distance_to_obstacle",
+    "url": "https://github.com/ros-navigation/navigation2/issues/5595",
+    "body": "## Bug report\n\n**Required Info:**\n\n- Operating System:\n    - Ubuntu 24.04\n- Computer:\n  - Intel Twin Lake N150, 8GB RAM\n- ROS2 Version:\n  - Jazzy installed via deb packages\n- Version or commit hash:\n  - 1.3.8-1noble.20250915.220228\n  - Custom RPP with min_distance_to_obstacle from Rolling implemented\n- DDS implementation:\n  - Zenoh\n\n#### Expected behavior\n\nWhen using `min_distance_to_obstacle`, I would expect the robot to stop when an obstacle is detected within this range and remain stationary until the path is clear. The collision checking logic should consistently enforce this safety distance, even when the robot's velocity is zero.\n\n#### Actual behavior\n\nThe robot initially stops correctly at the specified `min_distance_to_obstacle`. However, it then begins to slowly \"creep\" forward in a stop-and-go pattern, gradually getting closer to the obstacle and not maintaining the intended safety gap.\nI've observed this same creeping pattern in two different scenarios:\n\n1) When using a custom modification to the controller that commands zero velocity on imminent collision.\n2) When using the default controller behavior that triggers a Wait recovery on the BT.\n\n#### Steps to reproduce issue\n\n1. Configure the RPP controller with the following parameters, ensuring `min_lookahead_dist` is smaller than `min_distance_to_obstacle`:\n\n```yaml\nuse_collision_detection: true \nuse_velocity_scaled_lookahead_dist: true\nmin_distance_to_obstacle: 0.65\nmin_lookahead_dist: 0.2 \n```\n\n2. Run a navigation task, and put an obstacle on the robot's path.\n\n3. The robot will approach the obstacle, stop correctly at the `min_distance_to_obstacle`, but then slowly creep closer to it.\n\n#### Additional information\n\nIn [isCollisionImminent](https://github.com/ros-navigation/navigation2/blob/ed0d59ff8ffd72631620a1a81c60e2d69c0d14eb/nav2_regulated_pure_pursuit_controller/src/collision_checker.cpp#L114C1-L116), the simulation distance is limited by `carrot_dist`, which shrinks to `min_lookahead_dist` when stopped. This prevents the checker from evaluating the full `min_distance_to_obstacle` range.\n\n```cpp\nif (hypot(curr_pose.position.x - robot_xy.x, curr_pose.position.y - robot_xy.y) > carrot_dist) {\n    break;\n}\n```\n\n **A potential fix that I've tested locally:**\n\nTo ensure the simulation always respects the safety margin, the distance boundary can be modified to account for `min_distance_to_obstacle`. This can be done by defining a new limit before the loop:\n\n```cpp\ndouble simulation_distance_limit = std::max(carrot_dist, params_->min_distance_to_obstacle);\n```\n\nAnd updating the break condition to use this new limit:\n```cpp\nif (hypot(curr_pose.x - robot_xy.x, curr_pose.y - robot_xy.y) > simulation_distance_limit) {\n    break;\n}\n```\n\nThis change was tested on a physical robot and resolved the creeping behavior, with no observed negative side effects on general navigation.\n\nI'm opening this issue to report the behavior and share my findings. I'm not sure if the current interaction is the intended design, but this approach seems to make the feature more reliable. I'm curious to hear your thoughts.\n",
+    "bodyHTML": "<h2 dir=\"auto\">Bug report</h2>\n<p dir=\"auto\"><strong>Required Info:</strong></p>\n<ul dir=\"auto\">\n<li>Operating System:\n<ul dir=\"auto\">\n<li>Ubuntu 24.04</li>\n</ul>\n</li>\n<li>Computer:\n<ul dir=\"auto\">\n<li>Intel Twin Lake N150, 8GB RAM</li>\n</ul>\n</li>\n<li>ROS2 Version:\n<ul dir=\"auto\">\n<li>Jazzy installed via deb packages</li>\n</ul>\n</li>\n<li>Version or commit hash:\n<ul dir=\"auto\">\n<li>1.3.8-1noble.20250915.220228</li>\n<li>Custom RPP with min_distance_to_obstacle from Rolling implemented</li>\n</ul>\n</li>\n<li>DDS implementation:\n<ul dir=\"auto\">\n<li>Zenoh</li>\n</ul>\n</li>\n</ul>\n<h4 dir=\"auto\">Expected behavior</h4>\n<p dir=\"auto\">When using <code class=\"notranslate\">min_distance_to_obstacle</code>, I would expect the robot to stop when an obstacle is detected within this range and remain stationary until the path is clear. The collision checking logic should consistently enforce this safety distance, even when the robot's velocity is zero.</p>\n<h4 dir=\"auto\">Actual behavior</h4>\n<p dir=\"auto\">The robot initially stops correctly at the specified <code class=\"notranslate\">min_distance_to_obstacle</code>. However, it then begins to slowly \"creep\" forward in a stop-and-go pattern, gradually getting closer to the obstacle and not maintaining the intended safety gap.<br>\nI've observed this same creeping pattern in two different scenarios:</p>\n<ol dir=\"auto\">\n<li>When using a custom modification to the controller that commands zero velocity on imminent collision.</li>\n<li>When using the default controller behavior that triggers a Wait recovery on the BT.</li>\n</ol>\n<h4 dir=\"auto\">Steps to reproduce issue</h4>\n<ol dir=\"auto\">\n<li>Configure the RPP controller with the following parameters, ensuring <code class=\"notranslate\">min_lookahead_dist</code> is smaller than <code class=\"notranslate\">min_distance_to_obstacle</code>:</li>\n</ol>\n<div class=\"highlight highlight-source-yaml notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"use_collision_detection: true \nuse_velocity_scaled_lookahead_dist: true\nmin_distance_to_obstacle: 0.65\nmin_lookahead_dist: 0.2 \"><pre class=\"notranslate\"><span class=\"pl-ent\">use_collision_detection</span>: <span class=\"pl-c1\">true</span> \n<span class=\"pl-ent\">use_velocity_scaled_lookahead_dist</span>: <span class=\"pl-c1\">true</span>\n<span class=\"pl-ent\">min_distance_to_obstacle</span>: <span class=\"pl-c1\">0.65</span>\n<span class=\"pl-ent\">min_lookahead_dist</span>: <span class=\"pl-c1\">0.2</span> </pre></div>\n<ol start=\"2\" dir=\"auto\">\n<li>\n<p dir=\"auto\">Run a navigation task, and put an obstacle on the robot's path.</p>\n</li>\n<li>\n<p dir=\"auto\">The robot will approach the obstacle, stop correctly at the <code class=\"notranslate\">min_distance_to_obstacle</code>, but then slowly creep closer to it.</p>\n</li>\n</ol>\n<h4 dir=\"auto\">Additional information</h4>\n<p dir=\"auto\">In <a href=\"https://github.com/ros-navigation/navigation2/blob/ed0d59ff8ffd72631620a1a81c60e2d69c0d14eb/nav2_regulated_pure_pursuit_controller/src/collision_checker.cpp#L114C1-L116\">isCollisionImminent</a>, the simulation distance is limited by <code class=\"notranslate\">carrot_dist</code>, which shrinks to <code class=\"notranslate\">min_lookahead_dist</code> when stopped. This prevents the checker from evaluating the full <code class=\"notranslate\">min_distance_to_obstacle</code> range.</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"if (hypot(curr_pose.position.x - robot_xy.x, curr_pose.position.y - robot_xy.y) &gt; carrot_dist) {\n    break;\n}\"><pre class=\"notranslate\"><span class=\"pl-k\">if</span> (hypot(curr_pose.position.x - robot_xy.x, curr_pose.position.y - robot_xy.y) &gt; carrot_dist) {\n    <span class=\"pl-k\">break</span>;\n}</pre></div>\n<p dir=\"auto\"><strong>A potential fix that I've tested locally:</strong></p>\n<p dir=\"auto\">To ensure the simulation always respects the safety margin, the distance boundary can be modified to account for <code class=\"notranslate\">min_distance_to_obstacle</code>. This can be done by defining a new limit before the loop:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"double simulation_distance_limit = std::max(carrot_dist, params_-&gt;min_distance_to_obstacle);\"><pre class=\"notranslate\"><span class=\"pl-k\">double</span> simulation_distance_limit = std::max(carrot_dist, params_-&gt;min_distance_to_obstacle);</pre></div>\n<p dir=\"auto\">And updating the break condition to use this new limit:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"if (hypot(curr_pose.x - robot_xy.x, curr_pose.y - robot_xy.y) &gt; simulation_distance_limit) {\n    break;\n}\"><pre class=\"notranslate\"><span class=\"pl-k\">if</span> (hypot(curr_pose.x - robot_xy.x, curr_pose.y - robot_xy.y) &gt; simulation_distance_limit) {\n    <span class=\"pl-k\">break</span>;\n}</pre></div>\n<p dir=\"auto\">This change was tested on a physical robot and resolved the creeping behavior, with no observed negative side effects on general navigation.</p>\n<p dir=\"auto\">I'm opening this issue to report the behavior and share my findings. I'm not sure if the current interaction is the intended design, but this approach seems to make the feature more reliable. I'm curious to hear your thoughts.</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2025-10-09T13:22:18Z",
+    "updatedAt": "2025-10-13T22:17:24Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/86668447?u=6c9ccd1bbc34a2c9a4ee6ab070684cf55360a0dc&v=4",
+      "login": "EricoMeger",
+      "id": "MDQ6VXNlcjg2NjY4NDQ3",
+      "profileUrl": "https://github.com/EricoMeger",
+      "name": "Érico Meger",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+            "fullDatabaseId": "948691578",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros-navigation/navigation2/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 5,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7J6xqx",
+      "databaseId": 3387628209,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7QkPSs",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg2NjY4NDQ3",
+          "login": "EricoMeger"
+        },
+        "number": 5595,
+        "locked": false,
+        "databaseId": 3499160748
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5595#issuecomment-3387628209",
+      "createdAt": "2025-10-09T22:08:32Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> When using a custom modification to the controller that commands zero velocity on imminent collision.\n\nIs that not in RPP already? If not, can you please open a PR to add that if you found a gap?\n\n---\n\n> the distance boundary can be modified to account for min_distance_to_obstacle\n\nThat seems reasonable, but would you think it would also be reasonable to say that the `min_distance_to_obstacle` must be greater than or equal to the minimum lookahead distance? If we say this, we can check this on Configuration / Dynamic Configuration and throw an exception or reject the dynamic update if violated. \n\nDo you want to have the minimum distance smaller than the minimum lookahead? \n\n@doisyg this is related to something you added - FYI. Any feedback you want to provide?\n\n",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">When using a custom modification to the controller that commands zero velocity on imminent collision.</p>\n</blockquote>\n<p dir=\"auto\">Is that not in RPP already? If not, can you please open a PR to add that if you found a gap?</p>\n<hr>\n<blockquote>\n<p dir=\"auto\">the distance boundary can be modified to account for min_distance_to_obstacle</p>\n</blockquote>\n<p dir=\"auto\">That seems reasonable, but would you think it would also be reasonable to say that the <code class=\"notranslate\">min_distance_to_obstacle</code> must be greater than or equal to the minimum lookahead distance? If we say this, we can check this on Configuration / Dynamic Configuration and throw an exception or reject the dynamic update if violated.</p>\n<p dir=\"auto\">Do you want to have the minimum distance smaller than the minimum lookahead?</p>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/doisyg/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/doisyg\">@doisyg</a> this is related to something you added - FYI. Any feedback you want to provide?</p>",
+      "bodyVersion": "83be632fa5a16cf28a3e78cc38315778053b005f67d1e72c9dbf5f8dc41cebe7",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7KDkYL",
+      "databaseId": 3389933067,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7QkPSs",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg2NjY4NDQ3",
+          "login": "EricoMeger"
+        },
+        "number": 5595,
+        "locked": false,
+        "databaseId": 3499160748
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjg2NjY4NDQ3",
+        "login": "EricoMeger",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/86668447?u=6c9ccd1bbc34a2c9a4ee6ab070684cf55360a0dc&v=4",
+        "profileUrl": "https://github.com/EricoMeger",
+        "name": "Érico Meger"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5595#issuecomment-3389933067",
+      "createdAt": "2025-10-10T12:53:59Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thanks for the quick reply!\n\n> Is that not in RPP already? If not, can you please open a PR to add that if you found a gap?\n\nMy bad, I phrased that poorly. By default RPP throws an exception, which is fine. For our specific use case, we wanted the robot to just stop and wait if it encounters an obstacle. Since in the BT we were basically just triggering thw wait recovery and calling RPP again, I thought it was reasonable to make a local modification for it to just publish a zero velocity instead of throwing an exception.\n\nWhat I meant is that I observed this \"creeping\" behavior regardless of how the robot was stopped, whether by my zero velocity modification or by the default using the wait recovery.\n\n> Do you want to have the minimum distance smaller than the minimum lookahead?\n\nI want to have min_distance greater than the min lookahead (in other words, min_lookahead must be smaller than min_distance). \n\nBasically, I want RPP to stop with a safety margin (like 0.6m - 1.0m), and for that, min_distance seems appropriated. At the same time, I need to keep min_lookahead small, because if I increase it too much, the robot starts to cut corners excessively.\n\nI'm not sure if this is the intended use for the parameter. I'm kind of new to navigation, so please take this with a pinch of salt. Based on my use case, a constraint like this:\n\n> but would you think it would also be reasonable to say that the min_distance_to_obstacle must be greater than or equal to the minimum lookahead distance? \n\nwould actually be problematic, as I would have to choose between having this safety margin or a good path tracking. It seems difficult to achieve both with that constraint.",
+      "bodyHTML": "<p dir=\"auto\">Thanks for the quick reply!</p>\n<blockquote>\n<p dir=\"auto\">Is that not in RPP already? If not, can you please open a PR to add that if you found a gap?</p>\n</blockquote>\n<p dir=\"auto\">My bad, I phrased that poorly. By default RPP throws an exception, which is fine. For our specific use case, we wanted the robot to just stop and wait if it encounters an obstacle. Since in the BT we were basically just triggering thw wait recovery and calling RPP again, I thought it was reasonable to make a local modification for it to just publish a zero velocity instead of throwing an exception.</p>\n<p dir=\"auto\">What I meant is that I observed this \"creeping\" behavior regardless of how the robot was stopped, whether by my zero velocity modification or by the default using the wait recovery.</p>\n<blockquote>\n<p dir=\"auto\">Do you want to have the minimum distance smaller than the minimum lookahead?</p>\n</blockquote>\n<p dir=\"auto\">I want to have min_distance greater than the min lookahead (in other words, min_lookahead must be smaller than min_distance).</p>\n<p dir=\"auto\">Basically, I want RPP to stop with a safety margin (like 0.6m - 1.0m), and for that, min_distance seems appropriated. At the same time, I need to keep min_lookahead small, because if I increase it too much, the robot starts to cut corners excessively.</p>\n<p dir=\"auto\">I'm not sure if this is the intended use for the parameter. I'm kind of new to navigation, so please take this with a pinch of salt. Based on my use case, a constraint like this:</p>\n<blockquote>\n<p dir=\"auto\">but would you think it would also be reasonable to say that the min_distance_to_obstacle must be greater than or equal to the minimum lookahead distance?</p>\n</blockquote>\n<p dir=\"auto\">would actually be problematic, as I would have to choose between having this safety margin or a good path tracking. It seems difficult to achieve both with that constraint.</p>",
+      "bodyVersion": "2eb0ba507cf3a10aa1a0fe4d81ca773af9fa56edb03fbcfcdd20f06738d05c71",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7KHTmD",
+      "databaseId": 3390912899,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7QkPSs",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg2NjY4NDQ3",
+          "login": "EricoMeger"
+        },
+        "number": 5595,
+        "locked": false,
+        "databaseId": 3499160748
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5595#issuecomment-3390912899",
+      "createdAt": "2025-10-10T15:56:06Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> I thought it was reasonable to make a local modification for it to just publish a zero velocity instead of throwing an exception.\n\nIsn't a zero sent though in the catching of that exception at the server level before being returned to the BT? \n\nOK! Can you open that PR? :-) ",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">I thought it was reasonable to make a local modification for it to just publish a zero velocity instead of throwing an exception.</p>\n</blockquote>\n<p dir=\"auto\">Isn't a zero sent though in the catching of that exception at the server level before being returned to the BT?</p>\n<p dir=\"auto\">OK! Can you open that PR? :-)</p>",
+      "bodyVersion": "195d7bcc406c2e77d3634c1acfbc81965b0fdb32f1dfb9bca16eaec6c8526395",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7KKnbp",
+      "databaseId": 3391780585,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7QkPSs",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg2NjY4NDQ3",
+          "login": "EricoMeger"
+        },
+        "number": 5595,
+        "locked": false,
+        "databaseId": 3499160748
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjg2NjY4NDQ3",
+        "login": "EricoMeger",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/86668447?u=6c9ccd1bbc34a2c9a4ee6ab070684cf55360a0dc&v=4",
+        "profileUrl": "https://github.com/EricoMeger",
+        "name": "Érico Meger"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5595#issuecomment-3391780585",
+      "createdAt": "2025-10-10T18:40:19Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> Isn't a zero sent though in the catching of that exception at the server level before being returned to the BT?\n\n😳 Ah, I didn't know about that, thanks for the info!\n\nI've opened the PR #5598. I saw some checks are failling, will soon get to it.\n\nOn a related note, I was thinking: would it be helpful to add a small note to RPP docs clarifying that min_distance_to_obstacle is a parameter exclusive to rolling? Or is it fine to leave it as is, since the docs track the rolling branch?",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">Isn't a zero sent though in the catching of that exception at the server level before being returned to the BT?</p>\n</blockquote>\n<p dir=\"auto\">😳 Ah, I didn't know about that, thanks for the info!</p>\n<p dir=\"auto\">I've opened the PR <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3504082827\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5598\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/5598/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/5598\">#5598</a>. I saw some checks are failling, will soon get to it.</p>\n<p dir=\"auto\">On a related note, I was thinking: would it be helpful to add a small note to RPP docs clarifying that min_distance_to_obstacle is a parameter exclusive to rolling? Or is it fine to leave it as is, since the docs track the rolling branch?</p>",
+      "bodyVersion": "5161be0291a386ba589c92be2bdd5b0289907522940b8d554cbd14b811977b51",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7KK8zj",
+      "databaseId": 3391868131,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7QkPSs",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg2NjY4NDQ3",
+          "login": "EricoMeger"
+        },
+        "number": 5595,
+        "locked": false,
+        "databaseId": 3499160748
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5595#issuecomment-3391868131",
+      "createdAt": "2025-10-10T18:57:45Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "The docs track the rolling branch so that’s ok for now. Its not ideal, but its where the docs are at",
+      "bodyHTML": "<p dir=\"auto\">The docs track the rolling branch so that’s ok for now. Its not ideal, but its where the docs are at</p>",
+      "bodyVersion": "ff911ffc5cf297793fbb3a3997ecbb851deb06ecf41d6f20f0f894d6e574da44",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjg2NjY4NDQ3",
+                "login": "EricoMeger",
+                "name": "Érico Meger",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/86668447?s=64&u=6c9ccd1bbc34a2c9a4ee6ab070684cf55360a0dc&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7J6xqx",
+      "databaseId": 3387628209,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7QkPSs",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg2NjY4NDQ3",
+          "login": "EricoMeger"
+        },
+        "number": 5595,
+        "locked": false,
+        "databaseId": 3499160748
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5595#issuecomment-3387628209",
+      "createdAt": "2025-10-09T22:08:32Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> When using a custom modification to the controller that commands zero velocity on imminent collision.\n\nIs that not in RPP already? If not, can you please open a PR to add that if you found a gap?\n\n---\n\n> the distance boundary can be modified to account for min_distance_to_obstacle\n\nThat seems reasonable, but would you think it would also be reasonable to say that the `min_distance_to_obstacle` must be greater than or equal to the minimum lookahead distance? If we say this, we can check this on Configuration / Dynamic Configuration and throw an exception or reject the dynamic update if violated. \n\nDo you want to have the minimum distance smaller than the minimum lookahead? \n\n@doisyg this is related to something you added - FYI. Any feedback you want to provide?\n\n",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">When using a custom modification to the controller that commands zero velocity on imminent collision.</p>\n</blockquote>\n<p dir=\"auto\">Is that not in RPP already? If not, can you please open a PR to add that if you found a gap?</p>\n<hr>\n<blockquote>\n<p dir=\"auto\">the distance boundary can be modified to account for min_distance_to_obstacle</p>\n</blockquote>\n<p dir=\"auto\">That seems reasonable, but would you think it would also be reasonable to say that the <code class=\"notranslate\">min_distance_to_obstacle</code> must be greater than or equal to the minimum lookahead distance? If we say this, we can check this on Configuration / Dynamic Configuration and throw an exception or reject the dynamic update if violated.</p>\n<p dir=\"auto\">Do you want to have the minimum distance smaller than the minimum lookahead?</p>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/doisyg/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/doisyg\">@doisyg</a> this is related to something you added - FYI. Any feedback you want to provide?</p>",
+      "bodyVersion": "83be632fa5a16cf28a3e78cc38315778053b005f67d1e72c9dbf5f8dc41cebe7",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM7QkPSszwAAAASztZbF",
+      "databaseId": 20194891461,
+      "createdAt": "2025-10-09T22:08:37Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7KDkYL",
+      "databaseId": 3389933067,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7QkPSs",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg2NjY4NDQ3",
+          "login": "EricoMeger"
+        },
+        "number": 5595,
+        "locked": false,
+        "databaseId": 3499160748
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjg2NjY4NDQ3",
+        "login": "EricoMeger",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/86668447?u=6c9ccd1bbc34a2c9a4ee6ab070684cf55360a0dc&v=4",
+        "profileUrl": "https://github.com/EricoMeger",
+        "name": "Érico Meger"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5595#issuecomment-3389933067",
+      "createdAt": "2025-10-10T12:53:59Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thanks for the quick reply!\n\n> Is that not in RPP already? If not, can you please open a PR to add that if you found a gap?\n\nMy bad, I phrased that poorly. By default RPP throws an exception, which is fine. For our specific use case, we wanted the robot to just stop and wait if it encounters an obstacle. Since in the BT we were basically just triggering thw wait recovery and calling RPP again, I thought it was reasonable to make a local modification for it to just publish a zero velocity instead of throwing an exception.\n\nWhat I meant is that I observed this \"creeping\" behavior regardless of how the robot was stopped, whether by my zero velocity modification or by the default using the wait recovery.\n\n> Do you want to have the minimum distance smaller than the minimum lookahead?\n\nI want to have min_distance greater than the min lookahead (in other words, min_lookahead must be smaller than min_distance). \n\nBasically, I want RPP to stop with a safety margin (like 0.6m - 1.0m), and for that, min_distance seems appropriated. At the same time, I need to keep min_lookahead small, because if I increase it too much, the robot starts to cut corners excessively.\n\nI'm not sure if this is the intended use for the parameter. I'm kind of new to navigation, so please take this with a pinch of salt. Based on my use case, a constraint like this:\n\n> but would you think it would also be reasonable to say that the min_distance_to_obstacle must be greater than or equal to the minimum lookahead distance? \n\nwould actually be problematic, as I would have to choose between having this safety margin or a good path tracking. It seems difficult to achieve both with that constraint.",
+      "bodyHTML": "<p dir=\"auto\">Thanks for the quick reply!</p>\n<blockquote>\n<p dir=\"auto\">Is that not in RPP already? If not, can you please open a PR to add that if you found a gap?</p>\n</blockquote>\n<p dir=\"auto\">My bad, I phrased that poorly. By default RPP throws an exception, which is fine. For our specific use case, we wanted the robot to just stop and wait if it encounters an obstacle. Since in the BT we were basically just triggering thw wait recovery and calling RPP again, I thought it was reasonable to make a local modification for it to just publish a zero velocity instead of throwing an exception.</p>\n<p dir=\"auto\">What I meant is that I observed this \"creeping\" behavior regardless of how the robot was stopped, whether by my zero velocity modification or by the default using the wait recovery.</p>\n<blockquote>\n<p dir=\"auto\">Do you want to have the minimum distance smaller than the minimum lookahead?</p>\n</blockquote>\n<p dir=\"auto\">I want to have min_distance greater than the min lookahead (in other words, min_lookahead must be smaller than min_distance).</p>\n<p dir=\"auto\">Basically, I want RPP to stop with a safety margin (like 0.6m - 1.0m), and for that, min_distance seems appropriated. At the same time, I need to keep min_lookahead small, because if I increase it too much, the robot starts to cut corners excessively.</p>\n<p dir=\"auto\">I'm not sure if this is the intended use for the parameter. I'm kind of new to navigation, so please take this with a pinch of salt. Based on my use case, a constraint like this:</p>\n<blockquote>\n<p dir=\"auto\">but would you think it would also be reasonable to say that the min_distance_to_obstacle must be greater than or equal to the minimum lookahead distance?</p>\n</blockquote>\n<p dir=\"auto\">would actually be problematic, as I would have to choose between having this safety margin or a good path tracking. It seems difficult to achieve both with that constraint.</p>",
+      "bodyVersion": "2eb0ba507cf3a10aa1a0fe4d81ca773af9fa56edb03fbcfcdd20f06738d05c71",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7KHTmD",
+      "databaseId": 3390912899,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7QkPSs",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg2NjY4NDQ3",
+          "login": "EricoMeger"
+        },
+        "number": 5595,
+        "locked": false,
+        "databaseId": 3499160748
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5595#issuecomment-3390912899",
+      "createdAt": "2025-10-10T15:56:06Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> I thought it was reasonable to make a local modification for it to just publish a zero velocity instead of throwing an exception.\n\nIsn't a zero sent though in the catching of that exception at the server level before being returned to the BT? \n\nOK! Can you open that PR? :-) ",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">I thought it was reasonable to make a local modification for it to just publish a zero velocity instead of throwing an exception.</p>\n</blockquote>\n<p dir=\"auto\">Isn't a zero sent though in the catching of that exception at the server level before being returned to the BT?</p>\n<p dir=\"auto\">OK! Can you open that PR? :-)</p>",
+      "bodyVersion": "195d7bcc406c2e77d3634c1acfbc81965b0fdb32f1dfb9bca16eaec6c8526395",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7KKnbp",
+      "databaseId": 3391780585,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7QkPSs",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg2NjY4NDQ3",
+          "login": "EricoMeger"
+        },
+        "number": 5595,
+        "locked": false,
+        "databaseId": 3499160748
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjg2NjY4NDQ3",
+        "login": "EricoMeger",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/86668447?u=6c9ccd1bbc34a2c9a4ee6ab070684cf55360a0dc&v=4",
+        "profileUrl": "https://github.com/EricoMeger",
+        "name": "Érico Meger"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5595#issuecomment-3391780585",
+      "createdAt": "2025-10-10T18:40:19Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> Isn't a zero sent though in the catching of that exception at the server level before being returned to the BT?\n\n😳 Ah, I didn't know about that, thanks for the info!\n\nI've opened the PR #5598. I saw some checks are failling, will soon get to it.\n\nOn a related note, I was thinking: would it be helpful to add a small note to RPP docs clarifying that min_distance_to_obstacle is a parameter exclusive to rolling? Or is it fine to leave it as is, since the docs track the rolling branch?",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">Isn't a zero sent though in the catching of that exception at the server level before being returned to the BT?</p>\n</blockquote>\n<p dir=\"auto\">😳 Ah, I didn't know about that, thanks for the info!</p>\n<p dir=\"auto\">I've opened the PR <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3504082827\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5598\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/5598/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/5598\">#5598</a>. I saw some checks are failling, will soon get to it.</p>\n<p dir=\"auto\">On a related note, I was thinking: would it be helpful to add a small note to RPP docs clarifying that min_distance_to_obstacle is a parameter exclusive to rolling? Or is it fine to leave it as is, since the docs track the rolling branch?</p>",
+      "bodyVersion": "5161be0291a386ba589c92be2bdd5b0289907522940b8d554cbd14b811977b51",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7KK8zj",
+      "databaseId": 3391868131,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7QkPSs",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg2NjY4NDQ3",
+          "login": "EricoMeger"
+        },
+        "number": 5595,
+        "locked": false,
+        "databaseId": 3499160748
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5595#issuecomment-3391868131",
+      "createdAt": "2025-10-10T18:57:45Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "The docs track the rolling branch so that’s ok for now. Its not ideal, but its where the docs are at",
+      "bodyHTML": "<p dir=\"auto\">The docs track the rolling branch so that’s ok for now. Its not ideal, but its where the docs are at</p>",
+      "bodyVersion": "ff911ffc5cf297793fbb3a3997ecbb851deb06ecf41d6f20f0f894d6e574da44",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjg2NjY4NDQ3",
+                "login": "EricoMeger",
+                "name": "Érico Meger",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/86668447?s=64&u=6c9ccd1bbc34a2c9a4ee6ab070684cf55360a0dc&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ConnectedEvent",
+      "id": "COE_lADOCBF7SM7QkPSszwAAAAS3XedA",
+      "databaseId": 20256253760,
+      "createdAt": "2025-10-13T22:06:50Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "subject": {
+        "id": "PR_kwDOCBF7SM6tJ6j_",
+        "__typename": "PullRequest",
+        "title": "[RPP] Prevent collision check premature termination",
+        "url": "https://github.com/ros-navigation/navigation2/pull/5598",
+        "number": 5598,
+        "state": "MERGED",
+        "isDraft": false,
+        "isInMergeQueue": false,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      }
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOCBF7SM7QkPSszwAAAAS3YGIQ",
+      "databaseId": 20256416272,
+      "createdAt": "2025-10-13T22:17:24Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOCBF7SM6tJ6j_",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-navigation/navigation2/pull/5598",
+        "number": 5598,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmcsExwAAqjMzODc2MjgyMDk=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABmd-mVSABqzIwMjU2NDE2Mjcy"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmcsExwAAqjMzODc2MjgyMDk=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABmd-mVSABqzIwMjU2NDE2Mjcy"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOCBF7SM6tJ6j_",
+      "url": "https://github.com/ros-navigation/navigation2/pull/5598",
+      "number": 5598,
+      "title": "[RPP] Prevent collision check premature termination",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2025-10-10T18:31:50Z",
+      "databaseId": 2905057535,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    },
+    {
+      "id": "PR_kwDOCBF7SM6t_YpA",
+      "number": 5616,
+      "url": "https://github.com/ros-navigation/navigation2/pull/5616",
+      "state": "CLOSED",
+      "databaseId": 2919074368,
+      "relation_types": [
+        "closedByPullRequestsReferences"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5598",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5598.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5598.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5616",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5616.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5616.changes.json"
+    }
+  ]
+}

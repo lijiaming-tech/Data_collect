@@ -1,0 +1,27 @@
+{
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/pull/6040/files",
+    "final_url": "https://github.com/ros-navigation/navigation2/pull/6040/files",
+    "fetched_at": "2026-10-11T11:23:51.487861+00:00",
+    "http_status": 200,
+    "response_sha256": "ef95887c353c9cc54b524e3f4125eb7510b8caf3e3dae12ea9d9c825f54f2273"
+  },
+  "files": {
+    "nav2_smac_planner/src/a_star.cpp": [
+      "@@ -192,8 +192,8 @@ void AStarAlgorithm<NodeT>::populateExpansionsLog(",
+      " {",
+      "   typename NodeT::Coordinates coords = node->pose;",
+      "   expansions_log->emplace_back(",
+      "-    _costmap->getOriginX() + ((coords.x + 0.5) * _costmap->getResolution()),",
+      "-    _costmap->getOriginY() + ((coords.y + 0.5) * _costmap->getResolution()),",
+      "+    _costmap->getOriginX() + (coords.x * _costmap->getResolution()),",
+      "+    _costmap->getOriginY() + (coords.y * _costmap->getResolution()),",
+      "     _shared_ctx->motion_table.getAngleFromBin(coords.theta));",
+      " }",
+      " "
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

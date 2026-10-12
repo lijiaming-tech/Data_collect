@@ -1,0 +1,28 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3522",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3522",
+    "fetched_at": "2026-10-11T11:24:25.338546+00:00",
+    "http_status": 200,
+    "response_sha256": "c18dd2fe346ce4956e1d341ab196b6e48aae9afa4a3aaa483570e13e060fab58"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3522",
+  "title": "Add RangeSensor unit coverage by dlanov · Pull Request #3522 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Summary\n\n\n\nadd focused unit coverage for the RangeSensor semantic component\n\n\nverify interface naming, range retrieval, message population, interface release, and unavailable-value handling\n\n\nmake the conversion from the state interface's double value to the message's float value explicit\n\n\n\nTesting\n\n\n\npre-commit run --files controller_interface/CMakeLists.txt controller_interface/include/semantic_components/range_sensor.hpp controller_interface/test/test_range_sensor.cpp\n\n\nctest --test-dir ~/github/ros2_control_ws/build_range_sensor/controller_interface --tests-regex '^test_range_sensor$' --output-on-failure\n\n\n\nFixes #2496",
+  "discussion_rendered_text": [
+    "Codecov Report\n\n\n❌ Patch coverage is 95.23810% with 1 line in your changes missing coverage. Please review.\n\n✅ Project coverage is 89.59%. Comparing base (9a68380) to head (833818b).\n\n\n\n\n\nFiles with missing lines\nPatch %\nLines\n\n\n\n\n\ncontroller_interface/test/test_range_sensor.cpp\n95.00%\n1 Missing ⚠️ \n\n\n\nAdditional details and impacted files\n\n\n```\n@@            Coverage Diff             @@\n##           master    #3522      +/-   ##\n==========================================\n+ Coverage   89.56%   89.59%   +0.02%     \n==========================================\n  Files         168      170       +2     \n  Lines       21416    21446      +30     \n  Branches     1662     1663       +1     \n==========================================\n+ Hits        19182    19215      +33     \n+ Misses       1532     1528       -4     \n- Partials      702      703       +1     \n```\n\n\n\n\n\n\nFlag\nCoverage Δ\n\n\n\n\n\n\nunittests\n89.59% <95.23%> (+0.02%)\n⬆️\n\n\n\n\nFlags with carried forward coverage won't be shown. Click here to find out more.\n\n\n\n\n\nFiles with missing lines\nCoverage Δ\n\n\n\n\n\n\n...rface/include/semantic_components/range_sensor.hpp\n100.00% <100.00%> (ø)\n\n\n\n\ncontroller_interface/test/test_range_sensor.cpp\n95.00% <95.00%> (ø)\n\n\n\n\n\n... and 3 files with indirect coverage changes\n\n\n 🚀 New features to boost your workflow: \n\n\n❄️ Test Analytics: Detect flaky tests, report on failures, and find test suite problems.",
+    "Pull request overview\n\n\nAdds focused unit-test coverage for the semantic_components::RangeSensor component (addressing missing coverage noted in #2496) and makes the double→float conversion explicit when populating sensor_msgs::msg::Range.\n\n\nChanges:\n\n\n\nAdd a new gmock-based unit test covering interface naming, value retrieval, message population, interface release, and lock-unavailable (NaN) behavior for RangeSensor.\n\n\nMake the narrowing conversion from the state interface’s double value to the message’s float value explicit in RangeSensor::get_range().\n\n\nRegister the new test_range_sensor target in controller_interface CMake test configuration.\n\n\n\nReviewed changes\n\n\nCopilot reviewed 3 out of 3 changed files in this pull request and generated 2 comments.\n\n\n\n\n\nFile\nDescription\n\n\n\n\n\ncontroller_interface/test/test_range_sensor.cpp\nNew unit tests for RangeSensor, including NaN behavior when the handle lock can’t be acquired.\n\n\n\ncontroller_interface/include/semantic_components/range_sensor.hpp\nExplicit double→float cast in get_range() for clearer intent.\n\n\n\ncontroller_interface/CMakeLists.txt\nAdds the test_range_sensor gmock target and links required dependencies.\n\n\n\n\n\n💡 Add Copilot custom instructions for smarter, more guided reviews. Learn how to get started.",
+    "Thank you!"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/commit/53b9999d19908a00403739e59b894b6d95de2f36",
+    "https://github.com/ros-controls/ros2_control/commit/9ffbf97fd6798085db22797fed44da59089dc10a",
+    "https://github.com/ros-controls/ros2_control/commit/cbe7d2c38b716569622786fa9732e3eaca78aca1",
+    "https://github.com/ros-controls/ros2_control/pull/3522/commits/833818bbc7a2b094d19d78d3c755ce024a7d4b9e",
+    "https://github.com/ros-controls/ros2_control/pull/3522/commits/9a0bccda7d7145630b431bc4eb0f5ab813d5bd09",
+    "https://github.com/ros-controls/ros2_control/pull/3522/commits/aa47b747415a5e33f197d1953c738d45c36d8fcc"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

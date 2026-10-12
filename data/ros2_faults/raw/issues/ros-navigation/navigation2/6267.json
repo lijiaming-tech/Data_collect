@@ -1,0 +1,806 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-navigation/navigation2",
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/issues/6267",
+    "final_url": "https://github.com/ros-navigation/navigation2/issues/6267",
+    "fetched_at": "2026-10-11T11:21:39.046661+00:00",
+    "http_status": 200,
+    "response_sha256": "8b176002bc2eb1a5188568207f0332b87884040cc746d3b492aa807d53aed192"
+  },
+  "issue": {
+    "id": "I_kwDOCBF7SM8AAAABI6RBzg",
+    "databaseId": 4892934606,
+    "number": 6267,
+    "title": "[nav2_costmap_2d] Jazzy: costmap_2d_publisher does not publish costmap when no subscribers are present at launching time",
+    "url": "https://github.com/ros-navigation/navigation2/issues/6267",
+    "body": "## Bug report\n\n**Required Info:**\n\n- Operating System:\n  - Ubuntu 24.02\n- Computer:\n  - 13th Gen Intel(R) Core(TM) i5-13450HX\n- ROS2 Version:\n  - Jazzy binaries\n- Version or commit hash:\n  - ros-jazzy-navigation2   1.3.12-1noble.20260615.181551\n- DDS implementation:\n  - CycloneDDS\n\n#### Steps to reproduce issue\nLaunch a navigation stack, which has at least a map_server and a planner_server. In you configuration file, set the 'always_send_full_costmap' to false at global_costmap. Here is my relevant config:\n```\nplanner_server:\n  ros__parameters:\n    expected_planner_frequency: 1.0\n    planner_plugins: [\"GridBased\"]\n    costmap_update_timeout: 1.0\n    GridBased:\n      plugin: \"nav2_smac_planner::SmacPlannerLattice\"\n      downsample_costmap: false\n      downsampling_factor: 1\n      lookup_table_size: 20.0\n      allow_unknown: false\n      tolerance: 0.25\n      max_iterations: 1000000\n      max_on_approach_iterations: 1000\n      max_planning_time: 5.0\n      analytic_expansion_ratio: 3.5\n      analytic_expansion_max_length: 6.0\n      analytic_expansion_max_cost: 200.0\n      analytic_expansion_max_cost_override: false\n      reverse_penalty: 3.1\n      change_penalty: 0.15\n      non_straight_penalty: 1.15\n      cost_penalty: 2.0\n      rotation_penalty: 5.0\n      retrospective_penalty: 0.15\n      lattice_filepath: $(find-pkg-share research_project)/config/motion_primitives/acker_minturn_05_costres_005.json\n      cache_obstacle_heuristic: true\n      allow_reverse_expansion: true\n      smooth_path: true\n      smoother:\n        max_iterations: 1000\n        w_smooth: 0.15\n        w_data: 0.2\n        tolerance: 0.0000000001\n        do_refinement: false\n        refinement_num: 0\n      terminal_checking_interval: 5000\n\nglobal_costmap:\n  global_costmap:\n    ros__parameters:\n      update_frequency: 1.0\n      publish_frequency: 1.0\n      global_frame: map\n      robot_base_frame: base_link\n      footprint_padding: 0.05\n      robot_radius: 0.22\n      resolution: 0.05\n      track_unknown_space: true\n      plugins: [\"static_layer\", \"inflation_layer\"]\n      static_layer:\n        plugin: \"nav2_costmap_2d::StaticLayer\"\n        map_subscribe_transient_local: true\n        enabled: true\n        subscribe_to_updates: true\n        transform_tolerance: 0.1\n      inflation_layer:\n        plugin: \"nav2_costmap_2d::InflationLayer\"\n        enabled: true\n        cost_scaling_factor: 1.5\n        inflation_radius: 3.9\n        inflate_unknown: false\n        inflate_around_unknown: true\n      always_send_full_costmap: false\n\nmap_server:\n  ros__parameters:\n    topic_name: \"/map\"\n    frame_id: \"map\"\n```\n\n\n#### Expected behavior\nAfter launching your Nav2 nodes, when you subscriber to the topic '/global_costmap/costmap', you receive the costmap.\n\n#### Actual behavior\nAfter launching your Nav2 nodes, when you subscriber to the topic '/global_costmap/costmap', you don't receive the costmap. The costmap has never been published, and you cannot trigger the publication, so you won't be able to get the costmap on the topic.\nBut if you have a subscriber on the topic '/global_costmap/costmap' before launching the nodes, you will receive the costmap. In this case late joining subscribers also receive it as expected.\n\n#### Reproduction instructions\nAfter launching your Nav2 nodes, run:\n```\nros2 topic echo /global_costmap/costmap\n```\nYou won't receive any messages.\nNow don't kill the created subscriber, but kill the Nav2 nodes. Then relaunch them. Now you will receive the costmap, and if you run the command again inside another terminal, you will also receive it.\n\n#### Additional information\nI did some research, and I have found the reason of this behavior in Jazzy.\n\nThere weren't any problems with my setup, the QoS settings match.\n\nThere aren't problems with the DDS or with rclcpp. If I create a random publisher with transient local QoS durability and publish a message, and later subscribe to this topic, I receive the message as expected.\n\nThe global_costmap receives the map on the /map topic from the map_server, so it is also not the problem. I can obtain it with global_costmap's proper service. Only on the topic it cannot be received.\n\nIf you try to reproduce this in older distributions, (I have tried it in Humble,) you will receive the costmap on the topic as expected.\n\nI have found what has changed from Iron to Jazzy, which results this. The costmap is never published on the topic in Jazzy, if there aren't any subscribers on the topic before launch (or more specifically when the map is received on /map topic, but it happens during the activation phase).\n\nIn Iron and older versions, in costmap_2d_publisher's publishCostmap() function, updating the grid parameters is done (by prepareGrid() function) if there are subscribers, and the costmap gets published when this happens. After that it is impossible reach the costmap pulishing part, because the grid has been set. But it is not a problem, because it has been published once, and the QoS durability is transient local. Here is the Iron version of the mentioned functions:\n```\nvoid Costmap2DPublisher::publishCostmap()\n{\n  if (costmap_raw_pub_->get_subscription_count() > 0) {\n    prepareCostmap();\n    costmap_raw_pub_->publish(std::move(costmap_raw_));\n  }\n\n  float resolution = costmap_->getResolution();\n  if (always_send_full_costmap_ || grid_resolution != resolution ||\n    grid_width != costmap_->getSizeInCellsX() ||\n    grid_height != costmap_->getSizeInCellsY() ||\n    saved_origin_x_ != costmap_->getOriginX() ||\n    saved_origin_y_ != costmap_->getOriginY())\n  {\n    if (costmap_pub_->get_subscription_count() > 0) {\n      prepareGrid();\n      costmap_pub_->publish(std::move(grid_));\n    }\n  } else if (x0_ < xn_) {\n    if (costmap_update_pub_->get_subscription_count() > 0) {\n      std::unique_lock<Costmap2D::mutex_t> lock(*(costmap_->getMutex()));\n      // Publish Just an Update\n      auto update = std::make_unique<map_msgs::msg::OccupancyGridUpdate>();\n      update->header.stamp = rclcpp::Time();\n      update->header.frame_id = global_frame_;\n      update->x = x0_;\n      update->y = y0_;\n      update->width = xn_ - x0_;\n      update->height = yn_ - y0_;\n      update->data.resize(update->width * update->height);\n      unsigned int i = 0;\n      for (unsigned int y = y0_; y < yn_; y++) {\n        for (unsigned int x = x0_; x < xn_; x++) {\n          unsigned char cost = costmap_->getCost(x, y);\n          update->data[i++] = cost_translation_table_[cost];\n        }\n      }\n      costmap_update_pub_->publish(std::move(update));\n    }\n  }\n\n  xn_ = yn_ = 0;\n  x0_ = costmap_->getSizeInCellsX();\n  y0_ = costmap_->getSizeInCellsY();\n}\n\nvoid Costmap2DPublisher::prepareGrid()\n{\n  std::unique_lock<Costmap2D::mutex_t> lock(*(costmap_->getMutex()));\n  grid_resolution = costmap_->getResolution();\n  grid_width = costmap_->getSizeInCellsX();\n  grid_height = costmap_->getSizeInCellsY();\n\n  grid_ = std::make_unique<nav_msgs::msg::OccupancyGrid>();\n\n  grid_->header.frame_id = global_frame_;\n  grid_->header.stamp = clock_->now();\n\n  grid_->info.resolution = grid_resolution;\n\n  grid_->info.width = grid_width;\n  grid_->info.height = grid_height;\n\n  double wx, wy;\n  costmap_->mapToWorld(0, 0, wx, wy);\n  grid_->info.origin.position.x = wx - grid_resolution / 2;\n  grid_->info.origin.position.y = wy - grid_resolution / 2;\n  grid_->info.origin.position.z = 0.0;\n  grid_->info.origin.orientation.w = 1.0;\n  saved_origin_x_ = costmap_->getOriginX();\n  saved_origin_y_ = costmap_->getOriginY();\n\n  grid_->data.resize(grid_->info.width * grid_->info.height);\n\n  unsigned char * data = costmap_->getCharMap();\n  for (unsigned int i = 0; i < grid_->data.size(); i++) {\n    grid_->data[i] = cost_translation_table_[data[i]];\n  }\n}\n```\nIn Jazzy in contrast, updating the grid parameters does not require subscribers on the topic, it happens when it first receives the map from map_server. It is done by the updateGridParams() function. But if there aren't subscribers, the costmap isn't published that time, and later it is impossible to reach the costmap publishing part, because the grid has been set. This is a problem, because it means that the costmap has never been published. Here you can see the Jazzy version of the mentioned functions:\n```\nvoid Costmap2DPublisher::publishCostmap()\n{\n  auto const costmap_layer = dynamic_cast<CostmapLayer *>(costmap_);\n  if (costmap_layer != nullptr && !costmap_layer->isEnabled()) {\n    return;\n  }\n\n  float resolution = costmap_->getResolution();\n  if (always_send_full_costmap_ || grid_resolution_ != resolution ||\n    grid_width_ != costmap_->getSizeInCellsX() ||\n    grid_height_ != costmap_->getSizeInCellsY() ||\n    saved_origin_x_ != costmap_->getOriginX() ||\n    saved_origin_y_ != costmap_->getOriginY())\n  {\n    updateGridParams();\n    if (costmap_pub_->get_subscription_count() > 0) {\n      prepareGrid();\n      costmap_pub_->publish(std::move(grid_));\n    }\n    if (costmap_raw_pub_->get_subscription_count() > 0) {\n      prepareCostmap();\n      costmap_raw_pub_->publish(std::move(costmap_raw_));\n    }\n  } else if (x0_ < xn_) {\n    // Publish just update msgs\n    std::unique_lock<Costmap2D::mutex_t> lock(*(costmap_->getMutex()));\n    if (costmap_update_pub_->get_subscription_count() > 0) {\n      costmap_update_pub_->publish(createGridUpdateMsg());\n    }\n    if (costmap_raw_update_pub_->get_subscription_count() > 0) {\n      costmap_raw_update_pub_->publish(createCostmapUpdateMsg());\n    }\n  }\n\n  xn_ = yn_ = 0;\n  x0_ = costmap_->getSizeInCellsX();\n  y0_ = costmap_->getSizeInCellsY();\n}\n\n\nvoid Costmap2DPublisher::updateGridParams()\n{\n  saved_origin_x_ = costmap_->getOriginX();\n  saved_origin_y_ = costmap_->getOriginY();\n  grid_resolution_ = costmap_->getResolution();\n  grid_width_ = costmap_->getSizeInCellsX();\n  grid_height_ = costmap_->getSizeInCellsY();\n}\n```\nIf you place updateGridParams() inside \"if (costmap_pub_->get_subscription_count() > 0) {...}\", the problem disappears.",
+    "bodyHTML": "<h2 dir=\"auto\">Bug report</h2>\n<p dir=\"auto\"><strong>Required Info:</strong></p>\n<ul dir=\"auto\">\n<li>Operating System:\n<ul dir=\"auto\">\n<li>Ubuntu 24.02</li>\n</ul>\n</li>\n<li>Computer:\n<ul dir=\"auto\">\n<li>13th Gen Intel(R) Core(TM) i5-13450HX</li>\n</ul>\n</li>\n<li>ROS2 Version:\n<ul dir=\"auto\">\n<li>Jazzy binaries</li>\n</ul>\n</li>\n<li>Version or commit hash:\n<ul dir=\"auto\">\n<li>ros-jazzy-navigation2   1.3.12-1noble.20260615.181551</li>\n</ul>\n</li>\n<li>DDS implementation:\n<ul dir=\"auto\">\n<li>CycloneDDS</li>\n</ul>\n</li>\n</ul>\n<h4 dir=\"auto\">Steps to reproduce issue</h4>\n<p dir=\"auto\">Launch a navigation stack, which has at least a map_server and a planner_server. In you configuration file, set the 'always_send_full_costmap' to false at global_costmap. Here is my relevant config:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"planner_server:\n  ros__parameters:\n    expected_planner_frequency: 1.0\n    planner_plugins: [&quot;GridBased&quot;]\n    costmap_update_timeout: 1.0\n    GridBased:\n      plugin: &quot;nav2_smac_planner::SmacPlannerLattice&quot;\n      downsample_costmap: false\n      downsampling_factor: 1\n      lookup_table_size: 20.0\n      allow_unknown: false\n      tolerance: 0.25\n      max_iterations: 1000000\n      max_on_approach_iterations: 1000\n      max_planning_time: 5.0\n      analytic_expansion_ratio: 3.5\n      analytic_expansion_max_length: 6.0\n      analytic_expansion_max_cost: 200.0\n      analytic_expansion_max_cost_override: false\n      reverse_penalty: 3.1\n      change_penalty: 0.15\n      non_straight_penalty: 1.15\n      cost_penalty: 2.0\n      rotation_penalty: 5.0\n      retrospective_penalty: 0.15\n      lattice_filepath: $(find-pkg-share research_project)/config/motion_primitives/acker_minturn_05_costres_005.json\n      cache_obstacle_heuristic: true\n      allow_reverse_expansion: true\n      smooth_path: true\n      smoother:\n        max_iterations: 1000\n        w_smooth: 0.15\n        w_data: 0.2\n        tolerance: 0.0000000001\n        do_refinement: false\n        refinement_num: 0\n      terminal_checking_interval: 5000\n\nglobal_costmap:\n  global_costmap:\n    ros__parameters:\n      update_frequency: 1.0\n      publish_frequency: 1.0\n      global_frame: map\n      robot_base_frame: base_link\n      footprint_padding: 0.05\n      robot_radius: 0.22\n      resolution: 0.05\n      track_unknown_space: true\n      plugins: [&quot;static_layer&quot;, &quot;inflation_layer&quot;]\n      static_layer:\n        plugin: &quot;nav2_costmap_2d::StaticLayer&quot;\n        map_subscribe_transient_local: true\n        enabled: true\n        subscribe_to_updates: true\n        transform_tolerance: 0.1\n      inflation_layer:\n        plugin: &quot;nav2_costmap_2d::InflationLayer&quot;\n        enabled: true\n        cost_scaling_factor: 1.5\n        inflation_radius: 3.9\n        inflate_unknown: false\n        inflate_around_unknown: true\n      always_send_full_costmap: false\n\nmap_server:\n  ros__parameters:\n    topic_name: &quot;/map&quot;\n    frame_id: &quot;map&quot;\"><pre class=\"notranslate\"><code class=\"notranslate\">planner_server:\n  ros__parameters:\n    expected_planner_frequency: 1.0\n    planner_plugins: [\"GridBased\"]\n    costmap_update_timeout: 1.0\n    GridBased:\n      plugin: \"nav2_smac_planner::SmacPlannerLattice\"\n      downsample_costmap: false\n      downsampling_factor: 1\n      lookup_table_size: 20.0\n      allow_unknown: false\n      tolerance: 0.25\n      max_iterations: 1000000\n      max_on_approach_iterations: 1000\n      max_planning_time: 5.0\n      analytic_expansion_ratio: 3.5\n      analytic_expansion_max_length: 6.0\n      analytic_expansion_max_cost: 200.0\n      analytic_expansion_max_cost_override: false\n      reverse_penalty: 3.1\n      change_penalty: 0.15\n      non_straight_penalty: 1.15\n      cost_penalty: 2.0\n      rotation_penalty: 5.0\n      retrospective_penalty: 0.15\n      lattice_filepath: $(find-pkg-share research_project)/config/motion_primitives/acker_minturn_05_costres_005.json\n      cache_obstacle_heuristic: true\n      allow_reverse_expansion: true\n      smooth_path: true\n      smoother:\n        max_iterations: 1000\n        w_smooth: 0.15\n        w_data: 0.2\n        tolerance: 0.0000000001\n        do_refinement: false\n        refinement_num: 0\n      terminal_checking_interval: 5000\n\nglobal_costmap:\n  global_costmap:\n    ros__parameters:\n      update_frequency: 1.0\n      publish_frequency: 1.0\n      global_frame: map\n      robot_base_frame: base_link\n      footprint_padding: 0.05\n      robot_radius: 0.22\n      resolution: 0.05\n      track_unknown_space: true\n      plugins: [\"static_layer\", \"inflation_layer\"]\n      static_layer:\n        plugin: \"nav2_costmap_2d::StaticLayer\"\n        map_subscribe_transient_local: true\n        enabled: true\n        subscribe_to_updates: true\n        transform_tolerance: 0.1\n      inflation_layer:\n        plugin: \"nav2_costmap_2d::InflationLayer\"\n        enabled: true\n        cost_scaling_factor: 1.5\n        inflation_radius: 3.9\n        inflate_unknown: false\n        inflate_around_unknown: true\n      always_send_full_costmap: false\n\nmap_server:\n  ros__parameters:\n    topic_name: \"/map\"\n    frame_id: \"map\"\n</code></pre></div>\n<h4 dir=\"auto\">Expected behavior</h4>\n<p dir=\"auto\">After launching your Nav2 nodes, when you subscriber to the topic '/global_costmap/costmap', you receive the costmap.</p>\n<h4 dir=\"auto\">Actual behavior</h4>\n<p dir=\"auto\">After launching your Nav2 nodes, when you subscriber to the topic '/global_costmap/costmap', you don't receive the costmap. The costmap has never been published, and you cannot trigger the publication, so you won't be able to get the costmap on the topic.<br>\nBut if you have a subscriber on the topic '/global_costmap/costmap' before launching the nodes, you will receive the costmap. In this case late joining subscribers also receive it as expected.</p>\n<h4 dir=\"auto\">Reproduction instructions</h4>\n<p dir=\"auto\">After launching your Nav2 nodes, run:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"ros2 topic echo /global_costmap/costmap\"><pre class=\"notranslate\"><code class=\"notranslate\">ros2 topic echo /global_costmap/costmap\n</code></pre></div>\n<p dir=\"auto\">You won't receive any messages.<br>\nNow don't kill the created subscriber, but kill the Nav2 nodes. Then relaunch them. Now you will receive the costmap, and if you run the command again inside another terminal, you will also receive it.</p>\n<h4 dir=\"auto\">Additional information</h4>\n<p dir=\"auto\">I did some research, and I have found the reason of this behavior in Jazzy.</p>\n<p dir=\"auto\">There weren't any problems with my setup, the QoS settings match.</p>\n<p dir=\"auto\">There aren't problems with the DDS or with rclcpp. If I create a random publisher with transient local QoS durability and publish a message, and later subscribe to this topic, I receive the message as expected.</p>\n<p dir=\"auto\">The global_costmap receives the map on the /map topic from the map_server, so it is also not the problem. I can obtain it with global_costmap's proper service. Only on the topic it cannot be received.</p>\n<p dir=\"auto\">If you try to reproduce this in older distributions, (I have tried it in Humble,) you will receive the costmap on the topic as expected.</p>\n<p dir=\"auto\">I have found what has changed from Iron to Jazzy, which results this. The costmap is never published on the topic in Jazzy, if there aren't any subscribers on the topic before launch (or more specifically when the map is received on /map topic, but it happens during the activation phase).</p>\n<p dir=\"auto\">In Iron and older versions, in costmap_2d_publisher's publishCostmap() function, updating the grid parameters is done (by prepareGrid() function) if there are subscribers, and the costmap gets published when this happens. After that it is impossible reach the costmap pulishing part, because the grid has been set. But it is not a problem, because it has been published once, and the QoS durability is transient local. Here is the Iron version of the mentioned functions:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"void Costmap2DPublisher::publishCostmap()\n{\n  if (costmap_raw_pub_-&gt;get_subscription_count() &gt; 0) {\n    prepareCostmap();\n    costmap_raw_pub_-&gt;publish(std::move(costmap_raw_));\n  }\n\n  float resolution = costmap_-&gt;getResolution();\n  if (always_send_full_costmap_ || grid_resolution != resolution ||\n    grid_width != costmap_-&gt;getSizeInCellsX() ||\n    grid_height != costmap_-&gt;getSizeInCellsY() ||\n    saved_origin_x_ != costmap_-&gt;getOriginX() ||\n    saved_origin_y_ != costmap_-&gt;getOriginY())\n  {\n    if (costmap_pub_-&gt;get_subscription_count() &gt; 0) {\n      prepareGrid();\n      costmap_pub_-&gt;publish(std::move(grid_));\n    }\n  } else if (x0_ &lt; xn_) {\n    if (costmap_update_pub_-&gt;get_subscription_count() &gt; 0) {\n      std::unique_lock&lt;Costmap2D::mutex_t&gt; lock(*(costmap_-&gt;getMutex()));\n      // Publish Just an Update\n      auto update = std::make_unique&lt;map_msgs::msg::OccupancyGridUpdate&gt;();\n      update-&gt;header.stamp = rclcpp::Time();\n      update-&gt;header.frame_id = global_frame_;\n      update-&gt;x = x0_;\n      update-&gt;y = y0_;\n      update-&gt;width = xn_ - x0_;\n      update-&gt;height = yn_ - y0_;\n      update-&gt;data.resize(update-&gt;width * update-&gt;height);\n      unsigned int i = 0;\n      for (unsigned int y = y0_; y &lt; yn_; y++) {\n        for (unsigned int x = x0_; x &lt; xn_; x++) {\n          unsigned char cost = costmap_-&gt;getCost(x, y);\n          update-&gt;data[i++] = cost_translation_table_[cost];\n        }\n      }\n      costmap_update_pub_-&gt;publish(std::move(update));\n    }\n  }\n\n  xn_ = yn_ = 0;\n  x0_ = costmap_-&gt;getSizeInCellsX();\n  y0_ = costmap_-&gt;getSizeInCellsY();\n}\n\nvoid Costmap2DPublisher::prepareGrid()\n{\n  std::unique_lock&lt;Costmap2D::mutex_t&gt; lock(*(costmap_-&gt;getMutex()));\n  grid_resolution = costmap_-&gt;getResolution();\n  grid_width = costmap_-&gt;getSizeInCellsX();\n  grid_height = costmap_-&gt;getSizeInCellsY();\n\n  grid_ = std::make_unique&lt;nav_msgs::msg::OccupancyGrid&gt;();\n\n  grid_-&gt;header.frame_id = global_frame_;\n  grid_-&gt;header.stamp = clock_-&gt;now();\n\n  grid_-&gt;info.resolution = grid_resolution;\n\n  grid_-&gt;info.width = grid_width;\n  grid_-&gt;info.height = grid_height;\n\n  double wx, wy;\n  costmap_-&gt;mapToWorld(0, 0, wx, wy);\n  grid_-&gt;info.origin.position.x = wx - grid_resolution / 2;\n  grid_-&gt;info.origin.position.y = wy - grid_resolution / 2;\n  grid_-&gt;info.origin.position.z = 0.0;\n  grid_-&gt;info.origin.orientation.w = 1.0;\n  saved_origin_x_ = costmap_-&gt;getOriginX();\n  saved_origin_y_ = costmap_-&gt;getOriginY();\n\n  grid_-&gt;data.resize(grid_-&gt;info.width * grid_-&gt;info.height);\n\n  unsigned char * data = costmap_-&gt;getCharMap();\n  for (unsigned int i = 0; i &lt; grid_-&gt;data.size(); i++) {\n    grid_-&gt;data[i] = cost_translation_table_[data[i]];\n  }\n}\"><pre class=\"notranslate\"><code class=\"notranslate\">void Costmap2DPublisher::publishCostmap()\n{\n  if (costmap_raw_pub_-&gt;get_subscription_count() &gt; 0) {\n    prepareCostmap();\n    costmap_raw_pub_-&gt;publish(std::move(costmap_raw_));\n  }\n\n  float resolution = costmap_-&gt;getResolution();\n  if (always_send_full_costmap_ || grid_resolution != resolution ||\n    grid_width != costmap_-&gt;getSizeInCellsX() ||\n    grid_height != costmap_-&gt;getSizeInCellsY() ||\n    saved_origin_x_ != costmap_-&gt;getOriginX() ||\n    saved_origin_y_ != costmap_-&gt;getOriginY())\n  {\n    if (costmap_pub_-&gt;get_subscription_count() &gt; 0) {\n      prepareGrid();\n      costmap_pub_-&gt;publish(std::move(grid_));\n    }\n  } else if (x0_ &lt; xn_) {\n    if (costmap_update_pub_-&gt;get_subscription_count() &gt; 0) {\n      std::unique_lock&lt;Costmap2D::mutex_t&gt; lock(*(costmap_-&gt;getMutex()));\n      // Publish Just an Update\n      auto update = std::make_unique&lt;map_msgs::msg::OccupancyGridUpdate&gt;();\n      update-&gt;header.stamp = rclcpp::Time();\n      update-&gt;header.frame_id = global_frame_;\n      update-&gt;x = x0_;\n      update-&gt;y = y0_;\n      update-&gt;width = xn_ - x0_;\n      update-&gt;height = yn_ - y0_;\n      update-&gt;data.resize(update-&gt;width * update-&gt;height);\n      unsigned int i = 0;\n      for (unsigned int y = y0_; y &lt; yn_; y++) {\n        for (unsigned int x = x0_; x &lt; xn_; x++) {\n          unsigned char cost = costmap_-&gt;getCost(x, y);\n          update-&gt;data[i++] = cost_translation_table_[cost];\n        }\n      }\n      costmap_update_pub_-&gt;publish(std::move(update));\n    }\n  }\n\n  xn_ = yn_ = 0;\n  x0_ = costmap_-&gt;getSizeInCellsX();\n  y0_ = costmap_-&gt;getSizeInCellsY();\n}\n\nvoid Costmap2DPublisher::prepareGrid()\n{\n  std::unique_lock&lt;Costmap2D::mutex_t&gt; lock(*(costmap_-&gt;getMutex()));\n  grid_resolution = costmap_-&gt;getResolution();\n  grid_width = costmap_-&gt;getSizeInCellsX();\n  grid_height = costmap_-&gt;getSizeInCellsY();\n\n  grid_ = std::make_unique&lt;nav_msgs::msg::OccupancyGrid&gt;();\n\n  grid_-&gt;header.frame_id = global_frame_;\n  grid_-&gt;header.stamp = clock_-&gt;now();\n\n  grid_-&gt;info.resolution = grid_resolution;\n\n  grid_-&gt;info.width = grid_width;\n  grid_-&gt;info.height = grid_height;\n\n  double wx, wy;\n  costmap_-&gt;mapToWorld(0, 0, wx, wy);\n  grid_-&gt;info.origin.position.x = wx - grid_resolution / 2;\n  grid_-&gt;info.origin.position.y = wy - grid_resolution / 2;\n  grid_-&gt;info.origin.position.z = 0.0;\n  grid_-&gt;info.origin.orientation.w = 1.0;\n  saved_origin_x_ = costmap_-&gt;getOriginX();\n  saved_origin_y_ = costmap_-&gt;getOriginY();\n\n  grid_-&gt;data.resize(grid_-&gt;info.width * grid_-&gt;info.height);\n\n  unsigned char * data = costmap_-&gt;getCharMap();\n  for (unsigned int i = 0; i &lt; grid_-&gt;data.size(); i++) {\n    grid_-&gt;data[i] = cost_translation_table_[data[i]];\n  }\n}\n</code></pre></div>\n<p dir=\"auto\">In Jazzy in contrast, updating the grid parameters does not require subscribers on the topic, it happens when it first receives the map from map_server. It is done by the updateGridParams() function. But if there aren't subscribers, the costmap isn't published that time, and later it is impossible to reach the costmap publishing part, because the grid has been set. This is a problem, because it means that the costmap has never been published. Here you can see the Jazzy version of the mentioned functions:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"void Costmap2DPublisher::publishCostmap()\n{\n  auto const costmap_layer = dynamic_cast&lt;CostmapLayer *&gt;(costmap_);\n  if (costmap_layer != nullptr &amp;&amp; !costmap_layer-&gt;isEnabled()) {\n    return;\n  }\n\n  float resolution = costmap_-&gt;getResolution();\n  if (always_send_full_costmap_ || grid_resolution_ != resolution ||\n    grid_width_ != costmap_-&gt;getSizeInCellsX() ||\n    grid_height_ != costmap_-&gt;getSizeInCellsY() ||\n    saved_origin_x_ != costmap_-&gt;getOriginX() ||\n    saved_origin_y_ != costmap_-&gt;getOriginY())\n  {\n    updateGridParams();\n    if (costmap_pub_-&gt;get_subscription_count() &gt; 0) {\n      prepareGrid();\n      costmap_pub_-&gt;publish(std::move(grid_));\n    }\n    if (costmap_raw_pub_-&gt;get_subscription_count() &gt; 0) {\n      prepareCostmap();\n      costmap_raw_pub_-&gt;publish(std::move(costmap_raw_));\n    }\n  } else if (x0_ &lt; xn_) {\n    // Publish just update msgs\n    std::unique_lock&lt;Costmap2D::mutex_t&gt; lock(*(costmap_-&gt;getMutex()));\n    if (costmap_update_pub_-&gt;get_subscription_count() &gt; 0) {\n      costmap_update_pub_-&gt;publish(createGridUpdateMsg());\n    }\n    if (costmap_raw_update_pub_-&gt;get_subscription_count() &gt; 0) {\n      costmap_raw_update_pub_-&gt;publish(createCostmapUpdateMsg());\n    }\n  }\n\n  xn_ = yn_ = 0;\n  x0_ = costmap_-&gt;getSizeInCellsX();\n  y0_ = costmap_-&gt;getSizeInCellsY();\n}\n\n\nvoid Costmap2DPublisher::updateGridParams()\n{\n  saved_origin_x_ = costmap_-&gt;getOriginX();\n  saved_origin_y_ = costmap_-&gt;getOriginY();\n  grid_resolution_ = costmap_-&gt;getResolution();\n  grid_width_ = costmap_-&gt;getSizeInCellsX();\n  grid_height_ = costmap_-&gt;getSizeInCellsY();\n}\"><pre class=\"notranslate\"><code class=\"notranslate\">void Costmap2DPublisher::publishCostmap()\n{\n  auto const costmap_layer = dynamic_cast&lt;CostmapLayer *&gt;(costmap_);\n  if (costmap_layer != nullptr &amp;&amp; !costmap_layer-&gt;isEnabled()) {\n    return;\n  }\n\n  float resolution = costmap_-&gt;getResolution();\n  if (always_send_full_costmap_ || grid_resolution_ != resolution ||\n    grid_width_ != costmap_-&gt;getSizeInCellsX() ||\n    grid_height_ != costmap_-&gt;getSizeInCellsY() ||\n    saved_origin_x_ != costmap_-&gt;getOriginX() ||\n    saved_origin_y_ != costmap_-&gt;getOriginY())\n  {\n    updateGridParams();\n    if (costmap_pub_-&gt;get_subscription_count() &gt; 0) {\n      prepareGrid();\n      costmap_pub_-&gt;publish(std::move(grid_));\n    }\n    if (costmap_raw_pub_-&gt;get_subscription_count() &gt; 0) {\n      prepareCostmap();\n      costmap_raw_pub_-&gt;publish(std::move(costmap_raw_));\n    }\n  } else if (x0_ &lt; xn_) {\n    // Publish just update msgs\n    std::unique_lock&lt;Costmap2D::mutex_t&gt; lock(*(costmap_-&gt;getMutex()));\n    if (costmap_update_pub_-&gt;get_subscription_count() &gt; 0) {\n      costmap_update_pub_-&gt;publish(createGridUpdateMsg());\n    }\n    if (costmap_raw_update_pub_-&gt;get_subscription_count() &gt; 0) {\n      costmap_raw_update_pub_-&gt;publish(createCostmapUpdateMsg());\n    }\n  }\n\n  xn_ = yn_ = 0;\n  x0_ = costmap_-&gt;getSizeInCellsX();\n  y0_ = costmap_-&gt;getSizeInCellsY();\n}\n\n\nvoid Costmap2DPublisher::updateGridParams()\n{\n  saved_origin_x_ = costmap_-&gt;getOriginX();\n  saved_origin_y_ = costmap_-&gt;getOriginY();\n  grid_resolution_ = costmap_-&gt;getResolution();\n  grid_width_ = costmap_-&gt;getSizeInCellsX();\n  grid_height_ = costmap_-&gt;getSizeInCellsY();\n}\n</code></pre></div>\n<p dir=\"auto\">If you place updateGridParams() inside \"if (costmap_pub_-&gt;get_subscription_count() &gt; 0) {...}\", the problem disappears.</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-07-15T13:30:01Z",
+    "updatedAt": "2026-08-10T21:28:24Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/105358824?v=4",
+      "login": "TZalan0814",
+      "id": "U_kgDOBkel6A",
+      "profileUrl": "https://github.com/TZalan0814",
+      "name": null,
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+            "fullDatabaseId": "948691578",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros-navigation/navigation2/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 2,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABKQQFGg",
+      "databaseId": 4983096602,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABI6RBzg",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBkel6A",
+          "login": "TZalan0814"
+        },
+        "number": 6267,
+        "locked": false,
+        "databaseId": 4892934606
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6267#issuecomment-4983096602",
+      "createdAt": "2026-07-15T16:44:47Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2026-07-15T16:45:03Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM8AAAABKQQFGs7c643w",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+          "url": "https://github.com/SteveMacenski",
+          "login": "SteveMacenski"
+        }
+      },
+      "pinnedBy": null,
+      "body": "Good find - can you open a PR to fix? 😄 Is this on `main` as well? ",
+      "bodyHTML": "<p dir=\"auto\">Good find - can you open a PR to fix? 😄 Is this on <code class=\"notranslate\">main</code> as well?</p>",
+      "bodyVersion": "b0c67f81e8ad44511f8ae2106a6d8927207f43146ac51e2e2b921e26b4999871",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABKZU8lw",
+      "databaseId": 4992613527,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABI6RBzg",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBkel6A",
+          "login": "TZalan0814"
+        },
+        "number": 6267,
+        "locked": false,
+        "databaseId": 4892934606
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBkel6A",
+        "login": "TZalan0814",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/105358824?v=4",
+        "profileUrl": "https://github.com/TZalan0814",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6267#issuecomment-4992613527",
+      "createdAt": "2026-07-16T13:43:41Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thanks! Yes, this is on `main` as well. I created the PR on it.",
+      "bodyHTML": "<p dir=\"auto\">Thanks! Yes, this is on <code class=\"notranslate\">main</code> as well. I created the PR on it.</p>",
+      "bodyVersion": "d625609d0076379abd991bef219caf4d21165ee7749ea4a6dca812f67cc78039",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABKQQFGg",
+      "databaseId": 4983096602,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABI6RBzg",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBkel6A",
+          "login": "TZalan0814"
+        },
+        "number": 6267,
+        "locked": false,
+        "databaseId": 4892934606
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6267#issuecomment-4983096602",
+      "createdAt": "2026-07-15T16:44:47Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2026-07-15T16:45:03Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM8AAAABKQQFGs7c643w",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+          "url": "https://github.com/SteveMacenski",
+          "login": "SteveMacenski"
+        }
+      },
+      "pinnedBy": null,
+      "body": "Good find - can you open a PR to fix? 😄 Is this on `main` as well? ",
+      "bodyHTML": "<p dir=\"auto\">Good find - can you open a PR to fix? 😄 Is this on <code class=\"notranslate\">main</code> as well?</p>",
+      "bodyVersion": "b0c67f81e8ad44511f8ae2106a6d8927207f43146ac51e2e2b921e26b4999871",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM8AAAABI6RBzs8AAAAGhpBFIA",
+      "databaseId": 28027405600,
+      "createdAt": "2026-07-15T16:44:52Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABKZU8lw",
+      "databaseId": 4992613527,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABI6RBzg",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBkel6A",
+          "login": "TZalan0814"
+        },
+        "number": 6267,
+        "locked": false,
+        "databaseId": 4892934606
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBkel6A",
+        "login": "TZalan0814",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/105358824?v=4",
+        "profileUrl": "https://github.com/TZalan0814",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6267#issuecomment-4992613527",
+      "createdAt": "2026-07-16T13:43:41Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thanks! Yes, this is on `main` as well. I created the PR on it.",
+      "bodyHTML": "<p dir=\"auto\">Thanks! Yes, this is on <code class=\"notranslate\">main</code> as well. I created the PR on it.</p>",
+      "bodyVersion": "d625609d0076379abd991bef219caf4d21165ee7749ea4a6dca812f67cc78039",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ConnectedEvent",
+      "id": "COE_lADOCBF7SM8AAAABI6RBzs8AAAAGie9Opw",
+      "databaseId": 28083965607,
+      "createdAt": "2026-07-16T17:43:44Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "subject": {
+        "id": "PR_kwDOCBF7SM7yiVro",
+        "__typename": "PullRequest",
+        "title": "[nav2_costmap_2d] Moving updateGridParams() inside the subscription count if statement",
+        "url": "https://github.com/ros-navigation/navigation2/pull/6272",
+        "number": 6272,
+        "state": "CLOSED",
+        "isDraft": false,
+        "isInMergeQueue": false,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      }
+    },
+    {
+      "__typename": "ConnectedEvent",
+      "id": "COE_lADOCBF7SM8AAAABI6RBzs8AAAAGz0zTOg",
+      "databaseId": 29247722298,
+      "createdAt": "2026-08-10T21:27:59Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "subject": {
+        "id": "PR_kwDOCBF7SM78akdH",
+        "__typename": "PullRequest",
+        "title": "Fix costmap publication for late subscribers",
+        "url": "https://github.com/ros-navigation/navigation2/pull/6324",
+        "number": 6324,
+        "state": "MERGED",
+        "isDraft": false,
+        "isInMergeQueue": false,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      }
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOCBF7SM8AAAABI6RBzs8AAAAGz00RwQ",
+      "databaseId": 29247738305,
+      "createdAt": "2026-08-10T21:28:24Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOCBF7SM78akdH",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-navigation/navigation2/pull/6324",
+        "number": 6324,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABn2aqpBgAqjQ5ODMwOTY2MDI=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABn-2TpMABqzI5MjQ3NzM4MzA1"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABn2aqpBgAqjQ5ODMwOTY2MDI=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABn-2TpMABqzI5MjQ3NzM4MzA1"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOCBF7SM78akdH",
+      "url": "https://github.com/ros-navigation/navigation2/pull/6324",
+      "number": 6324,
+      "title": "Fix costmap publication for late subscribers",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-08-08T14:21:45Z",
+      "databaseId": 4234823495,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    },
+    {
+      "id": "PR_kwDOCBF7SM7yiVro",
+      "number": 6272,
+      "url": "https://github.com/ros-navigation/navigation2/pull/6272",
+      "state": "CLOSED",
+      "databaseId": 4069087976,
+      "relation_types": [
+        "closedByPullRequestsReferences"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6324",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6324.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6324.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6272",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6272.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6272.changes.json"
+    }
+  ]
+}

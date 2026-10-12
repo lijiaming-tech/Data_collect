@@ -1,0 +1,29 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3596",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3596",
+    "fetched_at": "2026-10-11T11:24:21.412077+00:00",
+    "http_status": 200,
+    "response_sha256": "dc9c0b2ff7ced955940dd9b03351dc40c56cd51d7c50f50b3d18269778d8a805"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3596",
+  "title": "Match complete command interfaces in GenericSystem mode switches by vpfkfl753 · Pull Request #3596 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nRelated to #3593. GenericSystem still matches joint names by substring, so with calculate_dynamics a switch for joint10/velocity also matches joint1. Prepare rejects it and perform leaves joint10 in position mode. Now both callbacks match the full command interface names. Unsupported modes like effort are still rejected.\n\n\nIs this user-facing behavior change?\n\n\nYes, mock joints with overlapping names (joint1 / joint10) switch modes correctly now.\n\n\nDid you use Generative AI?\n\n\nYes, OpenAI Codex (GPT-6).\n\n\nAdditional Information\n\n\nThe new joint10, prefix_joint1 and controller/joint1 cases fail without the fix. Tested on Rolling (hardware_interface tests + pre-commit).\n\n\nTODOs\n\n\nTo send us a pull request, please:\n\n\n\n Fork the repository.\n\n\n Modify the source; please focus on the specific change you are contributing. If you also reformat all the code, it will be hard for us to focus on your change.\n\n\n Ensure local tests pass. (colcon test and pre-commit run (requires you to install pre-commit by pip3 install pre-commit)\n\n\n Commit to your fork using clear commit messages.\n\n\n Send a pull request, answering any default questions in the pull request interface.\n\n\n Pay attention to any automated CI failures reported in the pull request, and stay involved in the conversation.",
+  "discussion_rendered_text": [
+    "LGTM",
+    "Codecov Report\n\n\n✅ All modified and coverable lines are covered by tests.\n\n✅ Project coverage is 89.63%. Comparing base (b43e40c) to head (7c05d30).\n\nAdditional details and impacted files\n\n\n```\n@@            Coverage Diff             @@\n##           master    #3596      +/-   ##\n==========================================\n+ Coverage   89.57%   89.63%   +0.05%     \n==========================================\n  Files         170      170              \n  Lines       21505    21528      +23     \n  Branches     1667     1668       +1     \n==========================================\n+ Hits        19264    19297      +33     \n+ Misses       1529     1522       -7     \n+ Partials      712      709       -3     \n```\n\n\n\n\n\n\nFlag\nCoverage Δ\n\n\n\n\n\n\nunittests\n89.63% <100.00%> (+0.05%)\n⬆️\n\n\n\n\nFlags with carried forward coverage won't be shown. Click here to find out more.\n\n\n\n\n\nFiles with missing lines\nCoverage Δ\n\n\n\n\n\n\n...e_interface/src/mock_components/generic_system.cpp\n81.71% <100.00%> (+0.80%)\n⬆️\n\n\n\n...rface/test/mock_components/test_generic_system.cpp\n99.77% <100.00%> (+<0.01%)\n⬆️\n\n\n\n\n... and 2 files with indirect coverage changes\n\n\n 🚀 New features to boost your workflow: \n\n\n❄️ Test Analytics: Detect flaky tests, report on failures, and find test suite problems.",
+    "Thanks for the review! RHEL fails on a missing libsdformat.so.16 and Debian on a spawner test timeout, both look unrelated to this change. test_generic_system passes including the new cases.",
+    "🟢 Approval recommended\n\n\nThe fix is narrowly scoped, aligns with the stated bug/issue, and is backed by targeted regression tests for the reported failure modes.\n\n\nPull request overview\n\nThis PR fixes mock_components::GenericSystem command-mode switching when joint names overlap (e.g., joint1 vs joint10) by changing mode-switch handling to match exact joint command-interface keys, preventing accidental substring matches and ensuring correct dynamics integration behavior when calculate_dynamics is enabled.\n\n\nChanges:\n\n\n\nUpdated GenericSystem::{prepare,perform}_command_mode_switch() to match only fully-qualified joint command interface names declared in the hardware info.\n\n\nAdded regression tests covering overlapping joint-name scenarios (joint10, prefix_joint1, controller/joint1) and validating velocity-mode switching produces the expected position integration.\n\n\n\n\nFile summaries\n\n\n\n\nFile\nDescription\n\n\n\n\n\nhardware_interface/src/mock_components/generic_system.cpp\nReplaces substring-based joint matching with exact matching against declared joint command interfaces in both mode-switch callbacks.\n\n\n\nhardware_interface/test/mock_components/test_generic_system.cpp\nAdds parameterized regression tests that fail on master and validate the corrected exact-match behavior.\n\n\n\n\n\nReview details\n\n\nFiles reviewed: 2/2 changed files\n\n\nComments generated: 0\n\n\nReview effort level: Lite\n\n\n\n\n\n💡 Add a code-review agent skill or configure MCP servers for context-aware, tailored reviews. Learn more in the docs.",
+    "Thanks!"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/commit/5f53e85bd8012869353aa4876effc4777b4c2997",
+    "https://github.com/ros-controls/ros2_control/commit/85f1d7669e3fc1f9b7d41c0707010f5a14e0a6d8",
+    "https://github.com/ros-controls/ros2_control/commit/c3b5d42f0c8af01d1a1d764bf513b499a82986f0",
+    "https://github.com/ros-controls/ros2_control/pull/3596/commits/7c05d30771a69b3e54b3e22dc4e08205101fbabb",
+    "https://github.com/ros-controls/ros2_control/pull/3596/commits/8fab4211a4b0df787fb81b54767addd07caf1152"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

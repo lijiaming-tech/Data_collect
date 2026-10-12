@@ -1,0 +1,24 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3121",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3121",
+    "fetched_at": "2026-10-11T11:20:56.706784+00:00",
+    "http_status": 200,
+    "response_sha256": "75b27b6989bf67aaf8375f449d8e81b1f27d3eb988ac886cbfa9b2be7d0857ce"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/3121",
+  "title": "Remove comment about removed StaticSingleThreadedExecutor by mini-1235 · Pull Request #3121 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\n\n\nCloses #2462\n\n\nIs this user-facing behavior change?\n\n\nNo, this is only removing comments after static single threaded executor is removed\n\n\nDid you use Generative AI?\n\n\n\nAdditional Information",
+  "discussion_rendered_text": [
+    "lgtm 👍 good eye 👁️ thanks!",
+    "Pulls: #3121\n\nGist: https://gist.githubusercontent.com/fujitatomoya/f69254174dedcaa88b792bfb9e4f115b/raw/be9e8e948d079d9647f8d0ca767021d17562b326/ros2.repos\n\nBUILD args:  --packages-up-to rclcpp\n\nTEST args:  --packages-select rclcpp\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/18779\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/bartalor/rclcpp/commit/603cab8c1ba3e865256c47815eff1935946b0332",
+    "https://github.com/ros2/rclcpp/commit/efd870ffcfe80164700f9e6dcda937a9075f9146",
+    "https://github.com/ros2/rclcpp/pull/3121/commits/5778990aacd5e5af6efe0c1326e6d6de3cd6f886"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

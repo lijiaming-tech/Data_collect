@@ -1,0 +1,30 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/ros2_documentation/pull/5821",
+    "final_url": "https://github.com/ros2/ros2_documentation/pull/5821",
+    "fetched_at": "2026-10-11T11:19:45.180980+00:00",
+    "http_status": 200,
+    "response_sha256": "cfa25a89774e16c15efff7fef5f80ec3d228285f97415ced238d58ce393ab3e0"
+  },
+  "url": "https://github.com/ros2/ros2_documentation/pull/5821",
+  "title": "rqt_graph should be started with ros2 run. by fujitatomoya · Pull Request #5821 · ros2/ros2_documentation · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\n\n\nFixes ros2/ros2#1717\n\n\nDid you use Generative AI?\n\n\n\nNo\n\n\nAdditional Information",
+  "discussion_rendered_text": [
+    "Pull Request Overview\n\n\nThis pull request updates ROS2 documentation to use the correct command for launching rqt_graph. The change corrects command references from the deprecated rqt_graph to the proper ros2 run rqt_graph rqt_graph syntax.\n\n\n\nUpdates command syntax to use the standard ROS2 run interface\n\n\nEnsures consistency across multiple tutorial files\n\n\nAddresses issue #1717 regarding proper rqt_graph invocation\n\n\n\nReviewed Changes\n\n\nCopilot reviewed 3 out of 3 changed files in this pull request and generated no comments.\n\n\n\n\n\nFile\nDescription\n\n\n\n\n\nsource/Tutorials/Intermediate/Launch/Creating-Launch-Files.rst\nUpdates rqt_graph command in launch file tutorial\n\n\n\nsource/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.rst\nUpdates rqt_graph command in topics tutorial\n\n\n\nsource/Tutorials/Advanced/Discovery-Server/Discovery-Server.rst\nUpdates rqt_graph command in discovery server tutorial\n\n\n\n\n\nTip: Customize your code reviews with copilot-instructions.md. Create the file or learn how to get started.\nYou can also share your feedback on Copilot code review for a chance to win a $100 gift card. Take the survey.",
+    "@christophebedard can you review and merge?",
+    "HTML artifacts: https://github.com/ros2/ros2_documentation/actions/runs/17003160201/artifacts/3778328765.\n\n\nTo view the resulting site:\n\n\n\nClick on the above link to download the artifacts archive\n\n\nExtract it\n\n\nOpen html-artifacts-5821/index.html in your favorite browser"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros2/ros2_documentation/commit/1cbafb38f15fd52ef4eeeed6fdabc7627c4fcb7c",
+    "https://github.com/ros2/ros2_documentation/commit/2daac2b571c7560ee0a079c235852914ad0456f8",
+    "https://github.com/ros2/ros2_documentation/commit/393cb1bc4720fe0906e34410b9fc0e31610c9bc1",
+    "https://github.com/ros2/ros2_documentation/commit/66869663fc1783d93e5d8b6486cf82d0c94be165",
+    "https://github.com/ros2/ros2_documentation/commit/81f7f84bd27f11dc1f2fc7cd963a00707b72a0fb",
+    "https://github.com/ros2/ros2_documentation/commit/887dec5ba9c36982ff47c90b621aa1b356cbcb53",
+    "https://github.com/ros2/ros2_documentation/commit/d24f6c6de71049b0b4e16dcbd52ddec23ceb4c38",
+    "https://github.com/ros2/ros2_documentation/pull/5821/commits/e5101dfd6338927e52fb5378a9a9101d8847dfd1"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

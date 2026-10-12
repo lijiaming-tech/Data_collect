@@ -1,0 +1,1296 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-navigation/navigation2",
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/issues/6226",
+    "final_url": "https://github.com/ros-navigation/navigation2/issues/6226",
+    "fetched_at": "2026-10-11T11:21:58.207006+00:00",
+    "http_status": 200,
+    "response_sha256": "d135f69dc8aad65c0eae8b32fc7b5b4987574e99ea6a9c7fed633ae542c2eb98"
+  },
+  "issue": {
+    "id": "I_kwDOCBF7SM8AAAABGiPDvA",
+    "databaseId": 4733518780,
+    "number": 6226,
+    "title": "[nav2_behavior_tree] TruncatePathLocal action uses robot base frame id only from input port and not from parameter file",
+    "url": "https://github.com/ros-navigation/navigation2/issues/6226",
+    "body": "\n## Bug report\n\nThe TruncatePathLocal action only uses the robot base frame id from the input port instead of considering the corresponding global parameter. Furthermore, the input port does not use the default convention `robot_base_frame` and is named `robot_frame` instead.\n\n\n#### Steps to reproduce issue\n\nUse a setup where the base frame id is different to `base_link`. Set the frame id correctly in the parameter file, e.g. `robot_base_frame: my_fancy_robot/base_link`. All standard plugins will use the correct frame id. However, TruncatePathLocal will fail to get the corresponding transform with the following error:\n\n```\n[bt_navigator-4] [ERROR] [1782284475.666245003] [transformPoseInTargetFrame]: No Transform available Error looking up target frame: \"base_link\" passed to lookupTransform argument source_frame does not exist. \n[bt_navigator-4] \n[bt_navigator-4] [WARN] [1782284475.666302098] [my_fancy_robot.bt_navigator_navigate_to_pose_rclcpp_node]: Failed to lookup current robot pose for TruncatePathLocal\n```\n\n#### Expected behavior\n\nThe plugin should use the robot base frame id from the parameter file when the input port is not set. Furthermore, the parameter should be named according to the convention `robot_base_frame`.\n\n\n#### Actual behavior\n\nOnly uses the value from the input port and the parameter is named `robot_frame`.\n\n#### Reproduction instructions\n\nSee above.\n\n#### Additional information\n\nI suggest the following changes.\n\n`truncate_path_local_action.hpp`:\n```diff\n--- a/truncate_path_local_action.hpp\t2026-06-24 10:07:10.783801889 +0200\n+++ b/truncate_path_local_action.hpp\t2026-06-24 11:23:58.999565137 +0200\n@@ -38,7 +38,7 @@\n  * Usage in XML:\n  * @code\n  * <TruncatePathLocal input_path=\"{path}\" output_path=\"{path_local}\"\n- *                    distance_forward=\"3.5\" distance_backward=\"2.0\" robot_frame=\"base_link\"/>\n+ *                    distance_forward=\"3.5\" distance_backward=\"2.0\" />\n  * @endcode\n  */\n class TruncatePathLocal : public BT::ActionNodeBase\n@@ -74,7 +74,7 @@\n         \"distance_backward\", 4.0,\n         \"Distance in backward direction\"),\n       BT::InputPort<std::string>(\n-        \"robot_frame\", \"base_link\",\n+        \"robot_base_frame\",\n         \"Robot base frame id\"),\n       BT::InputPort<double>(\n         \"transform_tolerance\", 0.2,\n```\n\n`truncate_path_local_action.cpp`:\n```diff\n--- a/truncate_path_local_action.cpp\t2026-06-24 10:07:24.086147245 +0200\n+++ b/truncate_path_local_action.cpp\t2026-06-24 11:26:23.200461096 +0200\n@@ -116,11 +116,13 @@\n   std::string path_frame_id, geometry_msgs::msg::PoseStamped & pose)\n {\n   if (!getInput(\"pose\", pose)) {\n-    std::string robot_frame;\n-    if (!getInput(\"robot_frame\", robot_frame)) {\n+    auto node = config().blackboard->get<nav2::LifecycleNode::SharedPtr>(\"node\");\n+    std::string robot_frame = BT::deconflictPortAndParamFrame<std::string>(\n+      node, \"robot_base_frame\", this);;\n+    if (robot_frame.empty()) {\n       RCLCPP_ERROR(\n-        config().blackboard->get<nav2::LifecycleNode::SharedPtr>(\"node\")->get_logger(),\n-        \"Neither pose nor robot_frame specified for %s\", name().c_str());\n+        node->get_logger(),\n+        \"Neither pose nor robot_base_frame specified for %s\", name().c_str());\n       return false;\n     }\n     double transform_tolerance;\n@@ -129,7 +131,7 @@\n         pose, *tf_buffer_, path_frame_id, robot_frame, transform_tolerance))\n     {\n       RCLCPP_WARN(\n-        config().blackboard->get<nav2::LifecycleNode::SharedPtr>(\"node\")->get_logger(),\n+        node->get_logger(),\n         \"Failed to lookup current robot pose for %s\", name().c_str());\n       return false;\n     }\n```\n\n\n",
+    "bodyHTML": "<h2 dir=\"auto\">Bug report</h2>\n<p dir=\"auto\">The TruncatePathLocal action only uses the robot base frame id from the input port instead of considering the corresponding global parameter. Furthermore, the input port does not use the default convention <code class=\"notranslate\">robot_base_frame</code> and is named <code class=\"notranslate\">robot_frame</code> instead.</p>\n<h4 dir=\"auto\">Steps to reproduce issue</h4>\n<p dir=\"auto\">Use a setup where the base frame id is different to <code class=\"notranslate\">base_link</code>. Set the frame id correctly in the parameter file, e.g. <code class=\"notranslate\">robot_base_frame: my_fancy_robot/base_link</code>. All standard plugins will use the correct frame id. However, TruncatePathLocal will fail to get the corresponding transform with the following error:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"[bt_navigator-4] [ERROR] [1782284475.666245003] [transformPoseInTargetFrame]: No Transform available Error looking up target frame: &quot;base_link&quot; passed to lookupTransform argument source_frame does not exist. \n[bt_navigator-4] \n[bt_navigator-4] [WARN] [1782284475.666302098] [my_fancy_robot.bt_navigator_navigate_to_pose_rclcpp_node]: Failed to lookup current robot pose for TruncatePathLocal\"><pre class=\"notranslate\"><code class=\"notranslate\">[bt_navigator-4] [ERROR] [1782284475.666245003] [transformPoseInTargetFrame]: No Transform available Error looking up target frame: \"base_link\" passed to lookupTransform argument source_frame does not exist. \n[bt_navigator-4] \n[bt_navigator-4] [WARN] [1782284475.666302098] [my_fancy_robot.bt_navigator_navigate_to_pose_rclcpp_node]: Failed to lookup current robot pose for TruncatePathLocal\n</code></pre></div>\n<h4 dir=\"auto\">Expected behavior</h4>\n<p dir=\"auto\">The plugin should use the robot base frame id from the parameter file when the input port is not set. Furthermore, the parameter should be named according to the convention <code class=\"notranslate\">robot_base_frame</code>.</p>\n<h4 dir=\"auto\">Actual behavior</h4>\n<p dir=\"auto\">Only uses the value from the input port and the parameter is named <code class=\"notranslate\">robot_frame</code>.</p>\n<h4 dir=\"auto\">Reproduction instructions</h4>\n<p dir=\"auto\">See above.</p>\n<h4 dir=\"auto\">Additional information</h4>\n<p dir=\"auto\">I suggest the following changes.</p>\n<p dir=\"auto\"><code class=\"notranslate\">truncate_path_local_action.hpp</code>:</p>\n<div class=\"highlight highlight-source-diff notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"--- a/truncate_path_local_action.hpp\t2026-06-24 10:07:10.783801889 +0200\n+++ b/truncate_path_local_action.hpp\t2026-06-24 11:23:58.999565137 +0200\n@@ -38,7 +38,7 @@\n  * Usage in XML:\n  * @code\n  * &lt;TruncatePathLocal input_path=&quot;{path}&quot; output_path=&quot;{path_local}&quot;\n- *                    distance_forward=&quot;3.5&quot; distance_backward=&quot;2.0&quot; robot_frame=&quot;base_link&quot;/&gt;\n+ *                    distance_forward=&quot;3.5&quot; distance_backward=&quot;2.0&quot; /&gt;\n  * @endcode\n  */\n class TruncatePathLocal : public BT::ActionNodeBase\n@@ -74,7 +74,7 @@\n         &quot;distance_backward&quot;, 4.0,\n         &quot;Distance in backward direction&quot;),\n       BT::InputPort&lt;std::string&gt;(\n-        &quot;robot_frame&quot;, &quot;base_link&quot;,\n+        &quot;robot_base_frame&quot;,\n         &quot;Robot base frame id&quot;),\n       BT::InputPort&lt;double&gt;(\n         &quot;transform_tolerance&quot;, 0.2,\"><pre class=\"notranslate\"><span class=\"pl-md\">--- a/truncate_path_local_action.hpp\t2026-06-24 10:07:10.783801889 +0200</span>\n<span class=\"pl-mi1\">+++ b/truncate_path_local_action.hpp\t2026-06-24 11:23:58.999565137 +0200</span>\n<span class=\"pl-mdr\">@@ -38,7 +38,7 @@</span>\n  * Usage in XML:\n  * @code\n  * &lt;TruncatePathLocal input_path=\"{path}\" output_path=\"{path_local}\"\n<span class=\"pl-md\"><span class=\"pl-md\">-</span> *                    distance_forward=\"3.5\" distance_backward=\"2.0\" robot_frame=\"base_link\"/&gt;</span>\n<span class=\"pl-mi1\"><span class=\"pl-mi1\">+</span> *                    distance_forward=\"3.5\" distance_backward=\"2.0\" /&gt;</span>\n  * @endcode\n  */\n class TruncatePathLocal : public BT::ActionNodeBase\n<span class=\"pl-mdr\">@@ -74,7 +74,7 @@</span>\n         \"distance_backward\", 4.0,\n         \"Distance in backward direction\"),\n       BT::InputPort&lt;std::string&gt;(\n<span class=\"pl-md\"><span class=\"pl-md\">-</span>        \"robot_frame\", \"base_link\",</span>\n<span class=\"pl-mi1\"><span class=\"pl-mi1\">+</span>        \"robot_base_frame\",</span>\n         \"Robot base frame id\"),\n       BT::InputPort&lt;double&gt;(\n         \"transform_tolerance\", 0.2,</pre></div>\n<p dir=\"auto\"><code class=\"notranslate\">truncate_path_local_action.cpp</code>:</p>\n<div class=\"highlight highlight-source-diff notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"--- a/truncate_path_local_action.cpp\t2026-06-24 10:07:24.086147245 +0200\n+++ b/truncate_path_local_action.cpp\t2026-06-24 11:26:23.200461096 +0200\n@@ -116,11 +116,13 @@\n   std::string path_frame_id, geometry_msgs::msg::PoseStamped &amp; pose)\n {\n   if (!getInput(&quot;pose&quot;, pose)) {\n-    std::string robot_frame;\n-    if (!getInput(&quot;robot_frame&quot;, robot_frame)) {\n+    auto node = config().blackboard-&gt;get&lt;nav2::LifecycleNode::SharedPtr&gt;(&quot;node&quot;);\n+    std::string robot_frame = BT::deconflictPortAndParamFrame&lt;std::string&gt;(\n+      node, &quot;robot_base_frame&quot;, this);;\n+    if (robot_frame.empty()) {\n       RCLCPP_ERROR(\n-        config().blackboard-&gt;get&lt;nav2::LifecycleNode::SharedPtr&gt;(&quot;node&quot;)-&gt;get_logger(),\n-        &quot;Neither pose nor robot_frame specified for %s&quot;, name().c_str());\n+        node-&gt;get_logger(),\n+        &quot;Neither pose nor robot_base_frame specified for %s&quot;, name().c_str());\n       return false;\n     }\n     double transform_tolerance;\n@@ -129,7 +131,7 @@\n         pose, *tf_buffer_, path_frame_id, robot_frame, transform_tolerance))\n     {\n       RCLCPP_WARN(\n-        config().blackboard-&gt;get&lt;nav2::LifecycleNode::SharedPtr&gt;(&quot;node&quot;)-&gt;get_logger(),\n+        node-&gt;get_logger(),\n         &quot;Failed to lookup current robot pose for %s&quot;, name().c_str());\n       return false;\n     }\"><pre class=\"notranslate\"><span class=\"pl-md\">--- a/truncate_path_local_action.cpp\t2026-06-24 10:07:24.086147245 +0200</span>\n<span class=\"pl-mi1\">+++ b/truncate_path_local_action.cpp\t2026-06-24 11:26:23.200461096 +0200</span>\n<span class=\"pl-mdr\">@@ -116,11 +116,13 @@</span>\n   std::string path_frame_id, geometry_msgs::msg::PoseStamped &amp; pose)\n {\n   if (!getInput(\"pose\", pose)) {\n<span class=\"pl-md\"><span class=\"pl-md\">-</span>    std::string robot_frame;</span>\n<span class=\"pl-md\"><span class=\"pl-md\">-</span>    if (!getInput(\"robot_frame\", robot_frame)) {</span>\n<span class=\"pl-mi1\"><span class=\"pl-mi1\">+</span>    auto node = config().blackboard-&gt;get&lt;nav2::LifecycleNode::SharedPtr&gt;(\"node\");</span>\n<span class=\"pl-mi1\"><span class=\"pl-mi1\">+</span>    std::string robot_frame = BT::deconflictPortAndParamFrame&lt;std::string&gt;(</span>\n<span class=\"pl-mi1\"><span class=\"pl-mi1\">+</span>      node, \"robot_base_frame\", this);;</span>\n<span class=\"pl-mi1\"><span class=\"pl-mi1\">+</span>    if (robot_frame.empty()) {</span>\n       RCLCPP_ERROR(\n<span class=\"pl-md\"><span class=\"pl-md\">-</span>        config().blackboard-&gt;get&lt;nav2::LifecycleNode::SharedPtr&gt;(\"node\")-&gt;get_logger(),</span>\n<span class=\"pl-md\"><span class=\"pl-md\">-</span>        \"Neither pose nor robot_frame specified for %s\", name().c_str());</span>\n<span class=\"pl-mi1\"><span class=\"pl-mi1\">+</span>        node-&gt;get_logger(),</span>\n<span class=\"pl-mi1\"><span class=\"pl-mi1\">+</span>        \"Neither pose nor robot_base_frame specified for %s\", name().c_str());</span>\n       return false;\n     }\n     double transform_tolerance;\n<span class=\"pl-mdr\">@@ -129,7 +131,7 @@</span>\n         pose, *tf_buffer_, path_frame_id, robot_frame, transform_tolerance))\n     {\n       RCLCPP_WARN(\n<span class=\"pl-md\"><span class=\"pl-md\">-</span>        config().blackboard-&gt;get&lt;nav2::LifecycleNode::SharedPtr&gt;(\"node\")-&gt;get_logger(),</span>\n<span class=\"pl-mi1\"><span class=\"pl-mi1\">+</span>        node-&gt;get_logger(),</span>\n         \"Failed to lookup current robot pose for %s\", name().c_str());\n       return false;\n     }</pre></div>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-06-24T09:32:14Z",
+    "updatedAt": "2026-07-07T21:25:51Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/15774081?u=289e40a6b0df9ee476a821b09a54d4a3dec40c32&v=4",
+      "login": "JoachimClemens",
+      "id": "MDQ6VXNlcjE1Nzc0MDgx",
+      "profileUrl": "https://github.com/JoachimClemens",
+      "name": "Joachim Clemens",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+            "fullDatabaseId": "948691578",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros-navigation/navigation2/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 4,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABHkljAQ",
+      "databaseId": 4803093249,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABGiPDvA",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE1Nzc0MDgx",
+          "login": "JoachimClemens"
+        },
+        "number": 6226,
+        "locked": false,
+        "databaseId": 4733518780
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6226#issuecomment-4803093249",
+      "createdAt": "2026-06-25T18:46:15Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "That makes sense, please submit a PR and happy to review / merge!",
+      "bodyHTML": "<p dir=\"auto\">That makes sense, please submit a PR and happy to review / merge!</p>",
+      "bodyVersion": "2ff086c89df5dd48e4f8c852bbb982f14cedfd09b62acf8c971a98ccb247810e",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABHqZv0w",
+      "databaseId": 4809191379,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABGiPDvA",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE1Nzc0MDgx",
+          "login": "JoachimClemens"
+        },
+        "number": 6226,
+        "locked": false,
+        "databaseId": 4733518780
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE1Nzc0MDgx",
+        "login": "JoachimClemens",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/15774081?u=289e40a6b0df9ee476a821b09a54d4a3dec40c32&v=4",
+        "profileUrl": "https://github.com/JoachimClemens",
+        "name": "Joachim Clemens"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6226#issuecomment-4809191379",
+      "createdAt": "2026-06-26T11:30:49Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thanks for the feedback! I'll create a PR as soon as I find the time.",
+      "bodyHTML": "<p dir=\"auto\">Thanks for the feedback! I'll create a PR as soon as I find the time.</p>",
+      "bodyVersion": "324c7795d927a5f7cf0c763282829e715c4729841dec4631c61b8386dfd519f0",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABI32c5g",
+      "databaseId": 4890402022,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABGiPDvA",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE1Nzc0MDgx",
+          "login": "JoachimClemens"
+        },
+        "number": 6226,
+        "locked": false,
+        "databaseId": 4733518780
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBk92Gw",
+        "login": "fishOmlette",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/105870875?u=2f3537083f619c9772435fa53e92ee639e53fed7&v=4",
+        "profileUrl": "https://github.com/fishOmlette",
+        "name": "Adil Farooq"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6226#issuecomment-4890402022",
+      "createdAt": "2026-07-06T07:54:46Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Hey @JoachimClemens, I came across this same issue while working on a project with a custom robot frame. Saw your issue and the suggested fix, waited a few days in case you were planning to submit the PR but figured I'd go ahead and implement it since the fix was well defined.\n\nPR #6242 followed your suggested approach with [deconflictPortAndParamFrame()](vscode-file://vscode-app/c:/Users/AdilFarooq/AppData/Local/Programs/Microsoft%20VS%20Code/4fe60c8b1c/resources/app/out/vs/code/electron-browser/workbench/workbench.html) and renamed the port to robot_base_frame. Also added a test case to catch the regression.\n\nThanks for reporting the bug and outlining the solution it made the fix straightforward.",
+      "bodyHTML": "<p dir=\"auto\">Hey <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/JoachimClemens/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/JoachimClemens\">@JoachimClemens</a>, I came across this same issue while working on a project with a custom robot frame. Saw your issue and the suggested fix, waited a few days in case you were planning to submit the PR but figured I'd go ahead and implement it since the fix was well defined.</p>\n<p dir=\"auto\">PR <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4817046005\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6242\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6242/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/6242\">#6242</a> followed your suggested approach with deconflictPortAndParamFrame() and renamed the port to robot_base_frame. Also added a test case to catch the regression.</p>\n<p dir=\"auto\">Thanks for reporting the bug and outlining the solution it made the fix straightforward.</p>",
+      "bodyVersion": "65fc180252de28279468dedb359b30a9d6297231979aa015e329b4387ef01917",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+                "login": "SteveMacenski",
+                "name": "Steve Macenski",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABJCAuGA",
+      "databaseId": 4901056024,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABGiPDvA",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE1Nzc0MDgx",
+          "login": "JoachimClemens"
+        },
+        "number": 6226,
+        "locked": false,
+        "databaseId": 4733518780
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE1Nzc0MDgx",
+        "login": "JoachimClemens",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/15774081?u=289e40a6b0df9ee476a821b09a54d4a3dec40c32&v=4",
+        "profileUrl": "https://github.com/JoachimClemens",
+        "name": "Joachim Clemens"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6226#issuecomment-4901056024",
+      "createdAt": "2026-07-07T07:03:18Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Great, thanks for creating the PR!",
+      "bodyHTML": "<p dir=\"auto\">Great, thanks for creating the PR!</p>",
+      "bodyVersion": "bc2264822dd06861742c0909795d7920114b26b6e0f6631dbb2b567a46e575d0",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABHkljAQ",
+      "databaseId": 4803093249,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABGiPDvA",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE1Nzc0MDgx",
+          "login": "JoachimClemens"
+        },
+        "number": 6226,
+        "locked": false,
+        "databaseId": 4733518780
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6226#issuecomment-4803093249",
+      "createdAt": "2026-06-25T18:46:15Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "That makes sense, please submit a PR and happy to review / merge!",
+      "bodyHTML": "<p dir=\"auto\">That makes sense, please submit a PR and happy to review / merge!</p>",
+      "bodyVersion": "2ff086c89df5dd48e4f8c852bbb982f14cedfd09b62acf8c971a98ccb247810e",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM8AAAABGiPDvM8AAAAGVi0PHA",
+      "databaseId": 27215597340,
+      "createdAt": "2026-06-25T18:46:20Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABHqZv0w",
+      "databaseId": 4809191379,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABGiPDvA",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE1Nzc0MDgx",
+          "login": "JoachimClemens"
+        },
+        "number": 6226,
+        "locked": false,
+        "databaseId": 4733518780
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE1Nzc0MDgx",
+        "login": "JoachimClemens",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/15774081?u=289e40a6b0df9ee476a821b09a54d4a3dec40c32&v=4",
+        "profileUrl": "https://github.com/JoachimClemens",
+        "name": "Joachim Clemens"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6226#issuecomment-4809191379",
+      "createdAt": "2026-06-26T11:30:49Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thanks for the feedback! I'll create a PR as soon as I find the time.",
+      "bodyHTML": "<p dir=\"auto\">Thanks for the feedback! I'll create a PR as soon as I find the time.</p>",
+      "bodyVersion": "324c7795d927a5f7cf0c763282829e715c4729841dec4631c61b8386dfd519f0",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABI32c5g",
+      "databaseId": 4890402022,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABGiPDvA",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE1Nzc0MDgx",
+          "login": "JoachimClemens"
+        },
+        "number": 6226,
+        "locked": false,
+        "databaseId": 4733518780
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBk92Gw",
+        "login": "fishOmlette",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/105870875?u=2f3537083f619c9772435fa53e92ee639e53fed7&v=4",
+        "profileUrl": "https://github.com/fishOmlette",
+        "name": "Adil Farooq"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6226#issuecomment-4890402022",
+      "createdAt": "2026-07-06T07:54:46Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Hey @JoachimClemens, I came across this same issue while working on a project with a custom robot frame. Saw your issue and the suggested fix, waited a few days in case you were planning to submit the PR but figured I'd go ahead and implement it since the fix was well defined.\n\nPR #6242 followed your suggested approach with [deconflictPortAndParamFrame()](vscode-file://vscode-app/c:/Users/AdilFarooq/AppData/Local/Programs/Microsoft%20VS%20Code/4fe60c8b1c/resources/app/out/vs/code/electron-browser/workbench/workbench.html) and renamed the port to robot_base_frame. Also added a test case to catch the regression.\n\nThanks for reporting the bug and outlining the solution it made the fix straightforward.",
+      "bodyHTML": "<p dir=\"auto\">Hey <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/JoachimClemens/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/JoachimClemens\">@JoachimClemens</a>, I came across this same issue while working on a project with a custom robot frame. Saw your issue and the suggested fix, waited a few days in case you were planning to submit the PR but figured I'd go ahead and implement it since the fix was well defined.</p>\n<p dir=\"auto\">PR <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4817046005\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6242\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6242/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/6242\">#6242</a> followed your suggested approach with deconflictPortAndParamFrame() and renamed the port to robot_base_frame. Also added a test case to catch the regression.</p>\n<p dir=\"auto\">Thanks for reporting the bug and outlining the solution it made the fix straightforward.</p>",
+      "bodyVersion": "65fc180252de28279468dedb359b30a9d6297231979aa015e329b4387ef01917",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+                "login": "SteveMacenski",
+                "name": "Steve Macenski",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ConnectedEvent",
+      "id": "COE_lADOCBF7SM8AAAABGiPDvM8AAAAGbhv05A",
+      "databaseId": 27617129700,
+      "createdAt": "2026-07-06T15:34:59Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "subject": {
+        "id": "PR_kwDOCBF7SM7uPKdJ",
+        "__typename": "PullRequest",
+        "title": "Fix TruncatePathLocal to use robot_base_frame from parameter file",
+        "url": "https://github.com/ros-navigation/navigation2/pull/6242",
+        "number": 6242,
+        "state": "MERGED",
+        "isDraft": false,
+        "isInMergeQueue": false,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      }
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABJCAuGA",
+      "databaseId": 4901056024,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABGiPDvA",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE1Nzc0MDgx",
+          "login": "JoachimClemens"
+        },
+        "number": 6226,
+        "locked": false,
+        "databaseId": 4733518780
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE1Nzc0MDgx",
+        "login": "JoachimClemens",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/15774081?u=289e40a6b0df9ee476a821b09a54d4a3dec40c32&v=4",
+        "profileUrl": "https://github.com/JoachimClemens",
+        "name": "Joachim Clemens"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6226#issuecomment-4901056024",
+      "createdAt": "2026-07-07T07:03:18Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Great, thanks for creating the PR!",
+      "bodyHTML": "<p dir=\"auto\">Great, thanks for creating the PR!</p>",
+      "bodyVersion": "bc2264822dd06861742c0909795d7920114b26b6e0f6631dbb2b567a46e575d0",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOCBF7SM8AAAABGiPDvM8AAAAGcj4Idw",
+      "databaseId": 27686471799,
+      "createdAt": "2026-07-07T21:25:51Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOCBF7SM7uPKdJ",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-navigation/navigation2/pull/6242",
+        "number": 6242,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnwAaqNgAqjQ4MDMwOTMyNDk=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnz55FxgBqzI3Njg2NDcxNzk5"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnwAaqNgAqjQ4MDMwOTMyNDk=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnz55FxgBqzI3Njg2NDcxNzk5"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOCBF7SM7uPKdJ",
+      "url": "https://github.com/ros-navigation/navigation2/pull/6242",
+      "number": 6242,
+      "title": "Fix TruncatePathLocal to use robot_base_frame from parameter file",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-07-06T07:45:15Z",
+      "databaseId": 3996952393,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6242",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6242.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6242.changes.json"
+    }
+  ]
+}

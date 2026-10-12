@@ -1,0 +1,25 @@
+{
+  "source": {
+    "url": "https://github.com/ros/urdfdom/pull/222/files",
+    "final_url": "https://github.com/ros/urdfdom/pull/222/files",
+    "fetched_at": "2026-10-11T11:23:32.886869+00:00",
+    "http_status": 200,
+    "response_sha256": "6801d318e29921908ac9519b9096025f6d02ad3ee5e434fe8fda1d92a3e4956a"
+  },
+  "files": {
+    "CMakeLists.txt": [
+      "@@ -48,7 +48,7 @@ list(APPEND CMAKE_MODULE_PATH \"${CMAKE_CURRENT_SOURCE_DIR}/cmake\")",
+      " find_package(tinyxml2_vendor QUIET)",
+      " find_package(TinyXML2 REQUIRED)",
+      " ",
+      "-find_package(urdfdom_headers 1.0 REQUIRED)",
+      "+find_package(urdfdom_headers REQUIRED)",
+      " find_package(console_bridge_vendor QUIET) # Provides console_bridge 0.4.0 on platforms without it.",
+      " find_package(console_bridge REQUIRED)",
+      " "
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

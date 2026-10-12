@@ -1,0 +1,1353 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3102",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3102",
+    "fetched_at": "2026-10-11T11:24:15.553812+00:00",
+    "http_status": 200,
+    "response_sha256": "ca28cb5d262373b3678292c0a8ae0eb6c8fe0f80c98c7c7d4efab51af3a2ac20"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc7xfhQ0",
+    "databaseId": 4051571764,
+    "number": 3102,
+    "title": "multi_ctrls_test_type_in_param fails with runtime_error",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3102",
+    "body": "\n```\n    [ RUN      ] TestLoadController.multi_ctrls_test_type_in_param\nError: ROR] [1773115437.426833932] [test_controller_manager]: Caught exception of type : St13runtime_error while updating controller 'ctrl_2': Internal lifecycle ID does not match the expected lifecycle ID. Expected: 3, Actual: 14\nError: ROR] [1773115437.426925794] [test_controller_manager]: Deactivating controllers : [ ctrl_2 ] as their update resulted in an error!\n    [WARN] [1773115447.450408653] [unspawner_ctrl_1]: Failed getting a result from calling /test_controller_manager/switch_controller in 10.0. (Attempt 1 of 3.)\n    [WARN] [1773115457.451964307] [unspawner_ctrl_1]: Failed getting a result from calling /test_controller_manager/switch_controller in 10.0. (Attempt 2 of 3.)\n    [WARN] [1773115467.453519242] [unspawner_ctrl_1]: Failed getting a result from calling /test_controller_manager/switch_controller in 10.0. (Attempt 3 of 3.)\n    Traceback (most recent call last):\n      File \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/controller_manager/lib/controller_manager/unspawner\", line 33, in <module>\n        sys.exit(load_entry_point('controller-manager==5.12.0', 'console_scripts', 'unspawner')())\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n      File \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/controller_manager/lib/python3.12/site-packages/controller_manager/unspawner.py\", line 60, in main\n        ret = switch_controllers(\n              ^^^^^^^^^^^^^^^^^^^\n      File \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/controller_manager/lib/python3.12/site-packages/controller_manager/controller_manager_services.py\", line 303, in switch_controllers\n        return service_caller(\n               ^^^^^^^^^^^^^^^\n      File \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/controller_manager/lib/python3.12/site-packages/controller_manager/controller_manager_services.py\", line 164, in service_caller\n        raise RuntimeError(\n    RuntimeError: Could not successfully call service /test_controller_manager/switch_controller after 3 attempts.\n    /home/runner/work/ros2_control/ros2_control/.work/target_ws/src/ros2_control/controller_manager/test/test_spawner_unspawner.cpp:282: Failure\n    Expected equality of these values:\n      call_unspawner(\"ctrl_1 ctrl_2 ctrl_3 -c test_controller_manager\")\n        Which is: 256\n      0\n  >>>\nbuild/controller_manager/test_results/controller_manager/test_spawner_unspawner.gtest.xml: 1 test, 1 error, 0 failures, 0 skipped\n- controller_manager test_spawner_unspawner.gtest.missing_result\n  <<< error message\n    The test did not generate a result file.\n  >>>\n```\n\nKilted/testing https://github.com/ros-controls/ros2_control/issues/3101\n",
+    "bodyHTML": "<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"    [ RUN      ] TestLoadController.multi_ctrls_test_type_in_param\nError: ROR] [1773115437.426833932] [test_controller_manager]: Caught exception of type : St13runtime_error while updating controller 'ctrl_2': Internal lifecycle ID does not match the expected lifecycle ID. Expected: 3, Actual: 14\nError: ROR] [1773115437.426925794] [test_controller_manager]: Deactivating controllers : [ ctrl_2 ] as their update resulted in an error!\n    [WARN] [1773115447.450408653] [unspawner_ctrl_1]: Failed getting a result from calling /test_controller_manager/switch_controller in 10.0. (Attempt 1 of 3.)\n    [WARN] [1773115457.451964307] [unspawner_ctrl_1]: Failed getting a result from calling /test_controller_manager/switch_controller in 10.0. (Attempt 2 of 3.)\n    [WARN] [1773115467.453519242] [unspawner_ctrl_1]: Failed getting a result from calling /test_controller_manager/switch_controller in 10.0. (Attempt 3 of 3.)\n    Traceback (most recent call last):\n      File &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/controller_manager/lib/controller_manager/unspawner&quot;, line 33, in &lt;module&gt;\n        sys.exit(load_entry_point('controller-manager==5.12.0', 'console_scripts', 'unspawner')())\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n      File &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/controller_manager/lib/python3.12/site-packages/controller_manager/unspawner.py&quot;, line 60, in main\n        ret = switch_controllers(\n              ^^^^^^^^^^^^^^^^^^^\n      File &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/controller_manager/lib/python3.12/site-packages/controller_manager/controller_manager_services.py&quot;, line 303, in switch_controllers\n        return service_caller(\n               ^^^^^^^^^^^^^^^\n      File &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/controller_manager/lib/python3.12/site-packages/controller_manager/controller_manager_services.py&quot;, line 164, in service_caller\n        raise RuntimeError(\n    RuntimeError: Could not successfully call service /test_controller_manager/switch_controller after 3 attempts.\n    /home/runner/work/ros2_control/ros2_control/.work/target_ws/src/ros2_control/controller_manager/test/test_spawner_unspawner.cpp:282: Failure\n    Expected equality of these values:\n      call_unspawner(&quot;ctrl_1 ctrl_2 ctrl_3 -c test_controller_manager&quot;)\n        Which is: 256\n      0\n  &gt;&gt;&gt;\nbuild/controller_manager/test_results/controller_manager/test_spawner_unspawner.gtest.xml: 1 test, 1 error, 0 failures, 0 skipped\n- controller_manager test_spawner_unspawner.gtest.missing_result\n  &lt;&lt;&lt; error message\n    The test did not generate a result file.\n  &gt;&gt;&gt;\"><pre class=\"notranslate\"><code class=\"notranslate\">    [ RUN      ] TestLoadController.multi_ctrls_test_type_in_param\nError: ROR] [1773115437.426833932] [test_controller_manager]: Caught exception of type : St13runtime_error while updating controller 'ctrl_2': Internal lifecycle ID does not match the expected lifecycle ID. Expected: 3, Actual: 14\nError: ROR] [1773115437.426925794] [test_controller_manager]: Deactivating controllers : [ ctrl_2 ] as their update resulted in an error!\n    [WARN] [1773115447.450408653] [unspawner_ctrl_1]: Failed getting a result from calling /test_controller_manager/switch_controller in 10.0. (Attempt 1 of 3.)\n    [WARN] [1773115457.451964307] [unspawner_ctrl_1]: Failed getting a result from calling /test_controller_manager/switch_controller in 10.0. (Attempt 2 of 3.)\n    [WARN] [1773115467.453519242] [unspawner_ctrl_1]: Failed getting a result from calling /test_controller_manager/switch_controller in 10.0. (Attempt 3 of 3.)\n    Traceback (most recent call last):\n      File \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/controller_manager/lib/controller_manager/unspawner\", line 33, in &lt;module&gt;\n        sys.exit(load_entry_point('controller-manager==5.12.0', 'console_scripts', 'unspawner')())\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n      File \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/controller_manager/lib/python3.12/site-packages/controller_manager/unspawner.py\", line 60, in main\n        ret = switch_controllers(\n              ^^^^^^^^^^^^^^^^^^^\n      File \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/controller_manager/lib/python3.12/site-packages/controller_manager/controller_manager_services.py\", line 303, in switch_controllers\n        return service_caller(\n               ^^^^^^^^^^^^^^^\n      File \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/controller_manager/lib/python3.12/site-packages/controller_manager/controller_manager_services.py\", line 164, in service_caller\n        raise RuntimeError(\n    RuntimeError: Could not successfully call service /test_controller_manager/switch_controller after 3 attempts.\n    /home/runner/work/ros2_control/ros2_control/.work/target_ws/src/ros2_control/controller_manager/test/test_spawner_unspawner.cpp:282: Failure\n    Expected equality of these values:\n      call_unspawner(\"ctrl_1 ctrl_2 ctrl_3 -c test_controller_manager\")\n        Which is: 256\n      0\n  &gt;&gt;&gt;\nbuild/controller_manager/test_results/controller_manager/test_spawner_unspawner.gtest.xml: 1 test, 1 error, 0 failures, 0 skipped\n- controller_manager test_spawner_unspawner.gtest.missing_result\n  &lt;&lt;&lt; error message\n    The test did not generate a result file.\n  &gt;&gt;&gt;\n</code></pre></div>\n<p dir=\"auto\">Kilted/testing <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4049261221\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3101\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3101/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3101\">#3101</a></p>",
+    "state": "CLOSED",
+    "stateReason": "NOT_PLANNED",
+    "createdAt": "2026-03-10T12:46:33Z",
+    "updatedAt": "2026-09-11T12:15:17Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+      "login": "christophfroehlich",
+      "id": "MDQ6VXNlcjMzNjcyNDQ=",
+      "profileUrl": "https://github.com/christophfroehlich",
+      "name": "Christoph Fröhlich",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+            "fullDatabaseId": "8380273440",
+            "color": "ededed",
+            "name": "stale",
+            "nameHTML": "stale",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/stale",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 4,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7wTCub",
+      "databaseId": 4031523739,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7xfhQ0",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3102,
+        "locked": false,
+        "databaseId": 4051571764
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3102#issuecomment-4031523739",
+      "createdAt": "2026-03-10T13:49:56Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "A different test, but failure starts with the same runtime_error (kilted/RHEL)\nhttps://github.com/ros-controls/ros2_control_ci/actions/runs/22888753220/job/66407258162\n```\nError: s2_control_node-2] [ERROR] [1773122476.510635625] [controller_manager]: Caught exception of type : St13runtime_error while updating controller 'ctrl_with_parameters_and_type': Internal lifecycle ID does not match the expected lifecycle ID. Expected: 3, Actual: 14\nError: s2_control_node-2] [ERROR] [1773122476.510716766] [controller_manager]: Deactivating controllers : [ ctrl_with_parameters_and_type ] as their update resulted in an error!\n    [ros2_control_node-2] [INFO] [1773122476.510730722] [resource_manager]: 'deactivate' hardware 'TestSystemComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510790683] [resource_manager]: Successful 'deactivate' of hardware 'TestSystemComponent'\n    [ros2_control_node-2] terminate called after throwing an instance of 'std::runtime_error'\n    [ros2_control_node-2] [INFO] [1773122476.510800632] [resource_manager]: 'shutdown' hardware 'TestSystemComponent' \n    [ros2_control_node-2]   what():  Can not get command interface configuration until the controller is configured.\n    [ros2_control_node-2] [INFO] [1773122476.510808406] [resource_manager]: Successful 'shutdown' of hardware 'TestSystemComponent'\n    [ros2_control_node-2] Stack trace (most recent call last) in thread 29585:\n    [ros2_control_node-2] [INFO] [1773122476.510951132] [resource_manager]: 'deactivate' hardware 'TestSensorComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510965799] [resource_manager]: Successful 'deactivate' of hardware 'TestSensorComponent'\n    [ros2_control_node-2] [INFO] [1773122476.510972251] [resource_manager]: 'shutdown' hardware 'TestSensorComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510979454] [resource_manager]: Successful 'shutdown' of hardware 'TestSensorComponent'\n    [ros2_control_node-2] [INFO] [1773122476.511042562] [controller_manager]: Shutting down the controller manager.\n    [robot_state_publisher-1] [INFO] [1773122476.511049712] [rclcpp]: signal_handler(SIGINT/SIGTERM)\nError: s2_control_node-2] [ERROR] [1773122476.511586291] [controller_manager.pal_statistics]: Exception in publisher thread: context cannot be slept with because it's invalid!. Aborting!\nError: s2_control_node-2] [ERROR] [1773122476.511652204] [controller_manager.pal_statistics]: Exception in publisher thread: context cannot be slept with because it's invalid!. Aborting!\n    [ros2_control_node-2] #22   Object \"/usr/lib64/ld-linux-x86-64.so.2\", at 0xffffffffffffffff, in \n    [ros2_control_node-2] #21   Object \"/usr/lib64/libc.so.6\", at 0x7f4c04b4d5f3, in __clone\n    [ros2_control_node-2] #20   Object \"/usr/lib64/libc.so.6\", at 0x7f4c04ac92e9, in start_thread\n    [ros2_control_node-2] #19   Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04e1aae3, in execute_native_thread_routine\n    [ros2_control_node-2] #18   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d523, in std::thread::_State_impl<std::thread::_Invoker<std::tuple<main::{lambda()#1}> > >::_M_run()\n    [ros2_control_node-2] #17   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d53f, in std::thread::_Invoker<std::tuple<main::{lambda()#1}> >::operator()()\n    [ros2_control_node-2] #16   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d56b, in void std::thread::_Invoker<std::tuple<main::{lambda()#1}> >::_M_invoke<0ul>(std::_Index_tuple<0ul>)\n    [ros2_control_node-2] #15   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d5be, in std::__invoke_result<main::{lambda()#1}>::type std::__invoke<main::{lambda()#1}>(main::{lambda()#1}&&)\n    [ros2_control_node-2] #14   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d5fb, in void std::__invoke_impl<void, main::{lambda()#1}>(std::__invoke_other, main::{lambda()#1}&&)\n    [ros2_control_node-2] #13   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41b449, in main::{lambda()#1}::operator()() const\n    [ros2_control_node-2] #12   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c05923512, in controller_manager::ControllerManager::update(rclcpp::Time const&, rclcpp::Duration const&)\n    [ros2_control_node-2] #11   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c0592695c, in controller_manager::ControllerManager::perform_hardware_command_mode_change(std::vector<controller_manager::ControllerSpec, std::allocator<controller_manager::ControllerSpec> > const&, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)\n    [ros2_control_node-2] #10   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c058f3305, in (anonymous namespace)::get_controller_list_command_interfaces(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::vector<controller_manager::ControllerSpec, std::allocator<controller_manager::ControllerSpec> > const&, std::unique_ptr<hardware_interface::ResourceManager, std::default_delete<hardware_interface::ResourceManager> > const&, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >&)\n    [ros2_control_node-2] #9    Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c058f192d, in (anonymous namespace)::extract_command_interfaces_for_controller(controller_manager::ControllerSpec const&, std::unique_ptr<hardware_interface::ResourceManager, std::default_delete<hardware_interface::ResourceManager> > const&, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >&)\n    [ros2_control_node-2] #8    Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c058f0a38, in (anonymous namespace)::get_command_interfaces_names(std::shared_ptr<controller_interface::ControllerInterfaceBase>, std::unique_ptr<hardware_interface::ResourceManager, std::default_delete<hardware_interface::ResourceManager> > const&)\n    [ros2_control_node-2] #7    Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libtest_controller.so\", at 0x7f4bf83fafb2, in test_controller::TestController::command_interface_configuration() const\n    [ros2_control_node-2] #6    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04dec808, in __cxa_throw\n    [ros2_control_node-2] #5    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04dec5a6, in std::terminate()\n    [ros2_control_node-2] #4    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04dec53b, in __cxxabiv1::__terminate(void (*)())\n    [ros2_control_node-2] #3    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04de0b20, in __gnu_cxx::__verbose_terminate_handler() [clone .cold]\n    [ros2_control_node-2] #2    Object \"/usr/lib64/libc.so.6\", at 0x7f4c04a67872, in abort\n    [ros2_control_node-2] #1    Object \"/usr/lib64/libc.so.6\", at 0x7f4c04a7db85, in raise\n    [ros2_control_node-2] #0    Object \"/usr/lib64/libc.so.6\", at 0x7f4c04acb02c, in __pthread_kill_implementation\n    [ros2_control_node-2] Aborted (Signal sent by tkill() 29543 0)\n    [INFO] [robot_state_publisher-1]: process has finished cleanly [pid 29526]\nError: ROR] [ros2_control_node-2]: process has died [pid 29543, exit code -6, cmd '/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node --ros-args --params-file /__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/test/test_ros2_control_node.yaml'].\n\n```",
+      "bodyHTML": "<p dir=\"auto\">A different test, but failure starts with the same runtime_error (kilted/RHEL)<br>\n<a href=\"https://github.com/ros-controls/ros2_control_ci/actions/runs/22888753220/job/66407258162\">https://github.com/ros-controls/ros2_control_ci/actions/runs/22888753220/job/66407258162</a></p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"Error: s2_control_node-2] [ERROR] [1773122476.510635625] [controller_manager]: Caught exception of type : St13runtime_error while updating controller 'ctrl_with_parameters_and_type': Internal lifecycle ID does not match the expected lifecycle ID. Expected: 3, Actual: 14\nError: s2_control_node-2] [ERROR] [1773122476.510716766] [controller_manager]: Deactivating controllers : [ ctrl_with_parameters_and_type ] as their update resulted in an error!\n    [ros2_control_node-2] [INFO] [1773122476.510730722] [resource_manager]: 'deactivate' hardware 'TestSystemComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510790683] [resource_manager]: Successful 'deactivate' of hardware 'TestSystemComponent'\n    [ros2_control_node-2] terminate called after throwing an instance of 'std::runtime_error'\n    [ros2_control_node-2] [INFO] [1773122476.510800632] [resource_manager]: 'shutdown' hardware 'TestSystemComponent' \n    [ros2_control_node-2]   what():  Can not get command interface configuration until the controller is configured.\n    [ros2_control_node-2] [INFO] [1773122476.510808406] [resource_manager]: Successful 'shutdown' of hardware 'TestSystemComponent'\n    [ros2_control_node-2] Stack trace (most recent call last) in thread 29585:\n    [ros2_control_node-2] [INFO] [1773122476.510951132] [resource_manager]: 'deactivate' hardware 'TestSensorComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510965799] [resource_manager]: Successful 'deactivate' of hardware 'TestSensorComponent'\n    [ros2_control_node-2] [INFO] [1773122476.510972251] [resource_manager]: 'shutdown' hardware 'TestSensorComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510979454] [resource_manager]: Successful 'shutdown' of hardware 'TestSensorComponent'\n    [ros2_control_node-2] [INFO] [1773122476.511042562] [controller_manager]: Shutting down the controller manager.\n    [robot_state_publisher-1] [INFO] [1773122476.511049712] [rclcpp]: signal_handler(SIGINT/SIGTERM)\nError: s2_control_node-2] [ERROR] [1773122476.511586291] [controller_manager.pal_statistics]: Exception in publisher thread: context cannot be slept with because it's invalid!. Aborting!\nError: s2_control_node-2] [ERROR] [1773122476.511652204] [controller_manager.pal_statistics]: Exception in publisher thread: context cannot be slept with because it's invalid!. Aborting!\n    [ros2_control_node-2] #22   Object &quot;/usr/lib64/ld-linux-x86-64.so.2&quot;, at 0xffffffffffffffff, in \n    [ros2_control_node-2] #21   Object &quot;/usr/lib64/libc.so.6&quot;, at 0x7f4c04b4d5f3, in __clone\n    [ros2_control_node-2] #20   Object &quot;/usr/lib64/libc.so.6&quot;, at 0x7f4c04ac92e9, in start_thread\n    [ros2_control_node-2] #19   Object &quot;/usr/lib64/libstdc++.so.6.0.29&quot;, at 0x7f4c04e1aae3, in execute_native_thread_routine\n    [ros2_control_node-2] #18   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x41d523, in std::thread::_State_impl&lt;std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt; &gt;::_M_run()\n    [ros2_control_node-2] #17   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x41d53f, in std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt;::operator()()\n    [ros2_control_node-2] #16   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x41d56b, in void std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt;::_M_invoke&lt;0ul&gt;(std::_Index_tuple&lt;0ul&gt;)\n    [ros2_control_node-2] #15   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x41d5be, in std::__invoke_result&lt;main::{lambda()#1}&gt;::type std::__invoke&lt;main::{lambda()#1}&gt;(main::{lambda()#1}&amp;&amp;)\n    [ros2_control_node-2] #14   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x41d5fb, in void std::__invoke_impl&lt;void, main::{lambda()#1}&gt;(std::__invoke_other, main::{lambda()#1}&amp;&amp;)\n    [ros2_control_node-2] #13   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x41b449, in main::{lambda()#1}::operator()() const\n    [ros2_control_node-2] #12   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7f4c05923512, in controller_manager::ControllerManager::update(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n    [ros2_control_node-2] #11   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7f4c0592695c, in controller_manager::ControllerManager::perform_hardware_command_mode_change(std::vector&lt;controller_manager::ControllerSpec, std::allocator&lt;controller_manager::ControllerSpec&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)\n    [ros2_control_node-2] #10   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7f4c058f3305, in (anonymous namespace)::get_controller_list_command_interfaces(std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::vector&lt;controller_manager::ControllerSpec, std::allocator&lt;controller_manager::ControllerSpec&gt; &gt; const&amp;, std::unique_ptr&lt;hardware_interface::ResourceManager, std::default_delete&lt;hardware_interface::ResourceManager&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt;&amp;)\n    [ros2_control_node-2] #9    Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7f4c058f192d, in (anonymous namespace)::extract_command_interfaces_for_controller(controller_manager::ControllerSpec const&amp;, std::unique_ptr&lt;hardware_interface::ResourceManager, std::default_delete&lt;hardware_interface::ResourceManager&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt;&amp;)\n    [ros2_control_node-2] #8    Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7f4c058f0a38, in (anonymous namespace)::get_command_interfaces_names(std::shared_ptr&lt;controller_interface::ControllerInterfaceBase&gt;, std::unique_ptr&lt;hardware_interface::ResourceManager, std::default_delete&lt;hardware_interface::ResourceManager&gt; &gt; const&amp;)\n    [ros2_control_node-2] #7    Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libtest_controller.so&quot;, at 0x7f4bf83fafb2, in test_controller::TestController::command_interface_configuration() const\n    [ros2_control_node-2] #6    Object &quot;/usr/lib64/libstdc++.so.6.0.29&quot;, at 0x7f4c04dec808, in __cxa_throw\n    [ros2_control_node-2] #5    Object &quot;/usr/lib64/libstdc++.so.6.0.29&quot;, at 0x7f4c04dec5a6, in std::terminate()\n    [ros2_control_node-2] #4    Object &quot;/usr/lib64/libstdc++.so.6.0.29&quot;, at 0x7f4c04dec53b, in __cxxabiv1::__terminate(void (*)())\n    [ros2_control_node-2] #3    Object &quot;/usr/lib64/libstdc++.so.6.0.29&quot;, at 0x7f4c04de0b20, in __gnu_cxx::__verbose_terminate_handler() [clone .cold]\n    [ros2_control_node-2] #2    Object &quot;/usr/lib64/libc.so.6&quot;, at 0x7f4c04a67872, in abort\n    [ros2_control_node-2] #1    Object &quot;/usr/lib64/libc.so.6&quot;, at 0x7f4c04a7db85, in raise\n    [ros2_control_node-2] #0    Object &quot;/usr/lib64/libc.so.6&quot;, at 0x7f4c04acb02c, in __pthread_kill_implementation\n    [ros2_control_node-2] Aborted (Signal sent by tkill() 29543 0)\n    [INFO] [robot_state_publisher-1]: process has finished cleanly [pid 29526]\nError: ROR] [ros2_control_node-2]: process has died [pid 29543, exit code -6, cmd '/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node --ros-args --params-file /__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/test/test_ros2_control_node.yaml'].\n\"><pre class=\"notranslate\"><code class=\"notranslate\">Error: s2_control_node-2] [ERROR] [1773122476.510635625] [controller_manager]: Caught exception of type : St13runtime_error while updating controller 'ctrl_with_parameters_and_type': Internal lifecycle ID does not match the expected lifecycle ID. Expected: 3, Actual: 14\nError: s2_control_node-2] [ERROR] [1773122476.510716766] [controller_manager]: Deactivating controllers : [ ctrl_with_parameters_and_type ] as their update resulted in an error!\n    [ros2_control_node-2] [INFO] [1773122476.510730722] [resource_manager]: 'deactivate' hardware 'TestSystemComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510790683] [resource_manager]: Successful 'deactivate' of hardware 'TestSystemComponent'\n    [ros2_control_node-2] terminate called after throwing an instance of 'std::runtime_error'\n    [ros2_control_node-2] [INFO] [1773122476.510800632] [resource_manager]: 'shutdown' hardware 'TestSystemComponent' \n    [ros2_control_node-2]   what():  Can not get command interface configuration until the controller is configured.\n    [ros2_control_node-2] [INFO] [1773122476.510808406] [resource_manager]: Successful 'shutdown' of hardware 'TestSystemComponent'\n    [ros2_control_node-2] Stack trace (most recent call last) in thread 29585:\n    [ros2_control_node-2] [INFO] [1773122476.510951132] [resource_manager]: 'deactivate' hardware 'TestSensorComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510965799] [resource_manager]: Successful 'deactivate' of hardware 'TestSensorComponent'\n    [ros2_control_node-2] [INFO] [1773122476.510972251] [resource_manager]: 'shutdown' hardware 'TestSensorComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510979454] [resource_manager]: Successful 'shutdown' of hardware 'TestSensorComponent'\n    [ros2_control_node-2] [INFO] [1773122476.511042562] [controller_manager]: Shutting down the controller manager.\n    [robot_state_publisher-1] [INFO] [1773122476.511049712] [rclcpp]: signal_handler(SIGINT/SIGTERM)\nError: s2_control_node-2] [ERROR] [1773122476.511586291] [controller_manager.pal_statistics]: Exception in publisher thread: context cannot be slept with because it's invalid!. Aborting!\nError: s2_control_node-2] [ERROR] [1773122476.511652204] [controller_manager.pal_statistics]: Exception in publisher thread: context cannot be slept with because it's invalid!. Aborting!\n    [ros2_control_node-2] #22   Object \"/usr/lib64/ld-linux-x86-64.so.2\", at 0xffffffffffffffff, in \n    [ros2_control_node-2] #21   Object \"/usr/lib64/libc.so.6\", at 0x7f4c04b4d5f3, in __clone\n    [ros2_control_node-2] #20   Object \"/usr/lib64/libc.so.6\", at 0x7f4c04ac92e9, in start_thread\n    [ros2_control_node-2] #19   Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04e1aae3, in execute_native_thread_routine\n    [ros2_control_node-2] #18   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d523, in std::thread::_State_impl&lt;std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt; &gt;::_M_run()\n    [ros2_control_node-2] #17   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d53f, in std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt;::operator()()\n    [ros2_control_node-2] #16   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d56b, in void std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt;::_M_invoke&lt;0ul&gt;(std::_Index_tuple&lt;0ul&gt;)\n    [ros2_control_node-2] #15   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d5be, in std::__invoke_result&lt;main::{lambda()#1}&gt;::type std::__invoke&lt;main::{lambda()#1}&gt;(main::{lambda()#1}&amp;&amp;)\n    [ros2_control_node-2] #14   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d5fb, in void std::__invoke_impl&lt;void, main::{lambda()#1}&gt;(std::__invoke_other, main::{lambda()#1}&amp;&amp;)\n    [ros2_control_node-2] #13   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41b449, in main::{lambda()#1}::operator()() const\n    [ros2_control_node-2] #12   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c05923512, in controller_manager::ControllerManager::update(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n    [ros2_control_node-2] #11   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c0592695c, in controller_manager::ControllerManager::perform_hardware_command_mode_change(std::vector&lt;controller_manager::ControllerSpec, std::allocator&lt;controller_manager::ControllerSpec&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)\n    [ros2_control_node-2] #10   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c058f3305, in (anonymous namespace)::get_controller_list_command_interfaces(std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::vector&lt;controller_manager::ControllerSpec, std::allocator&lt;controller_manager::ControllerSpec&gt; &gt; const&amp;, std::unique_ptr&lt;hardware_interface::ResourceManager, std::default_delete&lt;hardware_interface::ResourceManager&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt;&amp;)\n    [ros2_control_node-2] #9    Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c058f192d, in (anonymous namespace)::extract_command_interfaces_for_controller(controller_manager::ControllerSpec const&amp;, std::unique_ptr&lt;hardware_interface::ResourceManager, std::default_delete&lt;hardware_interface::ResourceManager&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt;&amp;)\n    [ros2_control_node-2] #8    Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c058f0a38, in (anonymous namespace)::get_command_interfaces_names(std::shared_ptr&lt;controller_interface::ControllerInterfaceBase&gt;, std::unique_ptr&lt;hardware_interface::ResourceManager, std::default_delete&lt;hardware_interface::ResourceManager&gt; &gt; const&amp;)\n    [ros2_control_node-2] #7    Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libtest_controller.so\", at 0x7f4bf83fafb2, in test_controller::TestController::command_interface_configuration() const\n    [ros2_control_node-2] #6    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04dec808, in __cxa_throw\n    [ros2_control_node-2] #5    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04dec5a6, in std::terminate()\n    [ros2_control_node-2] #4    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04dec53b, in __cxxabiv1::__terminate(void (*)())\n    [ros2_control_node-2] #3    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04de0b20, in __gnu_cxx::__verbose_terminate_handler() [clone .cold]\n    [ros2_control_node-2] #2    Object \"/usr/lib64/libc.so.6\", at 0x7f4c04a67872, in abort\n    [ros2_control_node-2] #1    Object \"/usr/lib64/libc.so.6\", at 0x7f4c04a7db85, in raise\n    [ros2_control_node-2] #0    Object \"/usr/lib64/libc.so.6\", at 0x7f4c04acb02c, in __pthread_kill_implementation\n    [ros2_control_node-2] Aborted (Signal sent by tkill() 29543 0)\n    [INFO] [robot_state_publisher-1]: process has finished cleanly [pid 29526]\nError: ROR] [ros2_control_node-2]: process has died [pid 29543, exit code -6, cmd '/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node --ros-args --params-file /__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/test/test_ros2_control_node.yaml'].\n\n</code></pre></div>",
+      "bodyVersion": "7a22b40bd06e41ce5dbf1c0d37d28fc5db3698ba0ade0ca42c6e15b040972595",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABF3VHcA",
+      "databaseId": 4688529264,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7xfhQ0",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3102,
+        "locked": false,
+        "databaseId": 4051571764
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3102#issuecomment-4688529264",
+      "createdAt": "2026-06-12T07:23:08Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "unfortunately not :/\nhttps://github.com/ros-controls/ros2_control_ci/issues/836",
+      "bodyHTML": "<p dir=\"auto\">unfortunately not :/<br>\n<a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4647158910\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control_ci/issues/836\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control_ci/issues/836/hovercard\" href=\"https://github.com/ros-controls/ros2_control_ci/issues/836\">ros-controls/ros2_control_ci#836</a></p>",
+      "bodyVersion": "81d441b54971ab84b1b9070da9c4c0ddd0134c8b14ae4f0109a6074f99e6a259",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABL3xwvQ",
+      "databaseId": 5091651773,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7xfhQ0",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3102,
+        "locked": false,
+        "databaseId": 4051571764
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3102#issuecomment-5091651773",
+      "createdAt": "2026-07-27T13:04:43Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABT9R4bw",
+      "databaseId": 5634291823,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7xfhQ0",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3102,
+        "locked": false,
+        "databaseId": 4051571764
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3102#issuecomment-5634291823",
+      "createdAt": "2026-09-11T12:15:17Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue was closed because it has been stalled for 45 days with no activity.",
+      "bodyHTML": "<p dir=\"auto\">This issue was closed because it has been stalled for 45 days with no activity.</p>",
+      "bodyVersion": "2ebf833f90f878eff9039e2c6cb637ca3b662f79161cd2a020a36f04c154f883",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "AssignedEvent",
+      "id": "AE_lADOBiM5Uc7xfhQ0zwAAAAV0mFp3",
+      "databaseId": 23430978167,
+      "createdAt": "2026-03-10T12:46:33Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "assignee": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "resourcePath": "/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7xfhQ0zwAAAAV0mFy1",
+      "databaseId": 23430978741,
+      "createdAt": "2026-03-10T12:46:34Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7wTCub",
+      "databaseId": 4031523739,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7xfhQ0",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3102,
+        "locked": false,
+        "databaseId": 4051571764
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3102#issuecomment-4031523739",
+      "createdAt": "2026-03-10T13:49:56Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "A different test, but failure starts with the same runtime_error (kilted/RHEL)\nhttps://github.com/ros-controls/ros2_control_ci/actions/runs/22888753220/job/66407258162\n```\nError: s2_control_node-2] [ERROR] [1773122476.510635625] [controller_manager]: Caught exception of type : St13runtime_error while updating controller 'ctrl_with_parameters_and_type': Internal lifecycle ID does not match the expected lifecycle ID. Expected: 3, Actual: 14\nError: s2_control_node-2] [ERROR] [1773122476.510716766] [controller_manager]: Deactivating controllers : [ ctrl_with_parameters_and_type ] as their update resulted in an error!\n    [ros2_control_node-2] [INFO] [1773122476.510730722] [resource_manager]: 'deactivate' hardware 'TestSystemComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510790683] [resource_manager]: Successful 'deactivate' of hardware 'TestSystemComponent'\n    [ros2_control_node-2] terminate called after throwing an instance of 'std::runtime_error'\n    [ros2_control_node-2] [INFO] [1773122476.510800632] [resource_manager]: 'shutdown' hardware 'TestSystemComponent' \n    [ros2_control_node-2]   what():  Can not get command interface configuration until the controller is configured.\n    [ros2_control_node-2] [INFO] [1773122476.510808406] [resource_manager]: Successful 'shutdown' of hardware 'TestSystemComponent'\n    [ros2_control_node-2] Stack trace (most recent call last) in thread 29585:\n    [ros2_control_node-2] [INFO] [1773122476.510951132] [resource_manager]: 'deactivate' hardware 'TestSensorComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510965799] [resource_manager]: Successful 'deactivate' of hardware 'TestSensorComponent'\n    [ros2_control_node-2] [INFO] [1773122476.510972251] [resource_manager]: 'shutdown' hardware 'TestSensorComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510979454] [resource_manager]: Successful 'shutdown' of hardware 'TestSensorComponent'\n    [ros2_control_node-2] [INFO] [1773122476.511042562] [controller_manager]: Shutting down the controller manager.\n    [robot_state_publisher-1] [INFO] [1773122476.511049712] [rclcpp]: signal_handler(SIGINT/SIGTERM)\nError: s2_control_node-2] [ERROR] [1773122476.511586291] [controller_manager.pal_statistics]: Exception in publisher thread: context cannot be slept with because it's invalid!. Aborting!\nError: s2_control_node-2] [ERROR] [1773122476.511652204] [controller_manager.pal_statistics]: Exception in publisher thread: context cannot be slept with because it's invalid!. Aborting!\n    [ros2_control_node-2] #22   Object \"/usr/lib64/ld-linux-x86-64.so.2\", at 0xffffffffffffffff, in \n    [ros2_control_node-2] #21   Object \"/usr/lib64/libc.so.6\", at 0x7f4c04b4d5f3, in __clone\n    [ros2_control_node-2] #20   Object \"/usr/lib64/libc.so.6\", at 0x7f4c04ac92e9, in start_thread\n    [ros2_control_node-2] #19   Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04e1aae3, in execute_native_thread_routine\n    [ros2_control_node-2] #18   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d523, in std::thread::_State_impl<std::thread::_Invoker<std::tuple<main::{lambda()#1}> > >::_M_run()\n    [ros2_control_node-2] #17   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d53f, in std::thread::_Invoker<std::tuple<main::{lambda()#1}> >::operator()()\n    [ros2_control_node-2] #16   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d56b, in void std::thread::_Invoker<std::tuple<main::{lambda()#1}> >::_M_invoke<0ul>(std::_Index_tuple<0ul>)\n    [ros2_control_node-2] #15   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d5be, in std::__invoke_result<main::{lambda()#1}>::type std::__invoke<main::{lambda()#1}>(main::{lambda()#1}&&)\n    [ros2_control_node-2] #14   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d5fb, in void std::__invoke_impl<void, main::{lambda()#1}>(std::__invoke_other, main::{lambda()#1}&&)\n    [ros2_control_node-2] #13   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41b449, in main::{lambda()#1}::operator()() const\n    [ros2_control_node-2] #12   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c05923512, in controller_manager::ControllerManager::update(rclcpp::Time const&, rclcpp::Duration const&)\n    [ros2_control_node-2] #11   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c0592695c, in controller_manager::ControllerManager::perform_hardware_command_mode_change(std::vector<controller_manager::ControllerSpec, std::allocator<controller_manager::ControllerSpec> > const&, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)\n    [ros2_control_node-2] #10   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c058f3305, in (anonymous namespace)::get_controller_list_command_interfaces(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::vector<controller_manager::ControllerSpec, std::allocator<controller_manager::ControllerSpec> > const&, std::unique_ptr<hardware_interface::ResourceManager, std::default_delete<hardware_interface::ResourceManager> > const&, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >&)\n    [ros2_control_node-2] #9    Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c058f192d, in (anonymous namespace)::extract_command_interfaces_for_controller(controller_manager::ControllerSpec const&, std::unique_ptr<hardware_interface::ResourceManager, std::default_delete<hardware_interface::ResourceManager> > const&, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >&)\n    [ros2_control_node-2] #8    Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c058f0a38, in (anonymous namespace)::get_command_interfaces_names(std::shared_ptr<controller_interface::ControllerInterfaceBase>, std::unique_ptr<hardware_interface::ResourceManager, std::default_delete<hardware_interface::ResourceManager> > const&)\n    [ros2_control_node-2] #7    Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libtest_controller.so\", at 0x7f4bf83fafb2, in test_controller::TestController::command_interface_configuration() const\n    [ros2_control_node-2] #6    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04dec808, in __cxa_throw\n    [ros2_control_node-2] #5    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04dec5a6, in std::terminate()\n    [ros2_control_node-2] #4    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04dec53b, in __cxxabiv1::__terminate(void (*)())\n    [ros2_control_node-2] #3    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04de0b20, in __gnu_cxx::__verbose_terminate_handler() [clone .cold]\n    [ros2_control_node-2] #2    Object \"/usr/lib64/libc.so.6\", at 0x7f4c04a67872, in abort\n    [ros2_control_node-2] #1    Object \"/usr/lib64/libc.so.6\", at 0x7f4c04a7db85, in raise\n    [ros2_control_node-2] #0    Object \"/usr/lib64/libc.so.6\", at 0x7f4c04acb02c, in __pthread_kill_implementation\n    [ros2_control_node-2] Aborted (Signal sent by tkill() 29543 0)\n    [INFO] [robot_state_publisher-1]: process has finished cleanly [pid 29526]\nError: ROR] [ros2_control_node-2]: process has died [pid 29543, exit code -6, cmd '/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node --ros-args --params-file /__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/test/test_ros2_control_node.yaml'].\n\n```",
+      "bodyHTML": "<p dir=\"auto\">A different test, but failure starts with the same runtime_error (kilted/RHEL)<br>\n<a href=\"https://github.com/ros-controls/ros2_control_ci/actions/runs/22888753220/job/66407258162\">https://github.com/ros-controls/ros2_control_ci/actions/runs/22888753220/job/66407258162</a></p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"Error: s2_control_node-2] [ERROR] [1773122476.510635625] [controller_manager]: Caught exception of type : St13runtime_error while updating controller 'ctrl_with_parameters_and_type': Internal lifecycle ID does not match the expected lifecycle ID. Expected: 3, Actual: 14\nError: s2_control_node-2] [ERROR] [1773122476.510716766] [controller_manager]: Deactivating controllers : [ ctrl_with_parameters_and_type ] as their update resulted in an error!\n    [ros2_control_node-2] [INFO] [1773122476.510730722] [resource_manager]: 'deactivate' hardware 'TestSystemComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510790683] [resource_manager]: Successful 'deactivate' of hardware 'TestSystemComponent'\n    [ros2_control_node-2] terminate called after throwing an instance of 'std::runtime_error'\n    [ros2_control_node-2] [INFO] [1773122476.510800632] [resource_manager]: 'shutdown' hardware 'TestSystemComponent' \n    [ros2_control_node-2]   what():  Can not get command interface configuration until the controller is configured.\n    [ros2_control_node-2] [INFO] [1773122476.510808406] [resource_manager]: Successful 'shutdown' of hardware 'TestSystemComponent'\n    [ros2_control_node-2] Stack trace (most recent call last) in thread 29585:\n    [ros2_control_node-2] [INFO] [1773122476.510951132] [resource_manager]: 'deactivate' hardware 'TestSensorComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510965799] [resource_manager]: Successful 'deactivate' of hardware 'TestSensorComponent'\n    [ros2_control_node-2] [INFO] [1773122476.510972251] [resource_manager]: 'shutdown' hardware 'TestSensorComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510979454] [resource_manager]: Successful 'shutdown' of hardware 'TestSensorComponent'\n    [ros2_control_node-2] [INFO] [1773122476.511042562] [controller_manager]: Shutting down the controller manager.\n    [robot_state_publisher-1] [INFO] [1773122476.511049712] [rclcpp]: signal_handler(SIGINT/SIGTERM)\nError: s2_control_node-2] [ERROR] [1773122476.511586291] [controller_manager.pal_statistics]: Exception in publisher thread: context cannot be slept with because it's invalid!. Aborting!\nError: s2_control_node-2] [ERROR] [1773122476.511652204] [controller_manager.pal_statistics]: Exception in publisher thread: context cannot be slept with because it's invalid!. Aborting!\n    [ros2_control_node-2] #22   Object &quot;/usr/lib64/ld-linux-x86-64.so.2&quot;, at 0xffffffffffffffff, in \n    [ros2_control_node-2] #21   Object &quot;/usr/lib64/libc.so.6&quot;, at 0x7f4c04b4d5f3, in __clone\n    [ros2_control_node-2] #20   Object &quot;/usr/lib64/libc.so.6&quot;, at 0x7f4c04ac92e9, in start_thread\n    [ros2_control_node-2] #19   Object &quot;/usr/lib64/libstdc++.so.6.0.29&quot;, at 0x7f4c04e1aae3, in execute_native_thread_routine\n    [ros2_control_node-2] #18   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x41d523, in std::thread::_State_impl&lt;std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt; &gt;::_M_run()\n    [ros2_control_node-2] #17   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x41d53f, in std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt;::operator()()\n    [ros2_control_node-2] #16   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x41d56b, in void std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt;::_M_invoke&lt;0ul&gt;(std::_Index_tuple&lt;0ul&gt;)\n    [ros2_control_node-2] #15   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x41d5be, in std::__invoke_result&lt;main::{lambda()#1}&gt;::type std::__invoke&lt;main::{lambda()#1}&gt;(main::{lambda()#1}&amp;&amp;)\n    [ros2_control_node-2] #14   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x41d5fb, in void std::__invoke_impl&lt;void, main::{lambda()#1}&gt;(std::__invoke_other, main::{lambda()#1}&amp;&amp;)\n    [ros2_control_node-2] #13   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node&quot;, at 0x41b449, in main::{lambda()#1}::operator()() const\n    [ros2_control_node-2] #12   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7f4c05923512, in controller_manager::ControllerManager::update(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n    [ros2_control_node-2] #11   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7f4c0592695c, in controller_manager::ControllerManager::perform_hardware_command_mode_change(std::vector&lt;controller_manager::ControllerSpec, std::allocator&lt;controller_manager::ControllerSpec&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)\n    [ros2_control_node-2] #10   Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7f4c058f3305, in (anonymous namespace)::get_controller_list_command_interfaces(std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::vector&lt;controller_manager::ControllerSpec, std::allocator&lt;controller_manager::ControllerSpec&gt; &gt; const&amp;, std::unique_ptr&lt;hardware_interface::ResourceManager, std::default_delete&lt;hardware_interface::ResourceManager&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt;&amp;)\n    [ros2_control_node-2] #9    Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7f4c058f192d, in (anonymous namespace)::extract_command_interfaces_for_controller(controller_manager::ControllerSpec const&amp;, std::unique_ptr&lt;hardware_interface::ResourceManager, std::default_delete&lt;hardware_interface::ResourceManager&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt;&amp;)\n    [ros2_control_node-2] #8    Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7f4c058f0a38, in (anonymous namespace)::get_command_interfaces_names(std::shared_ptr&lt;controller_interface::ControllerInterfaceBase&gt;, std::unique_ptr&lt;hardware_interface::ResourceManager, std::default_delete&lt;hardware_interface::ResourceManager&gt; &gt; const&amp;)\n    [ros2_control_node-2] #7    Object &quot;/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libtest_controller.so&quot;, at 0x7f4bf83fafb2, in test_controller::TestController::command_interface_configuration() const\n    [ros2_control_node-2] #6    Object &quot;/usr/lib64/libstdc++.so.6.0.29&quot;, at 0x7f4c04dec808, in __cxa_throw\n    [ros2_control_node-2] #5    Object &quot;/usr/lib64/libstdc++.so.6.0.29&quot;, at 0x7f4c04dec5a6, in std::terminate()\n    [ros2_control_node-2] #4    Object &quot;/usr/lib64/libstdc++.so.6.0.29&quot;, at 0x7f4c04dec53b, in __cxxabiv1::__terminate(void (*)())\n    [ros2_control_node-2] #3    Object &quot;/usr/lib64/libstdc++.so.6.0.29&quot;, at 0x7f4c04de0b20, in __gnu_cxx::__verbose_terminate_handler() [clone .cold]\n    [ros2_control_node-2] #2    Object &quot;/usr/lib64/libc.so.6&quot;, at 0x7f4c04a67872, in abort\n    [ros2_control_node-2] #1    Object &quot;/usr/lib64/libc.so.6&quot;, at 0x7f4c04a7db85, in raise\n    [ros2_control_node-2] #0    Object &quot;/usr/lib64/libc.so.6&quot;, at 0x7f4c04acb02c, in __pthread_kill_implementation\n    [ros2_control_node-2] Aborted (Signal sent by tkill() 29543 0)\n    [INFO] [robot_state_publisher-1]: process has finished cleanly [pid 29526]\nError: ROR] [ros2_control_node-2]: process has died [pid 29543, exit code -6, cmd '/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node --ros-args --params-file /__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/test/test_ros2_control_node.yaml'].\n\"><pre class=\"notranslate\"><code class=\"notranslate\">Error: s2_control_node-2] [ERROR] [1773122476.510635625] [controller_manager]: Caught exception of type : St13runtime_error while updating controller 'ctrl_with_parameters_and_type': Internal lifecycle ID does not match the expected lifecycle ID. Expected: 3, Actual: 14\nError: s2_control_node-2] [ERROR] [1773122476.510716766] [controller_manager]: Deactivating controllers : [ ctrl_with_parameters_and_type ] as their update resulted in an error!\n    [ros2_control_node-2] [INFO] [1773122476.510730722] [resource_manager]: 'deactivate' hardware 'TestSystemComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510790683] [resource_manager]: Successful 'deactivate' of hardware 'TestSystemComponent'\n    [ros2_control_node-2] terminate called after throwing an instance of 'std::runtime_error'\n    [ros2_control_node-2] [INFO] [1773122476.510800632] [resource_manager]: 'shutdown' hardware 'TestSystemComponent' \n    [ros2_control_node-2]   what():  Can not get command interface configuration until the controller is configured.\n    [ros2_control_node-2] [INFO] [1773122476.510808406] [resource_manager]: Successful 'shutdown' of hardware 'TestSystemComponent'\n    [ros2_control_node-2] Stack trace (most recent call last) in thread 29585:\n    [ros2_control_node-2] [INFO] [1773122476.510951132] [resource_manager]: 'deactivate' hardware 'TestSensorComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510965799] [resource_manager]: Successful 'deactivate' of hardware 'TestSensorComponent'\n    [ros2_control_node-2] [INFO] [1773122476.510972251] [resource_manager]: 'shutdown' hardware 'TestSensorComponent' \n    [ros2_control_node-2] [INFO] [1773122476.510979454] [resource_manager]: Successful 'shutdown' of hardware 'TestSensorComponent'\n    [ros2_control_node-2] [INFO] [1773122476.511042562] [controller_manager]: Shutting down the controller manager.\n    [robot_state_publisher-1] [INFO] [1773122476.511049712] [rclcpp]: signal_handler(SIGINT/SIGTERM)\nError: s2_control_node-2] [ERROR] [1773122476.511586291] [controller_manager.pal_statistics]: Exception in publisher thread: context cannot be slept with because it's invalid!. Aborting!\nError: s2_control_node-2] [ERROR] [1773122476.511652204] [controller_manager.pal_statistics]: Exception in publisher thread: context cannot be slept with because it's invalid!. Aborting!\n    [ros2_control_node-2] #22   Object \"/usr/lib64/ld-linux-x86-64.so.2\", at 0xffffffffffffffff, in \n    [ros2_control_node-2] #21   Object \"/usr/lib64/libc.so.6\", at 0x7f4c04b4d5f3, in __clone\n    [ros2_control_node-2] #20   Object \"/usr/lib64/libc.so.6\", at 0x7f4c04ac92e9, in start_thread\n    [ros2_control_node-2] #19   Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04e1aae3, in execute_native_thread_routine\n    [ros2_control_node-2] #18   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d523, in std::thread::_State_impl&lt;std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt; &gt;::_M_run()\n    [ros2_control_node-2] #17   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d53f, in std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt;::operator()()\n    [ros2_control_node-2] #16   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d56b, in void std::thread::_Invoker&lt;std::tuple&lt;main::{lambda()#1}&gt; &gt;::_M_invoke&lt;0ul&gt;(std::_Index_tuple&lt;0ul&gt;)\n    [ros2_control_node-2] #15   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d5be, in std::__invoke_result&lt;main::{lambda()#1}&gt;::type std::__invoke&lt;main::{lambda()#1}&gt;(main::{lambda()#1}&amp;&amp;)\n    [ros2_control_node-2] #14   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41d5fb, in void std::__invoke_impl&lt;void, main::{lambda()#1}&gt;(std::__invoke_other, main::{lambda()#1}&amp;&amp;)\n    [ros2_control_node-2] #13   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node\", at 0x41b449, in main::{lambda()#1}::operator()() const\n    [ros2_control_node-2] #12   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c05923512, in controller_manager::ControllerManager::update(rclcpp::Time const&amp;, rclcpp::Duration const&amp;)\n    [ros2_control_node-2] #11   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c0592695c, in controller_manager::ControllerManager::perform_hardware_command_mode_change(std::vector&lt;controller_manager::ControllerSpec, std::allocator&lt;controller_manager::ControllerSpec&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; const&amp;)\n    [ros2_control_node-2] #10   Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c058f3305, in (anonymous namespace)::get_controller_list_command_interfaces(std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::vector&lt;controller_manager::ControllerSpec, std::allocator&lt;controller_manager::ControllerSpec&gt; &gt; const&amp;, std::unique_ptr&lt;hardware_interface::ResourceManager, std::default_delete&lt;hardware_interface::ResourceManager&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt;&amp;)\n    [ros2_control_node-2] #9    Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c058f192d, in (anonymous namespace)::extract_command_interfaces_for_controller(controller_manager::ControllerSpec const&amp;, std::unique_ptr&lt;hardware_interface::ResourceManager, std::default_delete&lt;hardware_interface::ResourceManager&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt;&amp;)\n    [ros2_control_node-2] #8    Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libcontroller_manager.so\", at 0x7f4c058f0a38, in (anonymous namespace)::get_command_interfaces_names(std::shared_ptr&lt;controller_interface::ControllerInterfaceBase&gt;, std::unique_ptr&lt;hardware_interface::ResourceManager, std::default_delete&lt;hardware_interface::ResourceManager&gt; &gt; const&amp;)\n    [ros2_control_node-2] #7    Object \"/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/libtest_controller.so\", at 0x7f4bf83fafb2, in test_controller::TestController::command_interface_configuration() const\n    [ros2_control_node-2] #6    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04dec808, in __cxa_throw\n    [ros2_control_node-2] #5    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04dec5a6, in std::terminate()\n    [ros2_control_node-2] #4    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04dec53b, in __cxxabiv1::__terminate(void (*)())\n    [ros2_control_node-2] #3    Object \"/usr/lib64/libstdc++.so.6.0.29\", at 0x7f4c04de0b20, in __gnu_cxx::__verbose_terminate_handler() [clone .cold]\n    [ros2_control_node-2] #2    Object \"/usr/lib64/libc.so.6\", at 0x7f4c04a67872, in abort\n    [ros2_control_node-2] #1    Object \"/usr/lib64/libc.so.6\", at 0x7f4c04a7db85, in raise\n    [ros2_control_node-2] #0    Object \"/usr/lib64/libc.so.6\", at 0x7f4c04acb02c, in __pthread_kill_implementation\n    [ros2_control_node-2] Aborted (Signal sent by tkill() 29543 0)\n    [INFO] [robot_state_publisher-1]: process has finished cleanly [pid 29526]\nError: ROR] [ros2_control_node-2]: process has died [pid 29543, exit code -6, cmd '/__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/lib/controller_manager/ros2_control_node --ros-args --params-file /__w/ros2_control_ci/ros2_control_ci/target_ws/install/controller_manager/test/test_ros2_control_node.yaml'].\n\n</code></pre></div>",
+      "bodyVersion": "7a22b40bd06e41ce5dbf1c0d37d28fc5db3698ba0ade0ca42c6e15b040972595",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc7xfhQ0zwAAAAV3nBKk",
+      "databaseId": 23481553572,
+      "createdAt": "2026-03-11T19:02:56Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOBiM5Uc7Jg4GA",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-controls/ros2_control/pull/3109",
+        "number": 3109,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+          "name": "ros2_control",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+            "login": "ros-controls"
+          }
+        }
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABF3VHcA",
+      "databaseId": 4688529264,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7xfhQ0",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3102,
+        "locked": false,
+        "databaseId": 4051571764
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3102#issuecomment-4688529264",
+      "createdAt": "2026-06-12T07:23:08Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "unfortunately not :/\nhttps://github.com/ros-controls/ros2_control_ci/issues/836",
+      "bodyHTML": "<p dir=\"auto\">unfortunately not :/<br>\n<a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4647158910\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control_ci/issues/836\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control_ci/issues/836/hovercard\" href=\"https://github.com/ros-controls/ros2_control_ci/issues/836\">ros-controls/ros2_control_ci#836</a></p>",
+      "bodyVersion": "81d441b54971ab84b1b9070da9c4c0ddd0134c8b14ae4f0109a6074f99e6a259",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ReopenedEvent",
+      "id": "REE_lADOBiM5Uc7xfhQ0zwAAAAY1PC-c",
+      "databaseId": 26662940572,
+      "createdAt": "2026-06-12T07:23:08Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      }
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABL3xwvQ",
+      "databaseId": 5091651773,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7xfhQ0",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3102,
+        "locked": false,
+        "databaseId": 4051571764
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3102#issuecomment-5091651773",
+      "createdAt": "2026-07-27T13:04:43Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7xfhQ0zwAAAAalC3At",
+      "databaseId": 28538794029,
+      "createdAt": "2026-07-27T13:04:43Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+        "archivedAt": null,
+        "nameHTML": "stale",
+        "name": "stale",
+        "color": "ededed",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc7xfhQ0zwAAAAc1_02X",
+      "databaseId": 30970695063,
+      "createdAt": "2026-09-11T12:15:17Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "stateReason": "NOT_PLANNED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABT9R4bw",
+      "databaseId": 5634291823,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7xfhQ0",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3102,
+        "locked": false,
+        "databaseId": 4051571764
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3102#issuecomment-5634291823",
+      "createdAt": "2026-09-11T12:15:17Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue was closed because it has been stalled for 45 days with no activity.",
+      "bodyHTML": "<p dir=\"auto\">This issue was closed because it has been stalled for 45 days with no activity.</p>",
+      "bodyVersion": "2ebf833f90f878eff9039e2c6cb637ca3b662f79161cd2a020a36f04c154f883",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnNfI5CgBqzIzNDMwOTc4MTY3",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABoJBkwAgBqzMwOTcwNjk1MDYz"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnNfI5CgBqzIzNDMwOTc4MTY3",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABoJBkwAgBqzMwOTcwNjk1MDYz"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOBiM5Uc7Jg4GA",
+      "url": "https://github.com/ros-controls/ros2_control/pull/3109",
+      "number": 3109,
+      "title": "Fix the conditioning in extract_command_interfaces_for_controller method",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-03-10T21:33:20Z",
+      "databaseId": 3380838784,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3109",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3109.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3109.changes.json"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3454",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3454",
+    "fetched_at": "2026-10-11T11:24:27.173304+00:00",
+    "http_status": 200,
+    "response_sha256": "0495554965db8aaff3c88e321eca12b23553e0deb961080b8481a80993d35be4"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3454",
+  "title": "Guard controller update rate against modulo-by-zero UB by Functionhx · Pull Request #3454 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Fixes #3220.",
+  "discussion_rendered_text": [
+    "Codecov Report\n\n\n✅ All modified and coverable lines are covered by tests.\n\n✅ Project coverage is 89.52%. Comparing base (427cb38) to head (03d6b30).\n\n⚠️ Report is 1 commits behind head on master.\n\nAdditional details and impacted files\n\n\n```\n@@           Coverage Diff           @@\n##           master    #3454   +/-   ##\n=======================================\n  Coverage   89.51%   89.52%           \n=======================================\n  Files         164      164           \n  Lines       21269    21269           \n  Branches     1656     1656           \n=======================================\n+ Hits        19040    19042    +2     \n+ Misses       1529     1528    -1     \n+ Partials      700      699    -1     \n```\n\n\n\n\n\n\nFlag\nCoverage Δ\n\n\n\n\n\n\nunittests\n89.52% <ø> (+<0.01%)\n⬆️\n\n\n\n\nFlags with carried forward coverage won't be shown. Click here to find out more.\n\nsee 2 files with indirect coverage changes\n\n\n 🚀 New features to boost your workflow: \n\n\n❄️ Test Analytics: Detect flaky tests, report on failures, and find test suite problems.",
+    "Nice! thanks",
+    "Suggested change\n      \n\n    \n\n    \n\n      \n          \n\n            \n                if (update_rate_ == 0u)\n          \n          \n\n            \n                {\n          \n          \n\n            \n                  RCLCPP_ERROR(get_logger(), \"Update rate cannot be zero. Using default value of 100 Hz.\");\n          \n          \n\n            \n                  update_rate_ = 100u;\n          \n          \n\n            \n                }\n          \n      \n    \n\n    \n\n\n  \n\n\n\nAs you added a validator already to generate parameter library, this is not needed",
+    "Why remove the casting?",
+    "I changed this to pass the sanitized update_rate_ to the ResourceManager instead of the raw parameter value. With the fallback logic, params_->update_rate could still be 0 while update_rate_ had been corrected to 100, so passing the raw value would make the ControllerManager and ResourceManager use different rates.\n\n\nHowever, since you prefer rejecting zero through the generated parameter validator and removing the fallback, this change is no longer necessary. I’ll restore the original cast and use the strict gt<>: 0 validation.",
+    "Got it"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/commit/948a85bed68479c96908e5dfbaa82347f240719b",
+    "https://github.com/ros-controls/ros2_control/commit/c45e7bfb3d94723ef76e4d30ebe9686b128e4d86",
+    "https://github.com/ros-controls/ros2_control/commit/e4ebcc352d9aeb69969308428b051bdd3105b88f",
+    "https://github.com/ros-controls/ros2_control/commit/ef9b73919fc0b7fb655d6e181f412a8418d0dd2d",
+    "https://github.com/ros-controls/ros2_control/pull/3454/commits/03d6b30b89be012b46ebbb9eaac92038f2484faa",
+    "https://github.com/ros-controls/ros2_control/pull/3454/commits/6b17fc83d1c90e89ac089d3cdaa3274969b1cb5f",
+    "https://github.com/ros-controls/ros2_control/pull/3454/commits/92a1419ef24405cf42ca6e71dfe20dfb9dea2866",
+    "https://github.com/ros-controls/ros2_control/pull/3454/commits/d379899cfbc48796bad413e3be4cf8ebb9db2063"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

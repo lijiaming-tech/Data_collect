@@ -1,0 +1,41 @@
+{
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/pull/5326",
+    "final_url": "https://github.com/ros-navigation/navigation2/pull/5326",
+    "fetched_at": "2026-10-11T11:23:19.438770+00:00",
+    "http_status": 200,
+    "response_sha256": "e3a56c993e59ddcca9b88b46cb1c4e1fe80bae262b0de5b59893f1e379d913fd"
+  },
+  "url": "https://github.com/ros-navigation/navigation2/pull/5326",
+  "title": "fix: correct ThroughActionResult type alias in would_a_planner_recovery_help_condition by SteveMacenski · Pull Request #5326 · ros-navigation/navigation2 · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Fixes a typo in the ThroughActionResult type alias that was causing the Would_a_planner_recovery_help_condition BT node to not work properly for ComputePathThroughPoses actions.\n\n\nThe issue was on line 32 where ThroughActionResult was incorrectly defined as Action::Result instead of ThroughAction::Result.\n\n\nFixes #5324\n\n\nGenerated with Claude Code",
+  "discussion_rendered_text": [
+    "Codecov Report\n\n\nAll modified and coverable lines are covered by tests ✅\n\n\nsee 6 files with indirect coverage changes\n\n 🚀 New features to boost your workflow: \n\n\n❄️ Test Analytics: Detect flaky tests, report on failures, and find test suite problems."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/EnjoyRobotics/navigation2/commit/1345c226bcf73068127b2e2efaee91a637d2f351",
+    "https://github.com/EnjoyRobotics/navigation2/commit/1468484f1f96fe0f06241819315c8371311d0f52",
+    "https://github.com/EnjoyRobotics/navigation2/commit/40a04517724acc58a2356a66e2d7f723e1c103d5",
+    "https://github.com/EnjoyRobotics/navigation2/commit/48e7e0660cfd1bb8cc6af6b3a4e6f869cc6fa80d",
+    "https://github.com/EnjoyRobotics/navigation2/commit/69a60dfacb80eb3c9c2ad47f7590eea8defbdaec",
+    "https://github.com/EnjoyRobotics/navigation2/commit/7f561b0f5aa8e229334bb6f71a7a99e6074efd75",
+    "https://github.com/EnjoyRobotics/navigation2/commit/829e6836709992b27855c1e7bca0fe29882e21b1",
+    "https://github.com/EnjoyRobotics/navigation2/commit/88bb1fac28b472f5de272fa8601256da1f8c7b41",
+    "https://github.com/EnjoyRobotics/navigation2/commit/c0bf67e7b9f5505201725bc196d36cad3839c0b8",
+    "https://github.com/EnjoyRobotics/navigation2/commit/c0ea47d549f9e3467f8e23ffd036571f01087fe0",
+    "https://github.com/EnjoyRobotics/navigation2/commit/c9b349acc6f784c790c3e0566addc21dcbbea541",
+    "https://github.com/EnjoyRobotics/navigation2/commit/e690ef0ed2391bbf93e856fe4a6cd4b371335318",
+    "https://github.com/EnjoyRobotics/navigation2/commit/ff4b1682e8470461748a65b37d0b7741045768b5",
+    "https://github.com/EnjoyRobotics/navigation2/commit/ff80727eee2bc5f3d70a849d9e821bc01eee757c",
+    "https://github.com/SakshayMahna/navigation2/commit/7d4afe7bc72abf4ef9c1fcb019b266dd942c1724",
+    "https://github.com/ros-navigation/navigation2/commit/347afe8df8ff7e7604e545eea195339db73233d4",
+    "https://github.com/ros-navigation/navigation2/commit/44cd706f8f7a4fcc480f15132e81b3e6c9539c06",
+    "https://github.com/ros-navigation/navigation2/commit/47f84de34d58891685bb2722bd02ea77cbf7739d",
+    "https://github.com/ros-navigation/navigation2/commit/768947d1db2acce4776518b03b3f513bb411429c",
+    "https://github.com/ros-navigation/navigation2/commit/7d9ba43bf03dcff81c9ac7ccc5ffc57c7cbc3cbe",
+    "https://github.com/ros-navigation/navigation2/pull/5326/commits/e841c7bde1f79c3711c0d3ecb4a0a99627e595ec"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

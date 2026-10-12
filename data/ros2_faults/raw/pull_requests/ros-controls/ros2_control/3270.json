@@ -1,0 +1,35 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3270",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3270",
+    "fetched_at": "2026-10-11T11:24:38.591919+00:00",
+    "http_status": 200,
+    "response_sha256": "4188131f8f9e0c8c361ef74b3de84b949c168a1132b2f2e9aefb362088bb90b0"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3270",
+  "title": "Fix fallback parameter warning spam in controller manager by ktgilliam · Pull Request #3270 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nIn ControllerManager::load_controller(), fallback_controllers and\n\nnode_options_args are declared using the type-only overload of\n\ndeclare_parameter():\n\n\n\n```\ndeclare_parameter(fallback_ctrl_param, rclcpp::ParameterType::PARAMETER_STRING_ARRAY);\n```\n\n\n\nThis leaves the parameter declared but uninitialized... its type is known to\n\nrclcpp but it has no value. Any external caller that subsequently invokes the CM\n\nnode's /get_parameters service for these keys (e.g. rqt_controller_manager,\n\nfoxglove_bridge, ros2 param get, etc) triggers a\n\nParameterUninitializedException inside rclcpp's ParameterService handler,\n\nwhich logs it as:\n\n\n\n```\n[WARN] [rclcpp]: Failed to get parameters: parameter '<controller_name>.fallback_controllers' is not initialized\n\n```\n\n\n\nBecause tools like rqt_controller_manager poll the CM periodically, this\n\nwarning repeats continuously for every loaded controller.\n\n\nThe fix is to supply an empty default value instead of a bare type, making the\n\nparameter queryable immediately after declaration:\n\n\n\n```\ndeclare_parameter(fallback_ctrl_param, std::vector<std::string>{});\ndeclare_parameter(node_options_args_param, std::vector<std::string>{});\n```\n\n\n\nFixes # (issue) (Didn't create an issue).\n\n\nIs this user-facing behavior change?\n\n\nYes. Users will no longer see repeated [WARN] [rclcpp]: Failed to get parameters: parameter '<name>.fallback_controllers' is not initialized messages\n\nin the ros2_control_node output when any ROS 2 tool queries the controller\n\nmanager's parameters.\n\n\nDid you use Generative AI?\n\n\nI had help from copilot diagnosing the issue, but the two changed lines are mine.\n\n\nAdditional Information\n\n\nThe same ParameterUninitializedException path in rclcpp's ParameterService\n\nis triggered by node_options_args for the same reason; both are fixed in this\n\nPR. The fix does not change any observable behavior for controllers that do or do\n\nnot configure fallback controllers.\n\n\nTODOs\n\n\nTo send us a pull request, please:\n\n\n\n[x ] Fork the repository.\n\n\n[ x] Modify the source; please focus on the specific change you are contributing. If you also reformat all the code, it will be hard for us to focus on your change.\n\n\n[x ] Ensure local tests pass. (colcon test and pre-commit run (requires you to install pre-commit by pip3 install pre-commit)\n\n\n[ x] Commit to your fork using clear commit messages.\n\n\n[x ] Send a pull request, answering any default questions in the pull request interface.\n\n\n[ x] Pay attention to any automated CI failures reported in the pull request, and stay involved in the conversation.",
+  "discussion_rendered_text": [
+    "This pull request is in conflict. Could you fix it @ktgilliam?",
+    "@ktgilliam, all pull requests must be targeted towards the master development branch.\n\nOnce merged into master, it is possible to backport to kilted, but it must be in master\n\nto have these changes reflected into new distributions.",
+    "This pull request is in conflict. Could you fix it @ktgilliam?",
+    "@ktgilliam, all pull requests must be targeted towards the master development branch. Once merged into master, it is possible to backport to kilted, but it must be in master to have these changes reflected into new distributions.\n\n\n\n\nThis pull request is in conflict. Could you fix it @ktgilliam?\n\n\n\nI moved my changes onto master and that resolved the merge conflicts.",
+    "Hello,\n\n\nJust checking in on this - is it just waiting on approvals or is it waiting on something from me?\n\n\nThanks,",
+    "This closes the issue I just made, Great work 🏆",
+    "thank you!",
+    "I see it was first targeting kilted, I've added a backport label. @ktgilliam do you know if Jazzy & Humble are affected as well?",
+    "IMO We can backport this back to jazzy without issues"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/commit/4489fb2a2229f0f936508253896c1e4dd453ba70",
+    "https://github.com/ros-controls/ros2_control/commit/b1040382e266fc6f61a78bd5586015e601e44552",
+    "https://github.com/ros-controls/ros2_control/commit/b95b46d128bc722d0158e3f07551d8048af562c5",
+    "https://github.com/ros-controls/ros2_control/commit/d8066c211d7d8992a8981d469bf83b030c973530",
+    "https://github.com/ros-controls/ros2_control/commit/e57360fa9c45b4c6591077aa8e84875a57da5079",
+    "https://github.com/ros-controls/ros2_control/pull/3270/commits/d73e25d926ab78c0ae81f91974ab1cf70b724efb",
+    "https://github.com/ros-controls/ros2_control/pull/3270/commits/d8066c211d7d8992a8981d469bf83b030c973530"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

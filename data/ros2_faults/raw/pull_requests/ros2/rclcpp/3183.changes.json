@@ -1,0 +1,32 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3183/files",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3183/files",
+    "fetched_at": "2026-10-11T11:23:38.703206+00:00",
+    "http_status": 200,
+    "response_sha256": "bab1ace28e22f246dd45ee82c1d2f9cb7d645f851c695d890303c82210d7696a"
+  },
+  "files": {
+    "rclcpp_action/src/client_base.cpp": [
+      "@@ -181,6 +181,7 @@ class ClientBaseImpl",
+      "   std::map<int64_t, ResponseCallback> pending_cancel_responses;",
+      "   std::recursive_mutex cancel_requests_mutex;",
+      " ",
+      "+  std::mutex goal_id_rng_mutex;",
+      "   std::independent_bits_engine<",
+      "     std::mt19937, 8, unsigned int> random_bytes_generator;",
+      " };",
+      "@@ -480,6 +481,7 @@ GoalUUID",
+      " ClientBase::generate_goal_id()",
+      " {",
+      "   GoalUUID goal_id;",
+      "+  std::lock_guard<std::mutex> lock(pimpl_->goal_id_rng_mutex);",
+      "   // TODO(hidmic): Do something better than this for UUID generation.",
+      "   // std::generate(",
+      "   //   goal_id.uuid.begin(), goal_id.uuid.end(),"
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

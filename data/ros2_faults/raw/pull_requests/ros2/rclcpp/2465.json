@@ -1,0 +1,32 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/2465",
+    "final_url": "https://github.com/ros2/rclcpp/pull/2465",
+    "fetched_at": "2026-10-11T11:20:46.955055+00:00",
+    "http_status": 200,
+    "response_sha256": "04af121faa476380d0e1c3ff00c022be8fda03ad0b509bc43ee55757d6beec80"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/2465",
+  "title": "fix spin_some_max_duration unit-test for events-executor by alsora · Pull Request #2465 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "This PR partially fixes #2462\n\n\nThe EventsExecutor and the StaticSingleThreadedExecutor were failing a unit-test.\n\nThis PR fixes the test for the EventsExecutor.\n\n\nThe waitables were not triggered, so the events executor was not executing them.\n\n\nThis poses the question... Why do the other executors \"execute\" a waitable that was not triggered?\n\nEDIT: the other executors worked because there was a bug in the is_ready method of the TestWaitable class. This was returning \"true\" regardless of whether the waitable was triggered.\n\nFixed it as a separate commit 0e6c78d\n\n\nFYI @wjwwood",
+  "discussion_rendered_text": [
+    "Linux \n\n\nLinux-aarch64 \n\n\nWindows",
+    "There's a few test failures, but they are all unrelated.\n\n\n\nuncrustify errors in linux x86_64 and arm64\n\n\na timers manager error in Windows\n\n\n\nCan we still merge this PR?\n\nI remember reading about some Timers Manager Windows failures in another ticket, but I can't remember where, is this the same one? rclcpp.TestTimersManager.check_one_timer_cancel_doesnt_affect_other_timers\n\n\n\n```\nC:\\ci\\ws\\src\\ros2\\rclcpp\\rclcpp\\test\\rclcpp\\test_timers_manager.cpp:405\nExpected: (t1_runs + 5) < (t2_runs), actual: 10 vs 11\n\n```",
+    "uncrustify errors in linux x86_64 and arm64\n\n\n\n\nYeah, these are unrelated, but should be fixed now.\n\n\n\n\na timers manager error in Windows\n\n\n\n\nYes, this one has been plaguing us for a while.  If you have any time to look into it, it would be most appreciated.",
+    "Thanks @alsora, sorry I put in the broken test (missed the triggering of the waitables), indeed the TestWaitable was broken by design (for this test).\n\n\nI'll re-evaluate the tests w.r.t. #2142 based on that.",
+    "@clalancette I opened a PR with a proposed fix for the timers manager unit-test.\n\n#2468\n\nThe test expectation was relying on the test being executed fast enough, which is often not the case on Windows."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/CursedRock17/rclcpp/commit/1c350d0d7fb9c7158e0a39057112486ddbd38e9a",
+    "https://github.com/CursedRock17/rclcpp/commit/7af70b8536b1d70d8dcb7269999e815b28176f35",
+    "https://github.com/CursedRock17/rclcpp/commit/bc435776a257fcf76c5b0124bec26f6824342e34",
+    "https://github.com/bartalor/rclcpp/commit/0d1f7f7a5a4dde29effd2f49be9f572a4ca993bf",
+    "https://github.com/ros2/rclcpp/commit/00373aaa771d9b4c7bd38ebdf5943aef31743557",
+    "https://github.com/ros2/rclcpp/commit/42810ee3be16621208e2439cd6257a584d827759",
+    "https://github.com/ros2/rclcpp/pull/2465/commits/0e6c78dba83e817d26d2cd8649d46a2513b5cc92",
+    "https://github.com/ros2/rclcpp/pull/2465/commits/2f883b1a69a828c0b4ce899be7578497aa60b1e4"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

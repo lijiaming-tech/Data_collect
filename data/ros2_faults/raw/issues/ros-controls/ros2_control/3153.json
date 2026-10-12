@@ -1,0 +1,783 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3153",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3153",
+    "fetched_at": "2026-10-11T11:24:35.739488+00:00",
+    "http_status": 200,
+    "response_sha256": "cbe70a5f540f6b6e71d0744a4349f4bf833e8c3ddff12bcb5bd9ad316fee2596"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc7258vf",
+    "databaseId": 4142386143,
+    "number": 3153,
+    "title": "configure_controller error path causes controller manager to hang for invalid chainable controllers",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3153",
+    "body": "**Describe the bug**\nWhen configuring a chainable controller that does not export any state or reference interfaces, configure_controller() returns ERROR as expected, but the controller manager does not terminate cleanly and remains active, causing tests or processes to hang indefinitely.\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Create a chainable controller that exports no state or reference interfaces\n2. Add it to the controller manager\n3. Initialize the resource manager\n4. Call configure_controller\n5. Observe that ERROR is returned and logged correctly, however the process/test does not terminate and hangs unless interrupted\n\nExample:\n```\n// Minimal reproduction (adapted from existing test patterns)\nauto bad_controller =\n  std::make_shared<test_chainable_controller::TestChainableController>();\n\ncm_->add_controller(\n  bad_controller,\n  \"bad_chainable_controller\",\n  test_chainable_controller::TEST_CONTROLLER_CLASS_NAME);\n\npass_robot_description_to_cm_and_rm();\n\nauto ret = cm_->configure_controller(\"bad_chainable_controller\");\n```\nExpected: ERROR\nActual: returns ERROR but system does not terminate cleanly\n\n**Expected behavior**\nAfter returning ERROR, the controller manager should:\n- fully exit or roll back the configuration lifecycle transition\n- not leave the system in an active/spinning state\n- allow tests or processes to terminate normally\n\n**Screenshots**\nN/A (logs below)\n```\n[INFO] Configuring controller: 'bad_chainable_controller'\n[ERROR] Controller 'bad_chainable_controller' is chainable, but does not export any state or reference interfaces\n(hangs)\n```\n\n**Environment (please complete the following information):**\n- OS: Ubuntu 24.04\n- ROS 2 Version: Rolling\n- Workspace: local build of ros2_control\n- No modifications to core logic (issue observed while adding test coverage)\n\n**Additional context**\nAdd any other context about the problem here, especially include any modifications to ros2_control that relate to this issue.\n",
+    "bodyHTML": "<p dir=\"auto\"><strong>Describe the bug</strong><br>\nWhen configuring a chainable controller that does not export any state or reference interfaces, configure_controller() returns ERROR as expected, but the controller manager does not terminate cleanly and remains active, causing tests or processes to hang indefinitely.</p>\n<p dir=\"auto\"><strong>To Reproduce</strong><br>\nSteps to reproduce the behavior:</p>\n<ol dir=\"auto\">\n<li>Create a chainable controller that exports no state or reference interfaces</li>\n<li>Add it to the controller manager</li>\n<li>Initialize the resource manager</li>\n<li>Call configure_controller</li>\n<li>Observe that ERROR is returned and logged correctly, however the process/test does not terminate and hangs unless interrupted</li>\n</ol>\n<p dir=\"auto\">Example:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"// Minimal reproduction (adapted from existing test patterns)\nauto bad_controller =\n  std::make_shared&lt;test_chainable_controller::TestChainableController&gt;();\n\ncm_-&gt;add_controller(\n  bad_controller,\n  &quot;bad_chainable_controller&quot;,\n  test_chainable_controller::TEST_CONTROLLER_CLASS_NAME);\n\npass_robot_description_to_cm_and_rm();\n\nauto ret = cm_-&gt;configure_controller(&quot;bad_chainable_controller&quot;);\"><pre class=\"notranslate\"><code class=\"notranslate\">// Minimal reproduction (adapted from existing test patterns)\nauto bad_controller =\n  std::make_shared&lt;test_chainable_controller::TestChainableController&gt;();\n\ncm_-&gt;add_controller(\n  bad_controller,\n  \"bad_chainable_controller\",\n  test_chainable_controller::TEST_CONTROLLER_CLASS_NAME);\n\npass_robot_description_to_cm_and_rm();\n\nauto ret = cm_-&gt;configure_controller(\"bad_chainable_controller\");\n</code></pre></div>\n<p dir=\"auto\">Expected: ERROR<br>\nActual: returns ERROR but system does not terminate cleanly</p>\n<p dir=\"auto\"><strong>Expected behavior</strong><br>\nAfter returning ERROR, the controller manager should:</p>\n<ul dir=\"auto\">\n<li>fully exit or roll back the configuration lifecycle transition</li>\n<li>not leave the system in an active/spinning state</li>\n<li>allow tests or processes to terminate normally</li>\n</ul>\n<p dir=\"auto\"><strong>Screenshots</strong><br>\nN/A (logs below)</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"[INFO] Configuring controller: 'bad_chainable_controller'\n[ERROR] Controller 'bad_chainable_controller' is chainable, but does not export any state or reference interfaces\n(hangs)\"><pre class=\"notranslate\"><code class=\"notranslate\">[INFO] Configuring controller: 'bad_chainable_controller'\n[ERROR] Controller 'bad_chainable_controller' is chainable, but does not export any state or reference interfaces\n(hangs)\n</code></pre></div>\n<p dir=\"auto\"><strong>Environment (please complete the following information):</strong></p>\n<ul dir=\"auto\">\n<li>OS: Ubuntu 24.04</li>\n<li>ROS 2 Version: Rolling</li>\n<li>Workspace: local build of ros2_control</li>\n<li>No modifications to core logic (issue observed while adding test coverage)</li>\n</ul>\n<p dir=\"auto\"><strong>Additional context</strong><br>\nAdd any other context about the problem here, especially include any modifications to ros2_control that relate to this issue.</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-03-26T10:00:59Z",
+    "updatedAt": "2026-05-25T14:11:49Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/140675355?u=44a23b06b0fd4c0be93fee4abda270423f850926&v=4",
+      "login": "Anusha-Sharma-2",
+      "id": "U_kgDOCGKJGw",
+      "profileUrl": "https://github.com/Anusha-Sharma-2",
+      "name": null,
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+            "fullDatabaseId": "8380273440",
+            "color": "ededed",
+            "name": "stale",
+            "nameHTML": "stale",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/stale",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 2,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc75we0n",
+      "databaseId": 4190235943,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7258vf",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCGKJGw",
+          "login": "Anusha-Sharma-2"
+        },
+        "number": 3153,
+        "locked": false,
+        "databaseId": 4142386143
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU3OTAxOTI=",
+        "login": "vectorcrumb",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/5790192?u=4d6a43551fce45c7ab77eeac007df8d6de30252b&v=4",
+        "profileUrl": "https://github.com/vectorcrumb",
+        "name": "Lucas Alvarez"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3153#issuecomment-4190235943",
+      "createdAt": "2026-04-06T04:05:11Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Hi! I created a PR to attempt to remedy this. The return points in the `configure_controller` function that had to with chainable controllers weren't cleaning up the controller (ie transitioning it back to UNCONFIGURED from INACTIVE) during early returns.\n\nI added calls to `cleanup_controller` for both the case where the chainable controller has no interfaces and the case where exporting the interfaces raises an exception.",
+      "bodyHTML": "<p dir=\"auto\">Hi! I created a PR to attempt to remedy this. The return points in the <code class=\"notranslate\">configure_controller</code> function that had to with chainable controllers weren't cleaning up the controller (ie transitioning it back to UNCONFIGURED from INACTIVE) during early returns.</p>\n<p dir=\"auto\">I added calls to <code class=\"notranslate\">cleanup_controller</code> for both the case where the chainable controller has no interfaces and the case where exporting the interfaces raises an exception.</p>",
+      "bodyVersion": "f42bf31cb77ddc8a527a33bf2fcc652da5dc67ad6e7f32ffb87c7dd89a2ba7e3",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABDMxZuw",
+      "databaseId": 4509686203,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7258vf",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCGKJGw",
+          "login": "Anusha-Sharma-2"
+        },
+        "number": 3153,
+        "locked": false,
+        "databaseId": 4142386143
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3153#issuecomment-4509686203",
+      "createdAt": "2026-05-21T15:18:26Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7258vfzwAAAAWSFxw0",
+      "databaseId": 23925824564,
+      "createdAt": "2026-03-26T10:01:04Z",
+      "actor": {
+        "id": "U_kgDOCGKJGw",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/140675355?s=64&u=44a23b06b0fd4c0be93fee4abda270423f850926&v=4",
+        "login": "Anusha-Sharma-2",
+        "profileResourcePath": "/Anusha-Sharma-2",
+        "__typename": "User",
+        "name": null
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc75we0n",
+      "databaseId": 4190235943,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7258vf",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCGKJGw",
+          "login": "Anusha-Sharma-2"
+        },
+        "number": 3153,
+        "locked": false,
+        "databaseId": 4142386143
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU3OTAxOTI=",
+        "login": "vectorcrumb",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/5790192?u=4d6a43551fce45c7ab77eeac007df8d6de30252b&v=4",
+        "profileUrl": "https://github.com/vectorcrumb",
+        "name": "Lucas Alvarez"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3153#issuecomment-4190235943",
+      "createdAt": "2026-04-06T04:05:11Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Hi! I created a PR to attempt to remedy this. The return points in the `configure_controller` function that had to with chainable controllers weren't cleaning up the controller (ie transitioning it back to UNCONFIGURED from INACTIVE) during early returns.\n\nI added calls to `cleanup_controller` for both the case where the chainable controller has no interfaces and the case where exporting the interfaces raises an exception.",
+      "bodyHTML": "<p dir=\"auto\">Hi! I created a PR to attempt to remedy this. The return points in the <code class=\"notranslate\">configure_controller</code> function that had to with chainable controllers weren't cleaning up the controller (ie transitioning it back to UNCONFIGURED from INACTIVE) during early returns.</p>\n<p dir=\"auto\">I added calls to <code class=\"notranslate\">cleanup_controller</code> for both the case where the chainable controller has no interfaces and the case where exporting the interfaces raises an exception.</p>",
+      "bodyVersion": "f42bf31cb77ddc8a527a33bf2fcc652da5dc67ad6e7f32ffb87c7dd89a2ba7e3",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ConnectedEvent",
+      "id": "COE_lADOBiM5Uc7258vfzwAAAAWjbpMz",
+      "databaseId": 24216769331,
+      "createdAt": "2026-04-06T07:07:03Z",
+      "actor": {
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?s=64&u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "login": "saikishor",
+        "profileResourcePath": "/saikishor",
+        "__typename": "User",
+        "name": "Sai Kishor Kothakota"
+      },
+      "subject": {
+        "id": "PR_kwDOBiM5Uc7QHBTY",
+        "__typename": "PullRequest",
+        "title": "Enforce cleanup_controller on more exit points of configure_controller",
+        "url": "https://github.com/ros-controls/ros2_control/pull/3192",
+        "number": 3192,
+        "state": "MERGED",
+        "isDraft": false,
+        "isInMergeQueue": false,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+          "name": "ros2_control",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+            "login": "ros-controls"
+          }
+        }
+      }
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABDMxZuw",
+      "databaseId": 4509686203,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7258vf",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOCGKJGw",
+          "login": "Anusha-Sharma-2"
+        },
+        "number": 3153,
+        "locked": false,
+        "databaseId": 4142386143
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3153#issuecomment-4509686203",
+      "createdAt": "2026-05-21T15:18:26Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7258vfzwAAAAYCeSSe",
+      "databaseId": 25811297438,
+      "createdAt": "2026-05-21T15:18:27Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+        "archivedAt": null,
+        "nameHTML": "stale",
+        "name": "stale",
+        "color": "ededed",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc7258vfzwAAAAYJgviJ",
+      "databaseId": 25929382025,
+      "createdAt": "2026-05-25T14:11:49Z",
+      "actor": {
+        "id": "MDQ6VXNlcjM1MjQ1Nzc=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3524577?s=64&u=8f938d2dcacdcbb54f3977d6356cef945a6eb6ed&v=4",
+        "login": "bmagyar",
+        "profileResourcePath": "/bmagyar",
+        "__typename": "User",
+        "name": "Bence Magyar"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOBiM5Uc7QHBTY",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-controls/ros2_control/pull/3192",
+        "number": 3192,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+          "name": "ros2_control",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+            "login": "ros-controls"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnSmXIwABqzIzOTI1ODI0NTY0",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnl96RIgBqzI1OTI5MzgyMDI1"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnSmXIwABqzIzOTI1ODI0NTY0",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnl96RIgBqzI1OTI5MzgyMDI1"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOBiM5Uc7QHBTY",
+      "url": "https://github.com/ros-controls/ros2_control/pull/3192",
+      "number": 3192,
+      "title": "Enforce cleanup_controller on more exit points of configure_controller",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-04-06T03:45:00Z",
+      "databaseId": 3491501272,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3192",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3192.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3192.changes.json"
+    }
+  ]
+}

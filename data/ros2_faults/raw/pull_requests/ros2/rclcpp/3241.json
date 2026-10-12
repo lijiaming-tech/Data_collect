@@ -1,0 +1,29 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3241",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3241",
+    "fetched_at": "2026-10-11T11:20:12.839684+00:00",
+    "http_status": 200,
+    "response_sha256": "07b22c9a937beb40778e3052a2a2aa0a9895d587e47f817ad27735327eac3599"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/3241",
+  "title": "Fix lock order inversion between GraphListener and Context (ABI compatible backport) (backport #3239) by mergify[bot] · Pull Request #3241 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nAvoids inverting lock order between GraphListener::start_if_not_started() and Context::shutdown() by registering the on_shutdown_callback before acquiring shutdown_mutex_. To avoid duplicate callback registration, a check has been added such that the shutdown callback is de-registered if this thread wasn't the one that started the graph listener (or, if shutting down, throw GraphListenerShutdownError.)\n\n\nTested against my jazzy container with my reproducing example from #2946. The diff ought to cleanly apply to kilted and humble as well.\n\n\nFixes #2946 / #3232 for humble / jazzy / kilted\n\n\nIs this user-facing behavior change?\n\n\nno\n\n\nDid you use Generative AI?\n\n\nClaude Fable 5\n\n\nAdditional Information\n\nThis is an automatic backport of pull request #3239 done by [Mergify](https://mergify.com).",
+  "discussion_rendered_text": [
+    "Pulls: #3241\n\nGist: https://gist.githubusercontent.com/skyegalaxy/ba7d26dbc1305fd3a9665b4bff41a024/raw/6387fb25f5777ac6c5926e747932e5da1712bd09/ros2.repos\n\nBUILD args:  --packages-above-and-dependencies rclcpp\n\nTEST args:  --packages-above rclcpp\n\nROS Distro: humble\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/20266\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "Pulls: #3241\n\nGist: https://gist.githubusercontent.com/skyegalaxy/b91fd8a9f2d85dc531f2e7f55f461a62/raw/6387fb25f5777ac6c5926e747932e5da1712bd09/ros2.repos\n\nBUILD args:  --packages-above-and-dependencies rclcpp\n\nTEST args:  --packages-above rclcpp\n\nROS Distro: humble\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/20286\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel  (10171 -> 10174)\n\n\nWindows",
+    "@fujitatomoya @ahcorde - the rhel failures look like they're not related. shall I go ahead and merge?",
+    "sounds good to me, but how about windows??? 🤔",
+    "huh, looks like it failed because rmw_fastrtps_dynamic_cpp couldn't be found?\n\nI'll rerun CI anyway because that seems like perhaps a transient jenkins issue",
+    "Pulls: #3241\n\nGist: https://gist.githubusercontent.com/skyegalaxy/2dd7f18873750662f75a171cbdb301da/raw/6387fb25f5777ac6c5926e747932e5da1712bd09/ros2.repos\n\nBUILD args:  --packages-above-and-dependencies rclcpp\n\nTEST args:  --packages-above rclcpp\n\nROS Distro: humble\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/20337\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "we can't build humble on windows any more, this is good to go"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros2/rclcpp/commit/804a5e4c3cab60938ebfc1d2f7b76b596c0929ed",
+    "https://github.com/ros2/rclcpp/commit/efb669e2e9ba319fc1d9237360f9dfd9e3e06a91",
+    "https://github.com/ros2/rclcpp/pull/3241/commits/84b0d27178082234c4cbdb2192abbbcae7481266"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

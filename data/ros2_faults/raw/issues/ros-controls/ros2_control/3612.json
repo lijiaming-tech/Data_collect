@@ -1,0 +1,199 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3612",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3612",
+    "fetched_at": "2026-10-11T11:24:14.530443+00:00",
+    "http_status": 200,
+    "response_sha256": "e9c5a5c1b4a04b5ecff522a19d17cebaea508440ffe0f314bbc51650d1a9c891"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc8AAAABQ_SMoQ",
+    "databaseId": 5435067553,
+    "number": 3612,
+    "title": "Data race on overruns.print_warnings during diagnostic parameter refresh",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3612",
+    "body": "**Describe the bug**\n\nDiagnostics assign `*params_ = cm_param_listener_->get_params()` while the real-time loop reads `params_->overruns.print_warnings`.\n\n- Write: [controller_manager.cpp:4439](https://github.com/ros-controls/ros2_control/blob/ffcf444a69a5bdae7b19d09fc7e45e0224386231/controller_manager/src/controller_manager.cpp#L4439), `controller_activity_diagnostic_callback()`.\n- Read: [controller_manager.cpp:3679](https://github.com/ros-controls/ros2_control/blob/ffcf444a69a5bdae7b19d09fc7e45e0224386231/controller_manager/src/controller_manager.cpp#L3679), `write()`.\n\nThe diagnostic callback holds the controller-list mutex, but `write()` reads the flag without that mutex. Updating the snapshot therefore races with the read.\n\n**To Reproduce**\n\nRequires ROS 2 Lyrical, colcon, rosdep, Clang 18.\n\nBuild the affected revision in a ROS workspace:\n\n```bash\nsource /opt/ros/lyrical/setup.bash\nmkdir -p ~/ros2_control_tsan_ws/src\ncd ~/ros2_control_tsan_ws\ngit clone https://github.com/ros-controls/ros2_control.git src/ros2_control\ngit -C src/ros2_control checkout ffcf444a69a5bdae7b19d09fc7e45e0224386231\nrosdep install --from-paths src --ignore-src -r -y\ncolcon build --packages-up-to controller_manager --cmake-args \\\n  -DBUILD_TESTING=OFF \\\n  -DCMAKE_CXX_COMPILER=clang++-18 \\\n  '-DCMAKE_CXX_FLAGS=-fsanitize=thread -g -O1 -fno-omit-frame-pointer --gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/15' \\\n  -DCMAKE_SHARED_LINKER_FLAGS=-fsanitize=thread \\\n  -DCMAKE_EXE_LINKER_FLAGS=-fsanitize=thread\n```\n\nTerminal 1:\n\n```bash\ncd ~/ros2_control_tsan_ws\nsource install/setup.bash\nexport ROS_DOMAIN_ID=181\nexport TSAN_OPTIONS='halt_on_error=0:external_symbolizer_path=/usr/bin/llvm-symbolizer-18'\nros2 run controller_manager ros2_control_node --ros-args \\\n  -p update_rate:=1000 -p diagnostic_updater.period:=0.001 \\\n  -p overruns.print_warnings:=false\n```\n\nTerminal 2, after Terminal 1 reports that it is waiting for the robot description:\n\n```bash\ncd ~/ros2_control_tsan_ws\nsource install/setup.bash\nexport ROS_DOMAIN_ID=181\nrobot_description='<robot name=\"tsan_repro\">\n  <link name=\"base\"/><link name=\"tip\"/>\n  <joint name=\"joint1\" type=\"revolute\">\n    <parent link=\"base\"/><child link=\"tip\"/>\n    <limit lower=\"-1\" upper=\"1\" effort=\"1\" velocity=\"1\"/>\n  </joint>\n  <ros2_control name=\"TestSystem\" type=\"system\">\n    <hardware><plugin>mock_components/GenericSystem</plugin></hardware>\n    <joint name=\"joint1\">\n      <command_interface name=\"position\"/><state_interface name=\"position\"/>\n    </joint>\n  </ros2_control>\n</robot>'\nros2 topic pub --once --qos-durability transient_local \\\n  /robot_description std_msgs/msg/String \"{data: '$robot_description'}\"\n```\n\nOnce Terminal 1 reports `Resource Manager has been successfully initialized`, run in Terminal 2:\n\n```bash\nfor i in {1..50}; do\n  ros2 param set /controller_manager overruns.print_warnings true\n  ros2 param set /controller_manager overruns.print_warnings false\ndone\n```\n\nTerminal 1 can report a one-byte TSan race between `Params::operator=()` in the diagnostic callback and `ControllerManager::write()`. Repeat the loop if needed.\n\n**Expected behavior**\n\nRuntime changes to `overruns.print_warnings` should take effect without racing with the real-time loop.\n\n**Screenshots**\n\nNot applicable.\n\n**Environment**\n\n- Ubuntu 26.04.1 LTS, x86_64; ROS 2 Lyrical.\n- ros2_control 6.9.0, commit `ffcf444a69a5bdae7b19d09fc7e45e0224386231`.\n- Clang 18 ThreadSanitizer .\n\n**Additional context**\n\nObserved TSan stack excerpt on the unmodified revision above:\n\n```text\nWrite of size 1:\n  Params::operator=(Params&&)\n  ControllerManager::controller_activity_diagnostic_callback()\n    controller_manager/src/controller_manager.cpp:4439\nPrevious read of size 1:\n  ControllerManager::write()\n    controller_manager/src/controller_manager.cpp:3679\n```\n\n**Proposed fix**\n\nAdd `#include <atomic>` and a member in `controller_manager.hpp`:\n\n```cpp\nstd::atomic<bool> overruns_print_warnings_{true};\n```\n\nInitialize the cache in `initialize_parameters()` and update it after each parameter snapshot refresh in `set_initial_hardware_components_state()`, `controller_activity_diagnostic_callback()`, and `hardware_components_diagnostic_callback()`:\n\n```cpp\noverruns_print_warnings_.store(params_->overruns.print_warnings, std::memory_order_relaxed);\n```\n\nIn `ControllerManager::write()`, replace the read of `params_->overruns.print_warnings` with:\n\n```cpp\noverruns_print_warnings_.load(std::memory_order_relaxed)\n```\n\nThis preserves runtime updates and avoids a blocking lock in the real-time loop. Relaxed ordering is sufficient for this independent flag. The change will covers this flag only and modifies two files (`+9/-1`).\n",
+    "bodyHTML": "<p dir=\"auto\"><strong>Describe the bug</strong></p>\n<p dir=\"auto\">Diagnostics assign <code class=\"notranslate\">*params_ = cm_param_listener_-&gt;get_params()</code> while the real-time loop reads <code class=\"notranslate\">params_-&gt;overruns.print_warnings</code>.</p>\n<ul dir=\"auto\">\n<li>Write: <a href=\"https://github.com/ros-controls/ros2_control/blob/ffcf444a69a5bdae7b19d09fc7e45e0224386231/controller_manager/src/controller_manager.cpp#L4439\">controller_manager.cpp:4439</a>, <code class=\"notranslate\">controller_activity_diagnostic_callback()</code>.</li>\n<li>Read: <a href=\"https://github.com/ros-controls/ros2_control/blob/ffcf444a69a5bdae7b19d09fc7e45e0224386231/controller_manager/src/controller_manager.cpp#L3679\">controller_manager.cpp:3679</a>, <code class=\"notranslate\">write()</code>.</li>\n</ul>\n<p dir=\"auto\">The diagnostic callback holds the controller-list mutex, but <code class=\"notranslate\">write()</code> reads the flag without that mutex. Updating the snapshot therefore races with the read.</p>\n<p dir=\"auto\"><strong>To Reproduce</strong></p>\n<p dir=\"auto\">Requires ROS 2 Lyrical, colcon, rosdep, Clang 18.</p>\n<p dir=\"auto\">Build the affected revision in a ROS workspace:</p>\n<div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"source /opt/ros/lyrical/setup.bash\nmkdir -p ~/ros2_control_tsan_ws/src\ncd ~/ros2_control_tsan_ws\ngit clone https://github.com/ros-controls/ros2_control.git src/ros2_control\ngit -C src/ros2_control checkout ffcf444a69a5bdae7b19d09fc7e45e0224386231\nrosdep install --from-paths src --ignore-src -r -y\ncolcon build --packages-up-to controller_manager --cmake-args \\\n  -DBUILD_TESTING=OFF \\\n  -DCMAKE_CXX_COMPILER=clang++-18 \\\n  '-DCMAKE_CXX_FLAGS=-fsanitize=thread -g -O1 -fno-omit-frame-pointer --gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/15' \\\n  -DCMAKE_SHARED_LINKER_FLAGS=-fsanitize=thread \\\n  -DCMAKE_EXE_LINKER_FLAGS=-fsanitize=thread\"><pre class=\"notranslate\"><span class=\"pl-c1\">source</span> /opt/ros/lyrical/setup.bash\nmkdir -p <span class=\"pl-k\">~</span>/ros2_control_tsan_ws/src\n<span class=\"pl-c1\">cd</span> <span class=\"pl-k\">~</span>/ros2_control_tsan_ws\ngit clone https://github.com/ros-controls/ros2_control.git src/ros2_control\ngit -C src/ros2_control checkout ffcf444a69a5bdae7b19d09fc7e45e0224386231\nrosdep install --from-paths src --ignore-src -r -y\ncolcon build --packages-up-to controller_manager --cmake-args \\\n  -DBUILD_TESTING=OFF \\\n  -DCMAKE_CXX_COMPILER=clang++-18 \\\n  <span class=\"pl-s\"><span class=\"pl-pds\">'</span>-DCMAKE_CXX_FLAGS=-fsanitize=thread -g -O1 -fno-omit-frame-pointer --gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/15<span class=\"pl-pds\">'</span></span> \\\n  -DCMAKE_SHARED_LINKER_FLAGS=-fsanitize=thread \\\n  -DCMAKE_EXE_LINKER_FLAGS=-fsanitize=thread</pre></div>\n<p dir=\"auto\">Terminal 1:</p>\n<div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"cd ~/ros2_control_tsan_ws\nsource install/setup.bash\nexport ROS_DOMAIN_ID=181\nexport TSAN_OPTIONS='halt_on_error=0:external_symbolizer_path=/usr/bin/llvm-symbolizer-18'\nros2 run controller_manager ros2_control_node --ros-args \\\n  -p update_rate:=1000 -p diagnostic_updater.period:=0.001 \\\n  -p overruns.print_warnings:=false\"><pre class=\"notranslate\"><span class=\"pl-c1\">cd</span> <span class=\"pl-k\">~</span>/ros2_control_tsan_ws\n<span class=\"pl-c1\">source</span> install/setup.bash\n<span class=\"pl-k\">export</span> ROS_DOMAIN_ID=181\n<span class=\"pl-k\">export</span> TSAN_OPTIONS=<span class=\"pl-s\"><span class=\"pl-pds\">'</span>halt_on_error=0:external_symbolizer_path=/usr/bin/llvm-symbolizer-18<span class=\"pl-pds\">'</span></span>\nros2 run controller_manager ros2_control_node --ros-args \\\n  -p update_rate:=1000 -p diagnostic_updater.period:=0.001 \\\n  -p overruns.print_warnings:=false</pre></div>\n<p dir=\"auto\">Terminal 2, after Terminal 1 reports that it is waiting for the robot description:</p>\n<div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"cd ~/ros2_control_tsan_ws\nsource install/setup.bash\nexport ROS_DOMAIN_ID=181\nrobot_description='&lt;robot name=&quot;tsan_repro&quot;&gt;\n  &lt;link name=&quot;base&quot;/&gt;&lt;link name=&quot;tip&quot;/&gt;\n  &lt;joint name=&quot;joint1&quot; type=&quot;revolute&quot;&gt;\n    &lt;parent link=&quot;base&quot;/&gt;&lt;child link=&quot;tip&quot;/&gt;\n    &lt;limit lower=&quot;-1&quot; upper=&quot;1&quot; effort=&quot;1&quot; velocity=&quot;1&quot;/&gt;\n  &lt;/joint&gt;\n  &lt;ros2_control name=&quot;TestSystem&quot; type=&quot;system&quot;&gt;\n    &lt;hardware&gt;&lt;plugin&gt;mock_components/GenericSystem&lt;/plugin&gt;&lt;/hardware&gt;\n    &lt;joint name=&quot;joint1&quot;&gt;\n      &lt;command_interface name=&quot;position&quot;/&gt;&lt;state_interface name=&quot;position&quot;/&gt;\n    &lt;/joint&gt;\n  &lt;/ros2_control&gt;\n&lt;/robot&gt;'\nros2 topic pub --once --qos-durability transient_local \\\n  /robot_description std_msgs/msg/String &quot;{data: '$robot_description'}&quot;\"><pre class=\"notranslate\"><span class=\"pl-c1\">cd</span> <span class=\"pl-k\">~</span>/ros2_control_tsan_ws\n<span class=\"pl-c1\">source</span> install/setup.bash\n<span class=\"pl-k\">export</span> ROS_DOMAIN_ID=181\nrobot_description=<span class=\"pl-s\"><span class=\"pl-pds\">'</span>&lt;robot name=\"tsan_repro\"&gt;</span>\n<span class=\"pl-s\">  &lt;link name=\"base\"/&gt;&lt;link name=\"tip\"/&gt;</span>\n<span class=\"pl-s\">  &lt;joint name=\"joint1\" type=\"revolute\"&gt;</span>\n<span class=\"pl-s\">    &lt;parent link=\"base\"/&gt;&lt;child link=\"tip\"/&gt;</span>\n<span class=\"pl-s\">    &lt;limit lower=\"-1\" upper=\"1\" effort=\"1\" velocity=\"1\"/&gt;</span>\n<span class=\"pl-s\">  &lt;/joint&gt;</span>\n<span class=\"pl-s\">  &lt;ros2_control name=\"TestSystem\" type=\"system\"&gt;</span>\n<span class=\"pl-s\">    &lt;hardware&gt;&lt;plugin&gt;mock_components/GenericSystem&lt;/plugin&gt;&lt;/hardware&gt;</span>\n<span class=\"pl-s\">    &lt;joint name=\"joint1\"&gt;</span>\n<span class=\"pl-s\">      &lt;command_interface name=\"position\"/&gt;&lt;state_interface name=\"position\"/&gt;</span>\n<span class=\"pl-s\">    &lt;/joint&gt;</span>\n<span class=\"pl-s\">  &lt;/ros2_control&gt;</span>\n<span class=\"pl-s\">&lt;/robot&gt;<span class=\"pl-pds\">'</span></span>\nros2 topic pub --once --qos-durability transient_local \\\n  /robot_description std_msgs/msg/String <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>{data: '<span class=\"pl-smi\">$robot_description</span>'}<span class=\"pl-pds\">\"</span></span></pre></div>\n<p dir=\"auto\">Once Terminal 1 reports <code class=\"notranslate\">Resource Manager has been successfully initialized</code>, run in Terminal 2:</p>\n<div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"for i in {1..50}; do\n  ros2 param set /controller_manager overruns.print_warnings true\n  ros2 param set /controller_manager overruns.print_warnings false\ndone\"><pre class=\"notranslate\"><span class=\"pl-k\">for</span> <span class=\"pl-smi\">i</span> <span class=\"pl-k\">in</span> {1..50}<span class=\"pl-k\">;</span> <span class=\"pl-k\">do</span>\n  ros2 param <span class=\"pl-c1\">set</span> /controller_manager overruns.print_warnings <span class=\"pl-c1\">true</span>\n  ros2 param <span class=\"pl-c1\">set</span> /controller_manager overruns.print_warnings <span class=\"pl-c1\">false</span>\n<span class=\"pl-k\">done</span></pre></div>\n<p dir=\"auto\">Terminal 1 can report a one-byte TSan race between <code class=\"notranslate\">Params::operator=()</code> in the diagnostic callback and <code class=\"notranslate\">ControllerManager::write()</code>. Repeat the loop if needed.</p>\n<p dir=\"auto\"><strong>Expected behavior</strong></p>\n<p dir=\"auto\">Runtime changes to <code class=\"notranslate\">overruns.print_warnings</code> should take effect without racing with the real-time loop.</p>\n<p dir=\"auto\"><strong>Screenshots</strong></p>\n<p dir=\"auto\">Not applicable.</p>\n<p dir=\"auto\"><strong>Environment</strong></p>\n<ul dir=\"auto\">\n<li>Ubuntu 26.04.1 LTS, x86_64; ROS 2 Lyrical.</li>\n<li>ros2_control 6.9.0, commit <code class=\"notranslate\">ffcf444a69a5bdae7b19d09fc7e45e0224386231</code>.</li>\n<li>Clang 18 ThreadSanitizer .</li>\n</ul>\n<p dir=\"auto\"><strong>Additional context</strong></p>\n<p dir=\"auto\">Observed TSan stack excerpt on the unmodified revision above:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"Write of size 1:\n  Params::operator=(Params&amp;&amp;)\n  ControllerManager::controller_activity_diagnostic_callback()\n    controller_manager/src/controller_manager.cpp:4439\nPrevious read of size 1:\n  ControllerManager::write()\n    controller_manager/src/controller_manager.cpp:3679\"><pre lang=\"text\" class=\"notranslate\"><code class=\"notranslate\">Write of size 1:\n  Params::operator=(Params&amp;&amp;)\n  ControllerManager::controller_activity_diagnostic_callback()\n    controller_manager/src/controller_manager.cpp:4439\nPrevious read of size 1:\n  ControllerManager::write()\n    controller_manager/src/controller_manager.cpp:3679\n</code></pre></div>\n<p dir=\"auto\"><strong>Proposed fix</strong></p>\n<p dir=\"auto\">Add <code class=\"notranslate\">#include &lt;atomic&gt;</code> and a member in <code class=\"notranslate\">controller_manager.hpp</code>:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"std::atomic&lt;bool&gt; overruns_print_warnings_{true};\"><pre class=\"notranslate\">std::atomic&lt;<span class=\"pl-k\">bool</span>&gt; overruns_print_warnings_{<span class=\"pl-c1\">true</span>};</pre></div>\n<p dir=\"auto\">Initialize the cache in <code class=\"notranslate\">initialize_parameters()</code> and update it after each parameter snapshot refresh in <code class=\"notranslate\">set_initial_hardware_components_state()</code>, <code class=\"notranslate\">controller_activity_diagnostic_callback()</code>, and <code class=\"notranslate\">hardware_components_diagnostic_callback()</code>:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"overruns_print_warnings_.store(params_-&gt;overruns.print_warnings, std::memory_order_relaxed);\"><pre class=\"notranslate\">overruns_print_warnings_.store(params_-&gt;overruns.print_warnings, std::memory_order_relaxed);</pre></div>\n<p dir=\"auto\">In <code class=\"notranslate\">ControllerManager::write()</code>, replace the read of <code class=\"notranslate\">params_-&gt;overruns.print_warnings</code> with:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"overruns_print_warnings_.load(std::memory_order_relaxed)\"><pre class=\"notranslate\">overruns_print_warnings_.load(std::memory_order_relaxed)</pre></div>\n<p dir=\"auto\">This preserves runtime updates and avoids a blocking lock in the real-time loop. Relaxed ordering is sufficient for this independent flag. The change will covers this flag only and modifies two files (<code class=\"notranslate\">+9/-1</code>).</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-09-12T17:59:33Z",
+    "updatedAt": "2026-09-14T21:49:36Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/154436494?u=8079e8353523c5a7682f430df2feb79d8f5bd4fb&v=4",
+      "login": "WaWOscarQAQ",
+      "id": "U_kgDOCTSDjg",
+      "profileUrl": "https://github.com/WaWOscarQAQ",
+      "name": "str_cat",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 0,
+    "duplicateOf": null
+  },
+  "comments": [],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc8AAAABQ_SMoc8AAAAHOXa6tQ",
+      "databaseId": 31028853429,
+      "createdAt": "2026-09-12T17:59:34Z",
+      "actor": {
+        "id": "U_kgDOCTSDjg",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/154436494?s=64&u=8079e8353523c5a7682f430df2feb79d8f5bd4fb&v=4",
+        "login": "WaWOscarQAQ",
+        "profileResourcePath": "/WaWOscarQAQ",
+        "__typename": "User",
+        "name": "str_cat"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc8AAAABQ_SMoc8AAAAHP6fKOQ",
+      "databaseId": 31132731961,
+      "createdAt": "2026-09-14T21:49:36Z",
+      "actor": {
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?s=64&u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "login": "saikishor",
+        "profileResourcePath": "/saikishor",
+        "__typename": "User",
+        "name": "Sai Kishor Kothakota"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOBiM5Uc8AAAABDZ7f3w",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-controls/ros2_control/pull/3619",
+        "number": 3619,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+          "name": "ros2_control",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+            "login": "ros-controls"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABoJbGT3ABqzMxMDI4ODUzNDI5",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABoKHloYABqzMxMTMyNzMxOTYx"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABoJbGT3ABqzMxMDI4ODUzNDI5",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABoKHloYABqzMxMTMyNzMxOTYx"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOBiM5Uc8AAAABDZ7f3w",
+      "url": "https://github.com/ros-controls/ros2_control/pull/3619",
+      "number": 3619,
+      "title": "Fix data race in overrun warning parameter",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-09-14T06:20:53Z",
+      "databaseId": 4523483103,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    },
+    {
+      "id": "PR_kwDOUZ7gRM8AAAABDZ3skA",
+      "url": "https://github.com/Quchaosheng/ros2_control/pull/1",
+      "number": 1,
+      "title": "Fix data race in overrun warning parameter",
+      "state": "OPEN",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-09-14T06:13:13Z",
+      "databaseId": 4523420816,
+      "repository": {
+        "id": "R_kgDOUZ7gRA",
+        "name": "ros2_control",
+        "nameWithOwner": "Quchaosheng/ros2_control",
+        "owner": {
+          "id": "U_kgDODCTbMw",
+          "login": "Quchaosheng",
+          "__typename": "User"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3619",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3619.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3619.changes.json"
+    },
+    {
+      "url": "https://github.com/Quchaosheng/ros2_control/pull/1",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/Quchaosheng/ros2_control/1.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/Quchaosheng/ros2_control/1.changes.json"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3118",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3118",
+    "fetched_at": "2026-10-11T11:21:07.078566+00:00",
+    "http_status": 200,
+    "response_sha256": "4a88ecc98c2ac2732aa4141eef21917eb941e08660d1653e05520028bb22668c"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/3118",
+  "title": "publish_feedback should effect only on executing state. by fujitatomoya · Pull Request #3118 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nCloses #3117\n\n\n\n\nIs this user-facing behavior change?\n\n\nYes, only warning is going to be popped up that tells user application publish_feedback can be effective only executing state.\n\n\n\nDid you use Generative AI?\n\n\nNo\n\n\n\nAdditional Information",
+  "discussion_rendered_text": [
+    "i was going to honor this original design behavior, but this could be a bit surprising for user application. so this PR only prints the warning that instead.",
+    "Pulls: #3118\n\nGist: https://gist.githubusercontent.com/fujitatomoya/d6cdd9c1593d2a24a4e7eba4f190264c/raw/5d1301a472c408d21d17f962af36ab4a9825a182/ros2.repos\n\nBUILD args:  --packages-above-and-dependencies rclcpp_action\n\nTEST args:  --packages-above rclcpp_action\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/18749\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "Was that actually throwing before ?\n\nI would prefer a throw there, as this trying to publish feedback after the goal was closed is a clear logic programming error.",
+    "@jmachowinski no it was never implemented in that way... even though doc section defines that behavior.\n\n\ni was going to that way, but my though is that would be kinda surprising...",
+    "Judging from our own stack, warnings get ignored, as they are in the general console spam.\n\nExceptions get fixed... I can't think of a scenario were sending feedback after sending the goal result is correct. Especially as the doc already mentioned it, the exception seems more as the way to go...",
+    "i will go ahead to merge this, if necessary, we can enforce the exception after some period that prints the warning."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/bartalor/rclcpp/commit/99ff4e48407fd68754782fab8cd8742a0715644a",
+    "https://github.com/ros2/rclcpp/commit/b731eb2310c7c769bfa460f4630fff253b9b94a1",
+    "https://github.com/ros2/rclcpp/pull/3118/commits/3ff823903084b3df407a7735c02baf3ce02d8632"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

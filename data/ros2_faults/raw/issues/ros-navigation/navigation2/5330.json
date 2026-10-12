@@ -1,0 +1,3564 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-navigation/navigation2",
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/issues/5330",
+    "final_url": "https://github.com/ros-navigation/navigation2/issues/5330",
+    "fetched_at": "2026-10-11T11:21:48.974360+00:00",
+    "http_status": 200,
+    "response_sha256": "624888c93b386f3b6ed4e0e99adf72b09cf3756e0b494a2590f0f7888cbeecd8"
+  },
+  "issue": {
+    "id": "I_kwDOCBF7SM6-p47f",
+    "databaseId": 3198652127,
+    "number": 5330,
+    "title": "SMAC smoother can generate infeasible paths when using non-circular robots in very confined spaces",
+    "url": "https://github.com/ros-navigation/navigation2/issues/5330",
+    "body": "Following up on https://github.com/ros-navigation/navigation2/issues/4271#issuecomment-2879364973\n\nThe SMAC smoother could result in an infeasible (colliding) path. The reason is because after modifying the path, it does simple cell cost collision checking (rejects path if cell cost > MAX_NON_OBSTACLE) but does not check for potential collision of orientated footprints.\n\n",
+    "bodyHTML": "<p dir=\"auto\">Following up on <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2256911988\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/4271\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/4271/hovercard?comment_id=2879364973&amp;comment_type=issue_comment\" href=\"https://github.com/ros-navigation/navigation2/issues/4271#issuecomment-2879364973\">#4271 (comment)</a></p>\n<p dir=\"auto\">The SMAC smoother could result in an infeasible (colliding) path. The reason is because after modifying the path, it does simple cell cost collision checking (rejects path if cell cost &gt; MAX_NON_OBSTACLE) but does not check for potential collision of orientated footprints.</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2025-07-03T09:10:36Z",
+    "updatedAt": "2026-07-21T01:09:58Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/14879660?u=e29d50db1bac036eae32b30fec612615ccd3791a&v=4",
+      "login": "tonynajjar",
+      "id": "MDQ6VXNlcjE0ODc5NjYw",
+      "profileUrl": "https://github.com/tonynajjar",
+      "name": "Tony Najjar",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mw"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+            "fullDatabaseId": "948691578",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros-navigation/navigation2/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1ODI=",
+            "fullDatabaseId": "948691582",
+            "color": "7057ff",
+            "name": "good first issue",
+            "nameHTML": "good first issue",
+            "description": "Good for newcomers",
+            "url": "https://github.com/ros-navigation/navigation2/labels/good%20first%20issue",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1ODE=",
+            "fullDatabaseId": "948691581",
+            "color": "008672",
+            "name": "help wanted",
+            "nameHTML": "help wanted",
+            "description": "Extra attention is needed",
+            "url": "https://github.com/ros-navigation/navigation2/labels/help%20wanted",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 11,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM638HD4",
+      "databaseId": 3085988088,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjQ2NTA1NDUx",
+        "login": "pamin1",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/46505451?u=3aba846946f16d19c7e221142c487c08528d68cb&v=4",
+        "profileUrl": "https://github.com/pamin1",
+        "name": "Prachit Amin"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-3085988088",
+      "createdAt": "2025-07-18T00:08:29Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I want to work on this if possible. I haven't examined the code yet, but I know that there is a collision checker built into nav2. Could we potentially use that function here?",
+      "bodyHTML": "<p dir=\"auto\">I want to work on this if possible. I haven't examined the code yet, but I know that there is a collision checker built into nav2. Could we potentially use that function here?</p>",
+      "bodyVersion": "0cbd10f88dd6b5e9850ce03b805e12dd712765b13dc9469b7dc5c7222b6b7ea6",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM65CRsZ",
+      "databaseId": 3104381721,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-3104381721",
+      "createdAt": "2025-07-22T18:56:25Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "The issue here is that we don't have the feasibility information in the smoother currently. So, there'd have to be a check on the feasibility constraints to then be able to get the orientation information (theta) needed to check the footprint. We cannot check the footprint without X,Y,Theta for a pose since the footprint is orientation-dependent when non-circular.\n\nSo, we'd probably want to start off by estimating the orientation with the `updateApproximatePathOrientations` function to get an orientation for introducing the collision checker. Then we'd have the X,Y,Theta for each pose to use a collision checker object with (Nav2 Costmap 2D has one of these you can use, see Hybrid-A* NodeT for an example use). \n\nThen, perhaps trying to do one step better by either changing the way the smoother works to retain orientation information so we know its 'real' or make sure we maintain minimum turning radius constraints so that the computed orientation is known to be drivable. That way if not just collision free, but also doesn't possibly violate constraints (which is rare and not usually a big deal, but can happen and would impact vehicles like Ackermann that have an actual, strict limit)",
+      "bodyHTML": "<p dir=\"auto\">The issue here is that we don't have the feasibility information in the smoother currently. So, there'd have to be a check on the feasibility constraints to then be able to get the orientation information (theta) needed to check the footprint. We cannot check the footprint without X,Y,Theta for a pose since the footprint is orientation-dependent when non-circular.</p>\n<p dir=\"auto\">So, we'd probably want to start off by estimating the orientation with the <code class=\"notranslate\">updateApproximatePathOrientations</code> function to get an orientation for introducing the collision checker. Then we'd have the X,Y,Theta for each pose to use a collision checker object with (Nav2 Costmap 2D has one of these you can use, see Hybrid-A* NodeT for an example use).</p>\n<p dir=\"auto\">Then, perhaps trying to do one step better by either changing the way the smoother works to retain orientation information so we know its 'real' or make sure we maintain minimum turning radius constraints so that the computed orientation is known to be drivable. That way if not just collision free, but also doesn't possibly violate constraints (which is rare and not usually a big deal, but can happen and would impact vehicles like Ackermann that have an actual, strict limit)</p>",
+      "bodyVersion": "68bf47926f590bbec87f35d13465e51d8ac943319a7874f1bd9b19734071d10a",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM69gtkF",
+      "databaseId": 3179469061,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOCD-Rsg",
+        "login": "CPPavithra",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/138383794?v=4",
+        "profileUrl": "https://github.com/CPPavithra",
+        "name": "Pavithra CP"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-3179469061",
+      "createdAt": "2025-08-12T13:58:47Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Hi! I’d like to work on this issue as my first PR.\n\nFrom the discussion, the main problem seems to be the lack of orientation information in the smoother’s collision check, which only uses simple cell cost and ignores the robot’s oriented footprint.\n\nI’ve reviewed the smac_smoother.cpp code and the issue discussion, and I see that the smoother currently **only checks collisions based on cell costs from the costmap**. This approach doesn’t account for the robot’s oriented footprint, which is critical for non-circular robots in confined spaces.\n\nTo address this, I plan to: \n\n(Use the existing updateApproximatePathOrientations function to estimate the orientation for each pose in the smoothed path. With the (X, Y, Theta) data available, integrate Nav2’s footprint collision checker (similar to how it’s used in the Hybrid-A* planner) to validate the path.)\n\n-> Integrate Nav2’s footprint collision checker into the smoother.\n\n -> After smoothing and updating the path orientations (x, y, theta), run a footprint collision check on every pose along the path.\n\n  -> If any footprint collision is detected, reject the smoothed path and revert to the last valid path.\n\n   -> Ensure this addition works seamlessly with the existing smoothing logic and does not degrade performance.\n\nI’ll also add tests to verify that the smoother no longer produces infeasible paths due to footprint collisions.\n\nI’d love to work on this as my first PR. Could I please get a go-ahead? Also, any guidance on best practices for initializing the collision checker or existing test cases to build on would be greatly appreciated!\n",
+      "bodyHTML": "<p dir=\"auto\">Hi! I’d like to work on this issue as my first PR.</p>\n<p dir=\"auto\">From the discussion, the main problem seems to be the lack of orientation information in the smoother’s collision check, which only uses simple cell cost and ignores the robot’s oriented footprint.</p>\n<p dir=\"auto\">I’ve reviewed the smac_smoother.cpp code and the issue discussion, and I see that the smoother currently <strong>only checks collisions based on cell costs from the costmap</strong>. This approach doesn’t account for the robot’s oriented footprint, which is critical for non-circular robots in confined spaces.</p>\n<p dir=\"auto\">To address this, I plan to:</p>\n<p dir=\"auto\">(Use the existing updateApproximatePathOrientations function to estimate the orientation for each pose in the smoothed path. With the (X, Y, Theta) data available, integrate Nav2’s footprint collision checker (similar to how it’s used in the Hybrid-A* planner) to validate the path.)</p>\n<p dir=\"auto\">-&gt; Integrate Nav2’s footprint collision checker into the smoother.</p>\n<p dir=\"auto\">-&gt; After smoothing and updating the path orientations (x, y, theta), run a footprint collision check on every pose along the path.</p>\n<p dir=\"auto\">-&gt; If any footprint collision is detected, reject the smoothed path and revert to the last valid path.</p>\n<p dir=\"auto\">-&gt; Ensure this addition works seamlessly with the existing smoothing logic and does not degrade performance.</p>\n<p dir=\"auto\">I’ll also add tests to verify that the smoother no longer produces infeasible paths due to footprint collisions.</p>\n<p dir=\"auto\">I’d love to work on this as my first PR. Could I please get a go-ahead? Also, any guidance on best practices for initializing the collision checker or existing test cases to build on would be greatly appreciated!</p>",
+      "bodyVersion": "3067de890b0596660a1c9dcb24f1218bf7cec57a66b39eeeb5a56bef47915743",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM69iz-R",
+      "databaseId": 3180019601,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-3180019601",
+      "createdAt": "2025-08-12T16:01:09Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Yes, that sounds like a good plan! I don't have any notes :-) ",
+      "bodyHTML": "<p dir=\"auto\">Yes, that sounds like a good plan! I don't have any notes :-)</p>",
+      "bodyVersion": "c3f2b89be78ed58b1e4ea6431cc80ad92412579e2782a7c8ba1d0ca79cc441c3",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABDjWXrQ",
+      "databaseId": 4533360557,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4533360557",
+      "createdAt": "2026-05-25T10:01:12Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Possible reference: https://github.com/ros-navigation/navigation2/pull/6081, the PR was closed because it's fully AI-generated and not tested ",
+      "bodyHTML": "<p dir=\"auto\">Possible reference: <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4248890885\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6081\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6081/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/6081\">#6081</a>, the PR was closed because it's fully AI-generated and not tested</p>",
+      "bodyVersion": "b672352bc1c3464448400ae407238242cf02be4b61364ac0f61d98c597f6c461",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABH25LGg",
+      "databaseId": 4822289178,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBc_l2w",
+        "login": "MobiusRoamer",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/97510875?v=4",
+        "profileUrl": "https://github.com/MobiusRoamer",
+        "name": "Ali"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4822289178",
+      "createdAt": "2026-06-27T22:10:27Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Hi I'd like to have a crack at this as I see previous PRs have closed and no assignees. Had a look at the previous attempts and feedback. Will keep these in mind: preserve the path length and goal pose, avoid unrelated changes, determine the collision handling behaviour before implementation, avoid dup and expensive checks. \n\nBefore opening a PR i plan to reproduce the issue locally and check behaviour with a non-circular footprint in simulation (will probs keep these documented for reproduction in draft pr comments). Will also provide regression tests and document before / after evidence. \n\nWould it be okay for me to take this on?",
+      "bodyHTML": "<p dir=\"auto\">Hi I'd like to have a crack at this as I see previous PRs have closed and no assignees. Had a look at the previous attempts and feedback. Will keep these in mind: preserve the path length and goal pose, avoid unrelated changes, determine the collision handling behaviour before implementation, avoid dup and expensive checks.</p>\n<p dir=\"auto\">Before opening a PR i plan to reproduce the issue locally and check behaviour with a non-circular footprint in simulation (will probs keep these documented for reproduction in draft pr comments). Will also provide regression tests and document before / after evidence.</p>\n<p dir=\"auto\">Would it be okay for me to take this on?</p>",
+      "bodyVersion": "3448fd2335c4778c78025568c2bbe74e8ac352ba58dd3a60f19a96eab2725c07",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABIDSV2A",
+      "databaseId": 4835284440,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4835284440",
+      "createdAt": "2026-06-29T17:30:16Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Please, we'd love that! I'd say before opening a PR, keep us apprised on your progress and when you think you found the problem for us to chat about :-) ",
+      "bodyHTML": "<p dir=\"auto\">Please, we'd love that! I'd say before opening a PR, keep us apprised on your progress and when you think you found the problem for us to chat about :-)</p>",
+      "bodyVersion": "a83c9873a5c1fddbcdcad8af55e70cab15d03f7383ccf391fff64bfbbf891a14",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "U_kgDOBc_l2w",
+                "login": "MobiusRoamer",
+                "name": "Ali",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/97510875?s=64&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABJC4oIw",
+      "databaseId": 4901972003,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBc_l2w",
+        "login": "MobiusRoamer",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/97510875?v=4",
+        "profileUrl": "https://github.com/MobiusRoamer",
+        "name": "Ali"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4901972003",
+      "createdAt": "2026-07-07T08:55:47Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> Please, we'd love that! I'd say before opening a PR, keep us apprised on your progress and when you think you found the problem for us to chat about :-)\n\nThanks! I first tried adding a regression test to show the failure mode.\nThe test builds an unsafe path, but the smoother reports success. The strategy is not to pass an already colliding path to the smoother and expect it to fail, because that would be blending (a) upstream planner or caller giving sth invalid with (b) smoother not rejecting that invalid input, while we just want to isolate (b).\n\nSo instead I tried: valid input path -> SMAC smoother changes the path -> changed path becomes colliding -> smoother still returns success\nHere is the added test: \nhttps://github.com/MobiusRoamer/navigation2/commit/bfb75f13 \n\n\nTo visualize the footprint geometry a bit, `r` denotes the robot centre, `\n```text\n1.2m * 0.4m\n        [===========]\n        [     r     ]\n        [===========]\n              ^\n            center\n```\nX is our obstacle in the following landscape\n\n```text\ny\n^\n| 12m    r----r----r----r----r----r\n|        |\n|        |     X  obstacle around (3.1, 11.7), not to scale\n|        |\n| 10m    r\n|        |\n|  8m    r\n|        |\n|  6m    r\n|        |\n|  4m    r\n|        |\n|  2m    r\n|\n+--------+----+----+----+----+----+----> x\n        2m   4m   6m   8m  10m  12m  14m\n```\n\nSee test results at end of this post.\nBefore smoothing, every original pose is valid. I checked them using `footprint_checker.footprintCostAtPose()`.\nThen after smoothing, smoother moves poses between the two arms of the `L` corner,  one pose gets close enough that its rectangle overlaps obstacle.  The bot centre is still not on the lethal X cell, so the old centre cell check passes. But the rectangular footprint at that pose overlaps the obstacle, so the full footprint check fails.\n\n\nMy planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.\n\nDoes this direction match what you would expect? I'm open to changes. \n\n\n#### Test result\n<img width=\"1132\" height=\"619\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c16efd1e-ef62-428d-900e-0750e886a3dd\" />\n\nTo reproduce the regression test results\n\n```bash\ncd <nav2_ws>\n\ngit -C src/navigation2 fetch https://github.com/MobiusRoamer/navigation2.git fix/smac-smoother-footprint-5330\ngit -C src/navigation2 checkout FETCH_HEAD\n```\nthen (replace `--packages-select` with `--packages-up-to nav2_smac_planner` if dependencies not installed yet)\n```\ncolcon build \\\n  --symlink-install \\\n  --packages-select nav2_smac_planner \\\n  --cmake-args -DBUILD_TESTING=ON\n\nsource install/setup.bash\n\n./build/nav2_smac_planner/test/test_smoother \\\n  --gtest_filter='SmootherTest.rejects_non_circular_footprint_collision'\n```\n",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">Please, we'd love that! I'd say before opening a PR, keep us apprised on your progress and when you think you found the problem for us to chat about :-)</p>\n</blockquote>\n<p dir=\"auto\">Thanks! I first tried adding a regression test to show the failure mode.<br>\nThe test builds an unsafe path, but the smoother reports success. The strategy is not to pass an already colliding path to the smoother and expect it to fail, because that would be blending (a) upstream planner or caller giving sth invalid with (b) smoother not rejecting that invalid input, while we just want to isolate (b).</p>\n<p dir=\"auto\">So instead I tried: valid input path -&gt; SMAC smoother changes the path -&gt; changed path becomes colliding -&gt; smoother still returns success<br>\nHere is the added test:<br>\n<a class=\"commit-link\" data-hovercard-type=\"commit\" data-hovercard-url=\"https://github.com/MobiusRoamer/navigation2/commit/bfb75f13/hovercard\" href=\"https://github.com/MobiusRoamer/navigation2/commit/bfb75f13\">MobiusRoamer@<tt>bfb75f13</tt></a></p>\n<p dir=\"auto\">To visualize the footprint geometry a bit, <code class=\"notranslate\">r</code> denotes the robot centre, `</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"1.2m * 0.4m\n        [===========]\n        [     r     ]\n        [===========]\n              ^\n            center\"><pre lang=\"text\" class=\"notranslate\"><code class=\"notranslate\">1.2m * 0.4m\n        [===========]\n        [     r     ]\n        [===========]\n              ^\n            center\n</code></pre></div>\n<p dir=\"auto\">X is our obstacle in the following landscape</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"y\n^\n| 12m    r----r----r----r----r----r\n|        |\n|        |     X  obstacle around (3.1, 11.7), not to scale\n|        |\n| 10m    r\n|        |\n|  8m    r\n|        |\n|  6m    r\n|        |\n|  4m    r\n|        |\n|  2m    r\n|\n+--------+----+----+----+----+----+----&gt; x\n        2m   4m   6m   8m  10m  12m  14m\"><pre lang=\"text\" class=\"notranslate\"><code class=\"notranslate\">y\n^\n| 12m    r----r----r----r----r----r\n|        |\n|        |     X  obstacle around (3.1, 11.7), not to scale\n|        |\n| 10m    r\n|        |\n|  8m    r\n|        |\n|  6m    r\n|        |\n|  4m    r\n|        |\n|  2m    r\n|\n+--------+----+----+----+----+----+----&gt; x\n        2m   4m   6m   8m  10m  12m  14m\n</code></pre></div>\n<p dir=\"auto\">See test results at end of this post.<br>\nBefore smoothing, every original pose is valid. I checked them using <code class=\"notranslate\">footprint_checker.footprintCostAtPose()</code>.<br>\nThen after smoothing, smoother moves poses between the two arms of the <code class=\"notranslate\">L</code> corner,  one pose gets close enough that its rectangle overlaps obstacle.  The bot centre is still not on the lethal X cell, so the old centre cell check passes. But the rectangular footprint at that pose overlaps the obstacle, so the full footprint check fails.</p>\n<p dir=\"auto\">My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.</p>\n<p dir=\"auto\">Does this direction match what you would expect? I'm open to changes.</p>\n<h4 dir=\"auto\">Test result</h4>\n<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://private-user-images.githubusercontent.com/97510875/618051356-c16efd1e-ef62-428d-900e-0750e886a3dd.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgwMDgsIm5iZiI6MTc5MTcxNzcwOCwicGF0aCI6Ii85NzUxMDg3NS82MTgwNTEzNTYtYzE2ZWZkMWUtZWY2Mi00MjhkLTkwMGUtMDc1MGU4ODZhM2RkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjEwMTElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMDExVDExMjE0OFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQ4ZjA5NjFjM2RmZTQ3MzJiNmNiYzdjYjdmNTI1ZjAwZGY0NTc1ZTBlMWZkMWVmNDMxZThkNjZiMjg4OWFlOWImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.6c1_WvK73CA-lJRHLw3BDj2DoVtPVPnPYeSFENz3ns0\"><img width=\"1132\" height=\"619\" alt=\"Image\" src=\"https://private-user-images.githubusercontent.com/97510875/618051356-c16efd1e-ef62-428d-900e-0750e886a3dd.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgwMDgsIm5iZiI6MTc5MTcxNzcwOCwicGF0aCI6Ii85NzUxMDg3NS82MTgwNTEzNTYtYzE2ZWZkMWUtZWY2Mi00MjhkLTkwMGUtMDc1MGU4ODZhM2RkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjEwMTElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMDExVDExMjE0OFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQ4ZjA5NjFjM2RmZTQ3MzJiNmNiYzdjYjdmNTI1ZjAwZGY0NTc1ZTBlMWZkMWVmNDMxZThkNjZiMjg4OWFlOWImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.6c1_WvK73CA-lJRHLw3BDj2DoVtPVPnPYeSFENz3ns0\" style=\"max-width: 100%; height: auto; max-height: 619px;; aspect-ratio: 1132 / 619; background-color: var(--bgColor-muted); border-radius: 6px\" class=\"js-gh-image-fallback\"></a>\n<p dir=\"auto\">To reproduce the regression test results</p>\n<div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"cd &lt;nav2_ws&gt;\n\ngit -C src/navigation2 fetch https://github.com/MobiusRoamer/navigation2.git fix/smac-smoother-footprint-5330\ngit -C src/navigation2 checkout FETCH_HEAD\"><pre class=\"notranslate\"><span class=\"pl-c1\">cd</span> <span class=\"pl-k\">&lt;</span>nav2_ws<span class=\"pl-k\">&gt;</span>\n\ngit -C src/navigation2 fetch https://github.com/MobiusRoamer/navigation2.git fix/smac-smoother-footprint-5330\ngit -C src/navigation2 checkout FETCH_HEAD</pre></div>\n<p dir=\"auto\">then (replace <code class=\"notranslate\">--packages-select</code> with <code class=\"notranslate\">--packages-up-to nav2_smac_planner</code> if dependencies not installed yet)</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"colcon build \\\n  --symlink-install \\\n  --packages-select nav2_smac_planner \\\n  --cmake-args -DBUILD_TESTING=ON\n\nsource install/setup.bash\n\n./build/nav2_smac_planner/test/test_smoother \\\n  --gtest_filter='SmootherTest.rejects_non_circular_footprint_collision'\"><pre class=\"notranslate\"><code class=\"notranslate\">colcon build \\\n  --symlink-install \\\n  --packages-select nav2_smac_planner \\\n  --cmake-args -DBUILD_TESTING=ON\n\nsource install/setup.bash\n\n./build/nav2_smac_planner/test/test_smoother \\\n  --gtest_filter='SmootherTest.rejects_non_circular_footprint_collision'\n</code></pre></div>",
+      "bodyVersion": "ec029c795271de53267379ccef87b7c637f13cee0fe49bad83dbc7f9eb4cbf82",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABJJ8NFw",
+      "databaseId": 4909370647,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4909370647",
+      "createdAt": "2026-07-07T21:50:53Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.\n\nSounds good and exactly what I had in mind! I think that regression test is also the precise situation that's being reported, so I'm happy with that!\n\n",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.</p>\n</blockquote>\n<p dir=\"auto\">Sounds good and exactly what I had in mind! I think that regression test is also the precise situation that's being reported, so I'm happy with that!</p>",
+      "bodyVersion": "0afe3adaaf9667c49c8c2de1392a608961d366b1a9a41dec2fc1a98c8a58476d",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "U_kgDOBc_l2w",
+                "login": "MobiusRoamer",
+                "name": "Ali",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/97510875?s=64&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABJKUk_Q",
+      "databaseId": 4909769981,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBc_l2w",
+        "login": "MobiusRoamer",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/97510875?v=4",
+        "profileUrl": "https://github.com/MobiusRoamer",
+        "name": "Ali"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4909769981",
+      "createdAt": "2026-07-07T22:55:46Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> > My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.\n> \n> Sounds good and exactly what I had in mind! I think that regression test is also the precise situation that's being reported, so I'm happy with that!\n\nThanks for checking, that's great! Opening a draft PR and will keep you posted",
+      "bodyHTML": "<blockquote>\n<blockquote>\n<p dir=\"auto\">My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.</p>\n</blockquote>\n<p dir=\"auto\">Sounds good and exactly what I had in mind! I think that regression test is also the precise situation that's being reported, so I'm happy with that!</p>\n</blockquote>\n<p dir=\"auto\">Thanks for checking, that's great! Opening a draft PR and will keep you posted</p>",
+      "bodyVersion": "053ea82460a19db07a2e783f8916c4d4126c941e63ba20bdd3b0253ffb3e9325",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+                "login": "SteveMacenski",
+                "name": "Steve Macenski",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABJVgt9Q",
+      "databaseId": 4921503221,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBc_l2w",
+        "login": "MobiusRoamer",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/97510875?v=4",
+        "profileUrl": "https://github.com/MobiusRoamer",
+        "name": "Ali"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4921503221",
+      "createdAt": "2026-07-09T04:14:08Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> > My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.\n> \n> Sounds good and exactly what I had in mind! I think that regression test is also the precise situation that's being reported, so I'm happy with that!\n\nI opened this draft PR, would rlly appreciate your feedback. I did see you suggested redesigning smoother, but I haven't touched the smoother structure for now and kept the pr scope limited. Have also included test reproduction commands in the pr description. Let me know if u think more changes / tests would help",
+      "bodyHTML": "<blockquote>\n<blockquote>\n<p dir=\"auto\">My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.</p>\n</blockquote>\n<p dir=\"auto\">Sounds good and exactly what I had in mind! I think that regression test is also the precise situation that's being reported, so I'm happy with that!</p>\n</blockquote>\n<p dir=\"auto\">I opened this draft PR, would rlly appreciate your feedback. I did see you suggested redesigning smoother, but I haven't touched the smoother structure for now and kept the pr scope limited. Have also included test reproduction commands in the pr description. Let me know if u think more changes / tests would help</p>",
+      "bodyVersion": "441988ccdf600d75c083c989bc0f3e73a579153ff05e683f20f5340dfbe0c329",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM6-p47fzwAAAARSzcF_",
+      "databaseId": 18569085311,
+      "createdAt": "2025-07-10T15:50:32Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM6-p47fzwAAAARSzcGO",
+      "databaseId": 18569085326,
+      "createdAt": "2025-07-10T15:50:32Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1ODE=",
+        "archivedAt": null,
+        "nameHTML": "help wanted",
+        "name": "help wanted",
+        "color": "008672",
+        "description": "Extra attention is needed"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM6-p47fzwAAAARSzcGX",
+      "databaseId": 18569085335,
+      "createdAt": "2025-07-10T15:50:32Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1ODI=",
+        "archivedAt": null,
+        "nameHTML": "good first issue",
+        "name": "good first issue",
+        "color": "7057ff",
+        "description": "Good for newcomers"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "RenamedTitleEvent",
+      "id": "RTE_lADOCBF7SM6-p47fzwAAAARSzeZc",
+      "databaseId": 18569094748,
+      "createdAt": "2025-07-10T15:51:06Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "currentTitle": "SMAC smoother can generate infeasible paths when using non-circular robots in very confined spaces",
+      "previousTitle": "SMAC smoother can generate infeasible paths"
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM638HD4",
+      "databaseId": 3085988088,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjQ2NTA1NDUx",
+        "login": "pamin1",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/46505451?u=3aba846946f16d19c7e221142c487c08528d68cb&v=4",
+        "profileUrl": "https://github.com/pamin1",
+        "name": "Prachit Amin"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-3085988088",
+      "createdAt": "2025-07-18T00:08:29Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I want to work on this if possible. I haven't examined the code yet, but I know that there is a collision checker built into nav2. Could we potentially use that function here?",
+      "bodyHTML": "<p dir=\"auto\">I want to work on this if possible. I haven't examined the code yet, but I know that there is a collision checker built into nav2. Could we potentially use that function here?</p>",
+      "bodyVersion": "0cbd10f88dd6b5e9850ce03b805e12dd712765b13dc9469b7dc5c7222b6b7ea6",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM65CRsZ",
+      "databaseId": 3104381721,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-3104381721",
+      "createdAt": "2025-07-22T18:56:25Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "The issue here is that we don't have the feasibility information in the smoother currently. So, there'd have to be a check on the feasibility constraints to then be able to get the orientation information (theta) needed to check the footprint. We cannot check the footprint without X,Y,Theta for a pose since the footprint is orientation-dependent when non-circular.\n\nSo, we'd probably want to start off by estimating the orientation with the `updateApproximatePathOrientations` function to get an orientation for introducing the collision checker. Then we'd have the X,Y,Theta for each pose to use a collision checker object with (Nav2 Costmap 2D has one of these you can use, see Hybrid-A* NodeT for an example use). \n\nThen, perhaps trying to do one step better by either changing the way the smoother works to retain orientation information so we know its 'real' or make sure we maintain minimum turning radius constraints so that the computed orientation is known to be drivable. That way if not just collision free, but also doesn't possibly violate constraints (which is rare and not usually a big deal, but can happen and would impact vehicles like Ackermann that have an actual, strict limit)",
+      "bodyHTML": "<p dir=\"auto\">The issue here is that we don't have the feasibility information in the smoother currently. So, there'd have to be a check on the feasibility constraints to then be able to get the orientation information (theta) needed to check the footprint. We cannot check the footprint without X,Y,Theta for a pose since the footprint is orientation-dependent when non-circular.</p>\n<p dir=\"auto\">So, we'd probably want to start off by estimating the orientation with the <code class=\"notranslate\">updateApproximatePathOrientations</code> function to get an orientation for introducing the collision checker. Then we'd have the X,Y,Theta for each pose to use a collision checker object with (Nav2 Costmap 2D has one of these you can use, see Hybrid-A* NodeT for an example use).</p>\n<p dir=\"auto\">Then, perhaps trying to do one step better by either changing the way the smoother works to retain orientation information so we know its 'real' or make sure we maintain minimum turning radius constraints so that the computed orientation is known to be drivable. That way if not just collision free, but also doesn't possibly violate constraints (which is rare and not usually a big deal, but can happen and would impact vehicles like Ackermann that have an actual, strict limit)</p>",
+      "bodyVersion": "68bf47926f590bbec87f35d13465e51d8ac943319a7874f1bd9b19734071d10a",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM69gtkF",
+      "databaseId": 3179469061,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOCD-Rsg",
+        "login": "CPPavithra",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/138383794?v=4",
+        "profileUrl": "https://github.com/CPPavithra",
+        "name": "Pavithra CP"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-3179469061",
+      "createdAt": "2025-08-12T13:58:47Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Hi! I’d like to work on this issue as my first PR.\n\nFrom the discussion, the main problem seems to be the lack of orientation information in the smoother’s collision check, which only uses simple cell cost and ignores the robot’s oriented footprint.\n\nI’ve reviewed the smac_smoother.cpp code and the issue discussion, and I see that the smoother currently **only checks collisions based on cell costs from the costmap**. This approach doesn’t account for the robot’s oriented footprint, which is critical for non-circular robots in confined spaces.\n\nTo address this, I plan to: \n\n(Use the existing updateApproximatePathOrientations function to estimate the orientation for each pose in the smoothed path. With the (X, Y, Theta) data available, integrate Nav2’s footprint collision checker (similar to how it’s used in the Hybrid-A* planner) to validate the path.)\n\n-> Integrate Nav2’s footprint collision checker into the smoother.\n\n -> After smoothing and updating the path orientations (x, y, theta), run a footprint collision check on every pose along the path.\n\n  -> If any footprint collision is detected, reject the smoothed path and revert to the last valid path.\n\n   -> Ensure this addition works seamlessly with the existing smoothing logic and does not degrade performance.\n\nI’ll also add tests to verify that the smoother no longer produces infeasible paths due to footprint collisions.\n\nI’d love to work on this as my first PR. Could I please get a go-ahead? Also, any guidance on best practices for initializing the collision checker or existing test cases to build on would be greatly appreciated!\n",
+      "bodyHTML": "<p dir=\"auto\">Hi! I’d like to work on this issue as my first PR.</p>\n<p dir=\"auto\">From the discussion, the main problem seems to be the lack of orientation information in the smoother’s collision check, which only uses simple cell cost and ignores the robot’s oriented footprint.</p>\n<p dir=\"auto\">I’ve reviewed the smac_smoother.cpp code and the issue discussion, and I see that the smoother currently <strong>only checks collisions based on cell costs from the costmap</strong>. This approach doesn’t account for the robot’s oriented footprint, which is critical for non-circular robots in confined spaces.</p>\n<p dir=\"auto\">To address this, I plan to:</p>\n<p dir=\"auto\">(Use the existing updateApproximatePathOrientations function to estimate the orientation for each pose in the smoothed path. With the (X, Y, Theta) data available, integrate Nav2’s footprint collision checker (similar to how it’s used in the Hybrid-A* planner) to validate the path.)</p>\n<p dir=\"auto\">-&gt; Integrate Nav2’s footprint collision checker into the smoother.</p>\n<p dir=\"auto\">-&gt; After smoothing and updating the path orientations (x, y, theta), run a footprint collision check on every pose along the path.</p>\n<p dir=\"auto\">-&gt; If any footprint collision is detected, reject the smoothed path and revert to the last valid path.</p>\n<p dir=\"auto\">-&gt; Ensure this addition works seamlessly with the existing smoothing logic and does not degrade performance.</p>\n<p dir=\"auto\">I’ll also add tests to verify that the smoother no longer produces infeasible paths due to footprint collisions.</p>\n<p dir=\"auto\">I’d love to work on this as my first PR. Could I please get a go-ahead? Also, any guidance on best practices for initializing the collision checker or existing test cases to build on would be greatly appreciated!</p>",
+      "bodyVersion": "3067de890b0596660a1c9dcb24f1218bf7cec57a66b39eeeb5a56bef47915743",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM69iz-R",
+      "databaseId": 3180019601,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-3180019601",
+      "createdAt": "2025-08-12T16:01:09Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Yes, that sounds like a good plan! I don't have any notes :-) ",
+      "bodyHTML": "<p dir=\"auto\">Yes, that sounds like a good plan! I don't have any notes :-)</p>",
+      "bodyVersion": "c3f2b89be78ed58b1e4ea6431cc80ad92412579e2782a7c8ba1d0ca79cc441c3",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ReferencedEvent",
+      "id": "REFE_lADOCBF7SM6-p47fzwAAAAWvtw7A",
+      "databaseId": 24422846144,
+      "createdAt": "2026-04-12T16:33:17Z",
+      "actor": {
+        "id": "U_kgDODwQiGg",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/251929114?s=64&u=38b955fc814189e3addbafa917312884756215af&v=4",
+        "login": "aki1770-del",
+        "profileResourcePath": "/aki1770-del",
+        "__typename": "User",
+        "name": "Akihiko Komada"
+      },
+      "willCloseSubject": true,
+      "subject": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "__typename": "Issue"
+      },
+      "commit": {
+        "id": "C_kwDOSAsYBdoAKGE2NmY4NmJhN2E5ZjZhMTUxMWQyMWNkODI3MzVmMjhlZjQ0Zjg2YmQ",
+        "message": "fix(smac_planner): check oriented footprint collision in smoother for non-circular robots\n\nThe SMAC path smoother was checking only the centre-point cost of each pose\nafter gradient descent, which allowed smoothed paths to produce lethal oriented\nfootprint collisions for non-circular robots (wide rectangular footprints\npassing diagonally through narrow corridors pass the centre-cost check but\nfail a proper footprint check).\n\nAdd an optional `footprint` parameter (default empty = circular / no change in\nbehaviour) to `Smoother::smooth()` and `Smoother::smoothImpl()`.  When a\nfootprint is provided, a `FootprintCollisionChecker` pass runs over the\nsmoothed path after `updateApproximatePathOrientations()`; any pose whose\noriented cost exceeds MAX_NON_OBSTACLE_COST triggers a warning and returns\nfalse, leaving the original path unchanged.\n\nThe three planner plugins (Hybrid, 2D, Lattice) forward the costmap robot\nfootprint to the smoother so non-circular robots benefit automatically.\n\nRegression test added: `test_footprint_collision_detection` sets up a corridor\nwith lethal walls, confirms a narrow footprint passes and a wide footprint\n(1.2 m) correctly fails.\n\nFixes #5330\n\nCo-Authored-By: Claude and aki1770-del <aki1770@gmail.com>",
+        "messageHeadlineHTML": "fix(smac_planner): check oriented footprint collision in smoother for…",
+        "messageBodyHTML": "… non-circular robots\n\nThe SMAC path smoother was checking only the centre-point cost of each pose\nafter gradient descent, which allowed smoothed paths to produce lethal oriented\nfootprint collisions for non-circular robots (wide rectangular footprints\npassing diagonally through narrow corridors pass the centre-cost check but\nfail a proper footprint check).\n\nAdd an optional `footprint` parameter (default empty = circular / no change in\nbehaviour) to `Smoother::smooth()` and `Smoother::smoothImpl()`.  When a\nfootprint is provided, a `FootprintCollisionChecker` pass runs over the\nsmoothed path after `updateApproximatePathOrientations()`; any pose whose\noriented cost exceeds MAX_NON_OBSTACLE_COST triggers a warning and returns\nfalse, leaving the original path unchanged.\n\nThe three planner plugins (Hybrid, 2D, Lattice) forward the costmap robot\nfootprint to the smoother so non-circular robots benefit automatically.\n\nRegression test added: `test_footprint_collision_detection` sets up a corridor\nwith lethal walls, confirms a narrow footprint passes and a wide footprint\n(1.2 m) correctly fails.\n\n<span class=\"issue-keyword tooltipped tooltipped-se\" aria-label=\"This commit closes issue #5330.\">Fixes</span> <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3198652127\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5330\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5330/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5330\">ros-navigation#5330</a>\n\nCo-Authored-By: Claude and aki1770-del &lt;aki1770@gmail.com&gt;",
+        "url": "https://github.com/aki1770-del/navigation2/commit/a66f86ba7a9f6a1511d21cd82735f28ef44f86bd",
+        "abbreviatedOid": "a66f86b",
+        "repository": {
+          "id": "R_kgDOSAsYBQ",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "User",
+            "id": "U_kgDODwQiGg",
+            "login": "aki1770-del"
+          },
+          "defaultBranch": "main"
+        }
+      }
+    },
+    {
+      "__typename": "ReferencedEvent",
+      "id": "REFE_lADOCBF7SM6-p47fzwAAAAWyQDb4",
+      "databaseId": 24465389304,
+      "createdAt": "2026-04-13T22:43:04Z",
+      "actor": {
+        "id": "U_kgDODwQiGg",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/251929114?s=64&u=38b955fc814189e3addbafa917312884756215af&v=4",
+        "login": "aki1770-del",
+        "profileResourcePath": "/aki1770-del",
+        "__typename": "User",
+        "name": "Akihiko Komada"
+      },
+      "willCloseSubject": true,
+      "subject": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "__typename": "Issue"
+      },
+      "commit": {
+        "id": "C_kwDOSAsYBdoAKGJlMmRhMDQ3MGQ4MDFhZDlmOWQzMWM3ZWE1MDE3YzRiNmNmM2NjMTY",
+        "message": "fix(smac_planner): check oriented footprint collision in smoother for non-circular robots\n\nThe SMAC path smoother was checking only the centre-point cost of each pose\nafter gradient descent, which allowed smoothed paths to produce lethal oriented\nfootprint collisions for non-circular robots (wide rectangular footprints\npassing diagonally through narrow corridors pass the centre-cost check but\nfail a proper footprint check).\n\nAdd an optional `footprint` parameter (default empty = circular / no change in\nbehaviour) to `Smoother::smooth()` and `Smoother::smoothImpl()`.  When a\nfootprint is provided, a `FootprintCollisionChecker` pass runs over the\nsmoothed path after `updateApproximatePathOrientations()`; any pose whose\noriented cost exceeds MAX_NON_OBSTACLE_COST triggers a warning and returns\nfalse, leaving the original path unchanged.\n\nThe three planner plugins (Hybrid, 2D, Lattice) forward the costmap robot\nfootprint to the smoother so non-circular robots benefit automatically.\n\nRegression test added: `test_footprint_collision_detection` sets up a corridor\nwith lethal walls, confirms a narrow footprint passes and a wide footprint\n(1.2 m) correctly fails.\n\nFixes #5330\n\nCo-Authored-By: Claude and aki1770-del <aki1770@gmail.com>\nSigned-off-by: Akihiko Komada <aki1770@gmail.com>",
+        "messageHeadlineHTML": "fix(smac_planner): check oriented footprint collision in smoother for…",
+        "messageBodyHTML": "… non-circular robots\n\nThe SMAC path smoother was checking only the centre-point cost of each pose\nafter gradient descent, which allowed smoothed paths to produce lethal oriented\nfootprint collisions for non-circular robots (wide rectangular footprints\npassing diagonally through narrow corridors pass the centre-cost check but\nfail a proper footprint check).\n\nAdd an optional `footprint` parameter (default empty = circular / no change in\nbehaviour) to `Smoother::smooth()` and `Smoother::smoothImpl()`.  When a\nfootprint is provided, a `FootprintCollisionChecker` pass runs over the\nsmoothed path after `updateApproximatePathOrientations()`; any pose whose\noriented cost exceeds MAX_NON_OBSTACLE_COST triggers a warning and returns\nfalse, leaving the original path unchanged.\n\nThe three planner plugins (Hybrid, 2D, Lattice) forward the costmap robot\nfootprint to the smoother so non-circular robots benefit automatically.\n\nRegression test added: `test_footprint_collision_detection` sets up a corridor\nwith lethal walls, confirms a narrow footprint passes and a wide footprint\n(1.2 m) correctly fails.\n\n<span class=\"issue-keyword tooltipped tooltipped-se\" aria-label=\"This commit closes issue #5330.\">Fixes</span> <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3198652127\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5330\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5330/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5330\">ros-navigation#5330</a>\n\nCo-Authored-By: Claude and aki1770-del &lt;aki1770@gmail.com&gt;\nSigned-off-by: Akihiko Komada &lt;aki1770@gmail.com&gt;",
+        "url": "https://github.com/aki1770-del/navigation2/commit/be2da0470d801ad9f9d31c7ea5017c4b6cf3cc16",
+        "abbreviatedOid": "be2da04",
+        "repository": {
+          "id": "R_kgDOSAsYBQ",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "User",
+            "id": "U_kgDODwQiGg",
+            "login": "aki1770-del"
+          },
+          "defaultBranch": "main"
+        }
+      }
+    },
+    {
+      "__typename": "ReferencedEvent",
+      "id": "REFE_lADOCBF7SM6-p47fzwAAAAXRsgo8",
+      "databaseId": 24992942652,
+      "createdAt": "2026-04-29T13:47:29Z",
+      "actor": {
+        "id": "U_kgDODwQiGg",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/251929114?s=64&u=38b955fc814189e3addbafa917312884756215af&v=4",
+        "login": "aki1770-del",
+        "profileResourcePath": "/aki1770-del",
+        "__typename": "User",
+        "name": "Akihiko Komada"
+      },
+      "willCloseSubject": false,
+      "subject": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "__typename": "Issue"
+      },
+      "commit": {
+        "id": "C_kwDOSAsYBdoAKGYxMzQ3YzM2MTcyZTFjYTI0NDRmZDU2OTNjYWFmN2RiMDg4Njk5MmE",
+        "message": "fix(smac_planner): per-iteration revert + SmoothedPathInCollision throw\n\nAddress Maurice's CHANGES_REQUESTED on PR #6081:\n\n1. Move oriented-footprint check INTO the gradient-descent while loop\n   (per r3072469939). Previously the check ran once after the loop and\n   the post-loop block truncated new_path then propagated an empty path\n   through the recursive smoothImpl refinement self-call, causing the\n   regression test to crash on the path_size-1 underflow.\n\n2. Per-iteration revert (path = last_path) on collision — matches the\n   nav2_smoother::SimpleSmoother idiom (simple_smoother.cpp:171-178).\n   Path length is preserved end-to-end. Truncation removed.\n\n3. Throw nav2_core::SmoothedPathInCollision on oriented-footprint\n   collision — matches the canonical fail-loud signal already used by\n   nav2_smoother::Nav2Smoother (nav2_smoother.cpp:285-303). Caller\n   receives an explicit collision exception instead of a silently\n   truncated path. This closes the controller-tracking hazard for\n   wide-rectangular robots in confined corridors that motivated #5330.\n\nTest updated: wide-footprint case now expects SmoothedPathInCollision\nthrow and verifies path length preservation (EXPECT_EQ poses.size()).\n\nCloses the empty-path crash that broke CI on commit 1c5feb6.\nRefs #5330.\n\nSigned-off-by: Akihiko Komada <aki1770@gmail.com>",
+        "messageHeadlineHTML": "fix(smac_planner): per-iteration revert + SmoothedPathInCollision throw",
+        "messageBodyHTML": "Address Maurice's CHANGES_REQUESTED on PR <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4248890885\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6081\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6081/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/6081\">ros-navigation#6081</a>:\n\n1. Move oriented-footprint check INTO the gradient-descent while loop\n   (per r3072469939). Previously the check ran once after the loop and\n   the post-loop block truncated new_path then propagated an empty path\n   through the recursive smoothImpl refinement self-call, causing the\n   regression test to crash on the path_size-1 underflow.\n\n2. Per-iteration revert (path = last_path) on collision — matches the\n   nav2_smoother::SimpleSmoother idiom (simple_smoother.cpp:171-178).\n   Path length is preserved end-to-end. Truncation removed.\n\n3. Throw nav2_core::SmoothedPathInCollision on oriented-footprint\n   collision — matches the canonical fail-loud signal already used by\n   nav2_smoother::Nav2Smoother (nav2_smoother.cpp:285-303). Caller\n   receives an explicit collision exception instead of a silently\n   truncated path. This closes the controller-tracking hazard for\n   wide-rectangular robots in confined corridors that motivated <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3198652127\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5330\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5330/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5330\">ros-navigation#5330</a>.\n\nTest updated: wide-footprint case now expects SmoothedPathInCollision\nthrow and verifies path length preservation (EXPECT_EQ poses.size()).\n\nCloses the empty-path crash that broke CI on commit <a class=\"commit-link\" data-hovercard-type=\"commit\" data-hovercard-url=\"https://github.com/aki1770-del/navigation2/commit/1c5feb6f6afc33b452552e046407f46b78bcb2ee/hovercard\" href=\"https://github.com/aki1770-del/navigation2/commit/1c5feb6f6afc33b452552e046407f46b78bcb2ee\"><tt>1c5feb6</tt></a>.\nRefs <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3198652127\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5330\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5330/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5330\">ros-navigation#5330</a>.\n\nSigned-off-by: Akihiko Komada &lt;aki1770@gmail.com&gt;",
+        "url": "https://github.com/aki1770-del/navigation2/commit/f1347c36172e1ca2444fd5693caaf7db0886992a",
+        "abbreviatedOid": "f1347c3",
+        "repository": {
+          "id": "R_kgDOSAsYBQ",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "User",
+            "id": "U_kgDODwQiGg",
+            "login": "aki1770-del"
+          },
+          "defaultBranch": "main"
+        }
+      }
+    },
+    {
+      "__typename": "ReferencedEvent",
+      "id": "REFE_lADOCBF7SM6-p47fzwAAAAXVv-fV",
+      "databaseId": 25060960213,
+      "createdAt": "2026-05-01T03:43:09Z",
+      "actor": {
+        "id": "U_kgDODwQiGg",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/251929114?s=64&u=38b955fc814189e3addbafa917312884756215af&v=4",
+        "login": "aki1770-del",
+        "profileResourcePath": "/aki1770-del",
+        "__typename": "User",
+        "name": "Akihiko Komada"
+      },
+      "willCloseSubject": true,
+      "subject": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "__typename": "Issue"
+      },
+      "commit": {
+        "id": "C_kwDOSAsYBdoAKGMyNTQ5NDgyZmY3NzVmZDZjNTczNDhhNDdjNjdkYjFlZjMyYzY2OTM",
+        "message": "fix(smac_planner): check oriented footprint collision in smoother for non-circular robots\n\nThe SMAC path smoother was checking only the centre-point cost of each pose\nafter gradient descent, which allowed smoothed paths to produce lethal oriented\nfootprint collisions for non-circular robots (wide rectangular footprints\npassing diagonally through narrow corridors pass the centre-cost check but\nfail a proper footprint check).\n\nAdd an optional `footprint` parameter (default empty = circular / no change in\nbehaviour) to `Smoother::smooth()` and `Smoother::smoothImpl()`.  When a\nfootprint is provided, a `FootprintCollisionChecker` pass runs over the\nsmoothed path after `updateApproximatePathOrientations()`; any pose whose\noriented cost exceeds MAX_NON_OBSTACLE_COST triggers a warning and returns\nfalse, leaving the original path unchanged.\n\nThe three planner plugins (Hybrid, 2D, Lattice) forward the costmap robot\nfootprint to the smoother so non-circular robots benefit automatically.\n\nRegression test added: `test_footprint_collision_detection` sets up a corridor\nwith lethal walls, confirms a narrow footprint passes and a wide footprint\n(1.2 m) correctly fails.\n\nFixes #5330\n\nCo-Authored-By: Claude and aki1770-del <aki1770@gmail.com>\nSigned-off-by: Akihiko Komada <aki1770@gmail.com>",
+        "messageHeadlineHTML": "fix(smac_planner): check oriented footprint collision in smoother for…",
+        "messageBodyHTML": "… non-circular robots\n\nThe SMAC path smoother was checking only the centre-point cost of each pose\nafter gradient descent, which allowed smoothed paths to produce lethal oriented\nfootprint collisions for non-circular robots (wide rectangular footprints\npassing diagonally through narrow corridors pass the centre-cost check but\nfail a proper footprint check).\n\nAdd an optional `footprint` parameter (default empty = circular / no change in\nbehaviour) to `Smoother::smooth()` and `Smoother::smoothImpl()`.  When a\nfootprint is provided, a `FootprintCollisionChecker` pass runs over the\nsmoothed path after `updateApproximatePathOrientations()`; any pose whose\noriented cost exceeds MAX_NON_OBSTACLE_COST triggers a warning and returns\nfalse, leaving the original path unchanged.\n\nThe three planner plugins (Hybrid, 2D, Lattice) forward the costmap robot\nfootprint to the smoother so non-circular robots benefit automatically.\n\nRegression test added: `test_footprint_collision_detection` sets up a corridor\nwith lethal walls, confirms a narrow footprint passes and a wide footprint\n(1.2 m) correctly fails.\n\n<span class=\"issue-keyword tooltipped tooltipped-se\" aria-label=\"This commit closes issue #5330.\">Fixes</span> <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3198652127\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5330\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5330/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5330\">ros-navigation#5330</a>\n\nCo-Authored-By: Claude and aki1770-del &lt;aki1770@gmail.com&gt;\nSigned-off-by: Akihiko Komada &lt;aki1770@gmail.com&gt;",
+        "url": "https://github.com/aki1770-del/navigation2/commit/c2549482ff775fd6c57348a47c67db1ef32c6693",
+        "abbreviatedOid": "c254948",
+        "repository": {
+          "id": "R_kgDOSAsYBQ",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "User",
+            "id": "U_kgDODwQiGg",
+            "login": "aki1770-del"
+          },
+          "defaultBranch": "main"
+        }
+      }
+    },
+    {
+      "__typename": "ReferencedEvent",
+      "id": "REFE_lADOCBF7SM6-p47fzwAAAAXVv-gH",
+      "databaseId": 25060960263,
+      "createdAt": "2026-05-01T03:43:09Z",
+      "actor": {
+        "id": "U_kgDODwQiGg",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/251929114?s=64&u=38b955fc814189e3addbafa917312884756215af&v=4",
+        "login": "aki1770-del",
+        "profileResourcePath": "/aki1770-del",
+        "__typename": "User",
+        "name": "Akihiko Komada"
+      },
+      "willCloseSubject": false,
+      "subject": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "__typename": "Issue"
+      },
+      "commit": {
+        "id": "C_kwDOSAsYBdoAKDI3NTExZTI5MmM4ZDlhZjVmNGM0ODQ3ZjRhMzA1MmE4MWJjM2I5OGQ",
+        "message": "fix(smac_planner): per-iteration revert + SmoothedPathInCollision throw\n\nAddress Maurice's CHANGES_REQUESTED on PR #6081:\n\n1. Move oriented-footprint check INTO the gradient-descent while loop\n   (per r3072469939). Previously the check ran once after the loop and\n   the post-loop block truncated new_path then propagated an empty path\n   through the recursive smoothImpl refinement self-call, causing the\n   regression test to crash on the path_size-1 underflow.\n\n2. Per-iteration revert (path = last_path) on collision — matches the\n   nav2_smoother::SimpleSmoother idiom (simple_smoother.cpp:171-178).\n   Path length is preserved end-to-end. Truncation removed.\n\n3. Throw nav2_core::SmoothedPathInCollision on oriented-footprint\n   collision — matches the canonical fail-loud signal already used by\n   nav2_smoother::Nav2Smoother (nav2_smoother.cpp:285-303). Caller\n   receives an explicit collision exception instead of a silently\n   truncated path. This closes the controller-tracking hazard for\n   wide-rectangular robots in confined corridors that motivated #5330.\n\nTest updated: wide-footprint case now expects SmoothedPathInCollision\nthrow and verifies path length preservation (EXPECT_EQ poses.size()).\n\nCloses the empty-path crash that broke CI on commit 1c5feb6.\nRefs #5330.\n\nSigned-off-by: Akihiko Komada <aki1770@gmail.com>",
+        "messageHeadlineHTML": "fix(smac_planner): per-iteration revert + SmoothedPathInCollision throw",
+        "messageBodyHTML": "Address Maurice's CHANGES_REQUESTED on PR <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4248890885\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6081\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6081/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/6081\">ros-navigation#6081</a>:\n\n1. Move oriented-footprint check INTO the gradient-descent while loop\n   (per r3072469939). Previously the check ran once after the loop and\n   the post-loop block truncated new_path then propagated an empty path\n   through the recursive smoothImpl refinement self-call, causing the\n   regression test to crash on the path_size-1 underflow.\n\n2. Per-iteration revert (path = last_path) on collision — matches the\n   nav2_smoother::SimpleSmoother idiom (simple_smoother.cpp:171-178).\n   Path length is preserved end-to-end. Truncation removed.\n\n3. Throw nav2_core::SmoothedPathInCollision on oriented-footprint\n   collision — matches the canonical fail-loud signal already used by\n   nav2_smoother::Nav2Smoother (nav2_smoother.cpp:285-303). Caller\n   receives an explicit collision exception instead of a silently\n   truncated path. This closes the controller-tracking hazard for\n   wide-rectangular robots in confined corridors that motivated <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3198652127\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5330\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5330/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5330\">ros-navigation#5330</a>.\n\nTest updated: wide-footprint case now expects SmoothedPathInCollision\nthrow and verifies path length preservation (EXPECT_EQ poses.size()).\n\nCloses the empty-path crash that broke CI on commit <a class=\"commit-link\" data-hovercard-type=\"commit\" data-hovercard-url=\"https://github.com/aki1770-del/navigation2/commit/1c5feb6f6afc33b452552e046407f46b78bcb2ee/hovercard\" href=\"https://github.com/aki1770-del/navigation2/commit/1c5feb6f6afc33b452552e046407f46b78bcb2ee\"><tt>1c5feb6</tt></a>.\nRefs <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3198652127\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5330\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5330/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5330\">ros-navigation#5330</a>.\n\nSigned-off-by: Akihiko Komada &lt;aki1770@gmail.com&gt;",
+        "url": "https://github.com/aki1770-del/navigation2/commit/27511e292c8d9af5f4c4847f4a3052a81bc3b98d",
+        "abbreviatedOid": "27511e2",
+        "repository": {
+          "id": "R_kgDOSAsYBQ",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "User",
+            "id": "U_kgDODwQiGg",
+            "login": "aki1770-del"
+          },
+          "defaultBranch": "main"
+        }
+      }
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABDjWXrQ",
+      "databaseId": 4533360557,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU4NDMzNTkx",
+        "login": "mini-1235",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/58433591?u=5419a457641e1ff8877dff2e78c6789520378b19&v=4",
+        "profileUrl": "https://github.com/mini-1235",
+        "name": "Maurice Alexander Purnawan"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4533360557",
+      "createdAt": "2026-05-25T10:01:12Z",
+      "authorAssociation": "COLLABORATOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Possible reference: https://github.com/ros-navigation/navigation2/pull/6081, the PR was closed because it's fully AI-generated and not tested ",
+      "bodyHTML": "<p dir=\"auto\">Possible reference: <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4248890885\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6081\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6081/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/6081\">#6081</a>, the PR was closed because it's fully AI-generated and not tested</p>",
+      "bodyVersion": "b672352bc1c3464448400ae407238242cf02be4b61364ac0f61d98c597f6c461",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ReferencedEvent",
+      "id": "REFE_lADOCBF7SM6-p47fzwAAAAYpd4XS",
+      "databaseId": 26465502674,
+      "createdAt": "2026-06-08T10:29:48Z",
+      "actor": {
+        "id": "U_kgDOCs9eIQ",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/181362209?s=64&u=97893df75589ca5c2f73e955d546c4e3291752a5&v=4",
+        "login": "paneendrakumar0",
+        "profileResourcePath": "/paneendrakumar0",
+        "__typename": "User",
+        "name": "Paneendra Kumar"
+      },
+      "willCloseSubject": false,
+      "subject": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "__typename": "Issue"
+      },
+      "commit": {
+        "id": "C_kwDOS0RPbdoAKDQ4ZWQ1YjI1ZGU4YjIxMjYyMTllNTYwODdlYzhjZjFmZjc0YTllM2U",
+        "message": "Fix SMAC smoother footprint collisions (Issue #5330)",
+        "messageHeadlineHTML": "Fix SMAC smoother footprint collisions (Issue <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3198652127\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5330\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5330/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5330\">ros-navigation#5330</a>)",
+        "messageBodyHTML": "",
+        "url": "https://github.com/paneendrakumar0/navigation2/commit/48ed5b25de8b2126219e56087ec8cf1ff74a9e3e",
+        "abbreviatedOid": "48ed5b2",
+        "repository": {
+          "id": "R_kgDOS0RPbQ",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "User",
+            "id": "U_kgDOCs9eIQ",
+            "login": "paneendrakumar0"
+          },
+          "defaultBranch": "main"
+        }
+      }
+    },
+    {
+      "__typename": "ReferencedEvent",
+      "id": "REFE_lADOCBF7SM6-p47fzwAAAAYpfBqj",
+      "databaseId": 26465802915,
+      "createdAt": "2026-06-08T10:37:09Z",
+      "actor": {
+        "id": "U_kgDOCs9eIQ",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/181362209?s=64&u=97893df75589ca5c2f73e955d546c4e3291752a5&v=4",
+        "login": "paneendrakumar0",
+        "profileResourcePath": "/paneendrakumar0",
+        "__typename": "User",
+        "name": "Paneendra Kumar"
+      },
+      "willCloseSubject": false,
+      "subject": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "__typename": "Issue"
+      },
+      "commit": {
+        "id": "C_kwDOS0RPbdoAKDA3MTY4ZWVjY2E5YWM2NmZiMjEyM2EyMTk4ODUxOGQ0NGE4MGEyYmU",
+        "message": "Fix SMAC smoother footprint collisions (Issue #5330)\n\nSigned-off-by: Bathala Paneendra Kumar <paneendra100@gmail.com>",
+        "messageHeadlineHTML": "Fix SMAC smoother footprint collisions (Issue <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3198652127\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5330\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5330/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5330\">ros-navigation#5330</a>)",
+        "messageBodyHTML": "Signed-off-by: Bathala Paneendra Kumar &lt;paneendra100@gmail.com&gt;",
+        "url": "https://github.com/paneendrakumar0/navigation2/commit/07168eecca9ac66fb2123a21988518d44a80a2be",
+        "abbreviatedOid": "07168ee",
+        "repository": {
+          "id": "R_kgDOS0RPbQ",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "User",
+            "id": "U_kgDOCs9eIQ",
+            "login": "paneendrakumar0"
+          },
+          "defaultBranch": "main"
+        }
+      }
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABH25LGg",
+      "databaseId": 4822289178,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBc_l2w",
+        "login": "MobiusRoamer",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/97510875?v=4",
+        "profileUrl": "https://github.com/MobiusRoamer",
+        "name": "Ali"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4822289178",
+      "createdAt": "2026-06-27T22:10:27Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Hi I'd like to have a crack at this as I see previous PRs have closed and no assignees. Had a look at the previous attempts and feedback. Will keep these in mind: preserve the path length and goal pose, avoid unrelated changes, determine the collision handling behaviour before implementation, avoid dup and expensive checks. \n\nBefore opening a PR i plan to reproduce the issue locally and check behaviour with a non-circular footprint in simulation (will probs keep these documented for reproduction in draft pr comments). Will also provide regression tests and document before / after evidence. \n\nWould it be okay for me to take this on?",
+      "bodyHTML": "<p dir=\"auto\">Hi I'd like to have a crack at this as I see previous PRs have closed and no assignees. Had a look at the previous attempts and feedback. Will keep these in mind: preserve the path length and goal pose, avoid unrelated changes, determine the collision handling behaviour before implementation, avoid dup and expensive checks.</p>\n<p dir=\"auto\">Before opening a PR i plan to reproduce the issue locally and check behaviour with a non-circular footprint in simulation (will probs keep these documented for reproduction in draft pr comments). Will also provide regression tests and document before / after evidence.</p>\n<p dir=\"auto\">Would it be okay for me to take this on?</p>",
+      "bodyVersion": "3448fd2335c4778c78025568c2bbe74e8ac352ba58dd3a60f19a96eab2725c07",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABIDSV2A",
+      "databaseId": 4835284440,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4835284440",
+      "createdAt": "2026-06-29T17:30:16Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Please, we'd love that! I'd say before opening a PR, keep us apprised on your progress and when you think you found the problem for us to chat about :-) ",
+      "bodyHTML": "<p dir=\"auto\">Please, we'd love that! I'd say before opening a PR, keep us apprised on your progress and when you think you found the problem for us to chat about :-)</p>",
+      "bodyVersion": "a83c9873a5c1fddbcdcad8af55e70cab15d03f7383ccf391fff64bfbbf891a14",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "U_kgDOBc_l2w",
+                "login": "MobiusRoamer",
+                "name": "Ali",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/97510875?s=64&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABJC4oIw",
+      "databaseId": 4901972003,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBc_l2w",
+        "login": "MobiusRoamer",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/97510875?v=4",
+        "profileUrl": "https://github.com/MobiusRoamer",
+        "name": "Ali"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4901972003",
+      "createdAt": "2026-07-07T08:55:47Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> Please, we'd love that! I'd say before opening a PR, keep us apprised on your progress and when you think you found the problem for us to chat about :-)\n\nThanks! I first tried adding a regression test to show the failure mode.\nThe test builds an unsafe path, but the smoother reports success. The strategy is not to pass an already colliding path to the smoother and expect it to fail, because that would be blending (a) upstream planner or caller giving sth invalid with (b) smoother not rejecting that invalid input, while we just want to isolate (b).\n\nSo instead I tried: valid input path -> SMAC smoother changes the path -> changed path becomes colliding -> smoother still returns success\nHere is the added test: \nhttps://github.com/MobiusRoamer/navigation2/commit/bfb75f13 \n\n\nTo visualize the footprint geometry a bit, `r` denotes the robot centre, `\n```text\n1.2m * 0.4m\n        [===========]\n        [     r     ]\n        [===========]\n              ^\n            center\n```\nX is our obstacle in the following landscape\n\n```text\ny\n^\n| 12m    r----r----r----r----r----r\n|        |\n|        |     X  obstacle around (3.1, 11.7), not to scale\n|        |\n| 10m    r\n|        |\n|  8m    r\n|        |\n|  6m    r\n|        |\n|  4m    r\n|        |\n|  2m    r\n|\n+--------+----+----+----+----+----+----> x\n        2m   4m   6m   8m  10m  12m  14m\n```\n\nSee test results at end of this post.\nBefore smoothing, every original pose is valid. I checked them using `footprint_checker.footprintCostAtPose()`.\nThen after smoothing, smoother moves poses between the two arms of the `L` corner,  one pose gets close enough that its rectangle overlaps obstacle.  The bot centre is still not on the lethal X cell, so the old centre cell check passes. But the rectangular footprint at that pose overlaps the obstacle, so the full footprint check fails.\n\n\nMy planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.\n\nDoes this direction match what you would expect? I'm open to changes. \n\n\n#### Test result\n<img width=\"1132\" height=\"619\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c16efd1e-ef62-428d-900e-0750e886a3dd\" />\n\nTo reproduce the regression test results\n\n```bash\ncd <nav2_ws>\n\ngit -C src/navigation2 fetch https://github.com/MobiusRoamer/navigation2.git fix/smac-smoother-footprint-5330\ngit -C src/navigation2 checkout FETCH_HEAD\n```\nthen (replace `--packages-select` with `--packages-up-to nav2_smac_planner` if dependencies not installed yet)\n```\ncolcon build \\\n  --symlink-install \\\n  --packages-select nav2_smac_planner \\\n  --cmake-args -DBUILD_TESTING=ON\n\nsource install/setup.bash\n\n./build/nav2_smac_planner/test/test_smoother \\\n  --gtest_filter='SmootherTest.rejects_non_circular_footprint_collision'\n```\n",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">Please, we'd love that! I'd say before opening a PR, keep us apprised on your progress and when you think you found the problem for us to chat about :-)</p>\n</blockquote>\n<p dir=\"auto\">Thanks! I first tried adding a regression test to show the failure mode.<br>\nThe test builds an unsafe path, but the smoother reports success. The strategy is not to pass an already colliding path to the smoother and expect it to fail, because that would be blending (a) upstream planner or caller giving sth invalid with (b) smoother not rejecting that invalid input, while we just want to isolate (b).</p>\n<p dir=\"auto\">So instead I tried: valid input path -&gt; SMAC smoother changes the path -&gt; changed path becomes colliding -&gt; smoother still returns success<br>\nHere is the added test:<br>\n<a class=\"commit-link\" data-hovercard-type=\"commit\" data-hovercard-url=\"https://github.com/MobiusRoamer/navigation2/commit/bfb75f13/hovercard\" href=\"https://github.com/MobiusRoamer/navigation2/commit/bfb75f13\">MobiusRoamer@<tt>bfb75f13</tt></a></p>\n<p dir=\"auto\">To visualize the footprint geometry a bit, <code class=\"notranslate\">r</code> denotes the robot centre, `</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"1.2m * 0.4m\n        [===========]\n        [     r     ]\n        [===========]\n              ^\n            center\"><pre lang=\"text\" class=\"notranslate\"><code class=\"notranslate\">1.2m * 0.4m\n        [===========]\n        [     r     ]\n        [===========]\n              ^\n            center\n</code></pre></div>\n<p dir=\"auto\">X is our obstacle in the following landscape</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"y\n^\n| 12m    r----r----r----r----r----r\n|        |\n|        |     X  obstacle around (3.1, 11.7), not to scale\n|        |\n| 10m    r\n|        |\n|  8m    r\n|        |\n|  6m    r\n|        |\n|  4m    r\n|        |\n|  2m    r\n|\n+--------+----+----+----+----+----+----&gt; x\n        2m   4m   6m   8m  10m  12m  14m\"><pre lang=\"text\" class=\"notranslate\"><code class=\"notranslate\">y\n^\n| 12m    r----r----r----r----r----r\n|        |\n|        |     X  obstacle around (3.1, 11.7), not to scale\n|        |\n| 10m    r\n|        |\n|  8m    r\n|        |\n|  6m    r\n|        |\n|  4m    r\n|        |\n|  2m    r\n|\n+--------+----+----+----+----+----+----&gt; x\n        2m   4m   6m   8m  10m  12m  14m\n</code></pre></div>\n<p dir=\"auto\">See test results at end of this post.<br>\nBefore smoothing, every original pose is valid. I checked them using <code class=\"notranslate\">footprint_checker.footprintCostAtPose()</code>.<br>\nThen after smoothing, smoother moves poses between the two arms of the <code class=\"notranslate\">L</code> corner,  one pose gets close enough that its rectangle overlaps obstacle.  The bot centre is still not on the lethal X cell, so the old centre cell check passes. But the rectangular footprint at that pose overlaps the obstacle, so the full footprint check fails.</p>\n<p dir=\"auto\">My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.</p>\n<p dir=\"auto\">Does this direction match what you would expect? I'm open to changes.</p>\n<h4 dir=\"auto\">Test result</h4>\n<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://private-user-images.githubusercontent.com/97510875/618051356-c16efd1e-ef62-428d-900e-0750e886a3dd.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgwMDgsIm5iZiI6MTc5MTcxNzcwOCwicGF0aCI6Ii85NzUxMDg3NS82MTgwNTEzNTYtYzE2ZWZkMWUtZWY2Mi00MjhkLTkwMGUtMDc1MGU4ODZhM2RkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjEwMTElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMDExVDExMjE0OFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQ4ZjA5NjFjM2RmZTQ3MzJiNmNiYzdjYjdmNTI1ZjAwZGY0NTc1ZTBlMWZkMWVmNDMxZThkNjZiMjg4OWFlOWImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.6c1_WvK73CA-lJRHLw3BDj2DoVtPVPnPYeSFENz3ns0\"><img width=\"1132\" height=\"619\" alt=\"Image\" src=\"https://private-user-images.githubusercontent.com/97510875/618051356-c16efd1e-ef62-428d-900e-0750e886a3dd.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgwMDgsIm5iZiI6MTc5MTcxNzcwOCwicGF0aCI6Ii85NzUxMDg3NS82MTgwNTEzNTYtYzE2ZWZkMWUtZWY2Mi00MjhkLTkwMGUtMDc1MGU4ODZhM2RkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjEwMTElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYxMDExVDExMjE0OFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQ4ZjA5NjFjM2RmZTQ3MzJiNmNiYzdjYjdmNTI1ZjAwZGY0NTc1ZTBlMWZkMWVmNDMxZThkNjZiMjg4OWFlOWImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.6c1_WvK73CA-lJRHLw3BDj2DoVtPVPnPYeSFENz3ns0\" style=\"max-width: 100%; height: auto; max-height: 619px;; aspect-ratio: 1132 / 619; background-color: var(--bgColor-muted); border-radius: 6px\" class=\"js-gh-image-fallback\"></a>\n<p dir=\"auto\">To reproduce the regression test results</p>\n<div class=\"highlight highlight-source-shell notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"cd &lt;nav2_ws&gt;\n\ngit -C src/navigation2 fetch https://github.com/MobiusRoamer/navigation2.git fix/smac-smoother-footprint-5330\ngit -C src/navigation2 checkout FETCH_HEAD\"><pre class=\"notranslate\"><span class=\"pl-c1\">cd</span> <span class=\"pl-k\">&lt;</span>nav2_ws<span class=\"pl-k\">&gt;</span>\n\ngit -C src/navigation2 fetch https://github.com/MobiusRoamer/navigation2.git fix/smac-smoother-footprint-5330\ngit -C src/navigation2 checkout FETCH_HEAD</pre></div>\n<p dir=\"auto\">then (replace <code class=\"notranslate\">--packages-select</code> with <code class=\"notranslate\">--packages-up-to nav2_smac_planner</code> if dependencies not installed yet)</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"colcon build \\\n  --symlink-install \\\n  --packages-select nav2_smac_planner \\\n  --cmake-args -DBUILD_TESTING=ON\n\nsource install/setup.bash\n\n./build/nav2_smac_planner/test/test_smoother \\\n  --gtest_filter='SmootherTest.rejects_non_circular_footprint_collision'\"><pre class=\"notranslate\"><code class=\"notranslate\">colcon build \\\n  --symlink-install \\\n  --packages-select nav2_smac_planner \\\n  --cmake-args -DBUILD_TESTING=ON\n\nsource install/setup.bash\n\n./build/nav2_smac_planner/test/test_smoother \\\n  --gtest_filter='SmootherTest.rejects_non_circular_footprint_collision'\n</code></pre></div>",
+      "bodyVersion": "ec029c795271de53267379ccef87b7c637f13cee0fe49bad83dbc7f9eb4cbf82",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABJJ8NFw",
+      "databaseId": 4909370647,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4909370647",
+      "createdAt": "2026-07-07T21:50:53Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.\n\nSounds good and exactly what I had in mind! I think that regression test is also the precise situation that's being reported, so I'm happy with that!\n\n",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.</p>\n</blockquote>\n<p dir=\"auto\">Sounds good and exactly what I had in mind! I think that regression test is also the precise situation that's being reported, so I'm happy with that!</p>",
+      "bodyVersion": "0afe3adaaf9667c49c8c2de1392a608961d366b1a9a41dec2fc1a98c8a58476d",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "U_kgDOBc_l2w",
+                "login": "MobiusRoamer",
+                "name": "Ali",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/97510875?s=64&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABJKUk_Q",
+      "databaseId": 4909769981,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBc_l2w",
+        "login": "MobiusRoamer",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/97510875?v=4",
+        "profileUrl": "https://github.com/MobiusRoamer",
+        "name": "Ali"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4909769981",
+      "createdAt": "2026-07-07T22:55:46Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> > My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.\n> \n> Sounds good and exactly what I had in mind! I think that regression test is also the precise situation that's being reported, so I'm happy with that!\n\nThanks for checking, that's great! Opening a draft PR and will keep you posted",
+      "bodyHTML": "<blockquote>\n<blockquote>\n<p dir=\"auto\">My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.</p>\n</blockquote>\n<p dir=\"auto\">Sounds good and exactly what I had in mind! I think that regression test is also the precise situation that's being reported, so I'm happy with that!</p>\n</blockquote>\n<p dir=\"auto\">Thanks for checking, that's great! Opening a draft PR and will keep you posted</p>",
+      "bodyVersion": "053ea82460a19db07a2e783f8916c4d4126c941e63ba20bdd3b0253ffb3e9325",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+                "login": "SteveMacenski",
+                "name": "Steve Macenski",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABJVgt9Q",
+      "databaseId": 4921503221,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6-p47f",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0ODc5NjYw",
+          "login": "tonynajjar"
+        },
+        "number": 5330,
+        "locked": false,
+        "databaseId": 3198652127
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBc_l2w",
+        "login": "MobiusRoamer",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/97510875?v=4",
+        "profileUrl": "https://github.com/MobiusRoamer",
+        "name": "Ali"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5330#issuecomment-4921503221",
+      "createdAt": "2026-07-09T04:14:08Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> > My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.\n> \n> Sounds good and exactly what I had in mind! I think that regression test is also the precise situation that's being reported, so I'm happy with that!\n\nI opened this draft PR, would rlly appreciate your feedback. I did see you suggested redesigning smoother, but I haven't touched the smoother structure for now and kept the pr scope limited. Have also included test reproduction commands in the pr description. Let me know if u think more changes / tests would help",
+      "bodyHTML": "<blockquote>\n<blockquote>\n<p dir=\"auto\">My planned fix direction is to validate the full oriented footprint during smoothing, reject an update that introduces a footprint collision, roll back to the last valid path, and return false.</p>\n</blockquote>\n<p dir=\"auto\">Sounds good and exactly what I had in mind! I think that regression test is also the precise situation that's being reported, so I'm happy with that!</p>\n</blockquote>\n<p dir=\"auto\">I opened this draft PR, would rlly appreciate your feedback. I did see you suggested redesigning smoother, but I haven't touched the smoother structure for now and kept the pr scope limited. Have also included test reproduction commands in the pr description. Let me know if u think more changes / tests would help</p>",
+      "bodyVersion": "441988ccdf600d75c083c989bc0f3e73a579153ff05e683f20f5340dfbe0c329",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOCBF7SM6-p47fzwAAAAaTaJ5W",
+      "databaseId": 28242910806,
+      "createdAt": "2026-07-21T01:09:58Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOCBF7SM7vh5zj",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-navigation/navigation2/pull/6257",
+        "number": 6257,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": true,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABl_UIAUABqzE4NTY5MDg1MzEx",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnqbICWABqzI2NDY1NTAyNjc0"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": true,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmJ8DlYgAqjMxODAwMTk2MDE=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABn4I48nABqzI4MjQyOTEwODA2"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOCBF7SM7vh5zj",
+      "url": "https://github.com/ros-navigation/navigation2/pull/6257",
+      "number": 6257,
+      "title": "Fix SMAC smoother footprint check ",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-07-09T01:34:57Z",
+      "databaseId": 4018642147,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    },
+    {
+      "id": "PR_kwDOCBF7SM6j-MyP",
+      "number": 5462,
+      "url": "https://github.com/ros-navigation/navigation2/pull/5462",
+      "state": "CLOSED",
+      "databaseId": 2750991503,
+      "relation_types": [
+        "closedByPullRequestsReferences"
+      ]
+    },
+    {
+      "id": "PR_kwDOCBF7SM7j3MrE",
+      "number": 6202,
+      "url": "https://github.com/ros-navigation/navigation2/pull/6202",
+      "state": "CLOSED",
+      "databaseId": 3822897860,
+      "relation_types": [
+        "closedByPullRequestsReferences"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6257",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6257.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6257.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5462",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5462.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5462.changes.json"
+    },
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6202",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6202.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6202.changes.json"
+    }
+  ]
+}

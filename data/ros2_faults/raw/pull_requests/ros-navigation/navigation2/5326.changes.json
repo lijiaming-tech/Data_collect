@@ -1,0 +1,25 @@
+{
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/pull/5326/files",
+    "final_url": "https://github.com/ros-navigation/navigation2/pull/5326/files",
+    "fetched_at": "2026-10-11T11:23:58.941957+00:00",
+    "http_status": 200,
+    "response_sha256": "58eae48899758c17ecc3c380bc5cb2bbd113c8ecf8c3f28206ca4b75703bb095"
+  },
+  "files": {
+    "nav2_behavior_tree/include/nav2_behavior_tree/plugins/condition/would_a_planner_recovery_help_condition.hpp": [
+      "@@ -29,7 +29,7 @@ class WouldAPlannerRecoveryHelp : public AreErrorCodesPresent",
+      "   using Action = nav2_msgs::action::ComputePathToPose;",
+      "   using ActionResult = Action::Result;",
+      "   using ThroughAction = nav2_msgs::action::ComputePathThroughPoses;",
+      "-  using ThroughActionResult = Action::Result;",
+      "+  using ThroughActionResult = ThroughAction::Result;",
+      " ",
+      " public:",
+      "   WouldAPlannerRecoveryHelp("
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

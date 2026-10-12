@@ -1,0 +1,469 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3269",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3269",
+    "fetched_at": "2026-10-11T11:24:42.961545+00:00",
+    "http_status": 200,
+    "response_sha256": "0a212bbca62d68c6ec16e42f77bfe5159f21adde3f585070687b0a2b0dffc633"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc8AAAABBL5OLQ",
+    "databaseId": 4374548013,
+    "number": 3269,
+    "title": "`std::clamp` assertion on Resolute Racoon",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3269",
+    "body": "**Describe the bug**\n```\n2026-05-03T21:34:02.0849595Z     [ RUN      ] JointSoftLimiterTest.check_desired_position_only_cases\n2026-05-03T21:34:02.0850042Z     /usr/include/c++/15/bits/stl_algo.h:3638: constexpr const _Tp& std::clamp(const _Tp&, const _Tp&, const _Tp&) [with _Tp = double]: Assertion '!(__hi < __lo)' failed.\n2026-05-03T21:34:02.0850194Z     Stack trace (most recent call last):\n2026-05-03T21:34:02.0850425Z     #20   Object \"/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2\", at 0xffffffffffffffff, in \n2026-05-03T21:34:02.0850893Z     #19   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e986684, in _start\n2026-05-03T21:34:02.0851113Z     #18   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f5b1d6af717, in __libc_start_main\n2026-05-03T21:34:02.0851281Z     #17   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f5b1d6af600, in \n2026-05-03T21:34:02.0851685Z     #16   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e9a697b, in main\n2026-05-03T21:34:02.0852116Z     #15   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e9a97c0, in RUN_ALL_TESTS()\n2026-05-03T21:34:02.0852585Z     #14   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e9fa749, in testing::UnitTest::Run()\n2026-05-03T21:34:02.0853624Z     #13   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4ea14756, in bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*)\n2026-05-03T21:34:02.0854172Z     #12   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4ea0a63b, in testing::internal::UnitTestImpl::RunAllTests()\n2026-05-03T21:34:02.0854646Z     #11   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4ea054c6, in testing::TestSuite::Run()\n2026-05-03T21:34:02.0855106Z     #10   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e9fa6b4, in testing::TestInfo::Run()\n2026-05-03T21:34:02.0855561Z     #9    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e9fa52d, in testing::Test::Run()\n2026-05-03T21:34:02.0856456Z     #8    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4ea140f6, in void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*)\n2026-05-03T21:34:02.0857323Z     #7    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e98c940, in JointSoftLimiterTest_check_desired_position_only_cases_Test::TestBody()\n2026-05-03T21:34:02.0858621Z     #6    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/joint_limits/lib/libjoint_saturation_limiter.so\", at 0x7f5b18f914a1, in joint_limits::JointLimiterInterface<joint_limits::JointControlInterfacesData>::enforce(joint_limits::JointControlInterfacesData const&, joint_limits::JointControlInterfacesData&, rclcpp::Duration const&)\n2026-05-03T21:34:02.0859632Z     #5    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/joint_limits/lib/libjoint_saturation_limiter.so\", at 0x7f5b18f92926, in joint_limits::JointSoftLimiter::on_enforce(joint_limits::JointControlInterfacesData const&, joint_limits::JointControlInterfacesData&, rclcpp::Duration const&)\n2026-05-03T21:34:02.0860322Z     #4    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/joint_limits/lib/libjoint_saturation_limiter.so\", at 0x7f5b18f7b7c2, in double const& std::clamp<double>(double const&, double const&, double const&)\n2026-05-03T21:34:02.0860742Z     #3    Object \"/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.35\", at 0x7f5b1daaa715, in std::__glibcxx_assert_fail(char const*, int, char const*, char const*)\n2026-05-03T21:34:02.0861013Z     #2    Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f5b1d6ad8eb, in abort\n2026-05-03T21:34:02.0861243Z     #1    Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f5b1d6cab7d, in raise\n2026-05-03T21:34:02.0861453Z     #0    Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f5b1d72b48c, in pthread_kill\n2026-05-03T21:34:02.0861544Z     Aborted (Signal sent by tkill() 7383 0)\n2026-05-03T21:34:02.0861630Z     -- run_test.py: return code -6\n2026-05-03T21:34:02.0862224Z     -- run_test.py: generate result file '/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_results/joint_limits/test_joint_soft_limiter.gtest.xml' with failed test\n2026-05-03T21:34:02.0862742Z     -- run_test.py: verify result file '/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_results/joint_limits/test_joint_soft_limiter.gtest.xml'\n2026-05-03T21:34:02.0862803Z   >>>\n```\n",
+    "bodyHTML": "<p dir=\"auto\"><strong>Describe the bug</strong></p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"2026-05-03T21:34:02.0849595Z     [ RUN      ] JointSoftLimiterTest.check_desired_position_only_cases\n2026-05-03T21:34:02.0850042Z     /usr/include/c++/15/bits/stl_algo.h:3638: constexpr const _Tp&amp; std::clamp(const _Tp&amp;, const _Tp&amp;, const _Tp&amp;) [with _Tp = double]: Assertion '!(__hi &lt; __lo)' failed.\n2026-05-03T21:34:02.0850194Z     Stack trace (most recent call last):\n2026-05-03T21:34:02.0850425Z     #20   Object &quot;/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2&quot;, at 0xffffffffffffffff, in \n2026-05-03T21:34:02.0850893Z     #19   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter&quot;, at 0x563d4e986684, in _start\n2026-05-03T21:34:02.0851113Z     #18   Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7f5b1d6af717, in __libc_start_main\n2026-05-03T21:34:02.0851281Z     #17   Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7f5b1d6af600, in \n2026-05-03T21:34:02.0851685Z     #16   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter&quot;, at 0x563d4e9a697b, in main\n2026-05-03T21:34:02.0852116Z     #15   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter&quot;, at 0x563d4e9a97c0, in RUN_ALL_TESTS()\n2026-05-03T21:34:02.0852585Z     #14   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter&quot;, at 0x563d4e9fa749, in testing::UnitTest::Run()\n2026-05-03T21:34:02.0853624Z     #13   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter&quot;, at 0x563d4ea14756, in bool testing::internal::HandleExceptionsInMethodIfSupported&lt;testing::internal::UnitTestImpl, bool&gt;(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*)\n2026-05-03T21:34:02.0854172Z     #12   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter&quot;, at 0x563d4ea0a63b, in testing::internal::UnitTestImpl::RunAllTests()\n2026-05-03T21:34:02.0854646Z     #11   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter&quot;, at 0x563d4ea054c6, in testing::TestSuite::Run()\n2026-05-03T21:34:02.0855106Z     #10   Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter&quot;, at 0x563d4e9fa6b4, in testing::TestInfo::Run()\n2026-05-03T21:34:02.0855561Z     #9    Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter&quot;, at 0x563d4e9fa52d, in testing::Test::Run()\n2026-05-03T21:34:02.0856456Z     #8    Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter&quot;, at 0x563d4ea140f6, in void testing::internal::HandleExceptionsInMethodIfSupported&lt;testing::Test, void&gt;(testing::Test*, void (testing::Test::*)(), char const*)\n2026-05-03T21:34:02.0857323Z     #7    Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter&quot;, at 0x563d4e98c940, in JointSoftLimiterTest_check_desired_position_only_cases_Test::TestBody()\n2026-05-03T21:34:02.0858621Z     #6    Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/joint_limits/lib/libjoint_saturation_limiter.so&quot;, at 0x7f5b18f914a1, in joint_limits::JointLimiterInterface&lt;joint_limits::JointControlInterfacesData&gt;::enforce(joint_limits::JointControlInterfacesData const&amp;, joint_limits::JointControlInterfacesData&amp;, rclcpp::Duration const&amp;)\n2026-05-03T21:34:02.0859632Z     #5    Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/joint_limits/lib/libjoint_saturation_limiter.so&quot;, at 0x7f5b18f92926, in joint_limits::JointSoftLimiter::on_enforce(joint_limits::JointControlInterfacesData const&amp;, joint_limits::JointControlInterfacesData&amp;, rclcpp::Duration const&amp;)\n2026-05-03T21:34:02.0860322Z     #4    Object &quot;/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/joint_limits/lib/libjoint_saturation_limiter.so&quot;, at 0x7f5b18f7b7c2, in double const&amp; std::clamp&lt;double&gt;(double const&amp;, double const&amp;, double const&amp;)\n2026-05-03T21:34:02.0860742Z     #3    Object &quot;/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.35&quot;, at 0x7f5b1daaa715, in std::__glibcxx_assert_fail(char const*, int, char const*, char const*)\n2026-05-03T21:34:02.0861013Z     #2    Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7f5b1d6ad8eb, in abort\n2026-05-03T21:34:02.0861243Z     #1    Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7f5b1d6cab7d, in raise\n2026-05-03T21:34:02.0861453Z     #0    Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7f5b1d72b48c, in pthread_kill\n2026-05-03T21:34:02.0861544Z     Aborted (Signal sent by tkill() 7383 0)\n2026-05-03T21:34:02.0861630Z     -- run_test.py: return code -6\n2026-05-03T21:34:02.0862224Z     -- run_test.py: generate result file '/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_results/joint_limits/test_joint_soft_limiter.gtest.xml' with failed test\n2026-05-03T21:34:02.0862742Z     -- run_test.py: verify result file '/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_results/joint_limits/test_joint_soft_limiter.gtest.xml'\n2026-05-03T21:34:02.0862803Z   &gt;&gt;&gt;\"><pre class=\"notranslate\"><code class=\"notranslate\">2026-05-03T21:34:02.0849595Z     [ RUN      ] JointSoftLimiterTest.check_desired_position_only_cases\n2026-05-03T21:34:02.0850042Z     /usr/include/c++/15/bits/stl_algo.h:3638: constexpr const _Tp&amp; std::clamp(const _Tp&amp;, const _Tp&amp;, const _Tp&amp;) [with _Tp = double]: Assertion '!(__hi &lt; __lo)' failed.\n2026-05-03T21:34:02.0850194Z     Stack trace (most recent call last):\n2026-05-03T21:34:02.0850425Z     #20   Object \"/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2\", at 0xffffffffffffffff, in \n2026-05-03T21:34:02.0850893Z     #19   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e986684, in _start\n2026-05-03T21:34:02.0851113Z     #18   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f5b1d6af717, in __libc_start_main\n2026-05-03T21:34:02.0851281Z     #17   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f5b1d6af600, in \n2026-05-03T21:34:02.0851685Z     #16   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e9a697b, in main\n2026-05-03T21:34:02.0852116Z     #15   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e9a97c0, in RUN_ALL_TESTS()\n2026-05-03T21:34:02.0852585Z     #14   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e9fa749, in testing::UnitTest::Run()\n2026-05-03T21:34:02.0853624Z     #13   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4ea14756, in bool testing::internal::HandleExceptionsInMethodIfSupported&lt;testing::internal::UnitTestImpl, bool&gt;(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*)\n2026-05-03T21:34:02.0854172Z     #12   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4ea0a63b, in testing::internal::UnitTestImpl::RunAllTests()\n2026-05-03T21:34:02.0854646Z     #11   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4ea054c6, in testing::TestSuite::Run()\n2026-05-03T21:34:02.0855106Z     #10   Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e9fa6b4, in testing::TestInfo::Run()\n2026-05-03T21:34:02.0855561Z     #9    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e9fa52d, in testing::Test::Run()\n2026-05-03T21:34:02.0856456Z     #8    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4ea140f6, in void testing::internal::HandleExceptionsInMethodIfSupported&lt;testing::Test, void&gt;(testing::Test*, void (testing::Test::*)(), char const*)\n2026-05-03T21:34:02.0857323Z     #7    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_joint_soft_limiter\", at 0x563d4e98c940, in JointSoftLimiterTest_check_desired_position_only_cases_Test::TestBody()\n2026-05-03T21:34:02.0858621Z     #6    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/joint_limits/lib/libjoint_saturation_limiter.so\", at 0x7f5b18f914a1, in joint_limits::JointLimiterInterface&lt;joint_limits::JointControlInterfacesData&gt;::enforce(joint_limits::JointControlInterfacesData const&amp;, joint_limits::JointControlInterfacesData&amp;, rclcpp::Duration const&amp;)\n2026-05-03T21:34:02.0859632Z     #5    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/joint_limits/lib/libjoint_saturation_limiter.so\", at 0x7f5b18f92926, in joint_limits::JointSoftLimiter::on_enforce(joint_limits::JointControlInterfacesData const&amp;, joint_limits::JointControlInterfacesData&amp;, rclcpp::Duration const&amp;)\n2026-05-03T21:34:02.0860322Z     #4    Object \"/home/runner/work/ros2_control/ros2_control/.work/target_ws/install/joint_limits/lib/libjoint_saturation_limiter.so\", at 0x7f5b18f7b7c2, in double const&amp; std::clamp&lt;double&gt;(double const&amp;, double const&amp;, double const&amp;)\n2026-05-03T21:34:02.0860742Z     #3    Object \"/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.35\", at 0x7f5b1daaa715, in std::__glibcxx_assert_fail(char const*, int, char const*, char const*)\n2026-05-03T21:34:02.0861013Z     #2    Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f5b1d6ad8eb, in abort\n2026-05-03T21:34:02.0861243Z     #1    Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f5b1d6cab7d, in raise\n2026-05-03T21:34:02.0861453Z     #0    Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7f5b1d72b48c, in pthread_kill\n2026-05-03T21:34:02.0861544Z     Aborted (Signal sent by tkill() 7383 0)\n2026-05-03T21:34:02.0861630Z     -- run_test.py: return code -6\n2026-05-03T21:34:02.0862224Z     -- run_test.py: generate result file '/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_results/joint_limits/test_joint_soft_limiter.gtest.xml' with failed test\n2026-05-03T21:34:02.0862742Z     -- run_test.py: verify result file '/home/runner/work/ros2_control/ros2_control/.work/target_ws/build/joint_limits/test_results/joint_limits/test_joint_soft_limiter.gtest.xml'\n2026-05-03T21:34:02.0862803Z   &gt;&gt;&gt;\n</code></pre></div>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-05-04T06:52:39Z",
+    "updatedAt": "2026-05-07T08:17:19Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+      "login": "christophfroehlich",
+      "id": "MDQ6VXNlcjMzNjcyNDQ=",
+      "profileUrl": "https://github.com/christophfroehlich",
+      "name": "Christoph Fröhlich",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 1,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABBZ6zyg",
+      "databaseId": 4389254090,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABBL5OLQ",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3269,
+        "locked": false,
+        "databaseId": 4374548013
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3269#issuecomment-4389254090",
+      "createdAt": "2026-05-06T14:48:38Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "https://github.com/ros-controls/ros2_control/issues/3274",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4388861920\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3274\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3274/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3274\">#3274</a></p>",
+      "bodyVersion": "5a5f50af6d0a8b36652d07ae08b2a438464328ad7bb161fcd14811aefcc5ded9",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc8AAAABBL5OLc8AAAAF2U8xjw",
+      "databaseId": 25120682383,
+      "createdAt": "2026-05-04T06:52:41Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "RenamedTitleEvent",
+      "id": "RTE_lADOBiM5Uc8AAAABBL5OLc8AAAAF33I8og",
+      "databaseId": 25223642274,
+      "createdAt": "2026-05-06T14:48:32Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "currentTitle": "CI on resolute shows stack traces all over",
+      "previousTitle": "Lyrical-testing shows stack traces all over"
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABBZ6zyg",
+      "databaseId": 4389254090,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABBL5OLQ",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3269,
+        "locked": false,
+        "databaseId": 4374548013
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3269#issuecomment-4389254090",
+      "createdAt": "2026-05-06T14:48:38Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "https://github.com/ros-controls/ros2_control/issues/3274",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4388861920\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3274\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3274/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3274\">#3274</a></p>",
+      "bodyVersion": "5a5f50af6d0a8b36652d07ae08b2a438464328ad7bb161fcd14811aefcc5ded9",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "RenamedTitleEvent",
+      "id": "RTE_lADOBiM5Uc8AAAABBL5OLc8AAAAF4STbow",
+      "databaseId": 25252125603,
+      "createdAt": "2026-05-07T08:16:13Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "currentTitle": "`std::clamp` assertion on Resolute Racoon",
+      "previousTitle": "CI on resolute shows stack traces all over"
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc8AAAABBL5OLc8AAAAF4SVkNw",
+      "databaseId": 25252160567,
+      "createdAt": "2026-05-07T08:17:19Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOBiM5Uc7Y8A4E",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-controls/ros2_control/pull/3275",
+        "number": 3275,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+          "name": "ros2_control",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+            "login": "ros-controls"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnfHCrqgBqzI1MTIwNjgyMzgz",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABngGDPpgBqzI1MjUyMTYwNTY3"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnfHCrqgBqzI1MTIwNjgyMzgz",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABngGDPpgBqzI1MjUyMTYwNTY3"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOBiM5Uc7Y8A4E",
+      "url": "https://github.com/ros-controls/ros2_control/pull/3275",
+      "number": 3275,
+      "title": "Fix std::clamp regression on Ubuntu 26.04",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-05-06T21:59:53Z",
+      "databaseId": 3639610884,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3275",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3275.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3275.changes.json"
+    }
+  ]
+}

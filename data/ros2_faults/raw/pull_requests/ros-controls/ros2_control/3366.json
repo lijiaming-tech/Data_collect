@@ -1,0 +1,27 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3366",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3366",
+    "fetched_at": "2026-10-11T11:24:35.180389+00:00",
+    "http_status": 200,
+    "response_sha256": "64774be49a532cdc7b2f2ac1a31164d0537658352850a52022bc7a490e63c2db"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3366",
+  "title": "Fix rqt_controller_manger crash on lyrical #3364 by webera · Pull Request #3366 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "CLOSED",
+  "body_rendered_text": "Description\n\n\nFix for the crash as of issue #3364\n\nApparently, the move to pyside6 has some implication as there are small changes in the overall structure.\n\n\nThis might require some more testing on Windows as the python_qt_binding seems to prioritize pyqt over pyside on that platform.\n\n(see https://github.com/ros-visualization/python_qt_binding/blob/rolling/src/python_qt_binding/binding_helper.py#L56)\n\n\n\nPotentially there are more required changes as this only fixed the 'startup' of the tool, no further indepth tests done yet.\n\n\nIf the pyqt binding is using the \"old\" structure, a bigger change will be necessary.\n\n\n\nFixes #3364\n\n\nIs this user-facing behavior change?\n\n\nDid you use Generative AI?\n\n\nYes, once I changed the first Qt. to Qt.ContextMenuPolicy the tab completion tool of Copilot proposed it for the other occurrences as well.\n\n\nAdditional Information\n\n\nTODOs\n\n\n\n Test on Windows\n\n\n Test the general functionality more in depth as there are potentially more parts that require minor changes as part of the change to Qt6",
+  "discussion_rendered_text": [
+    "is it possible to support qt5 and 6 at the same time? we support building the master branch on all other released distro, and this plugin won't work otherwise.\n\n@christianrauch could you have a look if this solves your issue?",
+    "I think ideally, this gets hidden/encapsulated directly by the python_qt_binding package what do you think? Like - I guess that was the idea of creating it in general.",
+    "This only solves part of the problem. I think it's worth testing this properly without automatic AI completion.\n\n\nThe issue AttributeError: type object 'Qt' has no attribute 'CustomContextMenu' is gone, but I am now getting:\n\n\n\n```\n  File \"[workspace]/install/rqt_controller_manager/lib/python3.14/site-packages/rqt_controller_manager/controller_manager.py\", line 513, in headerData\n    if orientation != Qt.Horizontal or role != Qt.DisplayRole:\n                      ^^^^^^^^^^^^^\nAttributeError: type object 'Qt' has no attribute 'Horizontal'\n\n```\n\n\n\nRegarding Qt5 vs. Qt6: Shouldn't all currently supported distros (Ubuntu 22.04 onwards) support Qt6? Does rqt really still have to support Qt5?",
+    "See #3367 for a complete fix. I tested my PR with my instance of a controller manager and verified that I can de-/activate controllers."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/pull/3366/commits/5acf5cff1aff6fee389c2707f63a9304f7bae2c1",
+    "https://github.com/ros-controls/ros2_control/pull/3366/commits/6913ca914994a04b27967a9f22f2b49fc8e9de42",
+    "https://github.com/ros-controls/ros2_control/pull/3366/commits/756df6e71060b856116ecf3db71968a4e3fa16fc",
+    "https://github.com/ros-controls/ros2_control/pull/3366/commits/929d9a31480119b25352f1523962ee24de10e4fe"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

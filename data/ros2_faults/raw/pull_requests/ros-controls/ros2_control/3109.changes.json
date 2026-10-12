@@ -1,0 +1,27 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3109/files",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3109/files",
+    "fetched_at": "2026-10-11T11:24:17.891732+00:00",
+    "http_status": 200,
+    "response_sha256": "02f8314bdf3ebc2924009dfdc24c0488580c133c4448b54db5c6dab1baa7a6ba"
+  },
+  "files": {
+    "controller_manager/src/controller_manager.cpp": [
+      "@@ -321,6 +321,10 @@ void extract_command_interfaces_for_controller(",
+      "   const std::unique_ptr<hardware_interface::ResourceManager> & resource_manager,",
+      "   std::vector<std::string> & request_interface_list)",
+      " {",
+      "+  if (!is_controller_active(ctrl.c) && !is_controller_inactive(ctrl.c))",
+      "+  {",
+      "+    return;",
+      "+  }",
+      "   const std::vector<std::string> command_interface_names =",
+      "     get_command_interfaces_names(ctrl.c, resource_manager);",
+      "   request_interface_list.insert("
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

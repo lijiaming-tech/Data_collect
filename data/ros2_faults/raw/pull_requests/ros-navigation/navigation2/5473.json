@@ -1,0 +1,46 @@
+{
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/pull/5473",
+    "final_url": "https://github.com/ros-navigation/navigation2/pull/5473",
+    "fetched_at": "2026-10-11T11:23:10.301821+00:00",
+    "http_status": 200,
+    "response_sha256": "7242bff50789e1a9180412aa6c90ef8823b0e83132b6bd5a614ef43c9bf63d88"
+  },
+  "url": "https://github.com/ros-navigation/navigation2/pull/5473",
+  "title": "fix: Move SmootherParams declaration outside smooth_path conditional by SteveMacenski · Pull Request #5473 · ros-navigation/navigation2 · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Fixes crash when dynamically changing smooth_path parameter from false to true.\n\n\nThe issue occurred because SmootherParams were only declared when smooth_path was initially true, causing ParameterModifiedInCallbackException when trying to declare parameters within the dynamic parameter callback.\n\n\nNow SmootherParams are always declared, making them available for dynamic reconfiguration regardless of the initial smooth_path value.\n\n\nFixes #5472\n\n\nGenerated with Claude Code",
+  "discussion_rendered_text": [
+    "@claude backport this change to jazzy and kilted branches",
+    "Claude finished @SteveMacenski's task —— View job\n\n\n\nBackporting PR #5473 to jazzy and kilted branches\n\n\nI analyzed PR #5473 and understand exactly what needs to be backported. However, I need the Bash tool to access different branches.\n\n\nCurrent Status\n\n\n\n✅ Analyzed the fix: PR fix: Move SmootherParams declaration outside smooth_path conditional #5473 moves SmootherParams declaration outside conditional blocks\n\n\n✅ Located the changes: Found the exact pattern in both files on main branch\n\n\n❌ Need Bash access: Cannot switch branches or create backport branches without --allowedTools=Bash\n\n\n\nManual Alternative\n\n\nIf you can't grant Bash access, here's what needs to be done manually:\n\nFor jazzy branch:\n\n\nCreate branch: git checkout -b claude/backport-5473-jazzy origin/jazzy\n\n\nIn nav2_smac_planner/src/smac_planner_hybrid.cpp, move these lines outside the if (smooth_path) conditional:\n\n\n```\nSmootherParams params;\nparams.get(node, name);\n```\n\n\n\n\n\nSame change in nav2_smac_planner/src/smac_planner_lattice.cpp\n\n\nFor kilted branch:\n\nSame process with git checkout -b claude/backport-5473-kilted origin/kilted\n\n\nNext Steps\n\n\nGrant me --allowedTools=Bash and I'll complete both backports with proper PR links, or apply the changes manually using the guidance above."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/BCKSELFDRIVEWORLD/navigation2/commit/5d624f83abc15fc300753c1f66e47049a1f71f9a",
+    "https://github.com/EnjoyRobotics/navigation2/commit/1345c226bcf73068127b2e2efaee91a637d2f351",
+    "https://github.com/EnjoyRobotics/navigation2/commit/1468484f1f96fe0f06241819315c8371311d0f52",
+    "https://github.com/EnjoyRobotics/navigation2/commit/381dec725901ebd50f907e411b73531ba73f99a3",
+    "https://github.com/EnjoyRobotics/navigation2/commit/40a04517724acc58a2356a66e2d7f723e1c103d5",
+    "https://github.com/EnjoyRobotics/navigation2/commit/48e7e0660cfd1bb8cc6af6b3a4e6f869cc6fa80d",
+    "https://github.com/EnjoyRobotics/navigation2/commit/69a60dfacb80eb3c9c2ad47f7590eea8defbdaec",
+    "https://github.com/EnjoyRobotics/navigation2/commit/7f561b0f5aa8e229334bb6f71a7a99e6074efd75",
+    "https://github.com/EnjoyRobotics/navigation2/commit/829e6836709992b27855c1e7bca0fe29882e21b1",
+    "https://github.com/EnjoyRobotics/navigation2/commit/88bb1fac28b472f5de272fa8601256da1f8c7b41",
+    "https://github.com/EnjoyRobotics/navigation2/commit/c0bf67e7b9f5505201725bc196d36cad3839c0b8",
+    "https://github.com/EnjoyRobotics/navigation2/commit/c9b349acc6f784c790c3e0566addc21dcbbea541",
+    "https://github.com/EnjoyRobotics/navigation2/commit/e690ef0ed2391bbf93e856fe4a6cd4b371335318",
+    "https://github.com/EnjoyRobotics/navigation2/commit/fdee1e6a6e639ed80ecf06164ae6d2e7292785b0",
+    "https://github.com/EnjoyRobotics/navigation2/commit/ff80727eee2bc5f3d70a849d9e821bc01eee757c",
+    "https://github.com/armgits/navigation2/commit/6a437169cf16c8826b80e4f692bb9ce19ec0214e",
+    "https://github.com/armgits/navigation2/commit/efee6b8634d7252aa404b7e85134b556eb68c043",
+    "https://github.com/bkoensgen/navigation2/commit/bde2ca6fd969ff9b8073a57637050dad28bcd3e4",
+    "https://github.com/ros-navigation/navigation2/commit/14ad66b2badcd9293e9dc2e974daf67777db2166",
+    "https://github.com/ros-navigation/navigation2/commit/69a60dfacb80eb3c9c2ad47f7590eea8defbdaec",
+    "https://github.com/ros-navigation/navigation2/commit/89954705ac2336b6119fffaf00da37bda0f772d6",
+    "https://github.com/ros-navigation/navigation2/commit/b0826089a6b9ecef66b390b125749a76541dd5ef",
+    "https://github.com/ros-navigation/navigation2/commit/b515c888055eec4eb914cadfb3c6db22d1081ffc",
+    "https://github.com/ros-navigation/navigation2/pull/5473/commits/aeaa8e063365a37c42991493c6efb1a795eef38c",
+    "https://github.com/silanus23/navigation2/commit/a72e6be33af98421ca4489aed67c45b7d8817ccd"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

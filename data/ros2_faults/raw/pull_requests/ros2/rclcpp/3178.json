@@ -1,0 +1,48 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3178",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3178",
+    "fetched_at": "2026-10-11T11:20:31.512537+00:00",
+    "http_status": 200,
+    "response_sha256": "16d1fa94e6a0ef9e9611a036cd148ac6bde0f1194f373d1bd4a2ced7edd41d3d"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/3178",
+  "title": "add support for reentrant callback group to EventsCBGExecutor by armaho · Pull Request #3178 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nFixes #3175\n\n\nIs this user-facing behavior change?\n\n\nDid you use Generative AI?\n\n\nNo\n\n\nAdditional Information",
+  "discussion_rendered_text": [
+    "lgtm with green CI. will let @jmachowinski take a pass as well",
+    "note to self to remove C++20 initialization when backporting this to Jazzy and Kilted specifically",
+    "actually @armaho can you add a test which exercises the reentrant path like we discussed at the client library WG meeting?",
+    "@skyegalaxy\n\n\nSure let me see how to test it.",
+    "Tick the box to add this pull request to the merge queue (same as @mergifyio queue).\n\n\n\n Queue this pull request",
+    "@skyegalaxy\n\n\nI just added a test covering the reentrant callback group behavior. Could you take another look when you have time?",
+    "Sorry for the late reply.\n\nI wonder if it makes sense to introduce a second class of callback handle, providing a seperate logic.\n\nIn this case the ready queue would be something like\n\nstd::deque<std::variant<ReentrantCallbackGroupHandle *, MutalExclusiveCallbackGroupHandle *>\n\n\nEven though this would lead to some code duplication, I think it would make the code easier and better understandable in the end. The current approach of selectively doing things made it hard to understand what is going on.\n\n\nI also think the compiler might optimize the variant better.",
+    "This is a big no go, you introduce O(n) characteristics by searching the ready list.\n\nThis code should actually not be needed as the callback group handle should hold the information\n\nif it is in the queue or not.",
+    "I wasn't able to find anything in the handle itself that indicates whether it's in the queue or not. There was an idle field, but I had trouble using it to determine that. I ended up adding an in_queue field to the handle instead, which is simple to understand and implement. What do you think about that?",
+    "@armaho - do you have bandwidth to respond to the feedback / still want to work on this?",
+    "@skyegalaxy Yes. Sorry I’ve been busy I will address the problems of current code and check out that variant idea tomorrow and get back to you with the results.",
+    "@jmachowinski\n\n\nI also think that the current implementation of EventCBGExecutor is hard to understand. At least, it was for me.\n\n\nBut I don't think that creating a separate handle for reentrant cbgs would help that much. Right now, the only conditional piece of code within the CallbackGroupHandle itself is inside mark_as_executing:\n\n\n\n```\nvoid mark_as_executing()\n{\n  if (type != CallbackGroupType::Reentrant) {\n    not_ready = true;\n  }\n}\n```\n\n\n\nWhich is not hard to understand, and I don't think that creating a separate handle would fundamentally reduce the conditional logic elsewhere in the code. To me, it doesn’t seem worth the amount of code duplication it would introduce.\n\n\nThat said, you know this codebase much better than I do, so I'll go in whichever direction you think is best.",
+    "The commit looks good so far. I started playing around with the API to see if splitting the handle base class makes it more readable. I'll report back next week. Have a nice weekend.",
+    "Pulls: #3178\n\nGist: https://gist.githubusercontent.com/jmachowinski/263c67751e131d384f43e888d5e1d7e8/raw/3baffe34b4da0f4ab0f1c5da02d1a636647bd8cb/ros2.repos\n\nBUILD args:\n\nTEST args:\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/19863\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "I don't have the capacity right now to look into making the code prettier.\n\nTherefore I am going to merge this fix as it fixes the issue (if we get green CI).\n\n\nPerhaps I'll have time later to play around with the code...",
+    "@skyegalaxy\n\n@jmachowinski\n\n\nThank you both for your reviews. I'm working on ROS2 executors right now and I might come back here and work on this a bit further in the future.\n\n\nIs there anything else I should do for now? :)",
+    "@Mergifyio backport lyrical",
+    "backport lyrical\n\n\n✅ Backports have been created\nDetails\n\n\n#3200 add support for reentrant callback group to EventsCBGExecutor (backport #3178) has been created for branch lyrical",
+    "could we backport this to jazzy and kilted also?",
+    "You wrote a note to yourself to adjust the code to c++17.... ;-P"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros2/rclcpp/commit/0f0b69346b728a55263378655ef21e236f4885f4",
+    "https://github.com/ros2/rclcpp/commit/490c6b08e0bbfea526ada57164c910e24f430d07",
+    "https://github.com/ros2/rclcpp/commit/554512d3d9b277242f1095005cbf3eecd4eb6aa6",
+    "https://github.com/ros2/rclcpp/commit/855d1b2155984ea39263866489a359f9b6422280",
+    "https://github.com/ros2/rclcpp/commit/cfebaef44e011f27655a4a1dfcc2a7544f34a74b",
+    "https://github.com/ros2/rclcpp/commit/d1cb671ebfd390466358ef5dd3c90b5a9e39b379",
+    "https://github.com/ros2/rclcpp/pull/3178/commits/490c6b08e0bbfea526ada57164c910e24f430d07",
+    "https://github.com/ros2/rclcpp/pull/3178/commits/855d1b2155984ea39263866489a359f9b6422280",
+    "https://github.com/ros2/rclcpp/pull/3178/commits/9fb7aa26a19e27ae0599bf091f12a4850c62b888"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

@@ -1,0 +1,404 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3416",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3416",
+    "fetched_at": "2026-10-11T11:24:30.426796+00:00",
+    "http_status": 200,
+    "response_sha256": "f526eb838f5412ce94b8bee94d865c88adfa7d4715671898797747235f361312"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc8AAAABGs8VUQ",
+    "databaseId": 4744746321,
+    "number": 3416,
+    "title": "Spawning controllers with type declaration",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3416",
+    "body": "**Describe the bug**\nThere was a possibility to use `--type` flag during spawning controller using `ros2 run controller_manager spawner`.\nHow to declare the type of the controller during spawning? \n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. Run\n`ros2 launch gz_ros2_control_demos  diff_drive_example.launch.py `\n`ros2 run controller_manager spawner  joint_trajectory_controller` (-t joint_trajectory_controller JointTrajectoryController)\n\n**Expected behavior**\nPossibility to load the controller with not previously declared type.\n\n**Screenshots**\n\n<img width=\"1344\" height=\"28\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/1f934440-3320-42bf-8f51-62b12482a407\" />\n\n**Environment (please complete the following information):**\n - OS: Ubuntu 24.4\n - Version  jazzy\n\n\n\n",
+    "bodyHTML": "<p dir=\"auto\"><strong>Describe the bug</strong><br>\nThere was a possibility to use <code class=\"notranslate\">--type</code> flag during spawning controller using <code class=\"notranslate\">ros2 run controller_manager spawner</code>.<br>\nHow to declare the type of the controller during spawning?</p>\n<p dir=\"auto\"><strong>To Reproduce</strong><br>\nSteps to reproduce the behavior:</p>\n<ol dir=\"auto\">\n<li>Run<br>\n<code class=\"notranslate\">ros2 launch gz_ros2_control_demos  diff_drive_example.launch.py </code><br>\n<code class=\"notranslate\">ros2 run controller_manager spawner  joint_trajectory_controller</code> (-t joint_trajectory_controller JointTrajectoryController)</li>\n</ol>\n<p dir=\"auto\"><strong>Expected behavior</strong><br>\nPossibility to load the controller with not previously declared type.</p>\n<p dir=\"auto\"><strong>Screenshots</strong></p>\n<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://private-user-images.githubusercontent.com/109142865/613165652-1f934440-3320-42bf-8f51-62b12482a407.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgxNzAsIm5iZiI6MTc5MTcxNzg3MCwicGF0aCI6Ii8xMDkxNDI4NjUvNjEzMTY1NjUyLTFmOTM0NDQwLTMzMjAtNDJiZi04ZjUxLTYyYjEyNDgyYTQwNy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYxMDExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MTAxMVQxMTI0MzBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yODgxZmU5M2RiODhhM2ZkOGIzOWZjZDdjOTYxZWY2NDhhNWFiNzAzNjUyOGZiMDkxMWZkY2Q1ZDAwMDliYmM2JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.sUWOK0u09JaTqOrTL0K3o0PZh501cItSEk88LycoNWE\"><img width=\"1344\" height=\"28\" alt=\"Image\" src=\"https://private-user-images.githubusercontent.com/109142865/613165652-1f934440-3320-42bf-8f51-62b12482a407.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgxNzAsIm5iZiI6MTc5MTcxNzg3MCwicGF0aCI6Ii8xMDkxNDI4NjUvNjEzMTY1NjUyLTFmOTM0NDQwLTMzMjAtNDJiZi04ZjUxLTYyYjEyNDgyYTQwNy5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYxMDExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MTAxMVQxMTI0MzBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0yODgxZmU5M2RiODhhM2ZkOGIzOWZjZDdjOTYxZWY2NDhhNWFiNzAzNjUyOGZiMDkxMWZkY2Q1ZDAwMDliYmM2JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.sUWOK0u09JaTqOrTL0K3o0PZh501cItSEk88LycoNWE\" style=\"max-width: 100%; height: auto; max-height: 28px;; aspect-ratio: 1344 / 28; background-color: var(--bgColor-muted); border-radius: 6px\" class=\"js-gh-image-fallback\"></a>\n<p dir=\"auto\"><strong>Environment (please complete the following information):</strong></p>\n<ul dir=\"auto\">\n<li>OS: Ubuntu 24.4</li>\n<li>Version  jazzy</li>\n</ul>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-06-25T14:32:36Z",
+    "updatedAt": "2026-06-25T14:45:17Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/109142865?v=4",
+      "login": "delihus",
+      "id": "U_kgDOBoFjUQ",
+      "profileUrl": "https://github.com/delihus",
+      "name": "Jakub Delicat",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 1,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABHiPtRg",
+      "databaseId": 4800638278,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABGs8VUQ",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBoFjUQ",
+          "login": "delihus"
+        },
+        "number": 3416,
+        "locked": false,
+        "databaseId": 4744746321
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBoFjUQ",
+        "login": "delihus",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/109142865?v=4",
+        "profileUrl": "https://github.com/delihus",
+        "name": "Jakub Delicat"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3416#issuecomment-4800638278",
+      "createdAt": "2026-06-25T14:45:17Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Added `joint_trajectory_controller.type` for controller params fixes...",
+      "bodyHTML": "<p dir=\"auto\">Added <code class=\"notranslate\">joint_trajectory_controller.type</code> for controller params fixes...</p>",
+      "bodyVersion": "cee16b014ba14d1cfa8521c47c8638846a0db3557744bda12daade7826c128b6",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc8AAAABGs8VUc8AAAAGVY_uIA",
+      "databaseId": 27205299744,
+      "createdAt": "2026-06-25T14:32:37Z",
+      "actor": {
+        "id": "U_kgDOBoFjUQ",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/109142865?s=64&v=4",
+        "login": "delihus",
+        "profileResourcePath": "/delihus",
+        "__typename": "User",
+        "name": "Jakub Delicat"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "RenamedTitleEvent",
+      "id": "RTE_lADOBiM5Uc8AAAABGs8VUc8AAAAGVZBw2Q",
+      "databaseId": 27205333209,
+      "createdAt": "2026-06-25T14:33:20Z",
+      "actor": {
+        "id": "U_kgDOBoFjUQ",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/109142865?s=64&v=4",
+        "login": "delihus",
+        "profileResourcePath": "/delihus",
+        "__typename": "User",
+        "name": "Jakub Delicat"
+      },
+      "currentTitle": "Spawning controllers with type declaration",
+      "previousTitle": "Spawning controllers"
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc8AAAABGs8VUc8AAAAGVZjTLg",
+      "databaseId": 27205882670,
+      "createdAt": "2026-06-25T14:45:17Z",
+      "actor": {
+        "id": "U_kgDOBoFjUQ",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/109142865?s=64&v=4",
+        "login": "delihus",
+        "profileResourcePath": "/delihus",
+        "__typename": "User",
+        "name": "Jakub Delicat"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABHiPtRg",
+      "databaseId": 4800638278,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABGs8VUQ",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBoFjUQ",
+          "login": "delihus"
+        },
+        "number": 3416,
+        "locked": false,
+        "databaseId": 4744746321
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBoFjUQ",
+        "login": "delihus",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/109142865?v=4",
+        "profileUrl": "https://github.com/delihus",
+        "name": "Jakub Delicat"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3416#issuecomment-4800638278",
+      "createdAt": "2026-06-25T14:45:17Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Added `joint_trajectory_controller.type` for controller params fixes...",
+      "bodyHTML": "<p dir=\"auto\">Added <code class=\"notranslate\">joint_trajectory_controller.type</code> for controller params fixes...</p>",
+      "bodyVersion": "cee16b014ba14d1cfa8521c47c8638846a0db3557744bda12daade7826c128b6",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnv8yc4gBqzI3MjA1Mjk5NzQ0",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnv8-DEgBqzI3MjA1ODgyNjcw"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnv8yc4gBqzI3MjA1Mjk5NzQ0",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnv8-DEgBqzI3MjA1ODgyNjcw"
+    }
+  },
+  "linked_pull_requests": [],
+  "comments_complete": true,
+  "linked_pr_fetches": []
+}

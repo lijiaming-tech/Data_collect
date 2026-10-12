@@ -1,0 +1,811 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3220",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3220",
+    "fetched_at": "2026-10-11T11:24:25.412559+00:00",
+    "http_status": 200,
+    "response_sha256": "d18212ff152dc9b0622ddde618edb65317a4480135f284f0040fd74c97c31c99"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc7-BOy-",
+    "databaseId": 4261735614,
+    "number": 3220,
+    "title": "Zero controller update rate might trigger undefined behavior",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3220",
+    "body": "https://github.com/ros-controls/ros2_control/blob/bb07fdd55a59ea750f06bb2fee7a3a1c113b10dd/controller_manager/src/controller_manager.cpp#L1606\n\nIf a user creates a controller with update rate equals to zero, the line above is undefined behavior according to the C++ docs. Modulo operator with 0 should not be used. Maybe there should be a check of the controller update rate before using it.",
+    "bodyHTML": "<p dir=\"auto\"></p><div class=\"Box Box--condensed my-2\">\n  <div class=\"Box-header f6\">\n    <p class=\"mb-0 text-bold\">\n      <a href=\"https://github.com/ros-controls/ros2_control/blob/bb07fdd55a59ea750f06bb2fee7a3a1c113b10dd/controller_manager/src/controller_manager.cpp#L1606\">ros2_control/controller_manager/src/controller_manager.cpp</a>\n    </p>\n    <p class=\"mb-0 color-fg-muted\">\n         Line 1606\n      in\n      <a data-pjax=\"true\" class=\"commit-tease-sha Link--inTextBlock\" href=\"/ros-controls/ros2_control/commit/bb07fdd55a59ea750f06bb2fee7a3a1c113b10dd\">bb07fdd</a>\n    </p>\n  </div>\n  <div itemprop=\"text\" class=\"Box-body p-0 blob-wrapper blob-wrapper-embedded data\">\n    <table class=\"highlight tab-size mb-0 js-file-line-container\" data-tab-size=\"8\" data-paste-markdown-skip=\"\">\n\n        <tbody><tr class=\"border-0\">\n          <td id=\"L1606\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"1606\"></td>\n          <td id=\"LC1606\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> <span class=\"pl-k\">else</span> <span class=\"pl-k\">if</span> (cm_update_rate % controller_update_rate != <span class=\"pl-c1\">0</span>) </td>\n        </tr>\n    </tbody></table>\n  </div>\n</div>\n<p></p>\n<p dir=\"auto\">If a user creates a controller with update rate equals to zero, the line above is undefined behavior according to the C++ docs. Modulo operator with 0 should not be used. Maybe there should be a check of the controller update rate before using it.</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-04-14T11:34:44Z",
+    "updatedAt": "2026-07-15T09:02:42Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/71256590?u=81ee0421ed5a6c8b373ce5cf42557d78c4b88047&v=4",
+      "login": "domire8",
+      "id": "MDQ6VXNlcjcxMjU2NTkw",
+      "profileUrl": "https://github.com/domire8",
+      "name": "Dominic Reber",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NTI=",
+            "fullDatabaseId": "687920452",
+            "color": "7057ff",
+            "name": "good first issue",
+            "nameHTML": "good first issue",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/good%20first%20issue",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 2,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABEMkT4A",
+      "databaseId": 4576580576,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7-BOy-",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjcxMjU2NTkw",
+          "login": "domire8"
+        },
+        "number": 3220,
+        "locked": false,
+        "databaseId": 4261735614
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3220#issuecomment-4576580576",
+      "createdAt": "2026-05-29T14:58:10Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABIxkQkw",
+      "databaseId": 4883812499,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7-BOy-",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjcxMjU2NTkw",
+          "login": "domire8"
+        },
+        "number": 3220,
+        "locked": false,
+        "databaseId": 4261735614
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3220#issuecomment-4883812499",
+      "createdAt": "2026-07-04T21:08:52Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This actually can never happen because\n\nThis parameter is initialized with cm update rate\nhttps://github.com/ros-controls/ros2_control/blob/2296fd89e1b362d56c973709c32b030d98f091fc/controller_manager/src/controller_manager.cpp#L2480-L2481\nand only will be changed if great than zero\nhttps://github.com/ros-controls/ros2_control/blob/2296fd89e1b362d56c973709c32b030d98f091fc/controller_interface/src/controller_interface_base.cpp#L220\n\nBut there should maybe added a check here, just to avoid any regression in the future",
+      "bodyHTML": "<p dir=\"auto\">This actually can never happen because</p>\n<p dir=\"auto\">This parameter is initialized with cm update rate<br>\n</p><div class=\"Box Box--condensed my-2\">\n  <div class=\"Box-header f6\">\n    <p class=\"mb-0 text-bold\">\n      <a href=\"https://github.com/ros-controls/ros2_control/blob/2296fd89e1b362d56c973709c32b030d98f091fc/controller_manager/src/controller_manager.cpp#L2480-L2481\">ros2_control/controller_manager/src/controller_manager.cpp</a>\n    </p>\n    <p class=\"mb-0 color-fg-muted\">\n        Lines 2480 to 2481\n      in\n      <a data-pjax=\"true\" class=\"commit-tease-sha Link--inTextBlock\" href=\"/ros-controls/ros2_control/commit/2296fd89e1b362d56c973709c32b030d98f091fc\">2296fd8</a>\n    </p>\n  </div>\n  <div itemprop=\"text\" class=\"Box-body p-0 blob-wrapper blob-wrapper-embedded data\">\n    <table class=\"highlight tab-size mb-0 js-file-line-container\" data-tab-size=\"8\" data-paste-markdown-skip=\"\">\n\n        <tbody><tr class=\"border-0\">\n          <td id=\"L2480\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"2480\"></td>\n          <td id=\"LC2480\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> controller_params.<span class=\"pl-smi\">update_rate</span> = <span class=\"pl-c1\">get_update_rate</span>(); </td>\n        </tr>\n\n        <tr class=\"border-0\">\n          <td id=\"L2481\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"2481\"></td>\n          <td id=\"LC2481\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> controller_params.<span class=\"pl-smi\">controller_manager_update_rate</span> = <span class=\"pl-c1\">get_update_rate</span>(); </td>\n        </tr>\n    </tbody></table>\n  </div>\n</div>\n<br>\nand only will be changed if great than zero<br>\n<div class=\"Box Box--condensed my-2\">\n  <div class=\"Box-header f6\">\n    <p class=\"mb-0 text-bold\">\n      <a href=\"https://github.com/ros-controls/ros2_control/blob/2296fd89e1b362d56c973709c32b030d98f091fc/controller_interface/src/controller_interface_base.cpp#L220\">ros2_control/controller_interface/src/controller_interface_base.cpp</a>\n    </p>\n    <p class=\"mb-0 color-fg-muted\">\n         Line 220\n      in\n      <a data-pjax=\"true\" class=\"commit-tease-sha Link--inTextBlock\" href=\"/ros-controls/ros2_control/commit/2296fd89e1b362d56c973709c32b030d98f091fc\">2296fd8</a>\n    </p>\n  </div>\n  <div itemprop=\"text\" class=\"Box-body p-0 blob-wrapper blob-wrapper-embedded data\">\n    <table class=\"highlight tab-size mb-0 js-file-line-container\" data-tab-size=\"8\" data-paste-markdown-skip=\"\">\n\n        <tbody><tr class=\"border-0\">\n          <td id=\"L220\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"220\"></td>\n          <td id=\"LC220\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> <span class=\"pl-k\">if</span> (update_rate &gt; <span class=\"pl-c1\">0</span> &amp;&amp; params.<span class=\"pl-smi\">controller_manager_update_rate</span> &gt; <span class=\"pl-c1\">0</span>) </td>\n        </tr>\n    </tbody></table>\n  </div>\n</div>\n<p></p>\n<p dir=\"auto\">But there should maybe added a check here, just to avoid any regression in the future</p>",
+      "bodyVersion": "6f7f16216b308a60e0813acd4b5a21c3a77a27414e81e7838e9c6c5e6b999be2",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "RenamedTitleEvent",
+      "id": "RTE_lADOBiM5Uc7-BOy-zwAAAAWzbxkH",
+      "databaseId": 24485239047,
+      "createdAt": "2026-04-14T11:35:30Z",
+      "actor": {
+        "id": "MDQ6VXNlcjcxMjU2NTkw",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/71256590?s=64&u=81ee0421ed5a6c8b373ce5cf42557d78c4b88047&v=4",
+        "login": "domire8",
+        "profileResourcePath": "/domire8",
+        "__typename": "User",
+        "name": "Dominic Reber"
+      },
+      "currentTitle": "Zero controller update rate might trigger undefined behavior",
+      "previousTitle": "Zero update rate might trigger undefined behavior"
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABEMkT4A",
+      "databaseId": 4576580576,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7-BOy-",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjcxMjU2NTkw",
+          "login": "domire8"
+        },
+        "number": 3220,
+        "locked": false,
+        "databaseId": 4261735614
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3220#issuecomment-4576580576",
+      "createdAt": "2026-05-29T14:58:10Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7-BOy-zwAAAAYUl-za",
+      "databaseId": 26115304666,
+      "createdAt": "2026-05-29T14:58:11Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+        "archivedAt": null,
+        "nameHTML": "stale",
+        "name": "stale",
+        "color": "ededed",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7-BOy-zwAAAAZq5CwG",
+      "databaseId": 27563142150,
+      "createdAt": "2026-07-04T20:55:34Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7-BOy-zwAAAAZq5CwN",
+      "databaseId": 27563142157,
+      "createdAt": "2026-07-04T20:55:34Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NTI=",
+        "archivedAt": null,
+        "nameHTML": "good first issue",
+        "name": "good first issue",
+        "color": "7057ff",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "UnlabeledEvent",
+      "id": "UNLE_lADOBiM5Uc7-BOy-zwAAAAZq5CwB",
+      "databaseId": 27563142145,
+      "createdAt": "2026-07-04T20:55:34Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+        "archivedAt": null,
+        "nameHTML": "stale",
+        "name": "stale",
+        "color": "ededed",
+        "description": null
+      }
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABIxkQkw",
+      "databaseId": 4883812499,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7-BOy-",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjcxMjU2NTkw",
+          "login": "domire8"
+        },
+        "number": 3220,
+        "locked": false,
+        "databaseId": 4261735614
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3220#issuecomment-4883812499",
+      "createdAt": "2026-07-04T21:08:52Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This actually can never happen because\n\nThis parameter is initialized with cm update rate\nhttps://github.com/ros-controls/ros2_control/blob/2296fd89e1b362d56c973709c32b030d98f091fc/controller_manager/src/controller_manager.cpp#L2480-L2481\nand only will be changed if great than zero\nhttps://github.com/ros-controls/ros2_control/blob/2296fd89e1b362d56c973709c32b030d98f091fc/controller_interface/src/controller_interface_base.cpp#L220\n\nBut there should maybe added a check here, just to avoid any regression in the future",
+      "bodyHTML": "<p dir=\"auto\">This actually can never happen because</p>\n<p dir=\"auto\">This parameter is initialized with cm update rate<br>\n</p><div class=\"Box Box--condensed my-2\">\n  <div class=\"Box-header f6\">\n    <p class=\"mb-0 text-bold\">\n      <a href=\"https://github.com/ros-controls/ros2_control/blob/2296fd89e1b362d56c973709c32b030d98f091fc/controller_manager/src/controller_manager.cpp#L2480-L2481\">ros2_control/controller_manager/src/controller_manager.cpp</a>\n    </p>\n    <p class=\"mb-0 color-fg-muted\">\n        Lines 2480 to 2481\n      in\n      <a data-pjax=\"true\" class=\"commit-tease-sha Link--inTextBlock\" href=\"/ros-controls/ros2_control/commit/2296fd89e1b362d56c973709c32b030d98f091fc\">2296fd8</a>\n    </p>\n  </div>\n  <div itemprop=\"text\" class=\"Box-body p-0 blob-wrapper blob-wrapper-embedded data\">\n    <table class=\"highlight tab-size mb-0 js-file-line-container\" data-tab-size=\"8\" data-paste-markdown-skip=\"\">\n\n        <tbody><tr class=\"border-0\">\n          <td id=\"L2480\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"2480\"></td>\n          <td id=\"LC2480\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> controller_params.<span class=\"pl-smi\">update_rate</span> = <span class=\"pl-c1\">get_update_rate</span>(); </td>\n        </tr>\n\n        <tr class=\"border-0\">\n          <td id=\"L2481\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"2481\"></td>\n          <td id=\"LC2481\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> controller_params.<span class=\"pl-smi\">controller_manager_update_rate</span> = <span class=\"pl-c1\">get_update_rate</span>(); </td>\n        </tr>\n    </tbody></table>\n  </div>\n</div>\n<br>\nand only will be changed if great than zero<br>\n<div class=\"Box Box--condensed my-2\">\n  <div class=\"Box-header f6\">\n    <p class=\"mb-0 text-bold\">\n      <a href=\"https://github.com/ros-controls/ros2_control/blob/2296fd89e1b362d56c973709c32b030d98f091fc/controller_interface/src/controller_interface_base.cpp#L220\">ros2_control/controller_interface/src/controller_interface_base.cpp</a>\n    </p>\n    <p class=\"mb-0 color-fg-muted\">\n         Line 220\n      in\n      <a data-pjax=\"true\" class=\"commit-tease-sha Link--inTextBlock\" href=\"/ros-controls/ros2_control/commit/2296fd89e1b362d56c973709c32b030d98f091fc\">2296fd8</a>\n    </p>\n  </div>\n  <div itemprop=\"text\" class=\"Box-body p-0 blob-wrapper blob-wrapper-embedded data\">\n    <table class=\"highlight tab-size mb-0 js-file-line-container\" data-tab-size=\"8\" data-paste-markdown-skip=\"\">\n\n        <tbody><tr class=\"border-0\">\n          <td id=\"L220\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"220\"></td>\n          <td id=\"LC220\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> <span class=\"pl-k\">if</span> (update_rate &gt; <span class=\"pl-c1\">0</span> &amp;&amp; params.<span class=\"pl-smi\">controller_manager_update_rate</span> &gt; <span class=\"pl-c1\">0</span>) </td>\n        </tr>\n    </tbody></table>\n  </div>\n</div>\n<p></p>\n<p dir=\"auto\">But there should maybe added a check here, just to avoid any regression in the future</p>",
+      "bodyVersion": "6f7f16216b308a60e0813acd4b5a21c3a77a27414e81e7838e9c6c5e6b999be2",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc7-BOy-zwAAAAaFVtgP",
+      "databaseId": 28006864911,
+      "createdAt": "2026-07-15T09:02:42Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOBiM5Uc7wHwP0",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-controls/ros2_control/pull/3454",
+        "number": 3454,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+          "name": "ros2_control",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+            "login": "ros-controls"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnYvGa9ABqzI0NDg1MjM5MDQ3",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABn2UDl1ABqzI4MDA2ODY0OTEx"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnYvGa9ABqzI0NDg1MjM5MDQ3",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABn2UDl1ABqzI4MDA2ODY0OTEx"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOBiM5Uc7wHwP0",
+      "url": "https://github.com/ros-controls/ros2_control/pull/3454",
+      "number": 3454,
+      "title": "Guard controller update rate against modulo-by-zero UB",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-07-10T10:15:31Z",
+      "databaseId": 4028564468,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3454",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3454.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3454.changes.json"
+    }
+  ]
+}

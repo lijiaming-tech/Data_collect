@@ -1,0 +1,19 @@
+{
+  "source": {
+    "url": "https://github.com/Quchaosheng/ros2_control/pull/1",
+    "final_url": "https://github.com/Quchaosheng/ros2_control/pull/1",
+    "fetched_at": "2026-10-11T11:24:18.164410+00:00",
+    "http_status": 200,
+    "response_sha256": "a7406a42eacb39cce41a1f9d4d5e820e998d5f4987d29a655cad6bf7261f350e"
+  },
+  "url": "https://github.com/Quchaosheng/ros2_control/pull/1",
+  "title": "Fix data race in overrun warning parameter by Quchaosheng · Pull Request #1 · Quchaosheng/ros2_control · GitHub",
+  "state_from_issue_link": "OPEN",
+  "body_rendered_text": "Fixes ros-controls#3612.\n\n\nSummary\n\n\n\nCache overruns.print_warnings in an atomic snapshot.\n\n\nRefresh the snapshot whenever the controller-manager parameter set is initialized or reloaded.\n\n\nRead the snapshot from the real-time write() loop with relaxed ordering.\n\n\n\nMotivation\n\n\nThe diagnostic callbacks replace the shared parameter snapshot while the real-time loop reads the warning flag. This produces a ThreadSanitizer-reported data race. The atomic cache keeps the real-time path lock-free while preserving runtime parameter updates.\n\n\nTesting\n\n\n\ngit diff --check\n\n\nReviewed all parameter-refresh paths and the real-time read path.\n\n\nFull ROS 2/ThreadSanitizer build was not run because the available ROS installation does not match the repository distribution dependencies.",
+  "discussion_rendered_text": [],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/Quchaosheng/ros2_control/pull/1/commits/6e3415b1088fad3f2e135bd1d96c678000f02072"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

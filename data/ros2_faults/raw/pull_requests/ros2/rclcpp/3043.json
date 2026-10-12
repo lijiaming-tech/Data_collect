@@ -1,0 +1,25 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3043",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3043",
+    "fetched_at": "2026-10-11T11:21:18.560941+00:00",
+    "http_status": 200,
+    "response_sha256": "dbec22f77ea8809c0904ac3e04c7c7cd1276155b4b61294ac88b630f53f0aef8"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/3043",
+  "title": "Fix MSVC build: wrap max/min calls to prevent macro expansion by dbwls99706 · Pull Request #3043 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "CLOSED",
+  "body_rendered_text": "Fixes #2947\n\n\nDescription\n\n\nWrap max() and min() calls with parentheses to prevent windows.h macro interference.\n\n\nModified files:\n\n\n\nsimple_events_queue.hpp\n\n\nevents_queue.hpp\n\n\nutilities.hpp\n\n\ncreate_timer.hpp\n\n\n\nIs this user-facing behavior change?\n\n\nNo\n\n\nDid you use Generative AI?\n\n\nYes, Claude was used to identify affected files and generate the fix pattern.\n\n\nAdditional Information\n\n\nThis approach is more robust than defining NOMINMAX, as it works regardless of header include order.",
+  "discussion_rendered_text": [
+    "Pulls: #3043\n\nGist: https://gist.githubusercontent.com/mjcarroll/cd6d317677d830eaecd059da61bdcdd0/raw/a8c34f917f1bc1760504056f894eb7d33a6d7c51/ros2.repos\n\nBUILD args:\n\nTEST args: --packages-select rclcpp\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/18065\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "I am sorry, but I would reject these changes.\n\nThis is clearly a problem of including headers in the wrong order etc on the client side.\n\nI don't see a point of messing up our code base because of this.",
+    "i am with @jmachowinski on this.\n\n\nthe root cause is obviously on client side, and this is the user's responsibility. (Downstream packages should either define NOMINMAX globally or ensure proper include ordering.)\n\n\nthis PR is uglier and less idiomatic... 😓 i am not inclined to take this because of above...",
+    "Yep, I missed that this had been fixed elsewhere.  Thanks for the second (and third!) look.",
+    "That being said, thanks for tackling an open issue @dbwls99706!"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros2/rclcpp/pull/3043/commits/68e9977e3f6b5ed0f030e5b634bda24636a52486"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

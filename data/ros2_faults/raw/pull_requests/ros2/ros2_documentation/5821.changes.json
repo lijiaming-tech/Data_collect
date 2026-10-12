@@ -1,0 +1,47 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/ros2_documentation/pull/5821/files",
+    "final_url": "https://github.com/ros2/ros2_documentation/pull/5821/files",
+    "fetched_at": "2026-10-11T11:23:32.642445+00:00",
+    "http_status": 200,
+    "response_sha256": "0c23f77ba41a9a05bb5530b51774f38dac6abf3e2173a43cf7e5514cc64df232"
+  },
+  "files": {
+    "source/Tutorials/Advanced/Discovery-Server/Discovery-Server.rst": [
+      "@@ -575,7 +575,7 @@ We can also see the Node's Graph using the ROS 2 tool ``rqt_graph`` as follows (",
+      " ",
+      " .. code-block:: console",
+      " ",
+      "-    $ rqt_graph",
+      "+    $ ros2 run rqt_graph rqt_graph",
+      " ",
+      " ",
+      " No Daemon tools"
+    ],
+    "source/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.rst": [
+      "@@ -73,7 +73,7 @@ To run rqt_graph, open a new terminal and enter the command:",
+      " ",
+      " .. code-block:: console",
+      " ",
+      "-    $ rqt_graph",
+      "+    $ ros2 run rqt_graph rqt_graph",
+      " ",
+      " You can also open rqt_graph by opening ``rqt`` and selecting **Plugins** > **Introspection** > **Node Graph**.",
+      " "
+    ],
+    "source/Tutorials/Intermediate/Launch/Creating-Launch-Files.rst": [
+      "@@ -232,7 +232,7 @@ Run the command:",
+      " ",
+      " .. code-block:: console",
+      " ",
+      "-  $ rqt_graph",
+      "+  $ ros2 run rqt_graph rqt_graph",
+      " ",
+      " .. image:: images/mimic_graph.png",
+      " "
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

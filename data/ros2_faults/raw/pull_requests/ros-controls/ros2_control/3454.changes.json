@@ -1,0 +1,28 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3454/files",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3454/files",
+    "fetched_at": "2026-10-11T11:24:28.440810+00:00",
+    "http_status": 200,
+    "response_sha256": "710f30a0ec679b6f91ab3c9308b1f12d5e96c52a8c9b0053bdce5a779a88a1ae"
+  },
+  "files": {
+    "controller_manager/src/controller_manager_parameters.yaml": [
+      "@@ -3,7 +3,10 @@ controller_manager:",
+      "     type: int,",
+      "     default_value: 100,",
+      "     read_only: true,",
+      "-    description: \"The frequency of controller manager's real-time update loop. This loop reads states from hardware, updates controllers and writes commands to hardware.\"",
+      "+    description: \"The frequency of controller manager's real-time update loop. This loop reads states from hardware, updates controllers and writes commands to hardware.\",",
+      "+    validation: {",
+      "+      gt<>: 0,",
+      "+    }",
+      "   }",
+      " ",
+      "   enforce_command_limits: {"
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

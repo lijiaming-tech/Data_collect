@@ -1,0 +1,30 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3287",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3287",
+    "fetched_at": "2026-10-11T11:24:41.313559+00:00",
+    "http_status": 200,
+    "response_sha256": "611ab82de156ecdba5f3654494b49f5f8d9ec187cee3a11237150c549e58f9cc"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3287",
+  "title": "Fix the out of bound access of the std::vector in ChainableController by saikishor · Pull Request #3287 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "The bug is in both export_state_interfaces() and export_reference_interfaces() in chainable_controller_interface.cpp.\n\n\nRoot cause: The default on_export_reference_interfaces() (old API backward compatibility) uses exported_reference_interface_names_ to generate interfaces. However,\n\nthese names are only cleared AFTER the call, so on the second configure (after a failed activation that bypassed on_cleanup), the stale names from the first configure\n\ncause ghost interfaces to be created. This doubles ordered_exported_reference_interfaces_.size() to 2, while (*msg)->data only has 1 element → out-of-bounds access at\n\n(*msg)->data[1].\n\n\nThe fix is to clear the internal state vectors before calling on_export_reference_interfaces() / on_export_state_interfaces(), so the default (old API) implementations\n\nsee an empty name list and return zero ghost interfaces.\n\n\n\nDescription\n\n\n\n\nFixes #3283\n\n\nIs this user-facing behavior change?\n\n\nNo\n\n\n\nDid you use Generative AI?\n\n\nClaude",
+  "discussion_rendered_text": [
+    "LGTM, and fixes a basic bug not covered in #3284"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/commit/13ffcfd78824489f5134ca465f5d46c3b938cc7b",
+    "https://github.com/ros-controls/ros2_control/commit/65d68bc4ebfe908c4ce2fe10f3bd0ba4c99106cf",
+    "https://github.com/ros-controls/ros2_control/commit/a83682b95a7c34ab40e281563b847e90d5fb6a2f",
+    "https://github.com/ros-controls/ros2_control/commit/aee57c5fda9c550144e7ed7498d0ca30f229780d",
+    "https://github.com/ros-controls/ros2_control/commit/cd342e3f1f57b858fc7a790ed627fd70c40a3b33",
+    "https://github.com/ros-controls/ros2_control/pull/3287/commits/13ffcfd78824489f5134ca465f5d46c3b938cc7b",
+    "https://github.com/ros-controls/ros2_control/pull/3287/commits/7324f461c45ce04ac2c2dde067b1fa0558d94f8b",
+    "https://github.com/ros-controls/ros2_control/pull/3287/commits/82b5ce4b4d8dd2e5959b1e05c698d1f85897e13c",
+    "https://github.com/ros-controls/ros2_control/pull/3287/commits/8a2cc9d51b63f5f41f845ccf8cd506c793cc3167",
+    "https://github.com/ros-controls/ros2_control/pull/3287/commits/c3cdfff1fafc57c9b23b630a9558784bc848015e"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

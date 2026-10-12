@@ -1,0 +1,29 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/ros2_documentation/pull/6213",
+    "final_url": "https://github.com/ros2/ros2_documentation/pull/6213",
+    "fetched_at": "2026-10-11T11:19:21.890538+00:00",
+    "http_status": 200,
+    "response_sha256": "f0e3f02ce1368c76633a992e744ac88b776f0d40f086ca75009c2d3b9fad0430"
+  },
+  "url": "https://github.com/ros2/ros2_documentation/pull/6213",
+  "title": "Update Raspberry Pi docs to ensure -backports and -updates suites are enabled by asymingt · Pull Request #6213 · ros2/ros2_documentation · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nBy default the Ubuntu for Raspberry Pi doesn't include the -updates and -backports suites. Without these one encounters a problem with the libzstd-dev package. This PR updates the Rasperry Pi docs to encourage the user to verify that these software suites are enabled before attempting to install ROS 2.\n\n\nFixes: ros2/ros2#1789\n\n\nDid you use Generative AI?\n\n\nNo\n\n\nAdditional Information\n\n\nWill backport to Jazzy after rolling merges.",
+  "discussion_rendered_text": [],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/asymingt/ros2_documentation/commit/13a77cf841913e7f7fe701e686a69083d7164ece",
+    "https://github.com/asymingt/ros2_documentation/commit/e98023833e4ace421d641c6d236cb7a95f7b5499",
+    "https://github.com/ros2/ros2_documentation/commit/40d191fb28d431a48ac00055cfe5ebb7a10c4b79",
+    "https://github.com/ros2/ros2_documentation/commit/5bb9d82dc1e4d2b9aba744d9ad39b679f90bc4b1",
+    "https://github.com/ros2/ros2_documentation/commit/6e9b393ce529bf25598d0643bc7bc9a37af88a32",
+    "https://github.com/ros2/ros2_documentation/commit/b09009c668ce906275da05b9c1fee2972c1247e1",
+    "https://github.com/ros2/ros2_documentation/commit/b13f3c8d9d4466a5cae61d9c03cb5eb0d7eadea2",
+    "https://github.com/ros2/ros2_documentation/pull/6213/commits/5d2b8eeff399b4ba4b38c32151218492e137b508",
+    "https://github.com/ros2/ros2_documentation/pull/6213/commits/5d7e86d4841e5fabb573e9e5dfc6db65c7160995",
+    "https://github.com/ros2/ros2_documentation/pull/6213/commits/9b5884bc32f6e01eb59921af8a95670e385d41ee",
+    "https://github.com/ros2/ros2_documentation/pull/6213/commits/f4b46788fed88a701b843e03dafea73014a8e48f"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

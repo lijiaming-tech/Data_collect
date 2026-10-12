@@ -1,0 +1,960 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros2/ros2",
+  "source": {
+    "url": "https://github.com/ros2/ros2/issues/1670",
+    "final_url": "https://github.com/ros2/ros2/issues/1670",
+    "fetched_at": "2026-10-11T11:19:13.755843+00:00",
+    "http_status": 200,
+    "response_sha256": "51333fc02498855a409765d184a2e58e6b180d29c0c946566b3e53da5cad6793"
+  },
+  "issue": {
+    "id": "I_kwDOAd1its6xFirf",
+    "databaseId": 2971019999,
+    "number": 1670,
+    "title": "ROS2 packages failing to build from source with new cmake version 4.0.0",
+    "url": "https://github.com/ros2/ros2/issues/1670",
+    "body": "### Operating System:\n\nLinux SCI-10530U 5.15.0-131-generic #141~20.04.1-Ubuntu SMP Thu Jan 16 18:38:51 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux\n\n### ROS version or commit hash:\n\nHumble\n\n### RMW implementation (if applicable):\n\n_No response_\n\n### RMW Configuration (if applicable):\n\n_No response_\n\n### Client library (if applicable):\n\n_No response_\n\n### 'ros2 doctor --report' output\n\n<details><summary>ros2 doc --report</summary>\n\n```console\n<COPY OUTPUT HERE>\n```\n</details>\n\n\n### Steps to reproduce issue\n\n1. follow installation steps according to humble [installation page] up to build step (https://docs.ros.org/en/humble/Installation.html). the `sudo apt upgrade` should update your cmake version to the latest 4.0.0. it can be checked with `cmake --version`\n2. attempt to build the ros2 packages with colcon \n```\ncd ~/ros2_humble/\ncolcon build --symlink-install\n```\n\n### Expected behavior\n\nThe packages should build correctly, akin to how they do with cmake version `3.24.4`. the previous CMake version\n\n### Actual behavior\n\nThe core ROS2 packages fail to build and the following error occurs \n```\n--- stderr: gtest_vendor                                                           \nCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):\n  Compatibility with CMake < 3.10 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax\n  to tell CMake that the project requires at least <min> but has been updated\n  to work with policies introduced by <max> or earlier.\n\n\n---\nFinished <<< gtest_vendor [0.90s]\nStarting >>> gmock_vendor\n--- stderr: gmock_vendor\nCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):\n  Compatibility with CMake < 3.10 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax\n  to tell CMake that the project requires at least <min> but has been updated\n  to work with policies introduced by <max> or earlier.\n\n\n---\nFinished <<< gmock_vendor [0.06s]\n--- stderr: urdfdom_headers                                                        \nCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):\n  Compatibility with CMake < 3.10 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax\n  to tell CMake that the project requires at least <min> but has been updated\n  to work with policies introduced by <max> or earlier.\n\n\n---\nFinished <<< urdfdom_headers [1.09s]\n--- stderr: osrf_testing_tools_cpp\nCMake Error at CMakeLists.txt:4 (cmake_minimum_required):\n  Compatibility with CMake < 3.5 has been removed from CMake.\n\n  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax\n  to tell CMake that the project requires at least <min> but has been updated\n  to work with policies introduced by <max> or earlier.\n\n  Or, add -DCMAKE_POLICY_VERSION_MINIMUM=3.5 to try configuring anyway.\n\n\nCMake Error at cmake/osrf_testing_tools_cpp_extract_and_build_googletest.cmake:53 (message):\n  CMake step for googletest failed: 1\nCall Stack (most recent call first):\n  cmake/osrf_testing_tools_cpp_require_googletest.cmake:178 (osrf_testing_tools_cpp_extract_and_build_googletest)\n  cmake/osrf_testing_tools_cpp_require_googletest.cmake:57 (_osrf_testing_tools_cpp_require_googletest)\n  CMakeLists.txt:24 (osrf_testing_tools_cpp_require_googletest)\n\n\n---\nFailed   <<< osrf_testing_tools_cpp [1.12s, exited with code 1]\nAborted  <<< ament_package [1.53s]                                                           \nAborted  <<< ament_lint [1.59s]                                                                  \nAborted  <<< osrf_pycommon [1.59s]\nAborted  <<< ament_pycodestyle [1.63s]\nAborted  <<< ament_cppcheck [1.72s]                                       \nAborted  <<< fastcdr [2.04s]                                                                 \nAborted  <<< iceoryx_hoofs [2.60s]                                                            \nAborted  <<< google_benchmark_vendor [6.45s]                                   \n                                   \nSummary: 3 packages finished [7.61s]\n  1 package failed: osrf_testing_tools_cpp\n  8 packages aborted: ament_cppcheck ament_lint ament_package ament_pycodestyle fastcdr google_benchmark_vendor iceoryx_hoofs osrf_pycommon\n  6 packages had stderr output: fastcdr gmock_vendor google_benchmark_vendor gtest_vendor osrf_testing_tools_cpp urdfdom_headers\n  334 packages not processed\n\n```\n\n### Additional information\n\nThe latest cmake version `4.0.0` [link](https://cmake.org/cmake/help/latest/release/4.0.html) removes support for compiling packages that require CMake versions < 3.5. \nI believe that either the system should instruct people on which version of cmake to have, or to update these packages to work with the most up to date cmake version, so long as there's no unintended consequences of that however.",
+    "bodyHTML": "<h3 dir=\"auto\">Operating System:</h3>\n<p dir=\"auto\">Linux SCI-10530U 5.15.0-131-generic <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"114907511\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros2/ros2/issues/141\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros2/ros2/issues/141/hovercard\" href=\"https://github.com/ros2/ros2/issues/141\">#141</a>~20.04.1-Ubuntu SMP Thu Jan 16 18:38:51 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux</p>\n<h3 dir=\"auto\">ROS version or commit hash:</h3>\n<p dir=\"auto\">Humble</p>\n<h3 dir=\"auto\">RMW implementation (if applicable):</h3>\n<p dir=\"auto\"><em>No response</em></p>\n<h3 dir=\"auto\">RMW Configuration (if applicable):</h3>\n<p dir=\"auto\"><em>No response</em></p>\n<h3 dir=\"auto\">Client library (if applicable):</h3>\n<p dir=\"auto\"><em>No response</em></p>\n<h3 dir=\"auto\">'ros2 doctor --report' output</h3>\n<details><summary>ros2 doc --report</summary>\n<div class=\"highlight highlight-text-shell-session notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"&lt;COPY OUTPUT HERE&gt;\"><pre class=\"notranslate\"><span class=\"pl-c1\">&lt;COPY OUTPUT HERE&gt;</span></pre></div>\n</details>\n<h3 dir=\"auto\">Steps to reproduce issue</h3>\n<ol dir=\"auto\">\n<li>follow installation steps according to humble [installation page] up to build step (<a href=\"https://docs.ros.org/en/humble/Installation.html\" rel=\"nofollow\">https://docs.ros.org/en/humble/Installation.html</a>). the <code class=\"notranslate\">sudo apt upgrade</code> should update your cmake version to the latest 4.0.0. it can be checked with <code class=\"notranslate\">cmake --version</code></li>\n<li>attempt to build the ros2 packages with colcon</li>\n</ol>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"cd ~/ros2_humble/\ncolcon build --symlink-install\"><pre class=\"notranslate\"><code class=\"notranslate\">cd ~/ros2_humble/\ncolcon build --symlink-install\n</code></pre></div>\n<h3 dir=\"auto\">Expected behavior</h3>\n<p dir=\"auto\">The packages should build correctly, akin to how they do with cmake version <code class=\"notranslate\">3.24.4</code>. the previous CMake version</p>\n<h3 dir=\"auto\">Actual behavior</h3>\n<p dir=\"auto\">The core ROS2 packages fail to build and the following error occurs</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"--- stderr: gtest_vendor                                                           \nCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):\n  Compatibility with CMake &lt; 3.10 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument &lt;min&gt; value.  Or, use the &lt;min&gt;...&lt;max&gt; syntax\n  to tell CMake that the project requires at least &lt;min&gt; but has been updated\n  to work with policies introduced by &lt;max&gt; or earlier.\n\n\n---\nFinished &lt;&lt;&lt; gtest_vendor [0.90s]\nStarting &gt;&gt;&gt; gmock_vendor\n--- stderr: gmock_vendor\nCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):\n  Compatibility with CMake &lt; 3.10 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument &lt;min&gt; value.  Or, use the &lt;min&gt;...&lt;max&gt; syntax\n  to tell CMake that the project requires at least &lt;min&gt; but has been updated\n  to work with policies introduced by &lt;max&gt; or earlier.\n\n\n---\nFinished &lt;&lt;&lt; gmock_vendor [0.06s]\n--- stderr: urdfdom_headers                                                        \nCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):\n  Compatibility with CMake &lt; 3.10 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument &lt;min&gt; value.  Or, use the &lt;min&gt;...&lt;max&gt; syntax\n  to tell CMake that the project requires at least &lt;min&gt; but has been updated\n  to work with policies introduced by &lt;max&gt; or earlier.\n\n\n---\nFinished &lt;&lt;&lt; urdfdom_headers [1.09s]\n--- stderr: osrf_testing_tools_cpp\nCMake Error at CMakeLists.txt:4 (cmake_minimum_required):\n  Compatibility with CMake &lt; 3.5 has been removed from CMake.\n\n  Update the VERSION argument &lt;min&gt; value.  Or, use the &lt;min&gt;...&lt;max&gt; syntax\n  to tell CMake that the project requires at least &lt;min&gt; but has been updated\n  to work with policies introduced by &lt;max&gt; or earlier.\n\n  Or, add -DCMAKE_POLICY_VERSION_MINIMUM=3.5 to try configuring anyway.\n\n\nCMake Error at cmake/osrf_testing_tools_cpp_extract_and_build_googletest.cmake:53 (message):\n  CMake step for googletest failed: 1\nCall Stack (most recent call first):\n  cmake/osrf_testing_tools_cpp_require_googletest.cmake:178 (osrf_testing_tools_cpp_extract_and_build_googletest)\n  cmake/osrf_testing_tools_cpp_require_googletest.cmake:57 (_osrf_testing_tools_cpp_require_googletest)\n  CMakeLists.txt:24 (osrf_testing_tools_cpp_require_googletest)\n\n\n---\nFailed   &lt;&lt;&lt; osrf_testing_tools_cpp [1.12s, exited with code 1]\nAborted  &lt;&lt;&lt; ament_package [1.53s]                                                           \nAborted  &lt;&lt;&lt; ament_lint [1.59s]                                                                  \nAborted  &lt;&lt;&lt; osrf_pycommon [1.59s]\nAborted  &lt;&lt;&lt; ament_pycodestyle [1.63s]\nAborted  &lt;&lt;&lt; ament_cppcheck [1.72s]                                       \nAborted  &lt;&lt;&lt; fastcdr [2.04s]                                                                 \nAborted  &lt;&lt;&lt; iceoryx_hoofs [2.60s]                                                            \nAborted  &lt;&lt;&lt; google_benchmark_vendor [6.45s]                                   \n                                   \nSummary: 3 packages finished [7.61s]\n  1 package failed: osrf_testing_tools_cpp\n  8 packages aborted: ament_cppcheck ament_lint ament_package ament_pycodestyle fastcdr google_benchmark_vendor iceoryx_hoofs osrf_pycommon\n  6 packages had stderr output: fastcdr gmock_vendor google_benchmark_vendor gtest_vendor osrf_testing_tools_cpp urdfdom_headers\n  334 packages not processed\n\"><pre class=\"notranslate\"><code class=\"notranslate\">--- stderr: gtest_vendor                                                           \nCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):\n  Compatibility with CMake &lt; 3.10 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument &lt;min&gt; value.  Or, use the &lt;min&gt;...&lt;max&gt; syntax\n  to tell CMake that the project requires at least &lt;min&gt; but has been updated\n  to work with policies introduced by &lt;max&gt; or earlier.\n\n\n---\nFinished &lt;&lt;&lt; gtest_vendor [0.90s]\nStarting &gt;&gt;&gt; gmock_vendor\n--- stderr: gmock_vendor\nCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):\n  Compatibility with CMake &lt; 3.10 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument &lt;min&gt; value.  Or, use the &lt;min&gt;...&lt;max&gt; syntax\n  to tell CMake that the project requires at least &lt;min&gt; but has been updated\n  to work with policies introduced by &lt;max&gt; or earlier.\n\n\n---\nFinished &lt;&lt;&lt; gmock_vendor [0.06s]\n--- stderr: urdfdom_headers                                                        \nCMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):\n  Compatibility with CMake &lt; 3.10 will be removed from a future version of\n  CMake.\n\n  Update the VERSION argument &lt;min&gt; value.  Or, use the &lt;min&gt;...&lt;max&gt; syntax\n  to tell CMake that the project requires at least &lt;min&gt; but has been updated\n  to work with policies introduced by &lt;max&gt; or earlier.\n\n\n---\nFinished &lt;&lt;&lt; urdfdom_headers [1.09s]\n--- stderr: osrf_testing_tools_cpp\nCMake Error at CMakeLists.txt:4 (cmake_minimum_required):\n  Compatibility with CMake &lt; 3.5 has been removed from CMake.\n\n  Update the VERSION argument &lt;min&gt; value.  Or, use the &lt;min&gt;...&lt;max&gt; syntax\n  to tell CMake that the project requires at least &lt;min&gt; but has been updated\n  to work with policies introduced by &lt;max&gt; or earlier.\n\n  Or, add -DCMAKE_POLICY_VERSION_MINIMUM=3.5 to try configuring anyway.\n\n\nCMake Error at cmake/osrf_testing_tools_cpp_extract_and_build_googletest.cmake:53 (message):\n  CMake step for googletest failed: 1\nCall Stack (most recent call first):\n  cmake/osrf_testing_tools_cpp_require_googletest.cmake:178 (osrf_testing_tools_cpp_extract_and_build_googletest)\n  cmake/osrf_testing_tools_cpp_require_googletest.cmake:57 (_osrf_testing_tools_cpp_require_googletest)\n  CMakeLists.txt:24 (osrf_testing_tools_cpp_require_googletest)\n\n\n---\nFailed   &lt;&lt;&lt; osrf_testing_tools_cpp [1.12s, exited with code 1]\nAborted  &lt;&lt;&lt; ament_package [1.53s]                                                           \nAborted  &lt;&lt;&lt; ament_lint [1.59s]                                                                  \nAborted  &lt;&lt;&lt; osrf_pycommon [1.59s]\nAborted  &lt;&lt;&lt; ament_pycodestyle [1.63s]\nAborted  &lt;&lt;&lt; ament_cppcheck [1.72s]                                       \nAborted  &lt;&lt;&lt; fastcdr [2.04s]                                                                 \nAborted  &lt;&lt;&lt; iceoryx_hoofs [2.60s]                                                            \nAborted  &lt;&lt;&lt; google_benchmark_vendor [6.45s]                                   \n                                   \nSummary: 3 packages finished [7.61s]\n  1 package failed: osrf_testing_tools_cpp\n  8 packages aborted: ament_cppcheck ament_lint ament_package ament_pycodestyle fastcdr google_benchmark_vendor iceoryx_hoofs osrf_pycommon\n  6 packages had stderr output: fastcdr gmock_vendor google_benchmark_vendor gtest_vendor osrf_testing_tools_cpp urdfdom_headers\n  334 packages not processed\n\n</code></pre></div>\n<h3 dir=\"auto\">Additional information</h3>\n<p dir=\"auto\">The latest cmake version <code class=\"notranslate\">4.0.0</code> <a href=\"https://cmake.org/cmake/help/latest/release/4.0.html\" rel=\"nofollow\">link</a> removes support for compiling packages that require CMake versions &lt; 3.5.<br>\nI believe that either the system should instruct people on which version of cmake to have, or to update these packages to work with the most up to date cmake version, so long as there's no unintended consequences of that however.</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2025-04-04T01:02:35Z",
+    "updatedAt": "2026-04-01T05:34:01Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/98879113?u=bc626aab0446073b52825b57082a140bac00ebb1&v=4",
+      "login": "DARKMOONlite",
+      "id": "U_kgDOBeTGiQ",
+      "profileUrl": "https://github.com/DARKMOONlite",
+      "name": "Sebastian Schroder",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWwxODA1NTM0MTU=",
+            "fullDatabaseId": "180553415",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros2/ros2/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 3,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6lipey",
+      "databaseId": 2777323442,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6xFirf",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBeTGiQ",
+          "login": "DARKMOONlite"
+        },
+        "number": 1670,
+        "locked": false,
+        "databaseId": 2971019999
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjM3MTczNDU=",
+        "login": "christophebedard",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3717345?u=403864c3ca0961ad1924646ea243344714505159&v=4",
+        "profileUrl": "https://github.com/christophebedard",
+        "name": "Christophe Bedard"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1670#issuecomment-2777323442",
+      "createdAt": "2025-04-04T01:15:24Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-04-04T01:15:47Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOAd1its6lipeyzmJAIbM",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjM3MTczNDU=",
+          "url": "https://github.com/christophebedard",
+          "login": "christophebedard"
+        }
+      },
+      "pinnedBy": null,
+      "body": "ROS 2 expects a specific version of CMake, which can vary depending on your platform, but it's mostly the same version, see: https://www.ros.org/reps/rep-2000.html#humble-hawksbill-may-2022-may-2027.\n\n> 1. follow installation steps according to humble [installation page] up to build step (https://docs.ros.org/en/humble/Installation.html). the `sudo apt upgrade` should update your cmake version to the latest 4.0.0. it can be checked with `cmake --version`\n\nI just tried inside a Docker container and I get:\n\n```\n$ docker run -it ubuntu:jammy\n# apt-get update\n# apt-get install -y cmake\n# cmake --version\ncmake version 3.22.1\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\n```\n\nI don't think you'd get CMake 4.0 on Ubuntu 22.04: it has CMake version 3.22 and that's not likely to change: https://packages.ubuntu.com/jammy/cmake.\n\n----\n\nIf you're using GitHub actions, note that GitHub (mistakenly, I believe) changed the version of CMake that is installed by default in their runners (separate from the version from Ubuntu): https://github.com/actions/runner-images/issues/11926. See this other bug report from earlier today: https://github.com/osrf/osrf_testing_tools_cpp/issues/91#issuecomment-2776788852.",
+      "bodyHTML": "<p dir=\"auto\">ROS 2 expects a specific version of CMake, which can vary depending on your platform, but it's mostly the same version, see: <a href=\"https://www.ros.org/reps/rep-2000.html#humble-hawksbill-may-2022-may-2027\" rel=\"nofollow\">https://www.ros.org/reps/rep-2000.html#humble-hawksbill-may-2022-may-2027</a>.</p>\n<blockquote>\n<ol dir=\"auto\">\n<li>follow installation steps according to humble [installation page] up to build step (<a href=\"https://docs.ros.org/en/humble/Installation.html\" rel=\"nofollow\">https://docs.ros.org/en/humble/Installation.html</a>). the <code class=\"notranslate\">sudo apt upgrade</code> should update your cmake version to the latest 4.0.0. it can be checked with <code class=\"notranslate\">cmake --version</code></li>\n</ol>\n</blockquote>\n<p dir=\"auto\">I just tried inside a Docker container and I get:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"$ docker run -it ubuntu:jammy\n# apt-get update\n# apt-get install -y cmake\n# cmake --version\ncmake version 3.22.1\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\"><pre class=\"notranslate\"><code class=\"notranslate\">$ docker run -it ubuntu:jammy\n# apt-get update\n# apt-get install -y cmake\n# cmake --version\ncmake version 3.22.1\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\n</code></pre></div>\n<p dir=\"auto\">I don't think you'd get CMake 4.0 on Ubuntu 22.04: it has CMake version 3.22 and that's not likely to change: <a href=\"https://packages.ubuntu.com/jammy/cmake\" rel=\"nofollow\">https://packages.ubuntu.com/jammy/cmake</a>.</p>\n<hr>\n<p dir=\"auto\">If you're using GitHub actions, note that GitHub (mistakenly, I believe) changed the version of CMake that is installed by default in their runners (separate from the version from Ubuntu): <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2964172502\" data-permission-text=\"Title is private\" data-url=\"https://github.com/actions/runner-images/issues/11926\" data-hovercard-type=\"issue\" data-hovercard-url=\"/actions/runner-images/issues/11926/hovercard\" href=\"https://github.com/actions/runner-images/issues/11926\">actions/runner-images#11926</a>. See this other bug report from earlier today: <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2964415742\" data-permission-text=\"Title is private\" data-url=\"https://github.com/osrf/osrf_testing_tools_cpp/issues/91\" data-hovercard-type=\"issue\" data-hovercard-url=\"/osrf/osrf_testing_tools_cpp/issues/91/hovercard?comment_id=2776788852&amp;comment_type=issue_comment\" href=\"https://github.com/osrf/osrf_testing_tools_cpp/issues/91#issuecomment-2776788852\">osrf/osrf_testing_tools_cpp#91 (comment)</a>.</p>",
+      "bodyVersion": "71d77d8002f19ff9c4e102ee2680555f3d19646cf38a02e6c74ade8b57dc1fb4",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its74Xpd9",
+      "databaseId": 4166948733,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6xFirf",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBeTGiQ",
+          "login": "DARKMOONlite"
+        },
+        "number": 1670,
+        "locked": false,
+        "databaseId": 2971019999
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjI3OTcwMQ==",
+        "login": "mjcarroll",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/279701?u=017e53251148263e91d5a3ee75db4e709799594d&v=4",
+        "profileUrl": "https://github.com/mjcarroll",
+        "name": "Michael Carroll"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1670#issuecomment-4166948733",
+      "createdAt": "2026-04-01T02:12:33Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> ROS 2 expects a specific version of CMake\n\nNot so much that it _expects_ as it is tested with a specific set of versions. In the case that you use a newer version, I would generally expect that it should gracefully fail. Pull requests to either support gracefully failing or bringing compatibility up to the newer versions are always appreciated.\n\nSpecifically for CMake 4, I believe with rolling/lyrical on resolute, these issues should be gone.  Feel free to re-open if that isn't the case.",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">ROS 2 expects a specific version of CMake</p>\n</blockquote>\n<p dir=\"auto\">Not so much that it <em>expects</em> as it is tested with a specific set of versions. In the case that you use a newer version, I would generally expect that it should gracefully fail. Pull requests to either support gracefully failing or bringing compatibility up to the newer versions are always appreciated.</p>\n<p dir=\"auto\">Specifically for CMake 4, I believe with rolling/lyrical on resolute, these issues should be gone.  Feel free to re-open if that isn't the case.</p>",
+      "bodyVersion": "089f643efa57e53d7a4f7c2c90f084abf3c46fc88e0af30c0dc400151be89426",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjM3MTczNDU=",
+                "login": "christophebedard",
+                "name": "Christophe Bedard",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/3717345?s=64&u=403864c3ca0961ad1924646ea243344714505159&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its74aDNR",
+      "databaseId": 4167578449,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6xFirf",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBeTGiQ",
+          "login": "DARKMOONlite"
+        },
+        "number": 1670,
+        "locked": false,
+        "databaseId": 2971019999
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBeTGiQ",
+        "login": "DARKMOONlite",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/98879113?u=bc626aab0446073b52825b57082a140bac00ebb1&v=4",
+        "profileUrl": "https://github.com/DARKMOONlite",
+        "name": "Sebastian Schroder"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1670#issuecomment-4167578449",
+      "createdAt": "2026-04-01T05:34:01Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Ah thank you for the info, good to know that it should work on the soon to be released distribution. Sorry, definitely should have closed this issue after resolving it with [christophebedard](https://github.com/christophebedard) help.",
+      "bodyHTML": "<p dir=\"auto\">Ah thank you for the info, good to know that it should work on the soon to be released distribution. Sorry, definitely should have closed this issue after resolving it with <a href=\"https://github.com/christophebedard\">christophebedard</a> help.</p>",
+      "bodyVersion": "ff15b2543c9271969c4139935f00d459aad1b1d87b421d64dcc67e5d00a57daa",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOAd1its6xFirfzwAAAAP8lO4m",
+      "databaseId": 17122520614,
+      "createdAt": "2025-04-04T01:02:35Z",
+      "actor": {
+        "id": "U_kgDOBeTGiQ",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/98879113?s=64&u=bc626aab0446073b52825b57082a140bac00ebb1&v=4",
+        "login": "DARKMOONlite",
+        "profileResourcePath": "/DARKMOONlite",
+        "__typename": "User",
+        "name": "Sebastian Schroder"
+      },
+      "label": {
+        "id": "MDU6TGFiZWwxODA1NTM0MTU=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its6lipey",
+      "databaseId": 2777323442,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6xFirf",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBeTGiQ",
+          "login": "DARKMOONlite"
+        },
+        "number": 1670,
+        "locked": false,
+        "databaseId": 2971019999
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjM3MTczNDU=",
+        "login": "christophebedard",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3717345?u=403864c3ca0961ad1924646ea243344714505159&v=4",
+        "profileUrl": "https://github.com/christophebedard",
+        "name": "Christophe Bedard"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1670#issuecomment-2777323442",
+      "createdAt": "2025-04-04T01:15:24Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-04-04T01:15:47Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOAd1its6lipeyzmJAIbM",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjM3MTczNDU=",
+          "url": "https://github.com/christophebedard",
+          "login": "christophebedard"
+        }
+      },
+      "pinnedBy": null,
+      "body": "ROS 2 expects a specific version of CMake, which can vary depending on your platform, but it's mostly the same version, see: https://www.ros.org/reps/rep-2000.html#humble-hawksbill-may-2022-may-2027.\n\n> 1. follow installation steps according to humble [installation page] up to build step (https://docs.ros.org/en/humble/Installation.html). the `sudo apt upgrade` should update your cmake version to the latest 4.0.0. it can be checked with `cmake --version`\n\nI just tried inside a Docker container and I get:\n\n```\n$ docker run -it ubuntu:jammy\n# apt-get update\n# apt-get install -y cmake\n# cmake --version\ncmake version 3.22.1\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\n```\n\nI don't think you'd get CMake 4.0 on Ubuntu 22.04: it has CMake version 3.22 and that's not likely to change: https://packages.ubuntu.com/jammy/cmake.\n\n----\n\nIf you're using GitHub actions, note that GitHub (mistakenly, I believe) changed the version of CMake that is installed by default in their runners (separate from the version from Ubuntu): https://github.com/actions/runner-images/issues/11926. See this other bug report from earlier today: https://github.com/osrf/osrf_testing_tools_cpp/issues/91#issuecomment-2776788852.",
+      "bodyHTML": "<p dir=\"auto\">ROS 2 expects a specific version of CMake, which can vary depending on your platform, but it's mostly the same version, see: <a href=\"https://www.ros.org/reps/rep-2000.html#humble-hawksbill-may-2022-may-2027\" rel=\"nofollow\">https://www.ros.org/reps/rep-2000.html#humble-hawksbill-may-2022-may-2027</a>.</p>\n<blockquote>\n<ol dir=\"auto\">\n<li>follow installation steps according to humble [installation page] up to build step (<a href=\"https://docs.ros.org/en/humble/Installation.html\" rel=\"nofollow\">https://docs.ros.org/en/humble/Installation.html</a>). the <code class=\"notranslate\">sudo apt upgrade</code> should update your cmake version to the latest 4.0.0. it can be checked with <code class=\"notranslate\">cmake --version</code></li>\n</ol>\n</blockquote>\n<p dir=\"auto\">I just tried inside a Docker container and I get:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"$ docker run -it ubuntu:jammy\n# apt-get update\n# apt-get install -y cmake\n# cmake --version\ncmake version 3.22.1\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\"><pre class=\"notranslate\"><code class=\"notranslate\">$ docker run -it ubuntu:jammy\n# apt-get update\n# apt-get install -y cmake\n# cmake --version\ncmake version 3.22.1\n\nCMake suite maintained and supported by Kitware (kitware.com/cmake).\n</code></pre></div>\n<p dir=\"auto\">I don't think you'd get CMake 4.0 on Ubuntu 22.04: it has CMake version 3.22 and that's not likely to change: <a href=\"https://packages.ubuntu.com/jammy/cmake\" rel=\"nofollow\">https://packages.ubuntu.com/jammy/cmake</a>.</p>\n<hr>\n<p dir=\"auto\">If you're using GitHub actions, note that GitHub (mistakenly, I believe) changed the version of CMake that is installed by default in their runners (separate from the version from Ubuntu): <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2964172502\" data-permission-text=\"Title is private\" data-url=\"https://github.com/actions/runner-images/issues/11926\" data-hovercard-type=\"issue\" data-hovercard-url=\"/actions/runner-images/issues/11926/hovercard\" href=\"https://github.com/actions/runner-images/issues/11926\">actions/runner-images#11926</a>. See this other bug report from earlier today: <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2964415742\" data-permission-text=\"Title is private\" data-url=\"https://github.com/osrf/osrf_testing_tools_cpp/issues/91\" data-hovercard-type=\"issue\" data-hovercard-url=\"/osrf/osrf_testing_tools_cpp/issues/91/hovercard?comment_id=2776788852&amp;comment_type=issue_comment\" href=\"https://github.com/osrf/osrf_testing_tools_cpp/issues/91#issuecomment-2776788852\">osrf/osrf_testing_tools_cpp#91 (comment)</a>.</p>",
+      "bodyVersion": "71d77d8002f19ff9c4e102ee2680555f3d19646cf38a02e6c74ade8b57dc1fb4",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOAd1its6xFirfzwAAAAWcNlGA",
+      "databaseId": 24095641984,
+      "createdAt": "2026-04-01T02:12:33Z",
+      "actor": {
+        "id": "MDQ6VXNlcjI3OTcwMQ==",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/279701?s=64&u=017e53251148263e91d5a3ee75db4e709799594d&v=4",
+        "login": "mjcarroll",
+        "profileResourcePath": "/mjcarroll",
+        "__typename": "User",
+        "name": "Michael Carroll"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its74Xpd9",
+      "databaseId": 4166948733,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6xFirf",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBeTGiQ",
+          "login": "DARKMOONlite"
+        },
+        "number": 1670,
+        "locked": false,
+        "databaseId": 2971019999
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjI3OTcwMQ==",
+        "login": "mjcarroll",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/279701?u=017e53251148263e91d5a3ee75db4e709799594d&v=4",
+        "profileUrl": "https://github.com/mjcarroll",
+        "name": "Michael Carroll"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1670#issuecomment-4166948733",
+      "createdAt": "2026-04-01T02:12:33Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> ROS 2 expects a specific version of CMake\n\nNot so much that it _expects_ as it is tested with a specific set of versions. In the case that you use a newer version, I would generally expect that it should gracefully fail. Pull requests to either support gracefully failing or bringing compatibility up to the newer versions are always appreciated.\n\nSpecifically for CMake 4, I believe with rolling/lyrical on resolute, these issues should be gone.  Feel free to re-open if that isn't the case.",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">ROS 2 expects a specific version of CMake</p>\n</blockquote>\n<p dir=\"auto\">Not so much that it <em>expects</em> as it is tested with a specific set of versions. In the case that you use a newer version, I would generally expect that it should gracefully fail. Pull requests to either support gracefully failing or bringing compatibility up to the newer versions are always appreciated.</p>\n<p dir=\"auto\">Specifically for CMake 4, I believe with rolling/lyrical on resolute, these issues should be gone.  Feel free to re-open if that isn't the case.</p>",
+      "bodyVersion": "089f643efa57e53d7a4f7c2c90f084abf3c46fc88e0af30c0dc400151be89426",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjM3MTczNDU=",
+                "login": "christophebedard",
+                "name": "Christophe Bedard",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/3717345?s=64&u=403864c3ca0961ad1924646ea243344714505159&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOAd1its74aDNR",
+      "databaseId": 4167578449,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOAd1its6xFirf",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBeTGiQ",
+          "login": "DARKMOONlite"
+        },
+        "number": 1670,
+        "locked": false,
+        "databaseId": 2971019999
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBeTGiQ",
+        "login": "DARKMOONlite",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/98879113?u=bc626aab0446073b52825b57082a140bac00ebb1&v=4",
+        "profileUrl": "https://github.com/DARKMOONlite",
+        "name": "Sebastian Schroder"
+      },
+      "url": "https://github.com/ros2/ros2/issues/1670#issuecomment-4167578449",
+      "createdAt": "2026-04-01T05:34:01Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Ah thank you for the info, good to know that it should work on the soon to be released distribution. Sorry, definitely should have closed this issue after resolving it with [christophebedard](https://github.com/christophebedard) help.",
+      "bodyHTML": "<p dir=\"auto\">Ah thank you for the info, good to know that it should work on the soon to be released distribution. Sorry, definitely should have closed this issue after resolving it with <a href=\"https://github.com/christophebedard\">christophebedard</a> help.</p>",
+      "bodyVersion": "ff15b2543c9271969c4139935f00d459aad1b1d87b421d64dcc67e5d00a57daa",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkzMTI4NTk0Mg==",
+        "name": "ros2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2",
+          "url": "https://github.com/ros2"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros2/ros2",
+        "databaseId": 31285942
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABlf5SM_gBqzE3MTIyNTIwNjE0",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnUeIzSgAqjQxNjc1Nzg0NDk="
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABlf5SM_gBqzE3MTIyNTIwNjE0",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnUeIzSgAqjQxNjc1Nzg0NDk="
+    }
+  },
+  "linked_pull_requests": [],
+  "comments_complete": true,
+  "linked_pr_fetches": []
+}

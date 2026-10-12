@@ -1,0 +1,22 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3212",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3212",
+    "fetched_at": "2026-10-11T11:24:27.750366+00:00",
+    "http_status": 200,
+    "response_sha256": "69e3f1e2345f9b2a589fddd1770a96a521f67261e63a308e8bb7daa599f5cfef"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3212",
+  "title": "Fix recursive naming of chainable controller interfaces by vectorcrumb · Pull Request #3212 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "OPEN",
+  "body_rendered_text": "Description\n\n\nOn releases targeting Kilted and before, when calling export_state_interfaces/export_reference_interfaces on a ChainableControllerInterface derived class, the controller name would get correctly prepended to the interface names. When calling those methods for a second (or more) time, the full name including the controller name would get prepended by the controller name. This would lead to interfaces like my_controller/my_controller/s1.\n\n\nThis fix makes sure the reference/state interface name gets exported, rather than the entire interface name during calls to the export methods. It also includes a test for this specific case.\n\n\nFixes #3211\n\n\nIs this user-facing behavior change?\n\n\nDid you use Generative AI?\n\n\nYes, this PR was aided by Claude Opus 4.6\n\n\nAdditional Information\n\n\nThis targets the older ChainableControllerInterface methods, from before Lyrical. Also, I'm not fully sure on the usefulness of the test, as this seems a very specific issue which wouldn't really get tested for (you wouldn't expect a feature to fail specifically by prepending its controller name constantly on its interface names)\n\n\nTODOs\n\n\nTo send us a pull request, please:\n\n\n\n Fork the repository.\n\n\n Modify the source; please focus on the specific change you are contributing. If you also reformat all the code, it will be hard for us to focus on your change.\n\n\n Ensure local tests pass. (colcon test and pre-commit run (requires you to install pre-commit by pip3 install pre-commit)\n\n\n Commit to your fork using clear commit messages.\n\n\n Send a pull request, answering any default questions in the pull request interface.\n\n\n Pay attention to any automated CI failures reported in the pull request, and stay involved in the conversation.",
+  "discussion_rendered_text": [
+    "This PR is stale because it has been open for 45 days with no activity. Please tag a maintainer for help on completing this PR, or close it if you think it has become obsolete."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/pull/3212/commits/3a9830666278a41ba995430317299b92ff009b47",
+    "https://github.com/ros-controls/ros2_control/pull/3212/commits/8af559cb96474a1e807518998c272cc9a60096ae"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

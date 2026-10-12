@@ -1,0 +1,29 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3085",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3085",
+    "fetched_at": "2026-10-11T11:21:07.540025+00:00",
+    "http_status": 200,
+    "response_sha256": "1eca70a7a09b8d9997c400475f40b8ee9fa24b6bfb98af073bb16888ae554acf"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/3085",
+  "title": "avoid stale parameter events in content filter tests. by fujitatomoya · Pull Request #3085 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\n\n\nFixes #3065\n\n\nIs this user-facing behavior change?\n\n\nNo\n\n\n\nDid you use Generative AI?\n\n\nNo\n\n\n\nAdditional Information",
+  "discussion_rendered_text": [
+    "@Barry-Xu-2018 can you review this? i confirmed that this passes for both connextdds and fastdds.",
+    "Pulls: #3085\n\nGist: https://gist.githubusercontent.com/fujitatomoya/e5a4f3d4bd65e848efdb903c0ad05227/raw/251145d0223fb1dadd5da5db5c2179e2e3a5b57b/ros2.repos\n\nBUILD args:  --packages-up-to rclcpp\n\nTEST args:  --packages-select rclcpp\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/18330\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "i am not sure what the CI warning telling me here.\n\n\n\n```\nrclcpp.cpplint.readability/braces [5] (/home/jenkins-agent/workspace/ci_linux/ws/src/ros2/rclcpp/rclcpp/test/rclcpp/test_parameter_event_handler.cpp:501)\nIf an else has a brace on one side, it should have it on both\n```",
+    "Linux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "Linux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/bartalor/rclcpp/commit/1e464b3096de73c95e67ad793ef6b74eea8b1e5e",
+    "https://github.com/ros2/rclcpp/commit/dea57660b56e8f3859b861609ceb53b5c6332d9f",
+    "https://github.com/ros2/rclcpp/pull/3085/commits/1040e47fc205eee01e0488154a7c54a570a087d3",
+    "https://github.com/ros2/rclcpp/pull/3085/commits/9c67d1ec8ccb0bf2a813c5624313a0c498e950ec",
+    "https://github.com/ros2/rclcpp/pull/3085/commits/f81117fe3bea6502e7740fad02db82acaeaa2136"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

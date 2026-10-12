@@ -1,0 +1,1592 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-navigation/navigation2",
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/issues/5503",
+    "final_url": "https://github.com/ros-navigation/navigation2/issues/5503",
+    "fetched_at": "2026-10-11T11:22:56.399462+00:00",
+    "http_status": 200,
+    "response_sha256": "ead43e6b44798c9addd2389091f106acabe3a979cdb0baf5f8b1052510d870cc"
+  },
+  "issue": {
+    "id": "I_kwDOCBF7SM7JNaZu",
+    "databaseId": 3375736430,
+    "number": 5503,
+    "title": "MPPI navigation regression from 1.1.17 to 1.1.18 on Humble",
+    "url": "https://github.com/ros-navigation/navigation2/issues/5503",
+    "body": "## Bug report\n\n**Required Info:**\n\n- Operating System:\n  - Ubuntu 22.04 LTS\n- Computer:\n  - Intel i7-10700TE\n- ROS2 Version:\n  - ROS2 Humble binaries\n- Version or commit hash:\n  - 1.1.18\n- DDS implementation:\n  - Cyclone DDS\n\n#### Steps to reproduce issue\nCreate a global path with a cusp.\n\nMPPI config:\n```\ncontroller_server:\n  ros__parameters:\n    controller_frequency: 10.0\n    use_sim_time: False\n    min_x_velocity_threshold: 0.001 \n    min_theta_velocity_threshold: 0.001\n    failure_tolerance: 0.3\n    odom_topic: /odometry/filtered\n    progress_checker_plugin: \"progress_checker\"\n    goal_checker_plugins: [\"stopped_goal_checker\"]\n    controller_plugin_types: [\"nav2_mppi_controller::MPPIController\"]\n    controller_plugins: [\"FollowPath\"]\n    progress_checker:\n      plugin: \"nav2_controller::PoseProgressChecker\" \n      required_movement_radius: 0.25\n      required_movement_angle: 0.25\n      movement_time_allowance: 20.0\n    general_goal_checker:\n      plugin: \"nav2_controller::SimpleGoalChecker\"\n      stateful: True\n      xy_goal_tolerance: 0.08\n      yaw_goal_tolerance: 0.05\n    stopped_goal_checker:\n      plugin: \"nav2_controller::StoppedGoalChecker\"\n      trans_stopped_velocity: 0.01\n      rot_stopped_velocity: 0.01 \n      xy_goal_tolerance: 0.08\n      yaw_goal_tolerance: 0.05\n    FollowPath:\n      plugin: \"nav2_mppi_controller::MPPIController\"\n      time_steps: 56\n      model_dt: 0.1\n      batch_size: 10000\n      vx_std: 0.2\n      vy_std: 0.0\n      wz_std: 0.15\n      vx_max: 0.8\n      vx_min: -0.5\n      vy_max: 0.0\n      wz_max: 0.3\n      iteration_count: 1\n      prune_distance: 4.0\n      transform_tolerance: 0.1\n      temperature: 0.3\n      gamma: 0.015\n      motion_model: \"DiffDrive\"\n      visualize: False\n      reset_period: 1.0 # (only in Humble)\n      TrajectoryVisualizer:\n        trajectory_step: 5\n        time_step: 3\n      max_robot_pose_search_dist: 5.0 # Costmap size / 2\n      enforce_path_inversion: True \n      inversion_xy_tolerance: 0.2\n      inversion_yaw_tolerance: 0.2\n      AckermannConstrains:\n        min_turning_r: 0.5\n      critics: [\n          \"ConstraintCritic\",\n          \"GoalCritic\",\n          \"GoalAngleCritic\",\n          \"ObstaclesCritic\",\n          \"PathAlignCritic\",\n          \"PathFollowCritic\",\n          \"PathAngleCritic\",\n        ]\n      ConstraintCritic:\n        enabled: true\n        cost_power: 1\n        cost_weight: 5.0\n      GoalCritic:\n        enabled: true\n        cost_power: 1\n        cost_weight: 7.0\n        threshold_to_consider: 1.4\n      GoalAngleCritic:\n        enabled: true\n        cost_power: 1\n        cost_weight: 3.0\n        threshold_to_consider: 0.5\n      ObstaclesCritic:\n        enabled: true\n        cost_power: 1\n        repulsion_weight: 1.5\n        critical_weight: 20.0\n        consider_footprint: false\n        collision_cost: 10000.0\n        collision_margin_distance: 0.2\n        near_goal_distance: 0.5\n        inflation_radius: 3.9 # (only in Humble)\n        cost_scaling_factor: 1.5 #! 10.0 # (only in Humble)\n      PathAlignCritic: \n        enabled: true\n        use_path_orientations: true\n        cost_power: 1\n        cost_weight: 9.0\n        max_path_occupancy_ratio: 0.05\n        trajectory_point_step: 4\n        threshold_to_consider: 0.5\n        offset_from_furthest: 4\n      PathFollowCritic:\n        enabled: true\n        cost_power: 1\n        cost_weight: 10.0\n        offset_from_furthest: 5\n        threshold_to_consider: 1.4\n      PathAngleCritic:\n        enabled: true\n        cost_power: 1\n        forward_preference: False\n        mode: 2\n        cost_weight: 2.0\n        offset_from_furthest: 20\n        threshold_to_consider: 1.4\n        max_angle_to_furthest: 0.25\n```\n\n#### Expected behavior\nThe robot can follow the global plan and change direction at cusp points. \n\n#### Actual behavior\nOn [1.1.17](https://github.com/ros-navigation/navigation2/releases/tag/1.1.17), the robot properly decelerated before the cusp point, reoriented smoothly, and continued to the goal. I created a YouTube video to demonstrate the expected behaviour with the 1.1.17 version. [Link](https://youtu.be/Vg3p9Pl9L7s)\n\nOn [1.1.18](https://github.com/ros-navigation/navigation2/releases/tag/1.1.18 ), the robot stops before the cusp, and a recovery is needed to reach the goal. I also made a video to show [this](https://youtu.be/0O8cqNBuTvA).\n\n\n#### Reproduction instructions\nWe updated one of our robots from 1.1.17 to 1.1.18, and the robot's navigation changed drastically for the worse.\n",
+    "bodyHTML": "<h2 dir=\"auto\">Bug report</h2>\n<p dir=\"auto\"><strong>Required Info:</strong></p>\n<ul dir=\"auto\">\n<li>Operating System:\n<ul dir=\"auto\">\n<li>Ubuntu 22.04 LTS</li>\n</ul>\n</li>\n<li>Computer:\n<ul dir=\"auto\">\n<li>Intel i7-10700TE</li>\n</ul>\n</li>\n<li>ROS2 Version:\n<ul dir=\"auto\">\n<li>ROS2 Humble binaries</li>\n</ul>\n</li>\n<li>Version or commit hash:\n<ul dir=\"auto\">\n<li>1.1.18</li>\n</ul>\n</li>\n<li>DDS implementation:\n<ul dir=\"auto\">\n<li>Cyclone DDS</li>\n</ul>\n</li>\n</ul>\n<h4 dir=\"auto\">Steps to reproduce issue</h4>\n<p dir=\"auto\">Create a global path with a cusp.</p>\n<p dir=\"auto\">MPPI config:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"controller_server:\n  ros__parameters:\n    controller_frequency: 10.0\n    use_sim_time: False\n    min_x_velocity_threshold: 0.001 \n    min_theta_velocity_threshold: 0.001\n    failure_tolerance: 0.3\n    odom_topic: /odometry/filtered\n    progress_checker_plugin: &quot;progress_checker&quot;\n    goal_checker_plugins: [&quot;stopped_goal_checker&quot;]\n    controller_plugin_types: [&quot;nav2_mppi_controller::MPPIController&quot;]\n    controller_plugins: [&quot;FollowPath&quot;]\n    progress_checker:\n      plugin: &quot;nav2_controller::PoseProgressChecker&quot; \n      required_movement_radius: 0.25\n      required_movement_angle: 0.25\n      movement_time_allowance: 20.0\n    general_goal_checker:\n      plugin: &quot;nav2_controller::SimpleGoalChecker&quot;\n      stateful: True\n      xy_goal_tolerance: 0.08\n      yaw_goal_tolerance: 0.05\n    stopped_goal_checker:\n      plugin: &quot;nav2_controller::StoppedGoalChecker&quot;\n      trans_stopped_velocity: 0.01\n      rot_stopped_velocity: 0.01 \n      xy_goal_tolerance: 0.08\n      yaw_goal_tolerance: 0.05\n    FollowPath:\n      plugin: &quot;nav2_mppi_controller::MPPIController&quot;\n      time_steps: 56\n      model_dt: 0.1\n      batch_size: 10000\n      vx_std: 0.2\n      vy_std: 0.0\n      wz_std: 0.15\n      vx_max: 0.8\n      vx_min: -0.5\n      vy_max: 0.0\n      wz_max: 0.3\n      iteration_count: 1\n      prune_distance: 4.0\n      transform_tolerance: 0.1\n      temperature: 0.3\n      gamma: 0.015\n      motion_model: &quot;DiffDrive&quot;\n      visualize: False\n      reset_period: 1.0 # (only in Humble)\n      TrajectoryVisualizer:\n        trajectory_step: 5\n        time_step: 3\n      max_robot_pose_search_dist: 5.0 # Costmap size / 2\n      enforce_path_inversion: True \n      inversion_xy_tolerance: 0.2\n      inversion_yaw_tolerance: 0.2\n      AckermannConstrains:\n        min_turning_r: 0.5\n      critics: [\n          &quot;ConstraintCritic&quot;,\n          &quot;GoalCritic&quot;,\n          &quot;GoalAngleCritic&quot;,\n          &quot;ObstaclesCritic&quot;,\n          &quot;PathAlignCritic&quot;,\n          &quot;PathFollowCritic&quot;,\n          &quot;PathAngleCritic&quot;,\n        ]\n      ConstraintCritic:\n        enabled: true\n        cost_power: 1\n        cost_weight: 5.0\n      GoalCritic:\n        enabled: true\n        cost_power: 1\n        cost_weight: 7.0\n        threshold_to_consider: 1.4\n      GoalAngleCritic:\n        enabled: true\n        cost_power: 1\n        cost_weight: 3.0\n        threshold_to_consider: 0.5\n      ObstaclesCritic:\n        enabled: true\n        cost_power: 1\n        repulsion_weight: 1.5\n        critical_weight: 20.0\n        consider_footprint: false\n        collision_cost: 10000.0\n        collision_margin_distance: 0.2\n        near_goal_distance: 0.5\n        inflation_radius: 3.9 # (only in Humble)\n        cost_scaling_factor: 1.5 #! 10.0 # (only in Humble)\n      PathAlignCritic: \n        enabled: true\n        use_path_orientations: true\n        cost_power: 1\n        cost_weight: 9.0\n        max_path_occupancy_ratio: 0.05\n        trajectory_point_step: 4\n        threshold_to_consider: 0.5\n        offset_from_furthest: 4\n      PathFollowCritic:\n        enabled: true\n        cost_power: 1\n        cost_weight: 10.0\n        offset_from_furthest: 5\n        threshold_to_consider: 1.4\n      PathAngleCritic:\n        enabled: true\n        cost_power: 1\n        forward_preference: False\n        mode: 2\n        cost_weight: 2.0\n        offset_from_furthest: 20\n        threshold_to_consider: 1.4\n        max_angle_to_furthest: 0.25\"><pre class=\"notranslate\"><code class=\"notranslate\">controller_server:\n  ros__parameters:\n    controller_frequency: 10.0\n    use_sim_time: False\n    min_x_velocity_threshold: 0.001 \n    min_theta_velocity_threshold: 0.001\n    failure_tolerance: 0.3\n    odom_topic: /odometry/filtered\n    progress_checker_plugin: \"progress_checker\"\n    goal_checker_plugins: [\"stopped_goal_checker\"]\n    controller_plugin_types: [\"nav2_mppi_controller::MPPIController\"]\n    controller_plugins: [\"FollowPath\"]\n    progress_checker:\n      plugin: \"nav2_controller::PoseProgressChecker\" \n      required_movement_radius: 0.25\n      required_movement_angle: 0.25\n      movement_time_allowance: 20.0\n    general_goal_checker:\n      plugin: \"nav2_controller::SimpleGoalChecker\"\n      stateful: True\n      xy_goal_tolerance: 0.08\n      yaw_goal_tolerance: 0.05\n    stopped_goal_checker:\n      plugin: \"nav2_controller::StoppedGoalChecker\"\n      trans_stopped_velocity: 0.01\n      rot_stopped_velocity: 0.01 \n      xy_goal_tolerance: 0.08\n      yaw_goal_tolerance: 0.05\n    FollowPath:\n      plugin: \"nav2_mppi_controller::MPPIController\"\n      time_steps: 56\n      model_dt: 0.1\n      batch_size: 10000\n      vx_std: 0.2\n      vy_std: 0.0\n      wz_std: 0.15\n      vx_max: 0.8\n      vx_min: -0.5\n      vy_max: 0.0\n      wz_max: 0.3\n      iteration_count: 1\n      prune_distance: 4.0\n      transform_tolerance: 0.1\n      temperature: 0.3\n      gamma: 0.015\n      motion_model: \"DiffDrive\"\n      visualize: False\n      reset_period: 1.0 # (only in Humble)\n      TrajectoryVisualizer:\n        trajectory_step: 5\n        time_step: 3\n      max_robot_pose_search_dist: 5.0 # Costmap size / 2\n      enforce_path_inversion: True \n      inversion_xy_tolerance: 0.2\n      inversion_yaw_tolerance: 0.2\n      AckermannConstrains:\n        min_turning_r: 0.5\n      critics: [\n          \"ConstraintCritic\",\n          \"GoalCritic\",\n          \"GoalAngleCritic\",\n          \"ObstaclesCritic\",\n          \"PathAlignCritic\",\n          \"PathFollowCritic\",\n          \"PathAngleCritic\",\n        ]\n      ConstraintCritic:\n        enabled: true\n        cost_power: 1\n        cost_weight: 5.0\n      GoalCritic:\n        enabled: true\n        cost_power: 1\n        cost_weight: 7.0\n        threshold_to_consider: 1.4\n      GoalAngleCritic:\n        enabled: true\n        cost_power: 1\n        cost_weight: 3.0\n        threshold_to_consider: 0.5\n      ObstaclesCritic:\n        enabled: true\n        cost_power: 1\n        repulsion_weight: 1.5\n        critical_weight: 20.0\n        consider_footprint: false\n        collision_cost: 10000.0\n        collision_margin_distance: 0.2\n        near_goal_distance: 0.5\n        inflation_radius: 3.9 # (only in Humble)\n        cost_scaling_factor: 1.5 #! 10.0 # (only in Humble)\n      PathAlignCritic: \n        enabled: true\n        use_path_orientations: true\n        cost_power: 1\n        cost_weight: 9.0\n        max_path_occupancy_ratio: 0.05\n        trajectory_point_step: 4\n        threshold_to_consider: 0.5\n        offset_from_furthest: 4\n      PathFollowCritic:\n        enabled: true\n        cost_power: 1\n        cost_weight: 10.0\n        offset_from_furthest: 5\n        threshold_to_consider: 1.4\n      PathAngleCritic:\n        enabled: true\n        cost_power: 1\n        forward_preference: False\n        mode: 2\n        cost_weight: 2.0\n        offset_from_furthest: 20\n        threshold_to_consider: 1.4\n        max_angle_to_furthest: 0.25\n</code></pre></div>\n<h4 dir=\"auto\">Expected behavior</h4>\n<p dir=\"auto\">The robot can follow the global plan and change direction at cusp points.</p>\n<h4 dir=\"auto\">Actual behavior</h4>\n<p dir=\"auto\">On <a href=\"https://github.com/ros-navigation/navigation2/releases/tag/1.1.17\">1.1.17</a>, the robot properly decelerated before the cusp point, reoriented smoothly, and continued to the goal. I created a YouTube video to demonstrate the expected behaviour with the 1.1.17 version. <a href=\"https://youtu.be/Vg3p9Pl9L7s\" rel=\"nofollow\">Link</a></p>\n<p dir=\"auto\">On <a href=\"https://github.com/ros-navigation/navigation2/releases/tag/1.1.18\">1.1.18</a>, the robot stops before the cusp, and a recovery is needed to reach the goal. I also made a video to show <a href=\"https://youtu.be/0O8cqNBuTvA\" rel=\"nofollow\">this</a>.</p>\n<h4 dir=\"auto\">Reproduction instructions</h4>\n<p dir=\"auto\">We updated one of our robots from 1.1.17 to 1.1.18, and the robot's navigation changed drastically for the worse.</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2025-09-02T12:05:49Z",
+    "updatedAt": "2025-09-16T18:17:13Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/37601213?v=4",
+      "login": "vLevente",
+      "id": "MDQ6VXNlcjM3NjAxMjEz",
+      "profileUrl": "https://github.com/vLevente",
+      "name": null,
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+            "fullDatabaseId": "948691578",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros-navigation/navigation2/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 5,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7BwX-x",
+      "databaseId": 3250683825,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7JNaZu",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjM3NjAxMjEz",
+          "login": "vLevente"
+        },
+        "number": 5503,
+        "locked": false,
+        "databaseId": 3375736430
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5503#issuecomment-3250683825",
+      "createdAt": "2025-09-03T20:31:19Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I believe I know why, I will look into this in detail tomorrow. ",
+      "bodyHTML": "<p dir=\"auto\">I believe I know why, I will look into this in detail tomorrow.</p>",
+      "bodyVersion": "c78a4a105dd1e4d60a71e23405c4054cf7d36b20a4457a40578088b7bc67eecf",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjM3NjAxMjEz",
+                "login": "vLevente",
+                "name": null,
+                "avatarUrl": "https://avatars.githubusercontent.com/u/37601213?s=64&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7CTVCJ",
+      "databaseId": 3259846793,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7JNaZu",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjM3NjAxMjEz",
+          "login": "vLevente"
+        },
+        "number": 5503,
+        "locked": false,
+        "databaseId": 3375736430
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5503#issuecomment-3259846793",
+      "createdAt": "2025-09-05T21:50:59Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@vLevente can you run `git revert ad2f9602f03ba688c34df7f903a118b6898ef0ce` and try again? I think this is the commit that was later resolved but the resolution is not backward compatible to Humble unfortunately. So, we would need to revert this on the humble branch if this fixes your issue. \n\n[1] https://github.com/ros-navigation/navigation2/commit/ad2f9602f03ba688c34df7f903a118b6898ef0ce",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/vLevente/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/vLevente\">@vLevente</a> can you run <code class=\"notranslate\">git revert ad2f9602f03ba688c34df7f903a118b6898ef0ce</code> and try again? I think this is the commit that was later resolved but the resolution is not backward compatible to Humble unfortunately. So, we would need to revert this on the humble branch if this fixes your issue.</p>\n<p dir=\"auto\">[1] <a class=\"commit-link\" data-hovercard-type=\"commit\" data-hovercard-url=\"https://github.com/ros-navigation/navigation2/commit/ad2f9602f03ba688c34df7f903a118b6898ef0ce/hovercard\" href=\"https://github.com/ros-navigation/navigation2/commit/ad2f9602f03ba688c34df7f903a118b6898ef0ce\"><tt>ad2f960</tt></a></p>",
+      "bodyVersion": "5ea4834a3c562e5aac3c753a866fd2640d959583b9aa55409b42a8bddcadfbee",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7CgRDF",
+      "databaseId": 3263238341,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7JNaZu",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjM3NjAxMjEz",
+          "login": "vLevente"
+        },
+        "number": 5503,
+        "locked": false,
+        "databaseId": 3375736430
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjM3NjAxMjEz",
+        "login": "vLevente",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/37601213?v=4",
+        "profileUrl": "https://github.com/vLevente",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5503#issuecomment-3263238341",
+      "createdAt": "2025-09-06T21:44:59Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thank you for the quick response. I'll be on vacation next week, but I'll ask my colleagues to test this. ",
+      "bodyHTML": "<p dir=\"auto\">Thank you for the quick response. I'll be on vacation next week, but I'll ask my colleagues to test this.</p>",
+      "bodyVersion": "521e7f3c9d5ce4c1f94ba56428a272cc97c6113e9691733aa12c7c52fc09dea2",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7En6dV",
+      "databaseId": 3298797397,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7JNaZu",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjM3NjAxMjEz",
+          "login": "vLevente"
+        },
+        "number": 5503,
+        "locked": false,
+        "databaseId": 3375736430
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjM3NjAxMjEz",
+        "login": "vLevente",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/37601213?v=4",
+        "profileUrl": "https://github.com/vLevente",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5503#issuecomment-3298797397",
+      "createdAt": "2025-09-16T13:32:27Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@SteveMacenski This resolved the issue. Thank you once again.",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/SteveMacenski/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/SteveMacenski\">@SteveMacenski</a> This resolved the issue. Thank you once again.</p>",
+      "bodyVersion": "fd46bcf9291f27c430495ae1b0c317eb640d8e6b61a9986fc89611e6f77d30c2",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7Er7ti",
+      "databaseId": 3299851106,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7JNaZu",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjM3NjAxMjEz",
+          "login": "vLevente"
+        },
+        "number": 5503,
+        "locked": false,
+        "databaseId": 3375736430
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5503#issuecomment-3299851106",
+      "createdAt": "2025-09-16T18:17:09Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-09-16T18:17:13Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM7Er7tiznobs34",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+          "url": "https://github.com/SteveMacenski",
+          "login": "SteveMacenski"
+        }
+      },
+      "pinnedBy": null,
+      "body": "Revert in progress, thanks for testing @vLevente! ",
+      "bodyHTML": "<p dir=\"auto\">Revert in progress, thanks for testing <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/vLevente/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/vLevente\">@vLevente</a>!</p>",
+      "bodyVersion": "40492144927008faef77badb01ba96c128bfbaa8dbde84faa58e8e8b522758bc",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7BwX-x",
+      "databaseId": 3250683825,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7JNaZu",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjM3NjAxMjEz",
+          "login": "vLevente"
+        },
+        "number": 5503,
+        "locked": false,
+        "databaseId": 3375736430
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5503#issuecomment-3250683825",
+      "createdAt": "2025-09-03T20:31:19Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I believe I know why, I will look into this in detail tomorrow. ",
+      "bodyHTML": "<p dir=\"auto\">I believe I know why, I will look into this in detail tomorrow.</p>",
+      "bodyVersion": "c78a4a105dd1e4d60a71e23405c4054cf7d36b20a4457a40578088b7bc67eecf",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjM3NjAxMjEz",
+                "login": "vLevente",
+                "name": null,
+                "avatarUrl": "https://avatars.githubusercontent.com/u/37601213?s=64&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7CTVCJ",
+      "databaseId": 3259846793,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7JNaZu",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjM3NjAxMjEz",
+          "login": "vLevente"
+        },
+        "number": 5503,
+        "locked": false,
+        "databaseId": 3375736430
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5503#issuecomment-3259846793",
+      "createdAt": "2025-09-05T21:50:59Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@vLevente can you run `git revert ad2f9602f03ba688c34df7f903a118b6898ef0ce` and try again? I think this is the commit that was later resolved but the resolution is not backward compatible to Humble unfortunately. So, we would need to revert this on the humble branch if this fixes your issue. \n\n[1] https://github.com/ros-navigation/navigation2/commit/ad2f9602f03ba688c34df7f903a118b6898ef0ce",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/vLevente/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/vLevente\">@vLevente</a> can you run <code class=\"notranslate\">git revert ad2f9602f03ba688c34df7f903a118b6898ef0ce</code> and try again? I think this is the commit that was later resolved but the resolution is not backward compatible to Humble unfortunately. So, we would need to revert this on the humble branch if this fixes your issue.</p>\n<p dir=\"auto\">[1] <a class=\"commit-link\" data-hovercard-type=\"commit\" data-hovercard-url=\"https://github.com/ros-navigation/navigation2/commit/ad2f9602f03ba688c34df7f903a118b6898ef0ce/hovercard\" href=\"https://github.com/ros-navigation/navigation2/commit/ad2f9602f03ba688c34df7f903a118b6898ef0ce\"><tt>ad2f960</tt></a></p>",
+      "bodyVersion": "5ea4834a3c562e5aac3c753a866fd2640d959583b9aa55409b42a8bddcadfbee",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM7JNaZuzwAAAASMee7H",
+      "databaseId": 19536670407,
+      "createdAt": "2025-09-05T21:51:04Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7CgRDF",
+      "databaseId": 3263238341,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7JNaZu",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjM3NjAxMjEz",
+          "login": "vLevente"
+        },
+        "number": 5503,
+        "locked": false,
+        "databaseId": 3375736430
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjM3NjAxMjEz",
+        "login": "vLevente",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/37601213?v=4",
+        "profileUrl": "https://github.com/vLevente",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5503#issuecomment-3263238341",
+      "createdAt": "2025-09-06T21:44:59Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thank you for the quick response. I'll be on vacation next week, but I'll ask my colleagues to test this. ",
+      "bodyHTML": "<p dir=\"auto\">Thank you for the quick response. I'll be on vacation next week, but I'll ask my colleagues to test this.</p>",
+      "bodyVersion": "521e7f3c9d5ce4c1f94ba56428a272cc97c6113e9691733aa12c7c52fc09dea2",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7En6dV",
+      "databaseId": 3298797397,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7JNaZu",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjM3NjAxMjEz",
+          "login": "vLevente"
+        },
+        "number": 5503,
+        "locked": false,
+        "databaseId": 3375736430
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjM3NjAxMjEz",
+        "login": "vLevente",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/37601213?v=4",
+        "profileUrl": "https://github.com/vLevente",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5503#issuecomment-3298797397",
+      "createdAt": "2025-09-16T13:32:27Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@SteveMacenski This resolved the issue. Thank you once again.",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/SteveMacenski/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/SteveMacenski\">@SteveMacenski</a> This resolved the issue. Thank you once again.</p>",
+      "bodyVersion": "fd46bcf9291f27c430495ae1b0c317eb640d8e6b61a9986fc89611e6f77d30c2",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ReferencedEvent",
+      "id": "REFE_lADOCBF7SM7JNaZuzwAAAASYDf32",
+      "databaseId": 19730922998,
+      "createdAt": "2025-09-16T16:21:41Z",
+      "actor": {
+        "id": "BOT_kgDODIGtWg",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/1236702?s=64&v=4",
+        "login": "claude",
+        "profileResourcePath": "/apps/claude",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "claude[bot]"
+      },
+      "willCloseSubject": false,
+      "subject": {
+        "id": "I_kwDOCBF7SM7JNaZu",
+        "__typename": "Issue"
+      },
+      "commit": {
+        "id": "C_kwDOCBF7SNoAKDVmZDM1ZjAyNmRmOTBhMjEyYTk3OWMxZTYyYjg2MTE4NjZiY2UzYTg",
+        "message": "fix: revert MPPI path inversion detection regression\n\nMakes path inversion detection more strict by changing dot product \nthreshold from < 0.0f to < -0.5f in findFirstPathInversion function.\n\nThis resolves the regression reported in issue #5503 where robots \nstopped before cusp points instead of navigating through them smoothly \nbetween versions 1.1.17 and 1.1.18 on ROS2 Humble.\n\nThe more strict threshold only detects true sharp reversals (cusps)\nrather than normal navigation turns, allowing robots to navigate \ncusp points as expected.\n\nFixes #5503\n\nCo-authored-by: Steve Macenski <SteveMacenski@users.noreply.github.com>",
+        "messageHeadlineHTML": "fix: revert MPPI path inversion detection regression",
+        "messageBodyHTML": "Makes path inversion detection more strict by changing dot product \nthreshold from &lt; 0.0f to &lt; -0.5f in findFirstPathInversion function.\n\nThis resolves the regression reported in issue <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3375736430\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5503\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5503/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5503\">#5503</a> where robots \nstopped before cusp points instead of navigating through them smoothly \nbetween versions 1.1.17 and 1.1.18 on ROS2 Humble.\n\nThe more strict threshold only detects true sharp reversals (cusps)\nrather than normal navigation turns, allowing robots to navigate \ncusp points as expected.\n\n<span class=\"issue-keyword tooltipped tooltipped-se\" aria-label=\"This commit closes issue #5503.\">Fixes</span> <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3375736430\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5503\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5503/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5503\">#5503</a>\n\nCo-authored-by: Steve Macenski &lt;SteveMacenski@users.noreply.github.com&gt;",
+        "url": "https://github.com/ros-navigation/navigation2/commit/5fd35f026df90a212a979c1e62b8611866bce3a8",
+        "abbreviatedOid": "5fd35f0",
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          },
+          "defaultBranch": "main"
+        }
+      }
+    },
+    {
+      "__typename": "CommentDeletedEvent",
+      "id": "CDE_lADOCBF7SM7JNaZuzwAAAASYEaxE",
+      "databaseId": 19731164228,
+      "createdAt": "2025-09-16T16:33:16Z",
+      "actor": {
+        "id": "O_kgDOCPwD7w",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/150733807?s=64&v=4",
+        "login": "ros-navigation",
+        "profileResourcePath": "/ros-navigation",
+        "__typename": "Organization"
+      },
+      "deletedCommentAuthor": {
+        "id": "BOT_kgDODIGtWg",
+        "__typename": "Bot",
+        "login": "claude"
+      }
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOCBF7SM7JNaZuzwAAAASYLaC1",
+      "databaseId": 19732996277,
+      "createdAt": "2025-09-16T18:17:09Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7Er7ti",
+      "databaseId": 3299851106,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM7JNaZu",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjM3NjAxMjEz",
+          "login": "vLevente"
+        },
+        "number": 5503,
+        "locked": false,
+        "databaseId": 3375736430
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5503#issuecomment-3299851106",
+      "createdAt": "2025-09-16T18:17:09Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-09-16T18:17:13Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM7Er7tiznobs34",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+          "url": "https://github.com/SteveMacenski",
+          "login": "SteveMacenski"
+        }
+      },
+      "pinnedBy": null,
+      "body": "Revert in progress, thanks for testing @vLevente! ",
+      "bodyHTML": "<p dir=\"auto\">Revert in progress, thanks for testing <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/vLevente/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/vLevente\">@vLevente</a>!</p>",
+      "bodyVersion": "40492144927008faef77badb01ba96c128bfbaa8dbde84faa58e8e8b522758bc",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmRFG1dgAqjMyNTA2ODM4MjU=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABmVO-rIgBqzE5NzMyOTk2Mjc3"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmRFG1dgAqjMyNTA2ODM4MjU=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABmVO-rIgBqzE5NzMyOTk2Mjc3"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOCBF7SM6o6s7m",
+      "url": "https://github.com/ros-navigation/navigation2/pull/5527",
+      "number": 5527,
+      "title": "Reverting ad2f9602f03ba688c34df7f903a118b6898ef0ce on Humble",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2025-09-16T18:16:58Z",
+      "databaseId": 2833960678,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "nameWithOwner": "ros-navigation/navigation2",
+        "owner": {
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "__typename": "Organization"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5527",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5527.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5527.changes.json"
+    }
+  ]
+}

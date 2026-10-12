@@ -1,0 +1,29 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclpy/pull/1561/files",
+    "final_url": "https://github.com/ros2/rclpy/pull/1561/files",
+    "fetched_at": "2026-10-11T11:23:31.337152+00:00",
+    "http_status": 200,
+    "response_sha256": "a870107a3a1451b080d1be4766fee954404197f570803f8b322b15b088056e04"
+  },
+  "files": {
+    "rclpy/rclpy/qos.py": [
+      "@@ -257,6 +257,12 @@ def avoid_ros_namespace_conventions(self, value: bool) -> None:",
+      "         self._avoid_ros_namespace_conventions = value",
+      " ",
+      "     def get_c_qos_profile(self) -> _rclpy.rmw_qos_profile_t:",
+      "+        # Resolve BEST_AVAILABLE liveliness before passing it to rmw.",
+      "+        liveliness = self.liveliness",
+      "+        if liveliness == QoSLivelinessPolicy.BEST_AVAILABLE:",
+      "+            # Map BEST_AVAILABLE to AUTOMATIC for rmw, since rmw doesn't define a",
+      "+            # separate BEST_AVAILABLE liveliness policy.",
+      "+            liveliness = QoSLivelinessPolicy.AUTOMATIC",
+      "         return _rclpy.rmw_qos_profile_t(",
+      "             self.history,",
+      "             self.depth,"
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

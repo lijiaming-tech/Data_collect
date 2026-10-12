@@ -1,0 +1,204 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros2/ros2",
+  "source": {
+    "url": "https://github.com/ros2/ros2/issues/1717",
+    "final_url": "https://github.com/ros2/ros2/issues/1717",
+    "fetched_at": "2026-10-11T11:19:44.055604+00:00",
+    "http_status": 200,
+    "response_sha256": "dd528620b6901f0686ca61ce5c8bd7304314a6e9aa33b5e25248b49d62720b4f"
+  },
+  "issue": {
+    "id": "I_kwDOAd1its7GR1JK",
+    "databaseId": 3326562890,
+    "number": 1717,
+    "title": "rqt_graph command in tutorial requires full ros2 run invocation",
+    "url": "https://github.com/ros2/ros2/issues/1717",
+    "body": "\nOriginal in the tutorial\n`$ rqt_graph`\n\nSuggested\n`$ ros2 run rqt_graph rqt_graph`\n\nIt appears running rqt_graph alone still fails, and not treated as a global command from sourcing alone.\n\nI've included the below lines in my ~/.bashrc and have opened a fresh terminal.\n```\nsource /opt/ros/kilted/setup.bash\nsource ~/ros2_ws/install/setup.bash\n```\n\nSystem details:\nUbuntu 24.04 Noble\nROS 2: Kilted\n\nFull Link - https://docs.ros.org/en/kilted/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html#rqt-graph",
+    "bodyHTML": "<p dir=\"auto\">Original in the tutorial<br>\n<code class=\"notranslate\">$ rqt_graph</code></p>\n<p dir=\"auto\">Suggested<br>\n<code class=\"notranslate\">$ ros2 run rqt_graph rqt_graph</code></p>\n<p dir=\"auto\">It appears running rqt_graph alone still fails, and not treated as a global command from sourcing alone.</p>\n<p dir=\"auto\">I've included the below lines in my ~/.bashrc and have opened a fresh terminal.</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"source /opt/ros/kilted/setup.bash\nsource ~/ros2_ws/install/setup.bash\"><pre class=\"notranslate\"><code class=\"notranslate\">source /opt/ros/kilted/setup.bash\nsource ~/ros2_ws/install/setup.bash\n</code></pre></div>\n<p dir=\"auto\">System details:<br>\nUbuntu 24.04 Noble<br>\nROS 2: Kilted</p>\n<p dir=\"auto\">Full Link - <a href=\"https://docs.ros.org/en/kilted/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html#rqt-graph\" rel=\"nofollow\">https://docs.ros.org/en/kilted/Tutorials/Beginner-CLI-Tools/Understanding-ROS2-Topics/Understanding-ROS2-Topics.html#rqt-graph</a></p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2025-08-15T23:15:01Z",
+    "updatedAt": "2025-08-17T15:03:19Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/15019218?u=32a6751a542ccc2be5d5605ef79b086eff2aae45&v=4",
+      "login": "karisynth",
+      "id": "MDQ6VXNlcjE1MDE5MjE4",
+      "profileUrl": "https://github.com/karisynth",
+      "name": "karis",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWwxODA1NTM0MTU=",
+            "fullDatabaseId": "180553415",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros2/ros2/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 0,
+    "duplicateOf": null
+  },
+  "comments": [],
+  "timeline_events": [
+    {
+      "__typename": "RenamedTitleEvent",
+      "id": "RTE_lADOAd1its7GR1JKzwAAAAR3aWn_",
+      "databaseId": 19183266303,
+      "createdAt": "2025-08-15T23:17:16Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE1MDE5MjE4",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/15019218?s=64&u=32a6751a542ccc2be5d5605ef79b086eff2aae45&v=4",
+        "login": "karisynth",
+        "profileResourcePath": "/karisynth",
+        "__typename": "User",
+        "name": "karis"
+      },
+      "currentTitle": "rqt_graph command in tutorial requires full ros2 run invocation",
+      "previousTitle": "rpt_graph command in tutorial requires full ros2 run invocation"
+    },
+    {
+      "__typename": "AssignedEvent",
+      "id": "AE_lADOAd1its7GR1JKzwAAAAR3eLOp",
+      "databaseId": 19184268201,
+      "createdAt": "2025-08-16T02:20:50Z",
+      "actor": {
+        "id": "MDQ6VXNlcjQzMzk1MTE0",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/43395114?s=64&u=20a48e7d8972be2e39519c3e48215f897767b85f&v=4",
+        "login": "fujitatomoya",
+        "profileResourcePath": "/fujitatomoya",
+        "__typename": "User",
+        "name": "Tomoya Fujita"
+      },
+      "assignee": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjQzMzk1MTE0",
+        "login": "fujitatomoya",
+        "resourcePath": "/fujitatomoya",
+        "name": "Tomoya Fujita"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOAd1its7GR1JKzwAAAAR3eLQf",
+      "databaseId": 19184268319,
+      "createdAt": "2025-08-16T02:20:52Z",
+      "actor": {
+        "id": "MDQ6VXNlcjQzMzk1MTE0",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/43395114?s=64&u=20a48e7d8972be2e39519c3e48215f897767b85f&v=4",
+        "login": "fujitatomoya",
+        "profileResourcePath": "/fujitatomoya",
+        "__typename": "User",
+        "name": "Tomoya Fujita"
+      },
+      "label": {
+        "id": "MDU6TGFiZWwxODA1NTM0MTU=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOAd1its7GR1JKzwAAAAR36IcH",
+      "databaseId": 19191596807,
+      "createdAt": "2025-08-17T15:03:19Z",
+      "actor": {
+        "id": "MDQ6VXNlcjM3MTczNDU=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3717345?s=64&u=403864c3ca0961ad1924646ea243344714505159&v=4",
+        "login": "christophebedard",
+        "profileResourcePath": "/christophebedard",
+        "__typename": "User",
+        "name": "Christophe Bedard"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOCNWCps6j6oKO",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros2/ros2_documentation/pull/5821",
+        "number": 5821,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxNDgyMTAzNDI=",
+          "name": "ros2_documentation",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+            "login": "ros2"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmLAF8GABqzE5MTgzMjY2MzAz",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABmLiObtgBqzE5MTkxNTk2ODA3"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABmLAF8GABqzE5MTgzMjY2MzAz",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABmLiObtgBqzE5MTkxNTk2ODA3"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOCNWCps6j6oKO",
+      "url": "https://github.com/ros2/ros2_documentation/pull/5821",
+      "number": 5821,
+      "title": "rqt_graph should be started with ros2 run.",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2025-08-16T02:20:39Z",
+      "databaseId": 2750055054,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxNDgyMTAzNDI=",
+        "name": "ros2_documentation",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjM5NzkyMzI=",
+          "login": "ros2"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros2/ros2_documentation/pull/5821",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros2/ros2_documentation/5821.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros2/ros2_documentation/5821.changes.json"
+    }
+  ]
+}

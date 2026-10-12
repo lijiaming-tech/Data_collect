@@ -1,0 +1,2329 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/2968",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/2968",
+    "fetched_at": "2026-10-11T11:24:47.243216+00:00",
+    "http_status": 200,
+    "response_sha256": "08c92291d52c58d88be14af1c26872f19d121d8b01687f1bba1a903a3d827a44"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc7kFsST",
+    "databaseId": 3826697363,
+    "number": 2968,
+    "title": "unable to require state interfaces exported by chainable controller",
+    "url": "https://github.com/ros-controls/ros2_control/issues/2968",
+    "body": "**Describe the bug**\nI have a `controller_interface::ChainableControllerInterface` that basically processes/fuses IMU data and thus only needs to import and export state interfaces.\n\nEssentially, it is a `controller_interface::ChainableControllerInterface` that requires the state interfaces:\n```C++\ncontroller_interface::InterfaceConfiguration state_interface_configuration() const override\n  {\n    std::vector<std::string> interface_names = {\n      //\n      sensor_name + \"/angular_velocity.x\",\n      sensor_name + \"/angular_velocity.y\",\n      sensor_name + \"/angular_velocity.z\",\n      //\n      sensor_name + \"/linear_acceleration.x\",\n      sensor_name + \"/linear_acceleration.y\",\n      sensor_name + \"/linear_acceleration.z\",\n    };\n    if (use_magnetometer)\n    {\n      interface_names.push_back(sensor_name + \"/magnetic_field.x\");\n      interface_names.push_back(sensor_name + \"/magnetic_field.y\");\n      interface_names.push_back(sensor_name + \"/magnetic_field.z\");\n    }\n    return {controller_interface::interface_configuration_type::INDIVIDUAL, interface_names};\n  }\n```\nand exports the state interfaces:\n```C++\nstd::vector<hardware_interface::StateInterface> on_export_state_interfaces() override\n  {\n    std::vector<hardware_interface::StateInterface> state_interfaces;\n\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()->get_name(), get_name() + \"/angular_velocity.x\", &angular_velocity.x()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()->get_name(), get_name() + \"/angular_velocity.y\", &angular_velocity.y()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()->get_name(), get_name() + \"/angular_velocity.z\", &angular_velocity.z()));\n\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()->get_name(), get_name() + \"/linear_acceleration.x\", &linear_acceleration.x()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()->get_name(), get_name() + \"/linear_acceleration.y\", &linear_acceleration.y()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()->get_name(), get_name() + \"/linear_acceleration.z\", &linear_acceleration.z()));\n\n    if (use_magnetometer)\n    {\n      state_interfaces.emplace_back(hardware_interface::StateInterface(\n        get_node()->get_name(), get_name() + \"/magnetic_field.x\", &magnetic_field->x()));\n      state_interfaces.emplace_back(hardware_interface::StateInterface(\n        get_node()->get_name(), get_name() + \"/magnetic_field.y\", &magnetic_field->y()));\n      state_interfaces.emplace_back(hardware_interface::StateInterface(\n        get_node()->get_name(), get_name() + \"/magnetic_field.z\", &magnetic_field->z()));\n    }\n\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()->get_name(), get_name() + \"/orientation.w\", &q_wi.w()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()->get_name(), get_name() + \"/orientation.x\", &q_wi.x()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()->get_name(), get_name() + \"/orientation.y\", &q_wi.y()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()->get_name(), get_name() + \"/orientation.z\", &q_wi.z()));\n    return state_interfaces;\n  }\n```\n\nThis works as expected. `ros2 control list_controllers -v` will show the correct state interfaces:\n```\n\tupdate_rate: 500 Hz\n\tis_async: False\n\tclaimed interfaces:\n\trequired command interfaces:\n\trequired state interfaces:\n\t\tbase_imu/angular_velocity.x\n\t\tbase_imu/angular_velocity.y\n\t\tbase_imu/angular_velocity.z\n\t\tbase_imu/linear_acceleration.x\n\t\tbase_imu/linear_acceleration.y\n\t\tbase_imu/linear_acceleration.z\n\t\tbase_imu/magnetic_field.x\n\t\tbase_imu/magnetic_field.y\n\t\tbase_imu/magnetic_field.z\n\tchained to interfaces:\n\texported reference interfaces:\n\texported state interfaces:\n\t\tfusion/angular_velocity.x\n\t\tfusion/angular_velocity.y\n\t\tfusion/angular_velocity.z\n\t\tfusion/linear_acceleration.x\n\t\tfusion/linear_acceleration.y\n\t\tfusion/linear_acceleration.z\n\t\tfusion/magnetic_field.x\n\t\tfusion/magnetic_field.y\n\t\tfusion/magnetic_field.z\n\t\tfusion/orientation.w\n\t\tfusion/orientation.x\n\t\tfusion/orientation.y\n\t\tfusion/orientation.z\n```\n\nHowever, using this with an `imu_sensor_broadcaster/IMUSensorBroadcaster` and `sensor_name: fusion` fails with:\n```\nUnable to activate controller 'fusion_sensor_broadcaster' since the state interface 'fusion/orientation.x' is not available.\n```\nalthough it is clearly visible that the `required state interfaces` strings match the `exported state interfaces` above:\n```\nfusion_sensor_broadcaster imu_sensor_broadcaster/IMUSensorBroadcaster  inactive\n\tupdate_rate: 500 Hz\n\tis_async: False\n\tclaimed interfaces:\n\trequired command interfaces:\n\trequired state interfaces:\n\t\tfusion/orientation.x\n\t\tfusion/orientation.y\n\t\tfusion/orientation.z\n\t\tfusion/orientation.w\n\t\tfusion/angular_velocity.x\n\t\tfusion/angular_velocity.y\n\t\tfusion/angular_velocity.z\n\t\tfusion/linear_acceleration.x\n\t\tfusion/linear_acceleration.y\n\t\tfusion/linear_acceleration.z\n\tchained to interfaces:\n\texported reference interfaces:\n\texported state interfaces:\n```\n\nThe same `IMUSensorBroadcaster` works when I specify the namespace of a \"real\" IMU (`hardware_interface::SensorInterface`).\n\n**To Reproduce**\nSteps to reproduce the behavior:\n1. create a `ChainableControllerInterface` with only state interface export/imports\n2. try to import the state interfaces from another controller\n\n**Expected behavior**\nA controller should be able to require state interfaces of another chainable controller.\n\n**Environment (please complete the following information):**\n - OS: Ubuntu\n - Version jazzy\n\n**Additional context**\nAdd any other context about the problem here, especially include any modifications to ros2_control that relate to this issue.\n",
+    "bodyHTML": "<p dir=\"auto\"><strong>Describe the bug</strong><br>\nI have a <code class=\"notranslate\">controller_interface::ChainableControllerInterface</code> that basically processes/fuses IMU data and thus only needs to import and export state interfaces.</p>\n<p dir=\"auto\">Essentially, it is a <code class=\"notranslate\">controller_interface::ChainableControllerInterface</code> that requires the state interfaces:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"controller_interface::InterfaceConfiguration state_interface_configuration() const override\n  {\n    std::vector&lt;std::string&gt; interface_names = {\n      //\n      sensor_name + &quot;/angular_velocity.x&quot;,\n      sensor_name + &quot;/angular_velocity.y&quot;,\n      sensor_name + &quot;/angular_velocity.z&quot;,\n      //\n      sensor_name + &quot;/linear_acceleration.x&quot;,\n      sensor_name + &quot;/linear_acceleration.y&quot;,\n      sensor_name + &quot;/linear_acceleration.z&quot;,\n    };\n    if (use_magnetometer)\n    {\n      interface_names.push_back(sensor_name + &quot;/magnetic_field.x&quot;);\n      interface_names.push_back(sensor_name + &quot;/magnetic_field.y&quot;);\n      interface_names.push_back(sensor_name + &quot;/magnetic_field.z&quot;);\n    }\n    return {controller_interface::interface_configuration_type::INDIVIDUAL, interface_names};\n  }\"><pre class=\"notranslate\">controller_interface::InterfaceConfiguration <span class=\"pl-en\">state_interface_configuration</span>() <span class=\"pl-k\">const</span> <span class=\"pl-k\">override</span>\n  {\n    std::vector&lt;std::string&gt; interface_names = {\n      <span class=\"pl-c\"><span class=\"pl-c\">//</span></span>\n      sensor_name + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/angular_velocity.x<span class=\"pl-pds\">\"</span></span>,\n      sensor_name + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/angular_velocity.y<span class=\"pl-pds\">\"</span></span>,\n      sensor_name + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/angular_velocity.z<span class=\"pl-pds\">\"</span></span>,\n      <span class=\"pl-c\"><span class=\"pl-c\">//</span></span>\n      sensor_name + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/linear_acceleration.x<span class=\"pl-pds\">\"</span></span>,\n      sensor_name + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/linear_acceleration.y<span class=\"pl-pds\">\"</span></span>,\n      sensor_name + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/linear_acceleration.z<span class=\"pl-pds\">\"</span></span>,\n    };\n    <span class=\"pl-k\">if</span> (use_magnetometer)\n    {\n      interface_names.<span class=\"pl-c1\">push_back</span>(sensor_name + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/magnetic_field.x<span class=\"pl-pds\">\"</span></span>);\n      interface_names.<span class=\"pl-c1\">push_back</span>(sensor_name + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/magnetic_field.y<span class=\"pl-pds\">\"</span></span>);\n      interface_names.<span class=\"pl-c1\">push_back</span>(sensor_name + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/magnetic_field.z<span class=\"pl-pds\">\"</span></span>);\n    }\n    <span class=\"pl-k\">return</span> {controller_interface::interface_configuration_type::<span class=\"pl-c1\">INDIVIDUAL</span>, interface_names};\n  }</pre></div>\n<p dir=\"auto\">and exports the state interfaces:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"std::vector&lt;hardware_interface::StateInterface&gt; on_export_state_interfaces() override\n  {\n    std::vector&lt;hardware_interface::StateInterface&gt; state_interfaces;\n\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()-&gt;get_name(), get_name() + &quot;/angular_velocity.x&quot;, &amp;angular_velocity.x()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()-&gt;get_name(), get_name() + &quot;/angular_velocity.y&quot;, &amp;angular_velocity.y()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()-&gt;get_name(), get_name() + &quot;/angular_velocity.z&quot;, &amp;angular_velocity.z()));\n\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()-&gt;get_name(), get_name() + &quot;/linear_acceleration.x&quot;, &amp;linear_acceleration.x()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()-&gt;get_name(), get_name() + &quot;/linear_acceleration.y&quot;, &amp;linear_acceleration.y()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()-&gt;get_name(), get_name() + &quot;/linear_acceleration.z&quot;, &amp;linear_acceleration.z()));\n\n    if (use_magnetometer)\n    {\n      state_interfaces.emplace_back(hardware_interface::StateInterface(\n        get_node()-&gt;get_name(), get_name() + &quot;/magnetic_field.x&quot;, &amp;magnetic_field-&gt;x()));\n      state_interfaces.emplace_back(hardware_interface::StateInterface(\n        get_node()-&gt;get_name(), get_name() + &quot;/magnetic_field.y&quot;, &amp;magnetic_field-&gt;y()));\n      state_interfaces.emplace_back(hardware_interface::StateInterface(\n        get_node()-&gt;get_name(), get_name() + &quot;/magnetic_field.z&quot;, &amp;magnetic_field-&gt;z()));\n    }\n\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()-&gt;get_name(), get_name() + &quot;/orientation.w&quot;, &amp;q_wi.w()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()-&gt;get_name(), get_name() + &quot;/orientation.x&quot;, &amp;q_wi.x()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()-&gt;get_name(), get_name() + &quot;/orientation.y&quot;, &amp;q_wi.y()));\n    state_interfaces.emplace_back(hardware_interface::StateInterface(\n      get_node()-&gt;get_name(), get_name() + &quot;/orientation.z&quot;, &amp;q_wi.z()));\n    return state_interfaces;\n  }\"><pre class=\"notranslate\">std::vector&lt;hardware_interface::StateInterface&gt; <span class=\"pl-en\">on_export_state_interfaces</span>() <span class=\"pl-k\">override</span>\n  {\n    std::vector&lt;hardware_interface::StateInterface&gt; state_interfaces;\n\n    state_interfaces.<span class=\"pl-c1\">emplace_back</span>(<span class=\"pl-c1\">hardware_interface::StateInterface</span>(\n      <span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_name</span>(), <span class=\"pl-c1\">get_name</span>() + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/angular_velocity.x<span class=\"pl-pds\">\"</span></span>, &amp;angular_velocity.<span class=\"pl-c1\">x</span>()));\n    state_interfaces.<span class=\"pl-c1\">emplace_back</span>(<span class=\"pl-c1\">hardware_interface::StateInterface</span>(\n      <span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_name</span>(), <span class=\"pl-c1\">get_name</span>() + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/angular_velocity.y<span class=\"pl-pds\">\"</span></span>, &amp;angular_velocity.<span class=\"pl-c1\">y</span>()));\n    state_interfaces.<span class=\"pl-c1\">emplace_back</span>(<span class=\"pl-c1\">hardware_interface::StateInterface</span>(\n      <span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_name</span>(), <span class=\"pl-c1\">get_name</span>() + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/angular_velocity.z<span class=\"pl-pds\">\"</span></span>, &amp;angular_velocity.<span class=\"pl-c1\">z</span>()));\n\n    state_interfaces.<span class=\"pl-c1\">emplace_back</span>(<span class=\"pl-c1\">hardware_interface::StateInterface</span>(\n      <span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_name</span>(), <span class=\"pl-c1\">get_name</span>() + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/linear_acceleration.x<span class=\"pl-pds\">\"</span></span>, &amp;linear_acceleration.<span class=\"pl-c1\">x</span>()));\n    state_interfaces.<span class=\"pl-c1\">emplace_back</span>(<span class=\"pl-c1\">hardware_interface::StateInterface</span>(\n      <span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_name</span>(), <span class=\"pl-c1\">get_name</span>() + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/linear_acceleration.y<span class=\"pl-pds\">\"</span></span>, &amp;linear_acceleration.<span class=\"pl-c1\">y</span>()));\n    state_interfaces.<span class=\"pl-c1\">emplace_back</span>(<span class=\"pl-c1\">hardware_interface::StateInterface</span>(\n      <span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_name</span>(), <span class=\"pl-c1\">get_name</span>() + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/linear_acceleration.z<span class=\"pl-pds\">\"</span></span>, &amp;linear_acceleration.<span class=\"pl-c1\">z</span>()));\n\n    <span class=\"pl-k\">if</span> (use_magnetometer)\n    {\n      state_interfaces.<span class=\"pl-c1\">emplace_back</span>(<span class=\"pl-c1\">hardware_interface::StateInterface</span>(\n        <span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_name</span>(), <span class=\"pl-c1\">get_name</span>() + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/magnetic_field.x<span class=\"pl-pds\">\"</span></span>, &amp;magnetic_field-&gt;<span class=\"pl-c1\">x</span>()));\n      state_interfaces.<span class=\"pl-c1\">emplace_back</span>(<span class=\"pl-c1\">hardware_interface::StateInterface</span>(\n        <span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_name</span>(), <span class=\"pl-c1\">get_name</span>() + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/magnetic_field.y<span class=\"pl-pds\">\"</span></span>, &amp;magnetic_field-&gt;<span class=\"pl-c1\">y</span>()));\n      state_interfaces.<span class=\"pl-c1\">emplace_back</span>(<span class=\"pl-c1\">hardware_interface::StateInterface</span>(\n        <span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_name</span>(), <span class=\"pl-c1\">get_name</span>() + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/magnetic_field.z<span class=\"pl-pds\">\"</span></span>, &amp;magnetic_field-&gt;<span class=\"pl-c1\">z</span>()));\n    }\n\n    state_interfaces.<span class=\"pl-c1\">emplace_back</span>(<span class=\"pl-c1\">hardware_interface::StateInterface</span>(\n      <span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_name</span>(), <span class=\"pl-c1\">get_name</span>() + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/orientation.w<span class=\"pl-pds\">\"</span></span>, &amp;q_wi.<span class=\"pl-c1\">w</span>()));\n    state_interfaces.<span class=\"pl-c1\">emplace_back</span>(<span class=\"pl-c1\">hardware_interface::StateInterface</span>(\n      <span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_name</span>(), <span class=\"pl-c1\">get_name</span>() + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/orientation.x<span class=\"pl-pds\">\"</span></span>, &amp;q_wi.<span class=\"pl-c1\">x</span>()));\n    state_interfaces.<span class=\"pl-c1\">emplace_back</span>(<span class=\"pl-c1\">hardware_interface::StateInterface</span>(\n      <span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_name</span>(), <span class=\"pl-c1\">get_name</span>() + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/orientation.y<span class=\"pl-pds\">\"</span></span>, &amp;q_wi.<span class=\"pl-c1\">y</span>()));\n    state_interfaces.<span class=\"pl-c1\">emplace_back</span>(<span class=\"pl-c1\">hardware_interface::StateInterface</span>(\n      <span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_name</span>(), <span class=\"pl-c1\">get_name</span>() + <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>/orientation.z<span class=\"pl-pds\">\"</span></span>, &amp;q_wi.<span class=\"pl-c1\">z</span>()));\n    <span class=\"pl-k\">return</span> state_interfaces;\n  }</pre></div>\n<p dir=\"auto\">This works as expected. <code class=\"notranslate\">ros2 control list_controllers -v</code> will show the correct state interfaces:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"\tupdate_rate: 500 Hz\n\tis_async: False\n\tclaimed interfaces:\n\trequired command interfaces:\n\trequired state interfaces:\n\t\tbase_imu/angular_velocity.x\n\t\tbase_imu/angular_velocity.y\n\t\tbase_imu/angular_velocity.z\n\t\tbase_imu/linear_acceleration.x\n\t\tbase_imu/linear_acceleration.y\n\t\tbase_imu/linear_acceleration.z\n\t\tbase_imu/magnetic_field.x\n\t\tbase_imu/magnetic_field.y\n\t\tbase_imu/magnetic_field.z\n\tchained to interfaces:\n\texported reference interfaces:\n\texported state interfaces:\n\t\tfusion/angular_velocity.x\n\t\tfusion/angular_velocity.y\n\t\tfusion/angular_velocity.z\n\t\tfusion/linear_acceleration.x\n\t\tfusion/linear_acceleration.y\n\t\tfusion/linear_acceleration.z\n\t\tfusion/magnetic_field.x\n\t\tfusion/magnetic_field.y\n\t\tfusion/magnetic_field.z\n\t\tfusion/orientation.w\n\t\tfusion/orientation.x\n\t\tfusion/orientation.y\n\t\tfusion/orientation.z\"><pre class=\"notranslate\"><code class=\"notranslate\">\tupdate_rate: 500 Hz\n\tis_async: False\n\tclaimed interfaces:\n\trequired command interfaces:\n\trequired state interfaces:\n\t\tbase_imu/angular_velocity.x\n\t\tbase_imu/angular_velocity.y\n\t\tbase_imu/angular_velocity.z\n\t\tbase_imu/linear_acceleration.x\n\t\tbase_imu/linear_acceleration.y\n\t\tbase_imu/linear_acceleration.z\n\t\tbase_imu/magnetic_field.x\n\t\tbase_imu/magnetic_field.y\n\t\tbase_imu/magnetic_field.z\n\tchained to interfaces:\n\texported reference interfaces:\n\texported state interfaces:\n\t\tfusion/angular_velocity.x\n\t\tfusion/angular_velocity.y\n\t\tfusion/angular_velocity.z\n\t\tfusion/linear_acceleration.x\n\t\tfusion/linear_acceleration.y\n\t\tfusion/linear_acceleration.z\n\t\tfusion/magnetic_field.x\n\t\tfusion/magnetic_field.y\n\t\tfusion/magnetic_field.z\n\t\tfusion/orientation.w\n\t\tfusion/orientation.x\n\t\tfusion/orientation.y\n\t\tfusion/orientation.z\n</code></pre></div>\n<p dir=\"auto\">However, using this with an <code class=\"notranslate\">imu_sensor_broadcaster/IMUSensorBroadcaster</code> and <code class=\"notranslate\">sensor_name: fusion</code> fails with:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"Unable to activate controller 'fusion_sensor_broadcaster' since the state interface 'fusion/orientation.x' is not available.\"><pre class=\"notranslate\"><code class=\"notranslate\">Unable to activate controller 'fusion_sensor_broadcaster' since the state interface 'fusion/orientation.x' is not available.\n</code></pre></div>\n<p dir=\"auto\">although it is clearly visible that the <code class=\"notranslate\">required state interfaces</code> strings match the <code class=\"notranslate\">exported state interfaces</code> above:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"fusion_sensor_broadcaster imu_sensor_broadcaster/IMUSensorBroadcaster  inactive\n\tupdate_rate: 500 Hz\n\tis_async: False\n\tclaimed interfaces:\n\trequired command interfaces:\n\trequired state interfaces:\n\t\tfusion/orientation.x\n\t\tfusion/orientation.y\n\t\tfusion/orientation.z\n\t\tfusion/orientation.w\n\t\tfusion/angular_velocity.x\n\t\tfusion/angular_velocity.y\n\t\tfusion/angular_velocity.z\n\t\tfusion/linear_acceleration.x\n\t\tfusion/linear_acceleration.y\n\t\tfusion/linear_acceleration.z\n\tchained to interfaces:\n\texported reference interfaces:\n\texported state interfaces:\"><pre class=\"notranslate\"><code class=\"notranslate\">fusion_sensor_broadcaster imu_sensor_broadcaster/IMUSensorBroadcaster  inactive\n\tupdate_rate: 500 Hz\n\tis_async: False\n\tclaimed interfaces:\n\trequired command interfaces:\n\trequired state interfaces:\n\t\tfusion/orientation.x\n\t\tfusion/orientation.y\n\t\tfusion/orientation.z\n\t\tfusion/orientation.w\n\t\tfusion/angular_velocity.x\n\t\tfusion/angular_velocity.y\n\t\tfusion/angular_velocity.z\n\t\tfusion/linear_acceleration.x\n\t\tfusion/linear_acceleration.y\n\t\tfusion/linear_acceleration.z\n\tchained to interfaces:\n\texported reference interfaces:\n\texported state interfaces:\n</code></pre></div>\n<p dir=\"auto\">The same <code class=\"notranslate\">IMUSensorBroadcaster</code> works when I specify the namespace of a \"real\" IMU (<code class=\"notranslate\">hardware_interface::SensorInterface</code>).</p>\n<p dir=\"auto\"><strong>To Reproduce</strong><br>\nSteps to reproduce the behavior:</p>\n<ol dir=\"auto\">\n<li>create a <code class=\"notranslate\">ChainableControllerInterface</code> with only state interface export/imports</li>\n<li>try to import the state interfaces from another controller</li>\n</ol>\n<p dir=\"auto\"><strong>Expected behavior</strong><br>\nA controller should be able to require state interfaces of another chainable controller.</p>\n<p dir=\"auto\"><strong>Environment (please complete the following information):</strong></p>\n<ul dir=\"auto\">\n<li>OS: Ubuntu</li>\n<li>Version jazzy</li>\n</ul>\n<p dir=\"auto\"><strong>Additional context</strong><br>\nAdd any other context about the problem here, especially include any modifications to ros2_control that relate to this issue.</p>",
+    "state": "CLOSED",
+    "stateReason": "NOT_PLANNED",
+    "createdAt": "2026-01-18T11:57:40Z",
+    "updatedAt": "2026-04-20T13:24:31Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/8573621?v=4",
+      "login": "christianrauch",
+      "id": "MDQ6VXNlcjg1NzM2MjE=",
+      "profileUrl": "https://github.com/christianrauch",
+      "name": "Christian Rauch",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+            "fullDatabaseId": "8380273440",
+            "color": "ededed",
+            "name": "stale",
+            "nameHTML": "stale",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/stale",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 8,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7gbSpN",
+      "databaseId": 3765250637,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-3765250637",
+      "createdAt": "2026-01-18T12:41:30Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Hello!\n\nThe sensor name needs to be the name of the exporting controller + /fusion. Then it should find it. \n\nAll exported interfaces are prepended with the name of their exporting controller.",
+      "bodyHTML": "<p dir=\"auto\">Hello!</p>\n<p dir=\"auto\">The sensor name needs to be the name of the exporting controller + /fusion. Then it should find it.</p>\n<p dir=\"auto\">All exported interfaces are prepended with the name of their exporting controller.</p>",
+      "bodyVersion": "07a802a9f05e344bca3eb6ccf8c90d4751a1cda5991a660843b5d2c2608dfced",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7gbaCu",
+      "databaseId": 3765280942,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjg1NzM2MjE=",
+        "login": "christianrauch",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/8573621?v=4",
+        "profileUrl": "https://github.com/christianrauch",
+        "name": "Christian Rauch"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-3765280942",
+      "createdAt": "2026-01-18T13:14:43Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> All exported interfaces are prepended with the name of their exporting controller.\n\nYou are right. If I export the state interfaces of a controller that I configure with name `fusion` like:\n```C++\nstate_interfaces.emplace_back(hardware_interface::StateInterface(get_name(), \"angular_velocity.x\", &angular_velocity.x()));\n```\nand configure the `IMUSensorBroadcaster` with `sensor_name: fusion`, it indeed does not complain anymore. \n\nBut this is somehow not visible in the `exported state interfaces`. I.e., whatever prefix I chose for `StateInterface`, it does not show in the name of the exported state. Now, the overview looks like:\n```\nfusion                    uav/fusion/FusionMadgwick                    active\n\trequired state interfaces:\n\t\tbase_imu/angular_velocity.x\n\nfusion_sensor_broadcaster imu_sensor_broadcaster/IMUSensorBroadcaster  active\n\trequired state interfaces:\n\t\tfusion/angular_velocity.x\n````\n\nI guess you just have to know that state interfaces are automatically prefixed with the controller name. I expected this to work like the ROS topics where you would see matching topics. Maybe it would help to show these automatically prefixed state interfaces like the private topics (`~/`).",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">All exported interfaces are prepended with the name of their exporting controller.</p>\n</blockquote>\n<p dir=\"auto\">You are right. If I export the state interfaces of a controller that I configure with name <code class=\"notranslate\">fusion</code> like:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"state_interfaces.emplace_back(hardware_interface::StateInterface(get_name(), &quot;angular_velocity.x&quot;, &amp;angular_velocity.x()));\"><pre class=\"notranslate\">state_interfaces.emplace_back(hardware_interface::StateInterface(get_name(), <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>angular_velocity.x<span class=\"pl-pds\">\"</span></span>, &amp;angular_velocity.x()));</pre></div>\n<p dir=\"auto\">and configure the <code class=\"notranslate\">IMUSensorBroadcaster</code> with <code class=\"notranslate\">sensor_name: fusion</code>, it indeed does not complain anymore.</p>\n<p dir=\"auto\">But this is somehow not visible in the <code class=\"notranslate\">exported state interfaces</code>. I.e., whatever prefix I chose for <code class=\"notranslate\">StateInterface</code>, it does not show in the name of the exported state. Now, the overview looks like:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"fusion                    uav/fusion/FusionMadgwick                    active\n\trequired state interfaces:\n\t\tbase_imu/angular_velocity.x\n\nfusion_sensor_broadcaster imu_sensor_broadcaster/IMUSensorBroadcaster  active\n\trequired state interfaces:\n\t\tfusion/angular_velocity.x\"><pre class=\"notranslate\"><code class=\"notranslate\">fusion                    uav/fusion/FusionMadgwick                    active\n\trequired state interfaces:\n\t\tbase_imu/angular_velocity.x\n\nfusion_sensor_broadcaster imu_sensor_broadcaster/IMUSensorBroadcaster  active\n\trequired state interfaces:\n\t\tfusion/angular_velocity.x\n</code></pre></div>\n<p dir=\"auto\">I guess you just have to know that state interfaces are automatically prefixed with the controller name. I expected this to work like the ROS topics where you would see matching topics. Maybe it would help to show these automatically prefixed state interfaces like the private topics (<code class=\"notranslate\">~/</code>).</p>",
+      "bodyVersion": "cac1de7791e4f3d9dd4e05f64ba825ba7a76c71d21dcf9e56e476abeee8e5a7b",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7gbeNX",
+      "databaseId": 3765298007,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-3765298007",
+      "createdAt": "2026-01-18T13:34:54Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Sure, we can add that while displaying. Thanks for the input ",
+      "bodyHTML": "<p dir=\"auto\">Sure, we can add that while displaying. Thanks for the input</p>",
+      "bodyVersion": "3871eb170e851d03047a19c1457d8d430a3458f4cfe0b75abe60ef7a6e20ce4b",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7gbeWR",
+      "databaseId": 3765298577,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-3765298577",
+      "createdAt": "2026-01-18T13:35:36Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "You should see the appropriate interfaces when you run `ros2 control list_hardware_interfaces`",
+      "bodyHTML": "<p dir=\"auto\">You should see the appropriate interfaces when you run <code class=\"notranslate\">ros2 control list_hardware_interfaces</code></p>",
+      "bodyVersion": "39eee5cc9c715d8264e13d0d0829664562dbf93cdacd6c18dd53bf64674250a7",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7gbgWO",
+      "databaseId": 3765306766,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjg1NzM2MjE=",
+        "login": "christianrauch",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/8573621?v=4",
+        "profileUrl": "https://github.com/christianrauch",
+        "name": "Christian Rauch"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-3765306766",
+      "createdAt": "2026-01-18T13:45:07Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> You should see the appropriate interfaces when you run `ros2 control list_hardware_interfaces`\n\nRight. I never noticed that this also lists the controller interfaces and not just the hardware interfaces. I guess, in the end, this issue is just a UI issue.",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">You should see the appropriate interfaces when you run <code class=\"notranslate\">ros2 control list_hardware_interfaces</code></p>\n</blockquote>\n<p dir=\"auto\">Right. I never noticed that this also lists the controller interfaces and not just the hardware interfaces. I guess, in the end, this issue is just a UI issue.</p>",
+      "bodyVersion": "be806eeab6f3c9a8ffb77804a0725f6963a4c8ef15165302a964daf9ef340707",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7gbmeO",
+      "databaseId": 3765331854,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-3765331854",
+      "createdAt": "2026-01-18T14:11:00Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Yess!",
+      "bodyHTML": "<p dir=\"auto\">Yess!</p>",
+      "bodyVersion": "2c3f5a9b9c792276d4228e6830509ae06df292dc8a537c4214c929cfea396317",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7utWwk",
+      "databaseId": 4004867108,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-4004867108",
+      "createdAt": "2026-03-05T12:55:47Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7_LNfQ",
+      "databaseId": 4281128912,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-4281128912",
+      "createdAt": "2026-04-20T13:24:30Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue was closed because it has been stalled for 45 days with no activity.",
+      "bodyHTML": "<p dir=\"auto\">This issue was closed because it has been stalled for 45 days with no activity.</p>",
+      "bodyVersion": "2ebf833f90f878eff9039e2c6cb637ca3b662f79161cd2a020a36f04c154f883",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7kFsSTzwAAAAUmjA3I",
+      "databaseId": 22121549256,
+      "createdAt": "2026-01-18T11:57:41Z",
+      "actor": {
+        "id": "MDQ6VXNlcjg1NzM2MjE=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/8573621?s=64&v=4",
+        "login": "christianrauch",
+        "profileResourcePath": "/christianrauch",
+        "__typename": "User",
+        "name": "Christian Rauch"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7gbSpN",
+      "databaseId": 3765250637,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-3765250637",
+      "createdAt": "2026-01-18T12:41:30Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Hello!\n\nThe sensor name needs to be the name of the exporting controller + /fusion. Then it should find it. \n\nAll exported interfaces are prepended with the name of their exporting controller.",
+      "bodyHTML": "<p dir=\"auto\">Hello!</p>\n<p dir=\"auto\">The sensor name needs to be the name of the exporting controller + /fusion. Then it should find it.</p>\n<p dir=\"auto\">All exported interfaces are prepended with the name of their exporting controller.</p>",
+      "bodyVersion": "07a802a9f05e344bca3eb6ccf8c90d4751a1cda5991a660843b5d2c2608dfced",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7gbaCu",
+      "databaseId": 3765280942,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjg1NzM2MjE=",
+        "login": "christianrauch",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/8573621?v=4",
+        "profileUrl": "https://github.com/christianrauch",
+        "name": "Christian Rauch"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-3765280942",
+      "createdAt": "2026-01-18T13:14:43Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> All exported interfaces are prepended with the name of their exporting controller.\n\nYou are right. If I export the state interfaces of a controller that I configure with name `fusion` like:\n```C++\nstate_interfaces.emplace_back(hardware_interface::StateInterface(get_name(), \"angular_velocity.x\", &angular_velocity.x()));\n```\nand configure the `IMUSensorBroadcaster` with `sensor_name: fusion`, it indeed does not complain anymore. \n\nBut this is somehow not visible in the `exported state interfaces`. I.e., whatever prefix I chose for `StateInterface`, it does not show in the name of the exported state. Now, the overview looks like:\n```\nfusion                    uav/fusion/FusionMadgwick                    active\n\trequired state interfaces:\n\t\tbase_imu/angular_velocity.x\n\nfusion_sensor_broadcaster imu_sensor_broadcaster/IMUSensorBroadcaster  active\n\trequired state interfaces:\n\t\tfusion/angular_velocity.x\n````\n\nI guess you just have to know that state interfaces are automatically prefixed with the controller name. I expected this to work like the ROS topics where you would see matching topics. Maybe it would help to show these automatically prefixed state interfaces like the private topics (`~/`).",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">All exported interfaces are prepended with the name of their exporting controller.</p>\n</blockquote>\n<p dir=\"auto\">You are right. If I export the state interfaces of a controller that I configure with name <code class=\"notranslate\">fusion</code> like:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"state_interfaces.emplace_back(hardware_interface::StateInterface(get_name(), &quot;angular_velocity.x&quot;, &amp;angular_velocity.x()));\"><pre class=\"notranslate\">state_interfaces.emplace_back(hardware_interface::StateInterface(get_name(), <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>angular_velocity.x<span class=\"pl-pds\">\"</span></span>, &amp;angular_velocity.x()));</pre></div>\n<p dir=\"auto\">and configure the <code class=\"notranslate\">IMUSensorBroadcaster</code> with <code class=\"notranslate\">sensor_name: fusion</code>, it indeed does not complain anymore.</p>\n<p dir=\"auto\">But this is somehow not visible in the <code class=\"notranslate\">exported state interfaces</code>. I.e., whatever prefix I chose for <code class=\"notranslate\">StateInterface</code>, it does not show in the name of the exported state. Now, the overview looks like:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"fusion                    uav/fusion/FusionMadgwick                    active\n\trequired state interfaces:\n\t\tbase_imu/angular_velocity.x\n\nfusion_sensor_broadcaster imu_sensor_broadcaster/IMUSensorBroadcaster  active\n\trequired state interfaces:\n\t\tfusion/angular_velocity.x\"><pre class=\"notranslate\"><code class=\"notranslate\">fusion                    uav/fusion/FusionMadgwick                    active\n\trequired state interfaces:\n\t\tbase_imu/angular_velocity.x\n\nfusion_sensor_broadcaster imu_sensor_broadcaster/IMUSensorBroadcaster  active\n\trequired state interfaces:\n\t\tfusion/angular_velocity.x\n</code></pre></div>\n<p dir=\"auto\">I guess you just have to know that state interfaces are automatically prefixed with the controller name. I expected this to work like the ROS topics where you would see matching topics. Maybe it would help to show these automatically prefixed state interfaces like the private topics (<code class=\"notranslate\">~/</code>).</p>",
+      "bodyVersion": "cac1de7791e4f3d9dd4e05f64ba825ba7a76c71d21dcf9e56e476abeee8e5a7b",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7gbeNX",
+      "databaseId": 3765298007,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-3765298007",
+      "createdAt": "2026-01-18T13:34:54Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Sure, we can add that while displaying. Thanks for the input ",
+      "bodyHTML": "<p dir=\"auto\">Sure, we can add that while displaying. Thanks for the input</p>",
+      "bodyVersion": "3871eb170e851d03047a19c1457d8d430a3458f4cfe0b75abe60ef7a6e20ce4b",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7gbeWR",
+      "databaseId": 3765298577,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-3765298577",
+      "createdAt": "2026-01-18T13:35:36Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "You should see the appropriate interfaces when you run `ros2 control list_hardware_interfaces`",
+      "bodyHTML": "<p dir=\"auto\">You should see the appropriate interfaces when you run <code class=\"notranslate\">ros2 control list_hardware_interfaces</code></p>",
+      "bodyVersion": "39eee5cc9c715d8264e13d0d0829664562dbf93cdacd6c18dd53bf64674250a7",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7gbgWO",
+      "databaseId": 3765306766,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjg1NzM2MjE=",
+        "login": "christianrauch",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/8573621?v=4",
+        "profileUrl": "https://github.com/christianrauch",
+        "name": "Christian Rauch"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-3765306766",
+      "createdAt": "2026-01-18T13:45:07Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> You should see the appropriate interfaces when you run `ros2 control list_hardware_interfaces`\n\nRight. I never noticed that this also lists the controller interfaces and not just the hardware interfaces. I guess, in the end, this issue is just a UI issue.",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">You should see the appropriate interfaces when you run <code class=\"notranslate\">ros2 control list_hardware_interfaces</code></p>\n</blockquote>\n<p dir=\"auto\">Right. I never noticed that this also lists the controller interfaces and not just the hardware interfaces. I guess, in the end, this issue is just a UI issue.</p>",
+      "bodyVersion": "be806eeab6f3c9a8ffb77804a0725f6963a4c8ef15165302a964daf9ef340707",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7gbmeO",
+      "databaseId": 3765331854,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-3765331854",
+      "createdAt": "2026-01-18T14:11:00Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Yess!",
+      "bodyHTML": "<p dir=\"auto\">Yess!</p>",
+      "bodyVersion": "2c3f5a9b9c792276d4228e6830509ae06df292dc8a537c4214c929cfea396317",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7utWwk",
+      "databaseId": 4004867108,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-4004867108",
+      "createdAt": "2026-03-05T12:55:47Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7kFsSTzwAAAAVsl6Sf",
+      "databaseId": 23296713887,
+      "createdAt": "2026-03-05T12:55:48Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+        "archivedAt": null,
+        "nameHTML": "stale",
+        "name": "stale",
+        "color": "ededed",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7_LNfQ",
+      "databaseId": 4281128912,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7kFsST",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 2968,
+        "locked": false,
+        "databaseId": 3826697363
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/2968#issuecomment-4281128912",
+      "createdAt": "2026-04-20T13:24:30Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue was closed because it has been stalled for 45 days with no activity.",
+      "bodyHTML": "<p dir=\"auto\">This issue was closed because it has been stalled for 45 days with no activity.</p>",
+      "bodyVersion": "2ebf833f90f878eff9039e2c6cb637ca3b662f79161cd2a020a36f04c154f883",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc7kFsSTzwAAAAW-9TFz",
+      "databaseId": 24678576499,
+      "createdAt": "2026-04-20T13:24:31Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "stateReason": "NOT_PLANNED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABm9D30wgBqzIyMTIxNTQ5MjU2",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnasQYpgBqzI0Njc4NTc2NDk5"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABm9D30wgBqzIyMTIxNTQ5MjU2",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnasQYpgBqzI0Njc4NTc2NDk5"
+    }
+  },
+  "linked_pull_requests": [],
+  "comments_complete": true,
+  "linked_pr_fetches": []
+}

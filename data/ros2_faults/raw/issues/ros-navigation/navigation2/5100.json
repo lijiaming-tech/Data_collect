@@ -1,0 +1,739 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-navigation/navigation2",
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/issues/5100",
+    "final_url": "https://github.com/ros-navigation/navigation2/issues/5100",
+    "fetched_at": "2026-10-11T11:23:59.944121+00:00",
+    "http_status": 200,
+    "response_sha256": "39b12fe3b4f9a0e4f97fd12d98889c0566e47467e9e3e572658e218a3eae9633"
+  },
+  "issue": {
+    "id": "I_kwDOCBF7SM6zmZRw",
+    "databaseId": 3013186672,
+    "number": 5100,
+    "title": "Bug in parameter configuration in controller.",
+    "url": "https://github.com/ros-navigation/navigation2/issues/5100",
+    "body": "I think I have found a bug related to parameter configuration in the controller. \n\nI started the robot as usual this morning and it gave me this configuration error on startup.\n\n![Image](https://github.com/user-attachments/assets/0e627c6c-0430-4a35-a16e-4e27f773b73a)\n\nIt says that ``The value of parameter 'MPPI.vx_min' is incorrectly set to -0.350000, it should be >=0. Ignoring parameter update.``.\n\nI looked at the documentation and this is the  default value: https://docs.nav2.org/configuration/packages/configuring-mppic.html\n\nI also looked at this part of the code and I found it in the RPP controller!!! \n\nhttps://github.com/ros-navigation/navigation2/blob/5423eba732ed16b4f97a7353027c1f444b6edc60/nav2_regulated_pure_pursuit_controller/src/parameter_handler.cpp#L230-L234\n\nMaybe this is related to this PR #4971 ",
+    "bodyHTML": "<p dir=\"auto\">I think I have found a bug related to parameter configuration in the controller.</p>\n<p dir=\"auto\">I started the robot as usual this morning and it gave me this configuration error on startup.</p>\n<p dir=\"auto\"><a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://private-user-images.githubusercontent.com/4681902/436442772-0e627c6c-0430-4a35-a16e-4e27f773b73a.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgxMzksIm5iZiI6MTc5MTcxNzgzOSwicGF0aCI6Ii80NjgxOTAyLzQzNjQ0Mjc3Mi0wZTYyN2M2Yy0wNDMwLTRhMzUtYTE2ZS00ZTI3Zjc3M2I3M2EucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MTAxMSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjEwMTFUMTEyMzU5WiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9MjZmYjEzOTBiNjA4ZmFkZGEyOGUxZTUyYmZjYmM3YTI2YjNhNjMwOWZiMWM2YTE5NDFmMWFlMzM5M2M1OTA4NCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.wSztNAWybYfVKIWMgNEPxPzU4hRNaVEtrIzQjUhMvOc\"><img src=\"https://private-user-images.githubusercontent.com/4681902/436442772-0e627c6c-0430-4a35-a16e-4e27f773b73a.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgxMzksIm5iZiI6MTc5MTcxNzgzOSwicGF0aCI6Ii80NjgxOTAyLzQzNjQ0Mjc3Mi0wZTYyN2M2Yy0wNDMwLTRhMzUtYTE2ZS00ZTI3Zjc3M2I3M2EucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MTAxMSUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjEwMTFUMTEyMzU5WiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9MjZmYjEzOTBiNjA4ZmFkZGEyOGUxZTUyYmZjYmM3YTI2YjNhNjMwOWZiMWM2YTE5NDFmMWFlMzM5M2M1OTA4NCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.wSztNAWybYfVKIWMgNEPxPzU4hRNaVEtrIzQjUhMvOc\" alt=\"Image\" style=\"max-width: 100%;\"></a></p>\n<p dir=\"auto\">It says that <code class=\"notranslate\">The value of parameter 'MPPI.vx_min' is incorrectly set to -0.350000, it should be &gt;=0. Ignoring parameter update.</code>.</p>\n<p dir=\"auto\">I looked at the documentation and this is the  default value: <a href=\"https://docs.nav2.org/configuration/packages/configuring-mppic.html\" rel=\"nofollow\">https://docs.nav2.org/configuration/packages/configuring-mppic.html</a></p>\n<p dir=\"auto\">I also looked at this part of the code and I found it in the RPP controller!!!</p>\n<p dir=\"auto\"></p><div class=\"Box Box--condensed my-2\">\n  <div class=\"Box-header f6\">\n    <p class=\"mb-0 text-bold\">\n      <a href=\"https://github.com/ros-navigation/navigation2/blob/5423eba732ed16b4f97a7353027c1f444b6edc60/nav2_regulated_pure_pursuit_controller/src/parameter_handler.cpp#L230-L234\">navigation2/nav2_regulated_pure_pursuit_controller/src/parameter_handler.cpp</a>\n    </p>\n    <p class=\"mb-0 color-fg-muted\">\n        Lines 230 to 234\n      in\n      <a data-pjax=\"true\" class=\"commit-tease-sha Link--inTextBlock\" href=\"/ros-navigation/navigation2/commit/5423eba732ed16b4f97a7353027c1f444b6edc60\">5423eba</a>\n    </p>\n  </div>\n  <div itemprop=\"text\" class=\"Box-body p-0 blob-wrapper blob-wrapper-embedded data\">\n    <table class=\"highlight tab-size mb-0 js-file-line-container\" data-tab-size=\"8\" data-paste-markdown-skip=\"\">\n\n        <tbody><tr class=\"border-0\">\n          <td id=\"L230\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"230\"></td>\n          <td id=\"LC230\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> <span class=\"pl-c1\">RCLCPP_WARN</span>( </td>\n        </tr>\n\n        <tr class=\"border-0\">\n          <td id=\"L231\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"231\"></td>\n          <td id=\"LC231\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> logger_, <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>The value of parameter '%s' is incorrectly set to %f, <span class=\"pl-pds\">\"</span></span> </td>\n        </tr>\n\n        <tr class=\"border-0\">\n          <td id=\"L232\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"232\"></td>\n          <td id=\"LC232\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>it should be &gt;=0. Ignoring parameter update.<span class=\"pl-pds\">\"</span></span>, </td>\n        </tr>\n\n        <tr class=\"border-0\">\n          <td id=\"L233\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"233\"></td>\n          <td id=\"LC233\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> name.<span class=\"pl-c1\">c_str</span>(), parameter.<span class=\"pl-c1\">as_double</span>()); </td>\n        </tr>\n\n        <tr class=\"border-0\">\n          <td id=\"L234\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"234\"></td>\n          <td id=\"LC234\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> result.<span class=\"pl-smi\">successful</span> = <span class=\"pl-c1\">false</span>; </td>\n        </tr>\n    </tbody></table>\n  </div>\n</div>\n<p></p>\n<p dir=\"auto\">Maybe this is related to this PR <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2902963821\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/4971\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/4971/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/4971\">#4971</a></p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2025-04-23T08:48:33Z",
+    "updatedAt": "2025-05-22T17:37:57Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/4681902?u=e36de0b6446a03b336828a684e7eaeea11c2634c&v=4",
+      "login": "ajtudela",
+      "id": "MDQ6VXNlcjQ2ODE5MDI=",
+      "profileUrl": "https://github.com/ajtudela",
+      "name": "Alberto Tudela",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+            "fullDatabaseId": "948691578",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros-navigation/navigation2/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 2,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6oZvws",
+      "databaseId": 2825321516,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6zmZRw",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2ODE5MDI=",
+          "login": "ajtudela"
+        },
+        "number": 5100,
+        "locked": false,
+        "databaseId": 3013186672
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5100#issuecomment-2825321516",
+      "createdAt": "2025-04-23T19:29:50Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-04-23T19:30:17Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM6oZvwszmRyXjY",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+          "url": "https://github.com/SteveMacenski",
+          "login": "SteveMacenski"
+        }
+      },
+      "pinnedBy": null,
+      "body": "I ... am getting annoyed by the dynamic parameter APIs. \n\nHere's what we do. Check if the parameter name starts with `plugin_name_`. If it doesn't, then `continue` in the loop. That way we skip any non-this-plugin parameters set. \n\nHeck, that might also be the solution for MPPI with the non-MPPI parameter changes triggering resets we've been talking about over Slack. Lets do that in MPPI too. \n\nThen, we can rearrange this ticket to updating all Plugins to do the same, since all plugin's parameters are or should be under the plugin's root namespace. I think this is a good global change. ",
+      "bodyHTML": "<p dir=\"auto\">I ... am getting annoyed by the dynamic parameter APIs.</p>\n<p dir=\"auto\">Here's what we do. Check if the parameter name starts with <code class=\"notranslate\">plugin_name_</code>. If it doesn't, then <code class=\"notranslate\">continue</code> in the loop. That way we skip any non-this-plugin parameters set.</p>\n<p dir=\"auto\">Heck, that might also be the solution for MPPI with the non-MPPI parameter changes triggering resets we've been talking about over Slack. Lets do that in MPPI too.</p>\n<p dir=\"auto\">Then, we can rearrange this ticket to updating all Plugins to do the same, since all plugin's parameters are or should be under the plugin's root namespace. I think this is a good global change.</p>",
+      "bodyVersion": "4c27b5d0d60241c6f029d9e94f4aec5362ba33737d71761c823cdf1148c8ee88",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6ouSdz",
+      "databaseId": 2830706547,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6zmZRw",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2ODE5MDI=",
+          "login": "ajtudela"
+        },
+        "number": 5100,
+        "locked": false,
+        "databaseId": 3013186672
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjQ4NDc1OTMz",
+        "login": "Nils-ChristianIseke",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/48475933?v=4",
+        "profileUrl": "https://github.com/Nils-ChristianIseke",
+        "name": "Nils-Christian Iseke"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5100#issuecomment-2830706547",
+      "createdAt": "2025-04-25T15:11:57Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-04-25T15:12:07Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM6ouSdzzmS28cA",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4NDc1OTMz",
+          "url": "https://github.com/Nils-ChristianIseke",
+          "login": "Nils-ChristianIseke"
+        }
+      },
+      "pinnedBy": null,
+      "body": "@ajtudela Thank you for catching this. I indeed introduced this bug in #4971. Sry for that! This PR should hopefully fix it: #5106.",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/ajtudela/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/ajtudela\">@ajtudela</a> Thank you for catching this. I indeed introduced this bug in <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2902963821\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/4971\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/4971/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/4971\">#4971</a>. Sry for that! This PR should hopefully fix it: <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3020338261\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5106\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/5106/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/5106\">#5106</a>.</p>",
+      "bodyVersion": "30d7819f70ec62bdea175559e184d38b6ab534b39453b5625a7683c0d90f7e59",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6oZvws",
+      "databaseId": 2825321516,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6zmZRw",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2ODE5MDI=",
+          "login": "ajtudela"
+        },
+        "number": 5100,
+        "locked": false,
+        "databaseId": 3013186672
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5100#issuecomment-2825321516",
+      "createdAt": "2025-04-23T19:29:50Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-04-23T19:30:17Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM6oZvwszmRyXjY",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+          "url": "https://github.com/SteveMacenski",
+          "login": "SteveMacenski"
+        }
+      },
+      "pinnedBy": null,
+      "body": "I ... am getting annoyed by the dynamic parameter APIs. \n\nHere's what we do. Check if the parameter name starts with `plugin_name_`. If it doesn't, then `continue` in the loop. That way we skip any non-this-plugin parameters set. \n\nHeck, that might also be the solution for MPPI with the non-MPPI parameter changes triggering resets we've been talking about over Slack. Lets do that in MPPI too. \n\nThen, we can rearrange this ticket to updating all Plugins to do the same, since all plugin's parameters are or should be under the plugin's root namespace. I think this is a good global change. ",
+      "bodyHTML": "<p dir=\"auto\">I ... am getting annoyed by the dynamic parameter APIs.</p>\n<p dir=\"auto\">Here's what we do. Check if the parameter name starts with <code class=\"notranslate\">plugin_name_</code>. If it doesn't, then <code class=\"notranslate\">continue</code> in the loop. That way we skip any non-this-plugin parameters set.</p>\n<p dir=\"auto\">Heck, that might also be the solution for MPPI with the non-MPPI parameter changes triggering resets we've been talking about over Slack. Lets do that in MPPI too.</p>\n<p dir=\"auto\">Then, we can rearrange this ticket to updating all Plugins to do the same, since all plugin's parameters are or should be under the plugin's root namespace. I think this is a good global change.</p>",
+      "bodyVersion": "4c27b5d0d60241c6f029d9e94f4aec5362ba33737d71761c823cdf1148c8ee88",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6ouSdz",
+      "databaseId": 2830706547,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM6zmZRw",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2ODE5MDI=",
+          "login": "ajtudela"
+        },
+        "number": 5100,
+        "locked": false,
+        "databaseId": 3013186672
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjQ4NDc1OTMz",
+        "login": "Nils-ChristianIseke",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/48475933?v=4",
+        "profileUrl": "https://github.com/Nils-ChristianIseke",
+        "name": "Nils-Christian Iseke"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5100#issuecomment-2830706547",
+      "createdAt": "2025-04-25T15:11:57Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": "2025-04-25T15:12:07Z",
+      "lastUserContentEdit": {
+        "id": "UCE_lALOCBF7SM6ouSdzzmS28cA",
+        "editor": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ4NDc1OTMz",
+          "url": "https://github.com/Nils-ChristianIseke",
+          "login": "Nils-ChristianIseke"
+        }
+      },
+      "pinnedBy": null,
+      "body": "@ajtudela Thank you for catching this. I indeed introduced this bug in #4971. Sry for that! This PR should hopefully fix it: #5106.",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/ajtudela/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/ajtudela\">@ajtudela</a> Thank you for catching this. I indeed introduced this bug in <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"2902963821\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/4971\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/4971/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/4971\">#4971</a>. Sry for that! This PR should hopefully fix it: <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3020338261\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5106\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/5106/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/5106\">#5106</a>.</p>",
+      "bodyVersion": "30d7819f70ec62bdea175559e184d38b6ab534b39453b5625a7683c0d90f7e59",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM6zmZRwzwAAAAQTc6yy",
+      "databaseId": 17506217138,
+      "createdAt": "2025-05-03T01:11:33Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOCBF7SM6zmZRwzwAAAAQjl2ra",
+      "databaseId": 17776995034,
+      "createdAt": "2025-05-22T17:37:57Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOCBF7SM6T7eW-",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-navigation/navigation2/pull/5106",
+        "number": 5106,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABlmQgv7AAqjI4MjUzMjE1MTY=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABlvkSvQgBqzE3Nzc2OTk1MDM0"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABlmQgv7AAqjI4MjUzMjE1MTY=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABlvkSvQgBqzE3Nzc2OTk1MDM0"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOCBF7SM6T7eW-",
+      "url": "https://github.com/ros-navigation/navigation2/pull/5106",
+      "number": 5106,
+      "title": "Dynamic Parameters Only validating params that are part of the plugin",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2025-04-25T15:09:47Z",
+      "databaseId": 2481841598,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/5106",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/5106.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/5106.changes.json"
+    }
+  ]
+}

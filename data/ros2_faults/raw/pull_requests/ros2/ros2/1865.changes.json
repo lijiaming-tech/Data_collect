@@ -1,0 +1,25 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/ros2/pull/1865/files",
+    "final_url": "https://github.com/ros2/ros2/pull/1865/files",
+    "fetched_at": "2026-10-11T11:23:28.577284+00:00",
+    "http_status": 200,
+    "response_sha256": "a7184c8956ed6dd60b65463a5fd8ca8cfb2a773494b052ee5766f8df813e2e0a"
+  },
+  "files": {
+    "pixi.toml": [
+      "@@ -73,7 +73,7 @@ benchmark = \"==1.9.1\"",
+      " bullet = \"==3.25\"  # TODO: Ubuntu has 3.24, but the conda-forge build of it requires numpy < 2",
+      " catkin_pkg = \"==1.1.0\"",
+      " cli11 = \"==2.6.2\"  # TODO: Ubuntu has 2.6.1, which conda-forge does not have",
+      "-clang-format = \"==21.1.6\"",
+      "+clang-tools = \"==21.1.6\"",
+      " cmake = \"==4.2.3\"",
+      " colorama = \"==0.4.6\"",
+      " console_bridge = \"==1.0.1\""
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

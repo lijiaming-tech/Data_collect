@@ -1,0 +1,744 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3211",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3211",
+    "fetched_at": "2026-10-11T11:24:27.079822+00:00",
+    "http_status": 200,
+    "response_sha256": "37767827d31ad4b72528438e0aa7948507c8b62229a502844744a74f2b888401"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc79BmI6",
+    "databaseId": 4245054010,
+    "number": 3211,
+    "title": "reference interfaces recursively prepended with controller name after reconfiguration",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3211",
+    "body": "**Describe the bug**\nCleaning up and reconfiguring a chainable controller multiple times (`Cleanup` -> `Configure`) prepends the controller name recursively to the reference interface name.\n\nE.g. when the exported reference interface names are \"a\" and \"b\", after the first `Cleanup` -> `Configure` cycle, they will be `my_controller/a`, and after the next cycle `my_controller/my_controller/a`, and so on.\n\n**To Reproduce**\nSteps to reproduce the behavior:\n\n1. Implement the `ChainableControllerInterface`:\n    ```C++\n    class MyController : public controller_interface::ChainableControllerInterface\n    {\n    public:\n      controller_interface::CallbackReturn on_init() override\n      {\n        exported_reference_interface_names_ = {\n          \"a\",\n          \"b\",\n        };\n        reference_interfaces_.resize(exported_reference_interface_names_.size(), 0.0);\n    \n        // [...]\n    \n        return controller_interface::CallbackReturn::SUCCESS;\n      }\n    \n      CallbackReturn on_configure(const rclcpp_lifecycle::State & /*previous_state*/) override\n      {\n        RCLCPP_INFO_STREAM(get_node()->get_logger(), \"Exported reference interfaces:\");\n        for (const std::string & name : exported_reference_interface_names_)\n        {\n          RCLCPP_INFO_STREAM(get_node()->get_logger(), \"  \" << name);\n        }\n        \n        // [...]\n        \n        return controller_interface::CallbackReturn::SUCCESS;\n      }\n    }\n    ```\n    Notice that `exported_reference_interface_names_` is a member of `ControllerInterfaceBase` and not the implementation `MyController`.\n\n2. Repeatedly, do `Cleanup` -> `Configure` via rqt_controller_manager.\n\n3. Notice the output:\n    ```\n    [my_controller]: Exported reference interfaces:\n    [my_controller]:   a\n    [my_controller]:   b\n    [...]\n    [my_controller]: Exported reference interfaces:\n    [my_controller]:   my_controller/a\n    [my_controller]:   my_controller/b\n    [...]\n    [my_controller]: Exported reference interfaces:\n    [my_controller]:   my_controller/my_controller/a\n    [my_controller]:   my_controller/my_controller/b\n    ```\n\n**Expected behavior**\nThe exported reference interface should not change their name after the controller was initialised.\n\n**Screenshots**\nIf applicable, add screenshots to help explain your problem.\n\n**Environment (please complete the following information):**\n - OS: Ubuntu\n - Version Jazzy\n\n**Additional context**\nAdd any other context about the problem here, especially include any modifications to ros2_control that relate to this issue.\n",
+    "bodyHTML": "<p dir=\"auto\"><strong>Describe the bug</strong><br>\nCleaning up and reconfiguring a chainable controller multiple times (<code class=\"notranslate\">Cleanup</code> -&gt; <code class=\"notranslate\">Configure</code>) prepends the controller name recursively to the reference interface name.</p>\n<p dir=\"auto\">E.g. when the exported reference interface names are \"a\" and \"b\", after the first <code class=\"notranslate\">Cleanup</code> -&gt; <code class=\"notranslate\">Configure</code> cycle, they will be <code class=\"notranslate\">my_controller/a</code>, and after the next cycle <code class=\"notranslate\">my_controller/my_controller/a</code>, and so on.</p>\n<p dir=\"auto\"><strong>To Reproduce</strong><br>\nSteps to reproduce the behavior:</p>\n<ol dir=\"auto\">\n<li>\n<p dir=\"auto\">Implement the <code class=\"notranslate\">ChainableControllerInterface</code>:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"class MyController : public controller_interface::ChainableControllerInterface\n{\npublic:\n  controller_interface::CallbackReturn on_init() override\n  {\n    exported_reference_interface_names_ = {\n      &quot;a&quot;,\n      &quot;b&quot;,\n    };\n    reference_interfaces_.resize(exported_reference_interface_names_.size(), 0.0);\n\n    // [...]\n\n    return controller_interface::CallbackReturn::SUCCESS;\n  }\n\n  CallbackReturn on_configure(const rclcpp_lifecycle::State &amp; /*previous_state*/) override\n  {\n    RCLCPP_INFO_STREAM(get_node()-&gt;get_logger(), &quot;Exported reference interfaces:&quot;);\n    for (const std::string &amp; name : exported_reference_interface_names_)\n    {\n      RCLCPP_INFO_STREAM(get_node()-&gt;get_logger(), &quot;  &quot; &lt;&lt; name);\n    }\n    \n    // [...]\n    \n    return controller_interface::CallbackReturn::SUCCESS;\n  }\n}\"><pre class=\"notranslate\"><span class=\"pl-k\">class</span> <span class=\"pl-en\">MyController</span> : <span class=\"pl-k\">public</span> <span class=\"pl-en\">controller_interface</span>::ChainableControllerInterface\n{\n<span class=\"pl-k\">public:</span>\n  controller_interface::CallbackReturn <span class=\"pl-en\">on_init</span>() <span class=\"pl-k\">override</span>\n  {\n    exported_reference_interface_names_ = {\n      <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>a<span class=\"pl-pds\">\"</span></span>,\n      <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>b<span class=\"pl-pds\">\"</span></span>,\n    };\n    reference_interfaces_.<span class=\"pl-c1\">resize</span>(exported_reference_interface_names_.<span class=\"pl-c1\">size</span>(), <span class=\"pl-c1\">0.0</span>);\n\n    <span class=\"pl-c\"><span class=\"pl-c\">//</span> [...]</span>\n\n    <span class=\"pl-k\">return</span> controller_interface::CallbackReturn::<span class=\"pl-c1\">SUCCESS</span>;\n  }\n\n  CallbackReturn <span class=\"pl-en\">on_configure</span>(<span class=\"pl-k\">const</span> rclcpp_lifecycle::State &amp; <span class=\"pl-c\"><span class=\"pl-c\">/*</span>previous_state<span class=\"pl-c\">*/</span></span>) <span class=\"pl-k\">override</span>\n  {\n    <span class=\"pl-c1\">RCLCPP_INFO_STREAM</span>(<span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_logger</span>(), <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>Exported reference interfaces:<span class=\"pl-pds\">\"</span></span>);\n    <span class=\"pl-k\">for</span> (<span class=\"pl-k\">const</span> std::string &amp; name : exported_reference_interface_names_)\n    {\n      <span class=\"pl-c1\">RCLCPP_INFO_STREAM</span>(<span class=\"pl-c1\">get_node</span>()-&gt;<span class=\"pl-c1\">get_logger</span>(), <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>  <span class=\"pl-pds\">\"</span></span> &lt;&lt; name);\n    }\n    \n    <span class=\"pl-c\"><span class=\"pl-c\">//</span> [...]</span>\n    \n    <span class=\"pl-k\">return</span> controller_interface::CallbackReturn::<span class=\"pl-c1\">SUCCESS</span>;\n  }\n}<span class=\"pl-ii\"></span></pre></div>\n<p dir=\"auto\">Notice that <code class=\"notranslate\">exported_reference_interface_names_</code> is a member of <code class=\"notranslate\">ControllerInterfaceBase</code> and not the implementation <code class=\"notranslate\">MyController</code>.</p>\n</li>\n<li>\n<p dir=\"auto\">Repeatedly, do <code class=\"notranslate\">Cleanup</code> -&gt; <code class=\"notranslate\">Configure</code> via rqt_controller_manager.</p>\n</li>\n<li>\n<p dir=\"auto\">Notice the output:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"[my_controller]: Exported reference interfaces:\n[my_controller]:   a\n[my_controller]:   b\n[...]\n[my_controller]: Exported reference interfaces:\n[my_controller]:   my_controller/a\n[my_controller]:   my_controller/b\n[...]\n[my_controller]: Exported reference interfaces:\n[my_controller]:   my_controller/my_controller/a\n[my_controller]:   my_controller/my_controller/b\"><pre class=\"notranslate\"><code class=\"notranslate\">[my_controller]: Exported reference interfaces:\n[my_controller]:   a\n[my_controller]:   b\n[...]\n[my_controller]: Exported reference interfaces:\n[my_controller]:   my_controller/a\n[my_controller]:   my_controller/b\n[...]\n[my_controller]: Exported reference interfaces:\n[my_controller]:   my_controller/my_controller/a\n[my_controller]:   my_controller/my_controller/b\n</code></pre></div>\n</li>\n</ol>\n<p dir=\"auto\"><strong>Expected behavior</strong><br>\nThe exported reference interface should not change their name after the controller was initialised.</p>\n<p dir=\"auto\"><strong>Screenshots</strong><br>\nIf applicable, add screenshots to help explain your problem.</p>\n<p dir=\"auto\"><strong>Environment (please complete the following information):</strong></p>\n<ul dir=\"auto\">\n<li>OS: Ubuntu</li>\n<li>Version Jazzy</li>\n</ul>\n<p dir=\"auto\"><strong>Additional context</strong><br>\nAdd any other context about the problem here, especially include any modifications to ros2_control that relate to this issue.</p>",
+    "state": "CLOSED",
+    "stateReason": "NOT_PLANNED",
+    "createdAt": "2026-04-11T15:47:45Z",
+    "updatedAt": "2026-07-13T14:27:49Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/8573621?v=4",
+      "login": "christianrauch",
+      "id": "MDQ6VXNlcjg1NzM2MjE=",
+      "profileUrl": "https://github.com/christianrauch",
+      "name": "Christian Rauch",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+            "fullDatabaseId": "8380273440",
+            "color": "ededed",
+            "name": "stale",
+            "nameHTML": "stale",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/stale",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 2,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABD5AL_w",
+      "databaseId": 4556065791,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc79BmI6",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 3211,
+        "locked": false,
+        "databaseId": 4245054010
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3211#issuecomment-4556065791",
+      "createdAt": "2026-05-27T15:35:14Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABJ5TXRw",
+      "databaseId": 4959033159,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc79BmI6",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 3211,
+        "locked": false,
+        "databaseId": 4245054010
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3211#issuecomment-4959033159",
+      "createdAt": "2026-07-13T14:27:48Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue was closed because it has been stalled for 45 days with no activity.",
+      "bodyHTML": "<p dir=\"auto\">This issue was closed because it has been stalled for 45 days with no activity.</p>",
+      "bodyVersion": "2ebf833f90f878eff9039e2c6cb637ca3b662f79161cd2a020a36f04c154f883",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc79BmI6zwAAAAWu6SFC",
+      "databaseId": 24409350466,
+      "createdAt": "2026-04-11T15:47:47Z",
+      "actor": {
+        "id": "MDQ6VXNlcjg1NzM2MjE=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/8573621?s=64&v=4",
+        "login": "christianrauch",
+        "profileResourcePath": "/christianrauch",
+        "__typename": "User",
+        "name": "Christian Rauch"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABD5AL_w",
+      "databaseId": 4556065791,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc79BmI6",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 3211,
+        "locked": false,
+        "databaseId": 4245054010
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3211#issuecomment-4556065791",
+      "createdAt": "2026-05-27T15:35:14Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc79BmI6zwAAAAYPCqqD",
+      "databaseId": 26022161027,
+      "createdAt": "2026-05-27T15:35:15Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+        "archivedAt": null,
+        "nameHTML": "stale",
+        "name": "stale",
+        "color": "ededed",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABJ5TXRw",
+      "databaseId": 4959033159,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc79BmI6",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjg1NzM2MjE=",
+          "login": "christianrauch"
+        },
+        "number": 3211,
+        "locked": false,
+        "databaseId": 4245054010
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3211#issuecomment-4959033159",
+      "createdAt": "2026-07-13T14:27:48Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue was closed because it has been stalled for 45 days with no activity.",
+      "bodyHTML": "<p dir=\"auto\">This issue was closed because it has been stalled for 45 days with no activity.</p>",
+      "bodyVersion": "2ebf833f90f878eff9039e2c6cb637ca3b662f79161cd2a020a36f04c154f883",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc79BmI6zwAAAAZ_xlIz",
+      "databaseId": 27913507379,
+      "createdAt": "2026-07-13T14:27:49Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "stateReason": "NOT_PLANNED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnX06ULgBqzI0NDA5MzUwNDY2",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABn1vghogBqzI3OTEzNTA3Mzc5"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnX06ULgBqzI0NDA5MzUwNDY2",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABn1vghogBqzI3OTEzNTA3Mzc5"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOBiM5Uc7R1DmX",
+      "url": "https://github.com/ros-controls/ros2_control/pull/3212",
+      "number": 3212,
+      "title": "Fix recursive naming of chainable controller interfaces",
+      "state": "OPEN",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-04-12T23:14:20Z",
+      "databaseId": 3520346519,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "nameWithOwner": "ros-controls/ros2_control",
+        "owner": {
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "__typename": "Organization"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3212",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3212.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3212.changes.json"
+    }
+  ]
+}

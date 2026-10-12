@@ -1,0 +1,35 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3064",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3064",
+    "fetched_at": "2026-10-11T11:21:18.043821+00:00",
+    "http_status": 200,
+    "response_sha256": "609128f5f7e31ec85447cf3c3b557a8990eb8351095bcfbff3d3614d5ddcec0d"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/3064",
+  "title": "Fix component registering in subdirectories by pum1k · Pull Request #3064 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\nThis PR allows using rclcpp_components_register_node and rclcpp_components_register_nodes functions in subdirectories added by add_subdirectory (and other non global scopes). This was done by storing the internal data in a property of the project directory instead of variable.\n\n\nFixes: #1698\n\n\nIs this user-facing behavior change?\n\n\nYes, users will be able to use the above mentioned functions inside nested scopes.\n\n\nDid you use Generative AI?\n\n\nNo",
+  "discussion_rendered_text": [
+    "lgtm with green CI.\n\n\ni think that the approach of using directory properties on PROJECT_SOURCE_DIR is the right fix to avoid the CMake variable scoping problem cleanly without polluting the cache.\n\n\none minor suggestion: would it be worth adding a brief comment in the hook file explaining why properties are used like original problem?",
+    "@fujitatomoya Is this what you meant?",
+    "Pulls: #3064\n\nGist: https://gist.githubusercontent.com/ahcorde/41da3d924b8795359675fc94caaaa1a5/raw/8fc503931b6a63733ca4324052ac4297a4f01bc0/ros2.repos\n\nBUILD args:  --packages-above-and-dependencies rclcpp_components\n\nTEST args:  --packages-above rclcpp_components\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/18247\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "@ahcorde Could this be backported to Jazzy?",
+    "https://github.com/Mergifyio backport kilted jazzy humble",
+    "backport kilted jazzy humble\n\n\n✅ Backports have been created\nDetails\n\n\n#3074 Fix component registering in subdirectories (backport #3064) has been created for branch kilted\n\n\n#3075 Fix component registering in subdirectories (backport #3064) has been created for branch jazzy\n\n\n#3076 Fix component registering in subdirectories (backport #3064) has been created for branch humble"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/bartalor/rclcpp/commit/fd28ace6086b34742ae153447ce5bab747bea763",
+    "https://github.com/ros2/rclcpp/commit/0c5bbfaa899100aa6b09770ebb5dc318abe07f18",
+    "https://github.com/ros2/rclcpp/commit/217e7a705cf53d73cb241935c79238e8fadd3d8b",
+    "https://github.com/ros2/rclcpp/commit/85566684534d0513dc75c285bfd918892ef4d104",
+    "https://github.com/ros2/rclcpp/commit/8dd1ec2669418a5239ee1e9fb97f997b433c2b62",
+    "https://github.com/ros2/rclcpp/commit/e89d0eed352d80df7a7b12d58a6d297673e2b7dc",
+    "https://github.com/ros2/rclcpp/commit/f3cd9b2970080b5308047cb5876becae98a3f217",
+    "https://github.com/ros2/rclcpp/commit/fc1afcb3bc2c4f9c7113d8ae324f1cbda5f610cd",
+    "https://github.com/ros2/rclcpp/pull/3064/commits/e865f99bb8d2550d6da1772b687b50d4a6aeef88",
+    "https://github.com/ros2/rclcpp/pull/3064/commits/f261c91cb3c9dd05eb72995a79823beafb44c829"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

@@ -1,0 +1,2354 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3495",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3495",
+    "fetched_at": "2026-10-11T11:24:24.045961+00:00",
+    "http_status": 200,
+    "response_sha256": "f85731cdf4108f374700b049af9cbfef9e486ca1d57c3bfa1f4aef700ff92072"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+    "databaseId": 4964791974,
+    "number": 3495,
+    "title": "`ros2_control_node` fails to start up on Windows/RoboStack in Jazzy or newer",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3495",
+    "body": "**Describe the bug**\nOn RoboStack + Pixi + Windows, `ros2_control_node` crashes in Jazzy and newer.\n\n**To Reproduce**\nMake a simple Pixi environment in Windows with this as your `pixi.toml`.\n\n```toml\n[workspace]\nchannels = [\"conda-forge\", \"https://prefix.dev/robostack-jazzy\"]\nplatforms = [\"win-64\"]\n\n[dependencies]\nros-jazzy-ros-base = \"*\"\nros-jazzy-controller-manager = \"*\"\n```\n\nThen, run `pixi shell` and `ros2 run controller_manager ros2_control_node`.\n\nYou get this:\n\n```\n(roboplan-ros) PS C:\\test> ros2 run controller_manager ros2_control_node\n[INFO] [1784861884.280229500] [controller_manager]: Using Steady (Monotonic) clock for triggering controller manager cycles.\n[INFO] [1784861884.287362000] [controller_manager]: Subscribing to '/robot_description' topic for robot description.\n[ros2run]: Process exited with failure 3221225477\n```\n\n**Expected behavior**\nSwap out Jazzy for Humble and you get correct behavior.\n\n```\n(roboplan-ros) PS C:\\test> ros2 run controller_manager ros2_control_node\n[WARN] [1784862048.093321600] [controller_manager]: 'update_rate' parameter not set, using default value.\n[INFO] [1784862048.093449300] [controller_manager]: Subscribing to '~/robot_description' topic for robot description file.\nRealtime kernel detection is not supported on Windows.\n[INFO] [1784862048.094867600] [controller_manager]: update rate is 100 Hz\n[INFO] [1784862048.094932100] [controller_manager]: Spawning controller_manager RT thread with scheduler priority: 50\n[WARN] [1784862048.095075200] [controller_manager]: Could not enable FIFO RT scheduling policy: with error number <0>(No error). See [https://control.ros.org/master/doc/ros2_control/controller_manager/doc/userdoc.html] for details on how to enable realtime scheduling.\n\n# at this point, the node is running...\n```\n\n**Environment (please complete the following information):**\n - OS: Windows\n - Version: Jazzy\n - Pixi + RoboStack\n\n**Additional context**\n\nI don't know what it might be... but given where this line appears, my first guess would be it has to do with the `realtime_tools` stuff, since we don't even get to the print statement about realtime kernel not being supported on Windows.\n\nhttps://github.com/ros-controls/realtime_tools/blob/0e0bca049675fa6da1579d4fc4d83b10a564b9ab/realtime_tools/src/realtime_helpers.cpp#L52\n\ncalled by\n\nhttps://github.com/ros-controls/ros2_control/blob/4bcce091c25d1412bb52261479fd57607a93c021/controller_manager/src/ros2_control_node.cpp#L63\n\n... that or the instantiation of controller manager right above: https://github.com/ros-controls/ros2_control/blob/4bcce091c25d1412bb52261479fd57607a93c021/controller_manager/src/ros2_control_node.cpp#L58-L59",
+    "bodyHTML": "<p dir=\"auto\"><strong>Describe the bug</strong><br>\nOn RoboStack + Pixi + Windows, <code class=\"notranslate\">ros2_control_node</code> crashes in Jazzy and newer.</p>\n<p dir=\"auto\"><strong>To Reproduce</strong><br>\nMake a simple Pixi environment in Windows with this as your <code class=\"notranslate\">pixi.toml</code>.</p>\n<div class=\"highlight highlight-source-toml notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"[workspace]\nchannels = [&quot;conda-forge&quot;, &quot;https://prefix.dev/robostack-jazzy&quot;]\nplatforms = [&quot;win-64&quot;]\n\n[dependencies]\nros-jazzy-ros-base = &quot;*&quot;\nros-jazzy-controller-manager = &quot;*&quot;\"><pre class=\"notranslate\">[<span class=\"pl-en\">workspace</span>]\n<span class=\"pl-smi\">channels</span> = [<span class=\"pl-s\"><span class=\"pl-pds\">\"</span>conda-forge<span class=\"pl-pds\">\"</span></span>, <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>https://prefix.dev/robostack-jazzy<span class=\"pl-pds\">\"</span></span>]\n<span class=\"pl-smi\">platforms</span> = [<span class=\"pl-s\"><span class=\"pl-pds\">\"</span>win-64<span class=\"pl-pds\">\"</span></span>]\n\n[<span class=\"pl-en\">dependencies</span>]\n<span class=\"pl-smi\">ros-jazzy-ros-base</span> = <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>*<span class=\"pl-pds\">\"</span></span>\n<span class=\"pl-smi\">ros-jazzy-controller-manager</span> = <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>*<span class=\"pl-pds\">\"</span></span></pre></div>\n<p dir=\"auto\">Then, run <code class=\"notranslate\">pixi shell</code> and <code class=\"notranslate\">ros2 run controller_manager ros2_control_node</code>.</p>\n<p dir=\"auto\">You get this:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"(roboplan-ros) PS C:\\test&gt; ros2 run controller_manager ros2_control_node\n[INFO] [1784861884.280229500] [controller_manager]: Using Steady (Monotonic) clock for triggering controller manager cycles.\n[INFO] [1784861884.287362000] [controller_manager]: Subscribing to '/robot_description' topic for robot description.\n[ros2run]: Process exited with failure 3221225477\"><pre class=\"notranslate\"><code class=\"notranslate\">(roboplan-ros) PS C:\\test&gt; ros2 run controller_manager ros2_control_node\n[INFO] [1784861884.280229500] [controller_manager]: Using Steady (Monotonic) clock for triggering controller manager cycles.\n[INFO] [1784861884.287362000] [controller_manager]: Subscribing to '/robot_description' topic for robot description.\n[ros2run]: Process exited with failure 3221225477\n</code></pre></div>\n<p dir=\"auto\"><strong>Expected behavior</strong><br>\nSwap out Jazzy for Humble and you get correct behavior.</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"(roboplan-ros) PS C:\\test&gt; ros2 run controller_manager ros2_control_node\n[WARN] [1784862048.093321600] [controller_manager]: 'update_rate' parameter not set, using default value.\n[INFO] [1784862048.093449300] [controller_manager]: Subscribing to '~/robot_description' topic for robot description file.\nRealtime kernel detection is not supported on Windows.\n[INFO] [1784862048.094867600] [controller_manager]: update rate is 100 Hz\n[INFO] [1784862048.094932100] [controller_manager]: Spawning controller_manager RT thread with scheduler priority: 50\n[WARN] [1784862048.095075200] [controller_manager]: Could not enable FIFO RT scheduling policy: with error number &lt;0&gt;(No error). See [https://control.ros.org/master/doc/ros2_control/controller_manager/doc/userdoc.html] for details on how to enable realtime scheduling.\n\n# at this point, the node is running...\"><pre class=\"notranslate\"><code class=\"notranslate\">(roboplan-ros) PS C:\\test&gt; ros2 run controller_manager ros2_control_node\n[WARN] [1784862048.093321600] [controller_manager]: 'update_rate' parameter not set, using default value.\n[INFO] [1784862048.093449300] [controller_manager]: Subscribing to '~/robot_description' topic for robot description file.\nRealtime kernel detection is not supported on Windows.\n[INFO] [1784862048.094867600] [controller_manager]: update rate is 100 Hz\n[INFO] [1784862048.094932100] [controller_manager]: Spawning controller_manager RT thread with scheduler priority: 50\n[WARN] [1784862048.095075200] [controller_manager]: Could not enable FIFO RT scheduling policy: with error number &lt;0&gt;(No error). See [https://control.ros.org/master/doc/ros2_control/controller_manager/doc/userdoc.html] for details on how to enable realtime scheduling.\n\n# at this point, the node is running...\n</code></pre></div>\n<p dir=\"auto\"><strong>Environment (please complete the following information):</strong></p>\n<ul dir=\"auto\">\n<li>OS: Windows</li>\n<li>Version: Jazzy</li>\n<li>Pixi + RoboStack</li>\n</ul>\n<p dir=\"auto\"><strong>Additional context</strong></p>\n<p dir=\"auto\">I don't know what it might be... but given where this line appears, my first guess would be it has to do with the <code class=\"notranslate\">realtime_tools</code> stuff, since we don't even get to the print statement about realtime kernel not being supported on Windows.</p>\n<p dir=\"auto\"><a href=\"https://github.com/ros-controls/realtime_tools/blob/0e0bca049675fa6da1579d4fc4d83b10a564b9ab/realtime_tools/src/realtime_helpers.cpp#L52\">https://github.com/ros-controls/realtime_tools/blob/0e0bca049675fa6da1579d4fc4d83b10a564b9ab/realtime_tools/src/realtime_helpers.cpp#L52</a></p>\n<p dir=\"auto\">called by</p>\n<p dir=\"auto\"></p><div class=\"Box Box--condensed my-2\">\n  <div class=\"Box-header f6\">\n    <p class=\"mb-0 text-bold\">\n      <a href=\"https://github.com/ros-controls/ros2_control/blob/4bcce091c25d1412bb52261479fd57607a93c021/controller_manager/src/ros2_control_node.cpp#L63\">ros2_control/controller_manager/src/ros2_control_node.cpp</a>\n    </p>\n    <p class=\"mb-0 color-fg-muted\">\n         Line 63\n      in\n      <a data-pjax=\"true\" class=\"commit-tease-sha Link--inTextBlock\" href=\"/ros-controls/ros2_control/commit/4bcce091c25d1412bb52261479fd57607a93c021\">4bcce09</a>\n    </p>\n  </div>\n  <div itemprop=\"text\" class=\"Box-body p-0 blob-wrapper blob-wrapper-embedded data\">\n    <table class=\"highlight tab-size mb-0 js-file-line-container\" data-tab-size=\"8\" data-paste-markdown-skip=\"\">\n\n        <tbody><tr class=\"border-0\">\n          <td id=\"L63\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"63\"></td>\n          <td id=\"LC63\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> <span class=\"pl-k\">const</span> <span class=\"pl-k\">bool</span> has_realtime = <span class=\"pl-c1\">realtime_tools::has_realtime_kernel</span>(); </td>\n        </tr>\n    </tbody></table>\n  </div>\n</div>\n<p></p>\n<p dir=\"auto\">... that or the instantiation of controller manager right above: </p><div class=\"Box Box--condensed my-2\">\n  <div class=\"Box-header f6\">\n    <p class=\"mb-0 text-bold\">\n      <a href=\"https://github.com/ros-controls/ros2_control/blob/4bcce091c25d1412bb52261479fd57607a93c021/controller_manager/src/ros2_control_node.cpp#L58-L59\">ros2_control/controller_manager/src/ros2_control_node.cpp</a>\n    </p>\n    <p class=\"mb-0 color-fg-muted\">\n        Lines 58 to 59\n      in\n      <a data-pjax=\"true\" class=\"commit-tease-sha Link--inTextBlock\" href=\"/ros-controls/ros2_control/commit/4bcce091c25d1412bb52261479fd57607a93c021\">4bcce09</a>\n    </p>\n  </div>\n  <div itemprop=\"text\" class=\"Box-body p-0 blob-wrapper blob-wrapper-embedded data\">\n    <table class=\"highlight tab-size mb-0 js-file-line-container\" data-tab-size=\"8\" data-paste-markdown-skip=\"\">\n\n        <tbody><tr class=\"border-0\">\n          <td id=\"L58\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"58\"></td>\n          <td id=\"LC58\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\"> <span class=\"pl-k\">auto</span> cm = std::make_shared&lt;controller_manager::ControllerManager&gt;( </td>\n        </tr>\n\n        <tr class=\"border-0\">\n          <td id=\"L59\" class=\"blob-num border-0 tmp-px-3 py-0 color-bg-default\" data-line-number=\"59\"></td>\n          <td id=\"LC59\" class=\"blob-code border-0 tmp-px-3 py-0 color-bg-default blob-code-inner js-file-line\">   executor, manager_node_name, <span class=\"pl-s\"><span class=\"pl-pds\">\"</span><span class=\"pl-pds\">\"</span></span>, cm_node_options); </td>\n        </tr>\n    </tbody></table>\n  </div>\n</div>\n<p></p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-07-24T03:05:49Z",
+    "updatedAt": "2026-08-11T13:57:05Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/4603398?u=60a37a0042d778c4150e79070be976ff5d8ac45f&v=4",
+      "login": "sea-bass",
+      "id": "MDQ6VXNlcjQ2MDMzOTg=",
+      "profileUrl": "https://github.com/sea-bass",
+      "name": "Sebastian Castro",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 8,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABLg8-ow",
+      "databaseId": 5067718307,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5067718307",
+      "createdAt": "2026-07-24T08:22:01Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thanks for reporting. I was able to reproduce it, it happens somewhere about creation of the introspection publisher thread. let's see if copilot finds the root cause",
+      "bodyHTML": "<p dir=\"auto\">Thanks for reporting. I was able to reproduce it, it happens somewhere about creation of the introspection publisher thread. let's see if copilot finds the root cause</p>",
+      "bodyVersion": "f31922347dbc2d9bcf618cdfdd31866c092a0fd98acbb1e9c3fba91a5c7ecde6",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjE4NTcwNDk=",
+                "login": "traversaro",
+                "name": "Silvio Traversaro",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/1857049?s=64&u=2178077c05edb1cff607766c0045015dbf112c00&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABLhY9Cg",
+      "databaseId": 5068176650,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5068176650",
+      "createdAt": "2026-07-24T09:12:23Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This is fixed with https://github.com/pal-robotics/pal_statistics/pull/26\n@saikishor can you have a look please?\n\nA local alternative would be\n```\n\ndiff --git a/controller_manager/src/controller_manager.cpp b/controller_manager/src/controller_manager.cpp\nindex 33e02d93..2b5a7801 100644\n--- a/controller_manager/src/controller_manager.cpp\n+++ b/controller_manager/src/controller_manager.cpp\n@@ -690,13 +690,34 @@ void ControllerManager::init_controller_manager()\n     \"Controller Manager Activity\", this,\n     &ControllerManager::controller_manager_diagnostic_callback);\n \n-  INITIALIZE_ROS2_CONTROL_INTROSPECTION_REGISTRY(\n+  auto default_registry_from_create = pal_statistics::getOrCreateRegistry(\n     this, hardware_interface::DEFAULT_INTROSPECTION_TOPIC,\n     hardware_interface::DEFAULT_REGISTRY_KEY);\n-  START_ROS2_CONTROL_INTROSPECTION_PUBLISHER_THREAD(hardware_interface::DEFAULT_REGISTRY_KEY);\n-  INITIALIZE_ROS2_CONTROL_INTROSPECTION_REGISTRY(\n+  if (default_registry_from_create)\n+  {\n+    default_registry_from_create->startPublishThread();\n+  }\n+  else\n+  {\n+    RCLCPP_WARN(\n+      get_logger(),\n+      \"Unable to initialize introspection registry '%s'; skipping introspection publisher thread.\",\n+      hardware_interface::DEFAULT_REGISTRY_KEY);\n+  }\n+\n+  auto cm_stats_registry_from_create = pal_statistics::getOrCreateRegistry(\n     this, hardware_interface::CM_STATISTICS_TOPIC, hardware_interface::CM_STATISTICS_KEY);\n-  START_ROS2_CONTROL_INTROSPECTION_PUBLISHER_THREAD(hardware_interface::CM_STATISTICS_KEY);\n+  if (cm_stats_registry_from_create)\n+  {\n+    cm_stats_registry_from_create->startPublishThread();\n+  }\n+  else\n+  {\n+    RCLCPP_WARN(\n+      get_logger(),\n+      \"Unable to initialize introspection registry '%s'; skipping introspection publisher thread.\",\n+      hardware_interface::CM_STATISTICS_KEY);\n+  }\n \n   // Add on_shutdown callback to stop the controller manager\n   rclcpp::Context::SharedPtr context = this->get_node_base_interface()->get_context();\n\n```",
+      "bodyHTML": "<p dir=\"auto\">This is fixed with <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4943968261\" data-permission-text=\"Title is private\" data-url=\"https://github.com/pal-robotics/pal_statistics/issues/26\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/pal-robotics/pal_statistics/pull/26/hovercard\" href=\"https://github.com/pal-robotics/pal_statistics/pull/26\">pal-robotics/pal_statistics#26</a><br>\n<a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/saikishor/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/saikishor\">@saikishor</a> can you have a look please?</p>\n<p dir=\"auto\">A local alternative would be</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"\ndiff --git a/controller_manager/src/controller_manager.cpp b/controller_manager/src/controller_manager.cpp\nindex 33e02d93..2b5a7801 100644\n--- a/controller_manager/src/controller_manager.cpp\n+++ b/controller_manager/src/controller_manager.cpp\n@@ -690,13 +690,34 @@ void ControllerManager::init_controller_manager()\n     &quot;Controller Manager Activity&quot;, this,\n     &amp;ControllerManager::controller_manager_diagnostic_callback);\n \n-  INITIALIZE_ROS2_CONTROL_INTROSPECTION_REGISTRY(\n+  auto default_registry_from_create = pal_statistics::getOrCreateRegistry(\n     this, hardware_interface::DEFAULT_INTROSPECTION_TOPIC,\n     hardware_interface::DEFAULT_REGISTRY_KEY);\n-  START_ROS2_CONTROL_INTROSPECTION_PUBLISHER_THREAD(hardware_interface::DEFAULT_REGISTRY_KEY);\n-  INITIALIZE_ROS2_CONTROL_INTROSPECTION_REGISTRY(\n+  if (default_registry_from_create)\n+  {\n+    default_registry_from_create-&gt;startPublishThread();\n+  }\n+  else\n+  {\n+    RCLCPP_WARN(\n+      get_logger(),\n+      &quot;Unable to initialize introspection registry '%s'; skipping introspection publisher thread.&quot;,\n+      hardware_interface::DEFAULT_REGISTRY_KEY);\n+  }\n+\n+  auto cm_stats_registry_from_create = pal_statistics::getOrCreateRegistry(\n     this, hardware_interface::CM_STATISTICS_TOPIC, hardware_interface::CM_STATISTICS_KEY);\n-  START_ROS2_CONTROL_INTROSPECTION_PUBLISHER_THREAD(hardware_interface::CM_STATISTICS_KEY);\n+  if (cm_stats_registry_from_create)\n+  {\n+    cm_stats_registry_from_create-&gt;startPublishThread();\n+  }\n+  else\n+  {\n+    RCLCPP_WARN(\n+      get_logger(),\n+      &quot;Unable to initialize introspection registry '%s'; skipping introspection publisher thread.&quot;,\n+      hardware_interface::CM_STATISTICS_KEY);\n+  }\n \n   // Add on_shutdown callback to stop the controller manager\n   rclcpp::Context::SharedPtr context = this-&gt;get_node_base_interface()-&gt;get_context();\n\"><pre class=\"notranslate\"><code class=\"notranslate\">\ndiff --git a/controller_manager/src/controller_manager.cpp b/controller_manager/src/controller_manager.cpp\nindex 33e02d93..2b5a7801 100644\n--- a/controller_manager/src/controller_manager.cpp\n+++ b/controller_manager/src/controller_manager.cpp\n@@ -690,13 +690,34 @@ void ControllerManager::init_controller_manager()\n     \"Controller Manager Activity\", this,\n     &amp;ControllerManager::controller_manager_diagnostic_callback);\n \n-  INITIALIZE_ROS2_CONTROL_INTROSPECTION_REGISTRY(\n+  auto default_registry_from_create = pal_statistics::getOrCreateRegistry(\n     this, hardware_interface::DEFAULT_INTROSPECTION_TOPIC,\n     hardware_interface::DEFAULT_REGISTRY_KEY);\n-  START_ROS2_CONTROL_INTROSPECTION_PUBLISHER_THREAD(hardware_interface::DEFAULT_REGISTRY_KEY);\n-  INITIALIZE_ROS2_CONTROL_INTROSPECTION_REGISTRY(\n+  if (default_registry_from_create)\n+  {\n+    default_registry_from_create-&gt;startPublishThread();\n+  }\n+  else\n+  {\n+    RCLCPP_WARN(\n+      get_logger(),\n+      \"Unable to initialize introspection registry '%s'; skipping introspection publisher thread.\",\n+      hardware_interface::DEFAULT_REGISTRY_KEY);\n+  }\n+\n+  auto cm_stats_registry_from_create = pal_statistics::getOrCreateRegistry(\n     this, hardware_interface::CM_STATISTICS_TOPIC, hardware_interface::CM_STATISTICS_KEY);\n-  START_ROS2_CONTROL_INTROSPECTION_PUBLISHER_THREAD(hardware_interface::CM_STATISTICS_KEY);\n+  if (cm_stats_registry_from_create)\n+  {\n+    cm_stats_registry_from_create-&gt;startPublishThread();\n+  }\n+  else\n+  {\n+    RCLCPP_WARN(\n+      get_logger(),\n+      \"Unable to initialize introspection registry '%s'; skipping introspection publisher thread.\",\n+      hardware_interface::CM_STATISTICS_KEY);\n+  }\n \n   // Add on_shutdown callback to stop the controller manager\n   rclcpp::Context::SharedPtr context = this-&gt;get_node_base_interface()-&gt;get_context();\n\n</code></pre></div>",
+      "bodyVersion": "ff1e8d29f656d15c1ae7b5bb161ea03de8f369fe829895c97e1458f25bf696a1",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABLhmkBw",
+      "databaseId": 5068399623,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU0OTc4MzI=",
+        "login": "Tobias-Fischer",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/5497832?u=46ec135677e89e1f52f45a567cd4963a62c07a35&v=4",
+        "profileUrl": "https://github.com/Tobias-Fischer",
+        "name": "Tobias Fischer"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5068399623",
+      "createdAt": "2026-07-24T09:40:46Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@christophfroehlich @sea-bass happy to accept pull request adding the required patch in RoboStack",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/christophfroehlich/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/christophfroehlich\">@christophfroehlich</a> <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/sea-bass/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/sea-bass\">@sea-bass</a> happy to accept pull request adding the required patch in RoboStack</p>",
+      "bodyVersion": "87c78bb0984fc2294597b1476a68972fefd1ccb1bf27981a856ffda830970509",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABLicjwQ",
+      "databaseId": 5069284289,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjQ2MDMzOTg=",
+        "login": "sea-bass",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/4603398?u=60a37a0042d778c4150e79070be976ff5d8ac45f&v=4",
+        "profileUrl": "https://github.com/sea-bass",
+        "name": "Sebastian Castro"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5069284289",
+      "createdAt": "2026-07-24T11:20:44Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Whoa, thanks everyone for the lightning fast investigation!\n\n@christophfroehlich how were you able to tell where this crash occurred? Did you end up having to source build? I guess this would explain all the small related PRs linked to this issue.",
+      "bodyHTML": "<p dir=\"auto\">Whoa, thanks everyone for the lightning fast investigation!</p>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/christophfroehlich/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/christophfroehlich\">@christophfroehlich</a> how were you able to tell where this crash occurred? Did you end up having to source build? I guess this would explain all the small related PRs linked to this issue.</p>",
+      "bodyVersion": "b73b1868d4ddfb63fcfe5baf77ec673b5eb80847aa3b65d61b22ac2c2beb8151",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABLidarQ",
+      "databaseId": 5069298349,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5069298349",
+      "createdAt": "2026-07-24T11:22:45Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Exactly, I compiled it from source in a pixi env and let GPT find the root cause. this resulted in the exactly same patch as @Tobias-Fischer submitted to pal_statistics, it seems that we've used the same model ;)",
+      "bodyHTML": "<p dir=\"auto\">Exactly, I compiled it from source in a pixi env and let GPT find the root cause. this resulted in the exactly same patch as <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/Tobias-Fischer/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/Tobias-Fischer\">@Tobias-Fischer</a> submitted to pal_statistics, it seems that we've used the same model ;)</p>",
+      "bodyVersion": "cb4d33408966319ac0caac8cd112b21ca82c303df5fba06c6ec40e4489d2e654",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 3,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjQ2MDMzOTg=",
+                "login": "sea-bass",
+                "name": "Sebastian Castro",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/4603398?s=64&u=60a37a0042d778c4150e79070be976ff5d8ac45f&v=4"
+              },
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjEwMDgyNDI4",
+                "login": "saikishor",
+                "name": "Sai Kishor Kothakota",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?s=64&u=a8449baf27fec21608c3919a53021b418098ddfe&v=4"
+              },
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjU0OTc4MzI=",
+                "login": "Tobias-Fischer",
+                "name": "Tobias Fischer",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/5497832?s=64&u=46ec135677e89e1f52f45a567cd4963a62c07a35&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjg4NTA1NA==",
+                "login": "wolfv",
+                "name": "Wolf Vollprecht",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/885054?s=64&u=833ad7754e88429d7e610f9324ca6bc18d8e1bf0&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABLl_plQ",
+      "databaseId": 5073004949,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0MzM0MzQ2",
+        "login": "gftabor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14334346?u=2f5b099aeeff27182f290678350caa1cec29106d&v=4",
+        "profileUrl": "https://github.com/gftabor",
+        "name": "Griffin Tabor"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5073004949",
+      "createdAt": "2026-07-24T18:09:07Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Ya I probably should have up streamed some of my debugging from before. \n\nhttps://github.com/RoboStack/ros-jazzy/issues/141#issuecomment-4425174310\n\n\nThe only place I assumed people were using controller manager was in gazebo so the debugging was in that context. ",
+      "bodyHTML": "<p dir=\"auto\">Ya I probably should have up streamed some of my debugging from before.</p>\n<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3744617190\" data-permission-text=\"Title is private\" data-url=\"https://github.com/RoboStack/ros-jazzy/issues/141\" data-hovercard-type=\"issue\" data-hovercard-url=\"/RoboStack/ros-jazzy/issues/141/hovercard?comment_id=4425174310&amp;comment_type=issue_comment\" href=\"https://github.com/RoboStack/ros-jazzy/issues/141#issuecomment-4425174310\">RoboStack/ros-jazzy#141 (comment)</a></p>\n<p dir=\"auto\">The only place I assumed people were using controller manager was in gazebo so the debugging was in that context.</p>",
+      "bodyVersion": "115cfe2c3c43e6bd289f929c7e60ffd23441c2c830691c9b843c9f501a233227",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABNsi4kQ",
+      "databaseId": 5214091409,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5214091409",
+      "createdAt": "2026-08-07T07:49:34Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "The patch of pal_statistics is merged and bloom is also triggered :)",
+      "bodyHTML": "<p dir=\"auto\">The patch of pal_statistics is merged and bloom is also triggered :)</p>",
+      "bodyVersion": "f4048e44627ec50c2072f38bb86df962b37096f87b9d8bbac2f511c5cf35e25c",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABOSvp7w",
+      "databaseId": 5254146543,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5254146543",
+      "createdAt": "2026-08-11T13:57:05Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thanks to all ",
+      "bodyHTML": "<p dir=\"auto\">Thanks to all</p>",
+      "bodyVersion": "84d0d6c7f65adf858faa1a782a46f552f75e34b18b99435d5affc3c760cf6dde",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc8AAAABJ-y2ps8AAAAGna_FGw",
+      "databaseId": 28415345947,
+      "createdAt": "2026-07-24T03:05:50Z",
+      "actor": {
+        "id": "MDQ6VXNlcjQ2MDMzOTg=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/4603398?s=64&u=60a37a0042d778c4150e79070be976ff5d8ac45f&v=4",
+        "login": "sea-bass",
+        "profileResourcePath": "/sea-bass",
+        "__typename": "User",
+        "name": "Sebastian Castro"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABLg8-ow",
+      "databaseId": 5067718307,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5067718307",
+      "createdAt": "2026-07-24T08:22:01Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thanks for reporting. I was able to reproduce it, it happens somewhere about creation of the introspection publisher thread. let's see if copilot finds the root cause",
+      "bodyHTML": "<p dir=\"auto\">Thanks for reporting. I was able to reproduce it, it happens somewhere about creation of the introspection publisher thread. let's see if copilot finds the root cause</p>",
+      "bodyVersion": "f31922347dbc2d9bcf618cdfdd31866c092a0fd98acbb1e9c3fba91a5c7ecde6",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjE4NTcwNDk=",
+                "login": "traversaro",
+                "name": "Silvio Traversaro",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/1857049?s=64&u=2178077c05edb1cff607766c0045015dbf112c00&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABLhY9Cg",
+      "databaseId": 5068176650,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5068176650",
+      "createdAt": "2026-07-24T09:12:23Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This is fixed with https://github.com/pal-robotics/pal_statistics/pull/26\n@saikishor can you have a look please?\n\nA local alternative would be\n```\n\ndiff --git a/controller_manager/src/controller_manager.cpp b/controller_manager/src/controller_manager.cpp\nindex 33e02d93..2b5a7801 100644\n--- a/controller_manager/src/controller_manager.cpp\n+++ b/controller_manager/src/controller_manager.cpp\n@@ -690,13 +690,34 @@ void ControllerManager::init_controller_manager()\n     \"Controller Manager Activity\", this,\n     &ControllerManager::controller_manager_diagnostic_callback);\n \n-  INITIALIZE_ROS2_CONTROL_INTROSPECTION_REGISTRY(\n+  auto default_registry_from_create = pal_statistics::getOrCreateRegistry(\n     this, hardware_interface::DEFAULT_INTROSPECTION_TOPIC,\n     hardware_interface::DEFAULT_REGISTRY_KEY);\n-  START_ROS2_CONTROL_INTROSPECTION_PUBLISHER_THREAD(hardware_interface::DEFAULT_REGISTRY_KEY);\n-  INITIALIZE_ROS2_CONTROL_INTROSPECTION_REGISTRY(\n+  if (default_registry_from_create)\n+  {\n+    default_registry_from_create->startPublishThread();\n+  }\n+  else\n+  {\n+    RCLCPP_WARN(\n+      get_logger(),\n+      \"Unable to initialize introspection registry '%s'; skipping introspection publisher thread.\",\n+      hardware_interface::DEFAULT_REGISTRY_KEY);\n+  }\n+\n+  auto cm_stats_registry_from_create = pal_statistics::getOrCreateRegistry(\n     this, hardware_interface::CM_STATISTICS_TOPIC, hardware_interface::CM_STATISTICS_KEY);\n-  START_ROS2_CONTROL_INTROSPECTION_PUBLISHER_THREAD(hardware_interface::CM_STATISTICS_KEY);\n+  if (cm_stats_registry_from_create)\n+  {\n+    cm_stats_registry_from_create->startPublishThread();\n+  }\n+  else\n+  {\n+    RCLCPP_WARN(\n+      get_logger(),\n+      \"Unable to initialize introspection registry '%s'; skipping introspection publisher thread.\",\n+      hardware_interface::CM_STATISTICS_KEY);\n+  }\n \n   // Add on_shutdown callback to stop the controller manager\n   rclcpp::Context::SharedPtr context = this->get_node_base_interface()->get_context();\n\n```",
+      "bodyHTML": "<p dir=\"auto\">This is fixed with <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4943968261\" data-permission-text=\"Title is private\" data-url=\"https://github.com/pal-robotics/pal_statistics/issues/26\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/pal-robotics/pal_statistics/pull/26/hovercard\" href=\"https://github.com/pal-robotics/pal_statistics/pull/26\">pal-robotics/pal_statistics#26</a><br>\n<a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/saikishor/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/saikishor\">@saikishor</a> can you have a look please?</p>\n<p dir=\"auto\">A local alternative would be</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"\ndiff --git a/controller_manager/src/controller_manager.cpp b/controller_manager/src/controller_manager.cpp\nindex 33e02d93..2b5a7801 100644\n--- a/controller_manager/src/controller_manager.cpp\n+++ b/controller_manager/src/controller_manager.cpp\n@@ -690,13 +690,34 @@ void ControllerManager::init_controller_manager()\n     &quot;Controller Manager Activity&quot;, this,\n     &amp;ControllerManager::controller_manager_diagnostic_callback);\n \n-  INITIALIZE_ROS2_CONTROL_INTROSPECTION_REGISTRY(\n+  auto default_registry_from_create = pal_statistics::getOrCreateRegistry(\n     this, hardware_interface::DEFAULT_INTROSPECTION_TOPIC,\n     hardware_interface::DEFAULT_REGISTRY_KEY);\n-  START_ROS2_CONTROL_INTROSPECTION_PUBLISHER_THREAD(hardware_interface::DEFAULT_REGISTRY_KEY);\n-  INITIALIZE_ROS2_CONTROL_INTROSPECTION_REGISTRY(\n+  if (default_registry_from_create)\n+  {\n+    default_registry_from_create-&gt;startPublishThread();\n+  }\n+  else\n+  {\n+    RCLCPP_WARN(\n+      get_logger(),\n+      &quot;Unable to initialize introspection registry '%s'; skipping introspection publisher thread.&quot;,\n+      hardware_interface::DEFAULT_REGISTRY_KEY);\n+  }\n+\n+  auto cm_stats_registry_from_create = pal_statistics::getOrCreateRegistry(\n     this, hardware_interface::CM_STATISTICS_TOPIC, hardware_interface::CM_STATISTICS_KEY);\n-  START_ROS2_CONTROL_INTROSPECTION_PUBLISHER_THREAD(hardware_interface::CM_STATISTICS_KEY);\n+  if (cm_stats_registry_from_create)\n+  {\n+    cm_stats_registry_from_create-&gt;startPublishThread();\n+  }\n+  else\n+  {\n+    RCLCPP_WARN(\n+      get_logger(),\n+      &quot;Unable to initialize introspection registry '%s'; skipping introspection publisher thread.&quot;,\n+      hardware_interface::CM_STATISTICS_KEY);\n+  }\n \n   // Add on_shutdown callback to stop the controller manager\n   rclcpp::Context::SharedPtr context = this-&gt;get_node_base_interface()-&gt;get_context();\n\"><pre class=\"notranslate\"><code class=\"notranslate\">\ndiff --git a/controller_manager/src/controller_manager.cpp b/controller_manager/src/controller_manager.cpp\nindex 33e02d93..2b5a7801 100644\n--- a/controller_manager/src/controller_manager.cpp\n+++ b/controller_manager/src/controller_manager.cpp\n@@ -690,13 +690,34 @@ void ControllerManager::init_controller_manager()\n     \"Controller Manager Activity\", this,\n     &amp;ControllerManager::controller_manager_diagnostic_callback);\n \n-  INITIALIZE_ROS2_CONTROL_INTROSPECTION_REGISTRY(\n+  auto default_registry_from_create = pal_statistics::getOrCreateRegistry(\n     this, hardware_interface::DEFAULT_INTROSPECTION_TOPIC,\n     hardware_interface::DEFAULT_REGISTRY_KEY);\n-  START_ROS2_CONTROL_INTROSPECTION_PUBLISHER_THREAD(hardware_interface::DEFAULT_REGISTRY_KEY);\n-  INITIALIZE_ROS2_CONTROL_INTROSPECTION_REGISTRY(\n+  if (default_registry_from_create)\n+  {\n+    default_registry_from_create-&gt;startPublishThread();\n+  }\n+  else\n+  {\n+    RCLCPP_WARN(\n+      get_logger(),\n+      \"Unable to initialize introspection registry '%s'; skipping introspection publisher thread.\",\n+      hardware_interface::DEFAULT_REGISTRY_KEY);\n+  }\n+\n+  auto cm_stats_registry_from_create = pal_statistics::getOrCreateRegistry(\n     this, hardware_interface::CM_STATISTICS_TOPIC, hardware_interface::CM_STATISTICS_KEY);\n-  START_ROS2_CONTROL_INTROSPECTION_PUBLISHER_THREAD(hardware_interface::CM_STATISTICS_KEY);\n+  if (cm_stats_registry_from_create)\n+  {\n+    cm_stats_registry_from_create-&gt;startPublishThread();\n+  }\n+  else\n+  {\n+    RCLCPP_WARN(\n+      get_logger(),\n+      \"Unable to initialize introspection registry '%s'; skipping introspection publisher thread.\",\n+      hardware_interface::CM_STATISTICS_KEY);\n+  }\n \n   // Add on_shutdown callback to stop the controller manager\n   rclcpp::Context::SharedPtr context = this-&gt;get_node_base_interface()-&gt;get_context();\n\n</code></pre></div>",
+      "bodyVersion": "ff1e8d29f656d15c1ae7b5bb161ea03de8f369fe829895c97e1458f25bf696a1",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABLhmkBw",
+      "databaseId": 5068399623,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjU0OTc4MzI=",
+        "login": "Tobias-Fischer",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/5497832?u=46ec135677e89e1f52f45a567cd4963a62c07a35&v=4",
+        "profileUrl": "https://github.com/Tobias-Fischer",
+        "name": "Tobias Fischer"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5068399623",
+      "createdAt": "2026-07-24T09:40:46Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@christophfroehlich @sea-bass happy to accept pull request adding the required patch in RoboStack",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/christophfroehlich/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/christophfroehlich\">@christophfroehlich</a> <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/sea-bass/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/sea-bass\">@sea-bass</a> happy to accept pull request adding the required patch in RoboStack</p>",
+      "bodyVersion": "87c78bb0984fc2294597b1476a68972fefd1ccb1bf27981a856ffda830970509",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABLicjwQ",
+      "databaseId": 5069284289,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjQ2MDMzOTg=",
+        "login": "sea-bass",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/4603398?u=60a37a0042d778c4150e79070be976ff5d8ac45f&v=4",
+        "profileUrl": "https://github.com/sea-bass",
+        "name": "Sebastian Castro"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5069284289",
+      "createdAt": "2026-07-24T11:20:44Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Whoa, thanks everyone for the lightning fast investigation!\n\n@christophfroehlich how were you able to tell where this crash occurred? Did you end up having to source build? I guess this would explain all the small related PRs linked to this issue.",
+      "bodyHTML": "<p dir=\"auto\">Whoa, thanks everyone for the lightning fast investigation!</p>\n<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/christophfroehlich/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/christophfroehlich\">@christophfroehlich</a> how were you able to tell where this crash occurred? Did you end up having to source build? I guess this would explain all the small related PRs linked to this issue.</p>",
+      "bodyVersion": "b73b1868d4ddfb63fcfe5baf77ec673b5eb80847aa3b65d61b22ac2c2beb8151",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABLidarQ",
+      "databaseId": 5069298349,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5069298349",
+      "createdAt": "2026-07-24T11:22:45Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Exactly, I compiled it from source in a pixi env and let GPT find the root cause. this resulted in the exactly same patch as @Tobias-Fischer submitted to pal_statistics, it seems that we've used the same model ;)",
+      "bodyHTML": "<p dir=\"auto\">Exactly, I compiled it from source in a pixi env and let GPT find the root cause. this resulted in the exactly same patch as <a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/Tobias-Fischer/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/Tobias-Fischer\">@Tobias-Fischer</a> submitted to pal_statistics, it seems that we've used the same model ;)</p>",
+      "bodyVersion": "cb4d33408966319ac0caac8cd112b21ca82c303df5fba06c6ec40e4489d2e654",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 3,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjQ2MDMzOTg=",
+                "login": "sea-bass",
+                "name": "Sebastian Castro",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/4603398?s=64&u=60a37a0042d778c4150e79070be976ff5d8ac45f&v=4"
+              },
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjEwMDgyNDI4",
+                "login": "saikishor",
+                "name": "Sai Kishor Kothakota",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?s=64&u=a8449baf27fec21608c3919a53021b418098ddfe&v=4"
+              },
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjU0OTc4MzI=",
+                "login": "Tobias-Fischer",
+                "name": "Tobias Fischer",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/5497832?s=64&u=46ec135677e89e1f52f45a567cd4963a62c07a35&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "MDQ6VXNlcjg4NTA1NA==",
+                "login": "wolfv",
+                "name": "Wolf Vollprecht",
+                "avatarUrl": "https://avatars.githubusercontent.com/u/885054?s=64&u=833ad7754e88429d7e610f9324ca6bc18d8e1bf0&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABLl_plQ",
+      "databaseId": 5073004949,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0MzM0MzQ2",
+        "login": "gftabor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14334346?u=2f5b099aeeff27182f290678350caa1cec29106d&v=4",
+        "profileUrl": "https://github.com/gftabor",
+        "name": "Griffin Tabor"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5073004949",
+      "createdAt": "2026-07-24T18:09:07Z",
+      "authorAssociation": "NONE",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Ya I probably should have up streamed some of my debugging from before. \n\nhttps://github.com/RoboStack/ros-jazzy/issues/141#issuecomment-4425174310\n\n\nThe only place I assumed people were using controller manager was in gazebo so the debugging was in that context. ",
+      "bodyHTML": "<p dir=\"auto\">Ya I probably should have up streamed some of my debugging from before.</p>\n<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3744617190\" data-permission-text=\"Title is private\" data-url=\"https://github.com/RoboStack/ros-jazzy/issues/141\" data-hovercard-type=\"issue\" data-hovercard-url=\"/RoboStack/ros-jazzy/issues/141/hovercard?comment_id=4425174310&amp;comment_type=issue_comment\" href=\"https://github.com/RoboStack/ros-jazzy/issues/141#issuecomment-4425174310\">RoboStack/ros-jazzy#141 (comment)</a></p>\n<p dir=\"auto\">The only place I assumed people were using controller manager was in gazebo so the debugging was in that context.</p>",
+      "bodyVersion": "115cfe2c3c43e6bd289f929c7e60ffd23441c2c830691c9b843c9f501a233227",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABNsi4kQ",
+      "databaseId": 5214091409,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5214091409",
+      "createdAt": "2026-08-07T07:49:34Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "The patch of pal_statistics is merged and bloom is also triggered :)",
+      "bodyHTML": "<p dir=\"auto\">The patch of pal_statistics is merged and bloom is also triggered :)</p>",
+      "bodyVersion": "f4048e44627ec50c2072f38bb86df962b37096f87b9d8bbac2f511c5cf35e25c",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABOSvp7w",
+      "databaseId": 5254146543,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABJ-y2pg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjQ2MDMzOTg=",
+          "login": "sea-bass"
+        },
+        "number": 3495,
+        "locked": false,
+        "databaseId": 4964791974
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3495#issuecomment-5254146543",
+      "createdAt": "2026-08-11T13:57:05Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Thanks to all ",
+      "bodyHTML": "<p dir=\"auto\">Thanks to all</p>",
+      "bodyVersion": "84d0d6c7f65adf858faa1a782a46f552f75e34b18b99435d5affc3c760cf6dde",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc8AAAABJ-y2ps8AAAAG0XNjyA",
+      "databaseId": 29283804104,
+      "createdAt": "2026-08-11T13:57:06Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABn5IWGrABqzI4NDE1MzQ1OTQ3",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABn_Ec01ABqzI5MjgzODA0MTA0"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABn5IWGrABqzI4NDE1MzQ1OTQ3",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABn_Ec01ABqzI5MjgzODA0MTA0"
+    }
+  },
+  "linked_pull_requests": [],
+  "comments_complete": true,
+  "linked_pr_fetches": []
+}

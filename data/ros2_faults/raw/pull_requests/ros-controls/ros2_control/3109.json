@@ -1,0 +1,27 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3109",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3109",
+    "fetched_at": "2026-10-11T11:24:16.905543+00:00",
+    "http_status": 200,
+    "response_sha256": "73fbfb577fe06bccbd3f22cc90a28ffaac56cb01c07da06f0a7b1c518a0a878f"
+  },
+  "url": "https://github.com/ros-controls/ros2_control/pull/3109",
+  "title": "Fix the conditioning in extract_command_interfaces_for_controller method by saikishor · Pull Request #3109 · ros-controls/ros2_control · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Hopefully, should fix: #3102",
+  "discussion_rendered_text": [
+    "Codecov Report\n\n\n❌ Patch coverage is 0% with 1 line in your changes missing coverage. Please review.\n\n✅ Project coverage is 89.26%. Comparing base (2794132) to head (c884c3e).\n\n⚠️ Report is 8 commits behind head on master.\n\n\n\n\n\nFiles with missing lines\nPatch %\nLines\n\n\n\n\n\ncontroller_manager/src/controller_manager.cpp\n0.00%\n1 Missing ⚠️ \n\n\n\nAdditional details and impacted files\n\n\n```\n@@            Coverage Diff             @@\n##           master    #3109      +/-   ##\n==========================================\n- Coverage   89.27%   89.26%   -0.01%     \n==========================================\n  Files         158      158              \n  Lines       19299    19300       +1     \n  Branches     1560     1560              \n==========================================\n  Hits        17229    17229              \n- Misses       1425     1426       +1     \n  Partials      645      645              \n```\n\n\n\n\n\n\nFlag\nCoverage Δ\n\n\n\n\n\n\nunittests\n89.26% <0.00%> (-0.01%)\n⬇️\n\n\n\n\nFlags with carried forward coverage won't be shown. Click here to find out more.\n\n\n\n\n\nFiles with missing lines\nCoverage Δ\n\n\n\n\n\n\ncontroller_manager/src/controller_manager.cpp\n77.00% <0.00%> (-0.04%)\n⬇️\n\n\n\n\n 🚀 New features to boost your workflow: \n\n\n❄️ Test Analytics: Detect flaky tests, report on failures, and find test suite problems.",
+    "Thanks, let's give it a try :)"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros-controls/ros2_control/commit/254868487bd5b72ae1db64e19cb0e0454c62abb2",
+    "https://github.com/ros-controls/ros2_control/commit/2a90bf34ca1b008a2f33ef862a7068cdd6d6508d",
+    "https://github.com/ros-controls/ros2_control/commit/4958824ffcbbd224529180775d73d3764eaa5580",
+    "https://github.com/ros-controls/ros2_control/commit/531d4cab7ca2ac808d8894602fde2bd837c02814",
+    "https://github.com/ros-controls/ros2_control/commit/b495ef5844f085c5c386f2447a99c1a10d725bf9",
+    "https://github.com/ros-controls/ros2_control/pull/3109/commits/c884c3ee5ab6af50969f6fe0d7ce1ee0dccb436e"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

@@ -1,0 +1,30 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3174",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3174",
+    "fetched_at": "2026-10-11T11:20:24.107074+00:00",
+    "http_status": 200,
+    "response_sha256": "6200c58fa165f24542171d063df77c132a45fe548c3fedc2133bfd441b4f0ff5"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/3174",
+  "title": "honor cancel() issued before spin_until_future_complete(). by fujitatomoya · Pull Request #3174 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\n\n\nFixes #3172\n\n\nIs this user-facing behavior change?\n\n\nYes, but it only gets better.\n\n\n\nDid you use Generative AI?\n\n\nYes, Claude Opus 4.7 partially, especially on test cases.\n\n\n\nAdditional Information",
+  "discussion_rendered_text": [
+    "We should also change the while loops in the spins, to only react to the cancel_request",
+    "Tick the box to add this pull request to the merge queue (same as @mergifyio queue).\n\n\n\n Queue this pull request",
+    "Pulls: #3174\n\nGist: https://gist.githubusercontent.com/fujitatomoya/79334a33eb96c2e64a80d0306580fd84/raw/7b1ea8fa05c6792486d1040216ccb08a40c3454f/ros2.repos\n\nBUILD args:  --packages-above-and-dependencies rclcpp\n\nTEST args:  --packages-above rclcpp\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/20014\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "@jmachowinski thanks for your approval, i thought that you are on vacation 🍸 🏖️",
+    "I am, reading code reviews between swimming in the lake 😃",
+    "Great fix! Any chance this will be backported (lyrical)?",
+    "I think this changed class layout and may not be ABI compatible. We could perhaps come up with a variant that does not modify class layout, but it might require a bit more effort"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/pixel-robotics/rclcpp/commit/549a41b409f5749ec2fe9cf13f77d2fea38fcbbc",
+    "https://github.com/ros2/rclcpp/commit/a67972f3efeb8e185e302498a57d10371a82c9fd",
+    "https://github.com/ros2/rclcpp/pull/3174/commits/38e54625d4c022542a093a739d4a96f4f88129f3",
+    "https://github.com/ros2/rclcpp/pull/3174/commits/45ed36eabf207bb2d594b5974dba0589858e6683"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

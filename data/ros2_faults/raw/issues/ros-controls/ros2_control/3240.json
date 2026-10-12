@@ -1,0 +1,437 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3240",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3240",
+    "fetched_at": "2026-10-11T11:24:44.525745+00:00",
+    "http_status": 200,
+    "response_sha256": "d29a835fc0ff72f7fd5ca218567a0844c668fa4f0fb805402b7a15b6ec25ba61"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc8AAAABAF7-Iw",
+    "databaseId": 4301192739,
+    "number": 3240,
+    "title": "lexical_casts: Behavior change with charconv",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3240",
+    "body": "**Describe the bug**\nSomething changed upstream which made https://github.com/ros-controls/ros2_control/pull/3234 necessary. Now the tests fail on rolling/source. What changed?\n\n```\n2026-04-21T06:41:03.5449084Z     [  FAILED  ] TestLexicalCasts.test_stod\n2026-04-21T06:41:03.5449456Z     [  FAILED  ] TestLexicalCasts.test_stof\n2026-04-21T06:41:03.5449778Z     [  FAILED  ] TestLexicalCasts.test_parse_int_array\n2026-04-21T06:41:03.5450029Z     \n2026-04-21T06:41:03.5450182Z      3 FAILED TESTS\n2026-04-21T06:41:03.5450392Z     -- run_test.py: return code 1\n2026-04-21T06:41:03.5451219Z     -- run_test.py: inject classname prefix into gtest result file '/__w/ros2_control/ros2_control/ros_ws/build/hardware_interface/test_results/hardware_interface/test_lexical_casts.gtest.xml'\n2026-04-21T06:41:03.5452685Z     -- run_test.py: verify result file '/__w/ros2_control/ros2_control/ros_ws/build/hardware_interface/test_results/hardware_interface/test_lexical_casts.gtest.xml'\n2026-04-21T06:41:03.5453456Z   >>>\n2026-04-21T06:41:03.5454063Z build/hardware_interface/test_results/hardware_interface/test_joint_handle.gtest.xml: 30 tests, 0 errors, 2 failures, 0 skipped\n2026-04-21T06:41:03.5455276Z - hardware_interface.TestHandle handle_constructor_double_data_type (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_handle.cpp:278)\n2026-04-21T06:41:03.5455990Z   <<< failure message\n2026-04-21T06:41:03.5456467Z     /__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_handle.cpp:299\n2026-04-21T06:41:03.5457216Z     Expected: { StateInterface bad_itf(\"joint1\", POSITION_INTERFACE, \"double\", \"233NaN0\"); } throws an exception.\n2026-04-21T06:41:03.5457686Z       Actual: it doesn't.\n2026-04-21T06:41:03.5457915Z     Invalid double value should throw\n2026-04-21T06:41:03.5458143Z   >>>\n2026-04-21T06:41:03.5459005Z - hardware_interface.TestHandle handle_constructor_float_data_type (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_handle.cpp:303)\n2026-04-21T06:41:03.5459724Z   <<< failure message\n2026-04-21T06:41:03.5460184Z     /__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_handle.cpp:326\n2026-04-21T06:41:03.5460918Z     Expected: { StateInterface bad_itf(\"joint1\", POSITION_INTERFACE, \"double\", \"233NaN0\"); } throws an exception.\n2026-04-21T06:41:03.5461380Z       Actual: it doesn't.\n2026-04-21T06:41:03.5461619Z     Invalid double value should throw\n2026-04-21T06:41:03.5461837Z   >>>\n2026-04-21T06:41:03.5462559Z build/hardware_interface/test_results/hardware_interface/test_lexical_casts.gtest.xml: 13 tests, 0 errors, 3 failures, 0 skipped\n2026-04-21T06:41:03.5463690Z - hardware_interface.TestLexicalCasts test_stod (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:21)\n2026-04-21T06:41:03.5464350Z   <<< failure message\n2026-04-21T06:41:03.5464849Z     /__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:27\n2026-04-21T06:41:03.5465566Z     Expected: stod(\"1.2.3\") throws an exception of type std::invalid_argument.\n2026-04-21T06:41:03.5465932Z       Actual: it throws nothing.\n2026-04-21T06:41:03.5466141Z   >>>\n2026-04-21T06:41:03.5466883Z - hardware_interface.TestLexicalCasts test_stof (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:34)\n2026-04-21T06:41:03.5467534Z   <<< failure message\n2026-04-21T06:41:03.5468023Z     /__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:40\n2026-04-21T06:41:03.5468653Z     Expected: stof(\"1.2.3\") throws an exception of type std::invalid_argument.\n2026-04-21T06:41:03.5469015Z       Actual: it throws nothing.\n2026-04-21T06:41:03.5469221Z   >>>\n2026-04-21T06:41:03.5470015Z - hardware_interface.TestLexicalCasts test_parse_int_array (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:243)\n2026-04-21T06:41:03.5470716Z   <<< failure message\n2026-04-21T06:41:03.5470896Z     unknown file\n2026-04-21T06:41:03.5471387Z     C++ exception with description \"Failed converting string to floating point or integer: +123\" thrown in the test body.\n2026-04-21T06:41:03.5471943Z   >>>\n```\n\n**To Reproduce**\nhttps://github.com/ros-controls/ros2_control/issues/3239\n",
+    "bodyHTML": "<p dir=\"auto\"><strong>Describe the bug</strong><br>\nSomething changed upstream which made <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4293890224\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3234\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-controls/ros2_control/pull/3234/hovercard\" href=\"https://github.com/ros-controls/ros2_control/pull/3234\">#3234</a> necessary. Now the tests fail on rolling/source. What changed?</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"2026-04-21T06:41:03.5449084Z     [  FAILED  ] TestLexicalCasts.test_stod\n2026-04-21T06:41:03.5449456Z     [  FAILED  ] TestLexicalCasts.test_stof\n2026-04-21T06:41:03.5449778Z     [  FAILED  ] TestLexicalCasts.test_parse_int_array\n2026-04-21T06:41:03.5450029Z     \n2026-04-21T06:41:03.5450182Z      3 FAILED TESTS\n2026-04-21T06:41:03.5450392Z     -- run_test.py: return code 1\n2026-04-21T06:41:03.5451219Z     -- run_test.py: inject classname prefix into gtest result file '/__w/ros2_control/ros2_control/ros_ws/build/hardware_interface/test_results/hardware_interface/test_lexical_casts.gtest.xml'\n2026-04-21T06:41:03.5452685Z     -- run_test.py: verify result file '/__w/ros2_control/ros2_control/ros_ws/build/hardware_interface/test_results/hardware_interface/test_lexical_casts.gtest.xml'\n2026-04-21T06:41:03.5453456Z   &gt;&gt;&gt;\n2026-04-21T06:41:03.5454063Z build/hardware_interface/test_results/hardware_interface/test_joint_handle.gtest.xml: 30 tests, 0 errors, 2 failures, 0 skipped\n2026-04-21T06:41:03.5455276Z - hardware_interface.TestHandle handle_constructor_double_data_type (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_handle.cpp:278)\n2026-04-21T06:41:03.5455990Z   &lt;&lt;&lt; failure message\n2026-04-21T06:41:03.5456467Z     /__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_handle.cpp:299\n2026-04-21T06:41:03.5457216Z     Expected: { StateInterface bad_itf(&quot;joint1&quot;, POSITION_INTERFACE, &quot;double&quot;, &quot;233NaN0&quot;); } throws an exception.\n2026-04-21T06:41:03.5457686Z       Actual: it doesn't.\n2026-04-21T06:41:03.5457915Z     Invalid double value should throw\n2026-04-21T06:41:03.5458143Z   &gt;&gt;&gt;\n2026-04-21T06:41:03.5459005Z - hardware_interface.TestHandle handle_constructor_float_data_type (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_handle.cpp:303)\n2026-04-21T06:41:03.5459724Z   &lt;&lt;&lt; failure message\n2026-04-21T06:41:03.5460184Z     /__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_handle.cpp:326\n2026-04-21T06:41:03.5460918Z     Expected: { StateInterface bad_itf(&quot;joint1&quot;, POSITION_INTERFACE, &quot;double&quot;, &quot;233NaN0&quot;); } throws an exception.\n2026-04-21T06:41:03.5461380Z       Actual: it doesn't.\n2026-04-21T06:41:03.5461619Z     Invalid double value should throw\n2026-04-21T06:41:03.5461837Z   &gt;&gt;&gt;\n2026-04-21T06:41:03.5462559Z build/hardware_interface/test_results/hardware_interface/test_lexical_casts.gtest.xml: 13 tests, 0 errors, 3 failures, 0 skipped\n2026-04-21T06:41:03.5463690Z - hardware_interface.TestLexicalCasts test_stod (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:21)\n2026-04-21T06:41:03.5464350Z   &lt;&lt;&lt; failure message\n2026-04-21T06:41:03.5464849Z     /__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:27\n2026-04-21T06:41:03.5465566Z     Expected: stod(&quot;1.2.3&quot;) throws an exception of type std::invalid_argument.\n2026-04-21T06:41:03.5465932Z       Actual: it throws nothing.\n2026-04-21T06:41:03.5466141Z   &gt;&gt;&gt;\n2026-04-21T06:41:03.5466883Z - hardware_interface.TestLexicalCasts test_stof (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:34)\n2026-04-21T06:41:03.5467534Z   &lt;&lt;&lt; failure message\n2026-04-21T06:41:03.5468023Z     /__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:40\n2026-04-21T06:41:03.5468653Z     Expected: stof(&quot;1.2.3&quot;) throws an exception of type std::invalid_argument.\n2026-04-21T06:41:03.5469015Z       Actual: it throws nothing.\n2026-04-21T06:41:03.5469221Z   &gt;&gt;&gt;\n2026-04-21T06:41:03.5470015Z - hardware_interface.TestLexicalCasts test_parse_int_array (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:243)\n2026-04-21T06:41:03.5470716Z   &lt;&lt;&lt; failure message\n2026-04-21T06:41:03.5470896Z     unknown file\n2026-04-21T06:41:03.5471387Z     C++ exception with description &quot;Failed converting string to floating point or integer: +123&quot; thrown in the test body.\n2026-04-21T06:41:03.5471943Z   &gt;&gt;&gt;\"><pre class=\"notranslate\"><code class=\"notranslate\">2026-04-21T06:41:03.5449084Z     [  FAILED  ] TestLexicalCasts.test_stod\n2026-04-21T06:41:03.5449456Z     [  FAILED  ] TestLexicalCasts.test_stof\n2026-04-21T06:41:03.5449778Z     [  FAILED  ] TestLexicalCasts.test_parse_int_array\n2026-04-21T06:41:03.5450029Z     \n2026-04-21T06:41:03.5450182Z      3 FAILED TESTS\n2026-04-21T06:41:03.5450392Z     -- run_test.py: return code 1\n2026-04-21T06:41:03.5451219Z     -- run_test.py: inject classname prefix into gtest result file '/__w/ros2_control/ros2_control/ros_ws/build/hardware_interface/test_results/hardware_interface/test_lexical_casts.gtest.xml'\n2026-04-21T06:41:03.5452685Z     -- run_test.py: verify result file '/__w/ros2_control/ros2_control/ros_ws/build/hardware_interface/test_results/hardware_interface/test_lexical_casts.gtest.xml'\n2026-04-21T06:41:03.5453456Z   &gt;&gt;&gt;\n2026-04-21T06:41:03.5454063Z build/hardware_interface/test_results/hardware_interface/test_joint_handle.gtest.xml: 30 tests, 0 errors, 2 failures, 0 skipped\n2026-04-21T06:41:03.5455276Z - hardware_interface.TestHandle handle_constructor_double_data_type (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_handle.cpp:278)\n2026-04-21T06:41:03.5455990Z   &lt;&lt;&lt; failure message\n2026-04-21T06:41:03.5456467Z     /__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_handle.cpp:299\n2026-04-21T06:41:03.5457216Z     Expected: { StateInterface bad_itf(\"joint1\", POSITION_INTERFACE, \"double\", \"233NaN0\"); } throws an exception.\n2026-04-21T06:41:03.5457686Z       Actual: it doesn't.\n2026-04-21T06:41:03.5457915Z     Invalid double value should throw\n2026-04-21T06:41:03.5458143Z   &gt;&gt;&gt;\n2026-04-21T06:41:03.5459005Z - hardware_interface.TestHandle handle_constructor_float_data_type (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_handle.cpp:303)\n2026-04-21T06:41:03.5459724Z   &lt;&lt;&lt; failure message\n2026-04-21T06:41:03.5460184Z     /__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_handle.cpp:326\n2026-04-21T06:41:03.5460918Z     Expected: { StateInterface bad_itf(\"joint1\", POSITION_INTERFACE, \"double\", \"233NaN0\"); } throws an exception.\n2026-04-21T06:41:03.5461380Z       Actual: it doesn't.\n2026-04-21T06:41:03.5461619Z     Invalid double value should throw\n2026-04-21T06:41:03.5461837Z   &gt;&gt;&gt;\n2026-04-21T06:41:03.5462559Z build/hardware_interface/test_results/hardware_interface/test_lexical_casts.gtest.xml: 13 tests, 0 errors, 3 failures, 0 skipped\n2026-04-21T06:41:03.5463690Z - hardware_interface.TestLexicalCasts test_stod (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:21)\n2026-04-21T06:41:03.5464350Z   &lt;&lt;&lt; failure message\n2026-04-21T06:41:03.5464849Z     /__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:27\n2026-04-21T06:41:03.5465566Z     Expected: stod(\"1.2.3\") throws an exception of type std::invalid_argument.\n2026-04-21T06:41:03.5465932Z       Actual: it throws nothing.\n2026-04-21T06:41:03.5466141Z   &gt;&gt;&gt;\n2026-04-21T06:41:03.5466883Z - hardware_interface.TestLexicalCasts test_stof (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:34)\n2026-04-21T06:41:03.5467534Z   &lt;&lt;&lt; failure message\n2026-04-21T06:41:03.5468023Z     /__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:40\n2026-04-21T06:41:03.5468653Z     Expected: stof(\"1.2.3\") throws an exception of type std::invalid_argument.\n2026-04-21T06:41:03.5469015Z       Actual: it throws nothing.\n2026-04-21T06:41:03.5469221Z   &gt;&gt;&gt;\n2026-04-21T06:41:03.5470015Z - hardware_interface.TestLexicalCasts test_parse_int_array (/__w/ros2_control/ros2_control/ros_ws/src/deum928a1k/ros2_control/hardware_interface/test/test_lexical_casts.cpp:243)\n2026-04-21T06:41:03.5470716Z   &lt;&lt;&lt; failure message\n2026-04-21T06:41:03.5470896Z     unknown file\n2026-04-21T06:41:03.5471387Z     C++ exception with description \"Failed converting string to floating point or integer: +123\" thrown in the test body.\n2026-04-21T06:41:03.5471943Z   &gt;&gt;&gt;\n</code></pre></div>\n<p dir=\"auto\"><strong>To Reproduce</strong><br>\n<a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4300790339\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3239\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3239/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3239\">#3239</a></p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-04-21T08:05:26Z",
+    "updatedAt": "2026-04-23T11:30:19Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+      "login": "christophfroehlich",
+      "id": "MDQ6VXNlcjMzNjcyNDQ=",
+      "profileUrl": "https://github.com/christophfroehlich",
+      "name": "Christoph Fröhlich",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 1,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7__8oM",
+      "databaseId": 4294953484,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABAF7-Iw",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3240,
+        "locked": false,
+        "databaseId": 4301192739
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3240#issuecomment-4294953484",
+      "createdAt": "2026-04-22T09:07:21Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "https://github.com/ros-controls/ros2_control/issues/3242",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4307200519\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3242\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3242/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3242\">#3242</a></p>",
+      "bodyVersion": "036728cbaf135988207dc854c9d9153c852c6f66e053380d134aed2639d05019",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc8AAAABAF7-I88AAAAFwMZFJA",
+      "databaseId": 24709055780,
+      "createdAt": "2026-04-21T08:05:28Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc7__8oM",
+      "databaseId": 4294953484,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABAF7-Iw",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3240,
+        "locked": false,
+        "databaseId": 4301192739
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3240#issuecomment-4294953484",
+      "createdAt": "2026-04-22T09:07:21Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "https://github.com/ros-controls/ros2_control/issues/3242",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4307200519\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3242\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3242/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3242\">#3242</a></p>",
+      "bodyVersion": "036728cbaf135988207dc854c9d9153c852c6f66e053380d134aed2639d05019",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc8AAAABAF7-I88AAAAFxdE4WQ",
+      "databaseId": 24793659481,
+      "createdAt": "2026-04-23T11:30:19Z",
+      "actor": {
+        "id": "MDQ6VXNlcjM1MjQ1Nzc=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3524577?s=64&u=8f938d2dcacdcbb54f3977d6356cef945a6eb6ed&v=4",
+        "login": "bmagyar",
+        "profileResourcePath": "/bmagyar",
+        "__typename": "User",
+        "name": "Bence Magyar"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOBiM5Uc7U42ol",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-controls/ros2_control/pull/3244",
+        "number": 3244,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+          "name": "ros2_control",
+          "owner": {
+            "__typename": "Organization",
+            "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+            "login": "ros-controls"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABna8SpUABqzI0NzA5MDU1Nzgw",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnboa6PgBqzI0NzkzNjU5NDgx"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABna8SpUABqzI0NzA5MDU1Nzgw",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnboa6PgBqzI0NzkzNjU5NDgx"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOBiM5Uc7U42ol",
+      "url": "https://github.com/ros-controls/ros2_control/pull/3244",
+      "number": 3244,
+      "title": "Fix C++20 behavior changes of `std::from_chars`",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-04-23T07:23:58Z",
+      "databaseId": 3571673637,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-controls/ros2_control/pull/3244",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-controls/ros2_control/3244.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-controls/ros2_control/3244.changes.json"
+    }
+  ]
+}

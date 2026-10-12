@@ -1,0 +1,24 @@
+{
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/pull/3234/files",
+    "final_url": "https://github.com/ros-controls/ros2_control/pull/3234/files",
+    "fetched_at": "2026-10-11T11:24:49.009527+00:00",
+    "http_status": 200,
+    "response_sha256": "4ffa7d5fd8136fbe45bc2101f4e3687031981596dea9bf4015e00b81caa9621a"
+  },
+  "files": {
+    "hardware_interface/src/lexical_casts.cpp": [
+      "@@ -14,6 +14,7 @@",
+      " ",
+      " #include <algorithm>",
+      " #include <cctype>",
+      "+#include <charconv>",
+      " #include <cmath>",
+      " #include <cstdint>",
+      " #include <locale>"
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

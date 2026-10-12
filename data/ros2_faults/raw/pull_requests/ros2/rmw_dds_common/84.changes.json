@@ -1,0 +1,61 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rmw_dds_common/pull/84/files",
+    "final_url": "https://github.com/ros2/rmw_dds_common/pull/84/files",
+    "fetched_at": "2026-10-11T11:23:29.889225+00:00",
+    "http_status": 200,
+    "response_sha256": "e0d7bb32b24dc28c64613fe6e29d87c241195e2149cdc9dd9a9584f2c2a988e9"
+  },
+  "files": {
+    "rmw_dds_common/src/qos.cpp": [
+      "@@ -441,23 +441,26 @@ qos_profile_get_best_available_for_subscription(",
+      "   }",
+      " ",
+      "   if (RMW_QOS_POLICY_RELIABILITY_BEST_AVAILABLE == subscription_profile->reliability) {",
+      "-    if (number_of_reliable == publishers_info->size) {",
+      "+    // avoid incorrectly selecting RELIABLE when no publishers are discovered",
+      "+    if (publishers_info->size > 0 && number_of_reliable == publishers_info->size) {",
+      "       subscription_profile->reliability = RMW_QOS_POLICY_RELIABILITY_RELIABLE;",
+      "     } else {",
+      "       subscription_profile->reliability = RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT;",
+      "     }",
+      "   }",
+      " ",
+      "   if (RMW_QOS_POLICY_DURABILITY_BEST_AVAILABLE == subscription_profile->durability) {",
+      "-    if (number_of_transient_local == publishers_info->size) {",
+      "+    // avoid incorrectly selecting TRANSIENT_LOCAL when no publishers are discovered",
+      "+    if (publishers_info->size > 0 && number_of_transient_local == publishers_info->size) {",
+      "       subscription_profile->durability = RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL;",
+      "     } else {",
+      "       subscription_profile->durability = RMW_QOS_POLICY_DURABILITY_VOLATILE;",
+      "     }",
+      "   }",
+      " ",
+      "   if (RMW_QOS_POLICY_LIVELINESS_BEST_AVAILABLE == subscription_profile->liveliness) {",
+      "-    if (number_of_manual_by_topic == publishers_info->size) {",
+      "+    // avoid incorrectly selecting MANUAL_BY_TOPIC when no publishers are discovered",
+      "+    if (publishers_info->size > 0 && number_of_manual_by_topic == publishers_info->size) {",
+      "       subscription_profile->liveliness = RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC;",
+      "     } else {",
+      "       subscription_profile->liveliness = RMW_QOS_POLICY_LIVELINESS_AUTOMATIC;"
+    ],
+    "rmw_dds_common/test/test_qos.cpp": [
+      "@@ -775,9 +775,9 @@ TEST(test_qos, test_qos_profile_get_best_available_for_subscription)",
+      "     rmw_ret_t ret = rmw_dds_common::qos_profile_get_best_available_for_subscription(",
+      "       &zeroed_publishers_info, &subscription_profile);",
+      "     EXPECT_EQ(ret, RMW_RET_OK);",
+      "-    EXPECT_EQ(subscription_profile.reliability, RMW_QOS_POLICY_RELIABILITY_RELIABLE);",
+      "-    EXPECT_EQ(subscription_profile.durability, RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL);",
+      "-    EXPECT_EQ(subscription_profile.liveliness, RMW_QOS_POLICY_LIVELINESS_MANUAL_BY_TOPIC);",
+      "+    EXPECT_EQ(subscription_profile.reliability, RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT);",
+      "+    EXPECT_EQ(subscription_profile.durability, RMW_QOS_POLICY_DURABILITY_VOLATILE);",
+      "+    EXPECT_EQ(subscription_profile.liveliness, RMW_QOS_POLICY_LIVELINESS_AUTOMATIC);",
+      "     EXPECT_TRUE(",
+      "       rmw_time_equal(",
+      "         subscription_profile.liveliness_lease_duration,"
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

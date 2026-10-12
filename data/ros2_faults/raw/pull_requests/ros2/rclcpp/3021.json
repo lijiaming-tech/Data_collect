@@ -1,0 +1,35 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rclcpp/pull/3021",
+    "final_url": "https://github.com/ros2/rclcpp/pull/3021",
+    "fetched_at": "2026-10-11T11:21:29.192939+00:00",
+    "http_status": 200,
+    "response_sha256": "b500549db26e12da9591e949c869c52308817b93cb3a883253584b15125bcfcf"
+  },
+  "url": "https://github.com/ros2/rclcpp/pull/3021",
+  "title": "fix wait_for_message for custom ros contexts by rahatchd · Pull Request #3021 · ros2/rclcpp · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "Description\n\n\n\nuse the context passed in to wait_for_message to construct wait set\n\n\nthis lets users use wait_for_message with custom ros context\n\n\n\n\n\nadd unit test for custom ros context\n\n\n\n\nFixes #3020\n\n\nIs this user-facing behavior change?\n\n\n\nusers are able to use custom ros context with wait_for_message\n\n\npreviously users have to use global default context\n\n\n\nDid you use Generative AI?\n\n\nno\n\n\nAdditional Information",
+  "discussion_rendered_text": [
+    "thanks for the fix, i think this is inconsistent bug to manage context.\n\n\nlgtm with green CI.",
+    "@rahatchd can you fix DCO error?",
+    "Pulls: #3021\n\nGist: https://gist.githubusercontent.com/fujitatomoya/bae49577c927add9219975134a799d91/raw/aced9d55325344995a5492734267fe3ea318d8cf/ros2.repos\n\nBUILD args:  --packages-above-and-dependencies rclcpp\n\nTEST args:  --packages-above rclcpp\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/18005\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "https://github.com/Mergifyio backport kilted jazzy humble",
+    "backport kilted jazzy humble\n\n\n✅ Backports have been created\nDetails\n\n\n#3025 fix wait_for_message for custom ros contexts (backport #3021) has been created for branch kilted\n\n\n#3026 fix wait_for_message for custom ros contexts (backport #3021) has been created for branch jazzy\n\n\n#3027 fix wait_for_message for custom ros contexts (backport #3021) has been created for branch humble",
+    "@rahatchd this PR has been merged once, but we had to revert this because of no DCO signoff. can you recreate the another PR with DCO?",
+    "@fujitatomoya fixed DCO here #3030"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/bartalor/rclcpp/commit/99b8557b7b1dc659d2d12ce46c54fef16ee51ca0",
+    "https://github.com/bartalor/rclcpp/commit/bb6a91853348253fda667ff28f37173b906445f3",
+    "https://github.com/ros2/rclcpp/commit/14f71f63b32787abab117ba7ce4c7af6724105de",
+    "https://github.com/ros2/rclcpp/commit/24b3ef7f956f637a481590e6f0f83b10592ed8a3",
+    "https://github.com/ros2/rclcpp/commit/52666d45b135b20afe6d3c3e7f4bbad03206c469",
+    "https://github.com/ros2/rclcpp/commit/5bb4c55dc0598ceea98b37edcf809028e8c7f72a",
+    "https://github.com/ros2/rclcpp/commit/841a4632a4759ab24422639ae9d94be9387ff949",
+    "https://github.com/ros2/rclcpp/commit/cd86362f75c730b5ec077befda108019c2bdff35",
+    "https://github.com/ros2/rclcpp/pull/3021/commits/99da9c55f50e351630e4c6ac171843dda90688f1"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

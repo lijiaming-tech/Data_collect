@@ -1,0 +1,707 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-navigation/navigation2",
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/issues/6398",
+    "final_url": "https://github.com/ros-navigation/navigation2/issues/6398",
+    "fetched_at": "2026-10-11T11:21:38.418720+00:00",
+    "http_status": 200,
+    "response_sha256": "95cadfd38c117bc787ad53de44130fd6d0e5dc8159819f6a860758b706a100fa"
+  },
+  "issue": {
+    "id": "I_kwDOCBF7SM8AAAABOGnmpg",
+    "databaseId": 5241431718,
+    "number": 6398,
+    "title": "Theta* generatePath skips expanding the last popped node (false no-path)",
+    "url": "https://github.com/ros-navigation/navigation2/issues/6398",
+    "body": "## Summary\n\n`ThetaStar::generatePath` expands `curr_data` **before** popping the next node from the open set. The loop condition is `!queue_.empty()`.\n\nAfter the last remaining node is popped, the queue is empty, so the loop exits **without**:\n\n1. calling `setNeighbors` on that node\n2. checking `isGoal` on that node\n\nIf that node is the only 8-connected gateway out of a pocket, or is the goal itself, planning returns failure even though a collision-free grid path exists.\n\nThis is independent of `how_many_corners` (8-connected expansion is already used).\n\nRelevant code: https://github.com/ros-navigation/navigation2/blob/main/nav2_theta_star_planner/src/theta_star.cpp\n\n```cpp\nwhile (!queue_.empty()) {\n  // ...\n  if (isGoal(*curr_data)) {\n    break;\n  }\n\n  resetParent(curr_data);\n  setNeighbors(curr_data);\n\n  curr_data = queue_.top();\n  queue_.pop();\n}\n\nif (queue_.empty()) {\n  raw_path.clear();\n  return false;\n}\n```\n\n## Minimal repro\n\nMap with two adjacent free cells. Start `(0,0)`, goal `(1,0)`. A 4-connected path exists.\n\nWith default weights (`w_euc_cost=1`, `w_traversal_cost=2`):\n\n1. `curr = start` (start is still in the queue)\n2. Expand start → goal is pushed\n3. Pop start again (`f(start) < f(goal)`)\n4. Expand start again, pop goal → queue is empty, `curr = goal`\n5. Loop exits because `queue_.empty()`\n6. `isGoal(goal)` is never checked → `return false`\n\nThe same false failure happens on a 2x2 map whose only connection is the diagonal (one 8-connected step).\n\nAn open 3x3 map often succeeds, because other open-set nodes remain when the goal is popped. That is why this is easy to miss in typical demos.\n\n## Real-world case\n\nOn a recorded global costmap, the robot was in a small 4-connected pocket (~147 cells). The only exit was one diagonal cell with cost 221 (both orthogonal neighbors were 253).\n\nThat gateway cell had a high traversal cost, so it was the last node popped from the open set and was never expanded. Theta* reported no path, even though an 8-connected path with cost `< 253` existed.\n\n## Expected\n\nPop a node, then test `isGoal` / run `setNeighbors`. An empty queue should mean “no node left to expand”, not “skip the node we just popped”.\n\n## Suggested fix\n\nUse standard pop-then-expand:\n\n```cpp\nwhile (!queue_.empty()) {\n  tree_node * curr_data = queue_.top();\n  queue_.pop();\n\n  if (isGoal(*curr_data)) {\n    backtrace(raw_path, curr_data);\n    clearQueue();\n    return true;\n  }\n\n  resetParent(curr_data);\n  setNeighbors(curr_data);\n}\n\nraw_path.clear();\nreturn false;\n```\n\nWith this change, the two-cell map, the diagonal 2x2 map, a 3-cell corridor, and the recorded pocket costmap all find a path.",
+    "bodyHTML": "<h2 dir=\"auto\">Summary</h2>\n<p dir=\"auto\"><code class=\"notranslate\">ThetaStar::generatePath</code> expands <code class=\"notranslate\">curr_data</code> <strong>before</strong> popping the next node from the open set. The loop condition is <code class=\"notranslate\">!queue_.empty()</code>.</p>\n<p dir=\"auto\">After the last remaining node is popped, the queue is empty, so the loop exits <strong>without</strong>:</p>\n<ol dir=\"auto\">\n<li>calling <code class=\"notranslate\">setNeighbors</code> on that node</li>\n<li>checking <code class=\"notranslate\">isGoal</code> on that node</li>\n</ol>\n<p dir=\"auto\">If that node is the only 8-connected gateway out of a pocket, or is the goal itself, planning returns failure even though a collision-free grid path exists.</p>\n<p dir=\"auto\">This is independent of <code class=\"notranslate\">how_many_corners</code> (8-connected expansion is already used).</p>\n<p dir=\"auto\">Relevant code: <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_theta_star_planner/src/theta_star.cpp\">https://github.com/ros-navigation/navigation2/blob/main/nav2_theta_star_planner/src/theta_star.cpp</a></p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"while (!queue_.empty()) {\n  // ...\n  if (isGoal(*curr_data)) {\n    break;\n  }\n\n  resetParent(curr_data);\n  setNeighbors(curr_data);\n\n  curr_data = queue_.top();\n  queue_.pop();\n}\n\nif (queue_.empty()) {\n  raw_path.clear();\n  return false;\n}\"><pre class=\"notranslate\"><span class=\"pl-k\">while</span> (!queue_.empty()) {\n  <span class=\"pl-c\"><span class=\"pl-c\">//</span> ...</span>\n  <span class=\"pl-k\">if</span> (<span class=\"pl-c1\">isGoal</span>(*curr_data)) {\n    <span class=\"pl-k\">break</span>;\n  }\n\n  <span class=\"pl-c1\">resetParent</span>(curr_data);\n  <span class=\"pl-c1\">setNeighbors</span>(curr_data);\n\n  curr_data = queue_.<span class=\"pl-c1\">top</span>();\n  queue_.<span class=\"pl-c1\">pop</span>();\n}\n\n<span class=\"pl-k\">if</span> (queue_.empty()) {\n  raw_path.<span class=\"pl-c1\">clear</span>();\n  <span class=\"pl-k\">return</span> <span class=\"pl-c1\">false</span>;\n}</pre></div>\n<h2 dir=\"auto\">Minimal repro</h2>\n<p dir=\"auto\">Map with two adjacent free cells. Start <code class=\"notranslate\">(0,0)</code>, goal <code class=\"notranslate\">(1,0)</code>. A 4-connected path exists.</p>\n<p dir=\"auto\">With default weights (<code class=\"notranslate\">w_euc_cost=1</code>, <code class=\"notranslate\">w_traversal_cost=2</code>):</p>\n<ol dir=\"auto\">\n<li><code class=\"notranslate\">curr = start</code> (start is still in the queue)</li>\n<li>Expand start → goal is pushed</li>\n<li>Pop start again (<code class=\"notranslate\">f(start) &lt; f(goal)</code>)</li>\n<li>Expand start again, pop goal → queue is empty, <code class=\"notranslate\">curr = goal</code></li>\n<li>Loop exits because <code class=\"notranslate\">queue_.empty()</code></li>\n<li><code class=\"notranslate\">isGoal(goal)</code> is never checked → <code class=\"notranslate\">return false</code></li>\n</ol>\n<p dir=\"auto\">The same false failure happens on a 2x2 map whose only connection is the diagonal (one 8-connected step).</p>\n<p dir=\"auto\">An open 3x3 map often succeeds, because other open-set nodes remain when the goal is popped. That is why this is easy to miss in typical demos.</p>\n<h2 dir=\"auto\">Real-world case</h2>\n<p dir=\"auto\">On a recorded global costmap, the robot was in a small 4-connected pocket (~147 cells). The only exit was one diagonal cell with cost 221 (both orthogonal neighbors were 253).</p>\n<p dir=\"auto\">That gateway cell had a high traversal cost, so it was the last node popped from the open set and was never expanded. Theta* reported no path, even though an 8-connected path with cost <code class=\"notranslate\">&lt; 253</code> existed.</p>\n<h2 dir=\"auto\">Expected</h2>\n<p dir=\"auto\">Pop a node, then test <code class=\"notranslate\">isGoal</code> / run <code class=\"notranslate\">setNeighbors</code>. An empty queue should mean “no node left to expand”, not “skip the node we just popped”.</p>\n<h2 dir=\"auto\">Suggested fix</h2>\n<p dir=\"auto\">Use standard pop-then-expand:</p>\n<div class=\"highlight highlight-source-c++ notranslate position-relative overflow-auto\" dir=\"auto\" data-snippet-clipboard-copy-content=\"while (!queue_.empty()) {\n  tree_node * curr_data = queue_.top();\n  queue_.pop();\n\n  if (isGoal(*curr_data)) {\n    backtrace(raw_path, curr_data);\n    clearQueue();\n    return true;\n  }\n\n  resetParent(curr_data);\n  setNeighbors(curr_data);\n}\n\nraw_path.clear();\nreturn false;\"><pre class=\"notranslate\"><span class=\"pl-k\">while</span> (!queue_.empty()) {\n  tree_node * curr_data = queue_.<span class=\"pl-c1\">top</span>();\n  queue_.<span class=\"pl-c1\">pop</span>();\n\n  <span class=\"pl-k\">if</span> (<span class=\"pl-c1\">isGoal</span>(*curr_data)) {\n    <span class=\"pl-c1\">backtrace</span>(raw_path, curr_data);\n    <span class=\"pl-c1\">clearQueue</span>();\n    <span class=\"pl-k\">return</span> <span class=\"pl-c1\">true</span>;\n  }\n\n  <span class=\"pl-c1\">resetParent</span>(curr_data);\n  <span class=\"pl-c1\">setNeighbors</span>(curr_data);\n}\n\nraw_path.clear();\n<span class=\"pl-k\">return</span> <span class=\"pl-c1\">false</span>;</pre></div>\n<p dir=\"auto\">With this change, the two-cell map, the diagonal 2x2 map, a 3-cell corridor, and the recorded pocket costmap all find a path.</p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-08-25T02:31:58Z",
+    "updatedAt": "2026-08-26T16:49:46Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/62926280?u=c0e6266ba04b6a21b85a40096bd3d506278ed848&v=4",
+      "login": "Grices",
+      "id": "MDQ6VXNlcjYyOTI2Mjgw",
+      "profileUrl": "https://github.com/Grices",
+      "name": "知许",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+            "fullDatabaseId": "948691578",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros-navigation/navigation2/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 2,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABQs6pvg",
+      "databaseId": 5415807422,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABOGnmpg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjYyOTI2Mjgw",
+          "login": "Grices"
+        },
+        "number": 6398,
+        "locked": false,
+        "databaseId": 5241431718
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6398#issuecomment-5415807422",
+      "createdAt": "2026-08-25T19:44:53Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Can you open a PR to fix this?",
+      "bodyHTML": "<p dir=\"auto\">Can you open a PR to fix this?</p>",
+      "bodyVersion": "2ec88b337343eef2edae3d6a61102779a01a35199a8c134d411576b8d265d353",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABQxLEow",
+      "databaseId": 5420270755,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABOGnmpg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjYyOTI2Mjgw",
+          "login": "Grices"
+        },
+        "number": 6398,
+        "locked": false,
+        "databaseId": 5241431718
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjYyOTI2Mjgw",
+        "login": "Grices",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/62926280?u=c0e6266ba04b6a21b85a40096bd3d506278ed848&v=4",
+        "profileUrl": "https://github.com/Grices",
+        "name": "知许"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6398#issuecomment-5420270755",
+      "createdAt": "2026-08-26T03:43:06Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Sure, I've opened #6401.",
+      "bodyHTML": "<p dir=\"auto\">Sure, I've opened <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"5253057844\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6401\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6401/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/6401\">#6401</a>.</p>",
+      "bodyVersion": "963d986db56afc3f22fc33c735e574f96905159d59116eafbbceeaaa0e85dc5f",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABQs6pvg",
+      "databaseId": 5415807422,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABOGnmpg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjYyOTI2Mjgw",
+          "login": "Grices"
+        },
+        "number": 6398,
+        "locked": false,
+        "databaseId": 5241431718
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6398#issuecomment-5415807422",
+      "createdAt": "2026-08-25T19:44:53Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Can you open a PR to fix this?",
+      "bodyHTML": "<p dir=\"auto\">Can you open a PR to fix this?</p>",
+      "bodyVersion": "2ec88b337343eef2edae3d6a61102779a01a35199a8c134d411576b8d265d353",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM8AAAABOGnmps8AAAAG_C4Alg",
+      "databaseId": 30000677014,
+      "createdAt": "2026-08-25T19:44:58Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM8AAAABQxLEow",
+      "databaseId": 5420270755,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM8AAAABOGnmpg",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjYyOTI2Mjgw",
+          "login": "Grices"
+        },
+        "number": 6398,
+        "locked": false,
+        "databaseId": 5241431718
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjYyOTI2Mjgw",
+        "login": "Grices",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/62926280?u=c0e6266ba04b6a21b85a40096bd3d506278ed848&v=4",
+        "profileUrl": "https://github.com/Grices",
+        "name": "知许"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/6398#issuecomment-5420270755",
+      "createdAt": "2026-08-26T03:43:06Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Sure, I've opened #6401.",
+      "bodyHTML": "<p dir=\"auto\">Sure, I've opened <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"5253057844\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6401\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6401/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/6401\">#6401</a>.</p>",
+      "bodyVersion": "963d986db56afc3f22fc33c735e574f96905159d59116eafbbceeaaa0e85dc5f",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOCBF7SM8AAAABOGnmps8AAAAG_3woDw",
+      "databaseId": 30056130575,
+      "createdAt": "2026-08-26T16:49:46Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOCBF7SM8AAAABBBlpJA",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-navigation/navigation2/pull/6401",
+        "number": 6401,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABoDp0QwgAqjU0MTU4MDc0MjI=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABoD76TBABqzMwMDU2MTMwNTc1"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABoDp0QwgAqjU0MTU4MDc0MjI=",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABoD76TBABqzMwMDU2MTMwNTc1"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOCBF7SM8AAAABBBlpJA",
+      "url": "https://github.com/ros-navigation/navigation2/pull/6401",
+      "number": 6401,
+      "title": "Fix Theta* skipping expansion of the last popped open-set node",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-08-26T03:37:27Z",
+      "databaseId": 4363741476,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6401",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6401.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6401.changes.json"
+    }
+  ]
+}

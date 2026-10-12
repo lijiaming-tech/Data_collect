@@ -1,0 +1,33 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/rmw_dds_common/pull/84",
+    "final_url": "https://github.com/ros2/rmw_dds_common/pull/84",
+    "fetched_at": "2026-10-11T11:19:22.439732+00:00",
+    "http_status": 200,
+    "response_sha256": "d4502ec3a39a9a12abe7bb8f644ca1751b0ebf323e76b1262366155aa51aa7aa"
+  },
+  "url": "https://github.com/ros2/rmw_dds_common/pull/84",
+  "title": "If no publishers discovered, make the best available QoS for subscrip… by fujitatomoya · Pull Request #84 · ros2/rmw_dds_common · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "…tion.\n\n\nDescription\n\n\nThere is a possibility that the subscription has not yet discovered the corresponding publisher at the time of its creation.\n\nIn such cases, the current implementation causes those if statements to fall back to a restricted QoS configuration for the subscription.\n\nHowever, this behavior seems incorrect for me. instead, it should fall back to selecting the best available QoS configuration that remains compatible with any endpoints that may join later.\n\n\n\n\nCloses ros2/ros2#1722\n\n\nReplaces ros2/rclpy#1561\n\n\nIs this user-facing behavior change?\n\n\nNo,\n\n\n\nDid you use Generative AI?\n\n\nNo,\n\n\n\nAdditional Information\n\n\nI confirmed that ros2/ros2#1722 can be fixed with this PR.\n\n\n\n\nWarning\n\nWe need to backport this to kilted and jazzy if accepted",
+  "discussion_rendered_text": [
+    "@wjwwood @ahcorde what do you think about this fix? i believe this is right thing to do.",
+    "Copilot encountered an error and was unable to review this pull request. You can try again by re-requesting a review.",
+    "Pull request overview\n\n\nCopilot reviewed 2 out of 2 changed files in this pull request and generated no new comments.\n\n\n\n💡 Add Copilot custom instructions for smarter, more guided reviews. Learn how to get started.",
+    "@ahcorde friendly ping. i think this fixes the very bad user experience as reported on related issue.",
+    "Pulls: #84\n\nGist: https://gist.githubusercontent.com/ahcorde/90cc6f3696b0657d3d0e230fcac60bd9/raw/32310cc8b82e6ff55632a1668949ec25beb01540/ros2.repos\n\nBUILD args:  --packages-above-and-dependencies rmw_dds_common\n\nTEST args:  --packages-above rmw_dds_common\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/17900\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "CI failures are not related.",
+    "@Mergifyio backport kilted jazzy",
+    "backport kilted jazzy\n\n\n✅ Backports have been created\nDetails\n\n\n#85 If no publishers discovered, make the best available QoS for subscrip… (backport #84) has been created for branch kilted\n\n\n#86 If no publishers discovered, make the best available QoS for subscrip… (backport #84) has been created for branch jazzy"
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros2/rmw_dds_common/commit/5c85b7d871a6ed575db611ca0715c6b976edcd1c",
+    "https://github.com/ros2/rmw_dds_common/commit/8899aaf148b6e5ea1e2009f49fdcf8600c8cb446",
+    "https://github.com/ros2/rmw_dds_common/commit/9d3772c3f8c729e24e1c0f9360862959cf42a255",
+    "https://github.com/ros2/rmw_dds_common/commit/c8efd8de2bd4f5dbaae3e69497bde1d9a965cc6f",
+    "https://github.com/ros2/rmw_dds_common/commit/e5a3abbf7b6ef0fc09309e66258b5db3f14b53d9",
+    "https://github.com/ros2/rmw_dds_common/pull/84/commits/ac381f4f72fe3e5f8c03484d0cf42f384cdac07e"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

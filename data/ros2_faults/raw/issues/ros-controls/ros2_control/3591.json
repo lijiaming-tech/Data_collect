@@ -1,0 +1,388 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3591",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3591",
+    "fetched_at": "2026-10-11T11:24:18.731542+00:00",
+    "http_status": 200,
+    "response_sha256": "368d67e78f697a963b7d4eec1db6dfac7b5af6bdfe1c53680acc4b9bfd956d5c"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc8AAAABPex-yA",
+    "databaseId": 5333876424,
+    "number": 3591,
+    "title": "rqt_controller_manager still fails on SIGINT",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3591",
+    "body": "**Describe the bug**\n```\n\n2026-09-03T05:23:56.0018831Z ============================= test session starts ==============================\n2026-09-03T05:23:56.0019252Z platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0\n2026-09-03T05:23:56.0019715Z cachedir: /__w/ros2_control/ros2_control/ros_ws/build/rqt_controller_manager/.pytest_cache\n2026-09-03T05:23:56.0020222Z rootdir: /__w/ros2_control/ros2_control/ros_ws/src/7kxxzc759db/ros2_control/rqt_controller_manager\n2026-09-03T05:23:56.0021527Z plugins: launch-testing-ros-0.28.6, launch-testing-3.8.8, ament-mypy-0.19.3, ament-xmllint-0.19.3, ament-copyright-0.19.3, ament-pep257-0.19.3, ament-flake8-0.19.3, ament-lint-0.19.3, cov-4.1.0, timeout-2.2.0, None-None, typeguard-4.1.5, rerunfailures-12.0, colcon-core-0.21.1, mock-3.12.0\n2026-09-03T05:23:56.0022388Z collected 1 item\n2026-09-03T05:23:56.0022603Z \n2026-09-03T05:23:58.0923855Z test/test_run_launch.py F                                                [100%]\n2026-09-03T05:23:58.0924181Z \n2026-09-03T05:23:58.0924377Z =================================== FAILURES ===================================\n2026-09-03T05:23:58.0924834Z ________________________ launch tests: test_run_launch _________________________\n2026-09-03T05:23:58.0925165Z \n2026-09-03T05:23:58.0925800Z ========================================================================================================================================================\n2026-09-03T05:23:58.0926967Z FAIL: test_run_launch.TestFixture.test_node_start\n2026-09-03T05:23:58.0928788Z --------------------------------------------------------------------------------------------------------------------------------------------------------\n2026-09-03T05:23:58.0929303Z Traceback (most recent call last):\n2026-09-03T05:23:58.0935400Z   File \"/__w/ros2_control/ros2_control/ros_ws/src/7kxxzc759db/ros2_control/rqt_controller_manager/test/test_run_launch.py\", line 58, in test_node_start\n2026-09-03T05:23:58.0936230Z     assert node_name in self.node.get_node_names()\n2026-09-03T05:23:58.0936937Z AssertionError: assert 'rqt_controller_manager_node' in ['test_node']\n2026-09-03T05:23:58.0937545Z  +  where ['test_node'] = <bound method Node.get_node_names of <rclpy.node.Node object at 0x7facb10b9760>>()\n2026-09-03T05:23:58.0938396Z  +    where <bound method Node.get_node_names of <rclpy.node.Node object at 0x7facb10b9760>> = <rclpy.node.Node object at 0x7facb10b9760>.get_node_names\n2026-09-03T05:23:58.0939137Z  +      where <rclpy.node.Node object at 0x7facb10b9760> = <test_run_launch.TestFixture testMethod=test_node_start>.node\n2026-09-03T05:23:58.0939807Z ----------------------------- Captured stdout call -----------------------------\n2026-09-03T05:23:58.0940443Z [INFO] [launch]: All log files can be found below /github/home/.ros/log/2026-09-03-05-23-56-001472-a8e3e4e3c71e-169058\n2026-09-03T05:23:58.0941026Z [INFO] [launch]: Default logging verbosity is set to INFO\n2026-09-03T05:23:58.0945799Z [INFO] [rqt_controller_manager-1]: process started with pid [169062]\n2026-09-03T05:23:58.0946536Z [rqt_controller_manager-1] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'\n2026-09-03T05:23:58.0948330Z [INFO] [rqt_controller_manager-1]: sending signal 'SIGINT' to process[rqt_controller_manager-1]\n2026-09-03T05:23:58.0950626Z [rqt_controller_manager-1] Traceback (most recent call last):\n2026-09-03T05:23:58.0952195Z [rqt_controller_manager-1]   File \"/__w/ros2_control/ros2_control/ros_ws/install/rqt_controller_manager/lib/rqt_controller_manager/rqt_controller_manager\", line 33, in <module>\n2026-09-03T05:23:58.0953390Z [rqt_controller_manager-1]     sys.exit(load_entry_point('rqt-controller-manager', 'console_scripts', 'rqt_controller_manager')())\n2026-09-03T05:23:58.0954401Z [rqt_controller_manager-1]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0955365Z [rqt_controller_manager-1]   File \"/__w/ros2_control/ros2_control/ros_ws/build/rqt_controller_manager/rqt_controller_manager/main.py\", line 23, in main\n2026-09-03T05:23:58.0956228Z [rqt_controller_manager-1]     sys.exit(main.main(sys.argv, standalone=\"rqt_controller_manager\"))\n2026-09-03T05:23:58.0956864Z [rqt_controller_manager-1]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0957673Z [rqt_controller_manager-1]   File \"/__w/ros2_control/ros2_control/ros_ws/build/rqt_gui/src/rqt_gui/main.py\", line 58, in main\n2026-09-03T05:23:58.0958342Z [rqt_controller_manager-1]     return super(Main, self).main(\n2026-09-03T05:23:58.0958861Z [rqt_controller_manager-1]            ^^^^^^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0959661Z [rqt_controller_manager-1]   File \"/__w/ros2_control/ros2_control/ros_ws/install/qt_gui/lib/python3.12/site-packages/qt_gui/main.py\", line 465, in main\n2026-09-03T05:23:58.0960435Z [rqt_controller_manager-1]     main_window = MainWindow(help_text)\n2026-09-03T05:23:58.0960906Z [rqt_controller_manager-1]                   ^^^^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0961823Z [rqt_controller_manager-1]   File \"/__w/ros2_control/ros2_control/ros_ws/install/qt_gui/lib/python3.12/site-packages/qt_gui/main_window.py\", line 53, in __init__\n2026-09-03T05:23:58.0962566Z [rqt_controller_manager-1]     self._help_widget = QTextBrowser(self)\n2026-09-03T05:23:58.0963133Z [rqt_controller_manager-1]                         ^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0963624Z [rqt_controller_manager-1] KeyboardInterrupt\n2026-09-03T05:23:58.0964967Z [ERROR] [rqt_controller_manager-1]: process has died [pid 169062, exit code -2, cmd '/__w/ros2_control/ros2_control/ros_ws/install/rqt_controller_manager/lib/rqt_controller_manager/rqt_controller_manager --force-discover --ros-args -r __node:=rqt_controller_manager_node'].\n2026-09-03T05:23:58.0966207Z ----------------------------- Captured stderr call -----------------------------\n2026-09-03T05:23:58.0966742Z test_node_start (test_run_launch.TestFixture.test_node_start) ... FAIL\n2026-09-03T05:23:58.0967031Z \n2026-09-03T05:23:58.0967210Z ======================================================================\n2026-09-03T05:23:58.0967665Z FAIL: test_node_start (test_run_launch.TestFixture.test_node_start)\n2026-09-03T05:23:58.0968193Z ----------------------------------------------------------------------\n2026-09-03T05:23:58.0968580Z Traceback (most recent call last):\n2026-09-03T05:23:58.0969303Z   File \"/__w/ros2_control/ros2_control/ros_ws/src/7kxxzc759db/ros2_control/rqt_controller_manager/test/test_run_launch.py\", line 58, in test_node_start\n2026-09-03T05:23:58.0969935Z     assert node_name in self.node.get_node_names()\n2026-09-03T05:23:58.0970397Z AssertionError: assert 'rqt_controller_manager_node' in ['test_node']\n2026-09-03T05:23:58.0970881Z  +  where ['test_node'] = <bound method Node.get_node_names of <rclpy.node.Node object at 0x7facb10b9760>>()\n2026-09-03T05:23:58.0971470Z  +    where <bound method Node.get_node_names of <rclpy.node.Node object at 0x7facb10b9760>> = <rclpy.node.Node object at 0x7facb10b9760>.get_node_names\n2026-09-03T05:23:58.0972072Z  +      where <rclpy.node.Node object at 0x7facb10b9760> = <test_run_launch.TestFixture testMethod=test_node_start>.node\n2026-09-03T05:23:58.0972386Z \n2026-09-03T05:23:58.0972543Z ----------------------------------------------------------------------\n2026-09-03T05:23:58.0972789Z Ran 1 test in 2.038s\n2026-09-03T05:23:58.0972976Z \n2026-09-03T05:23:58.0973087Z FAILED (failures=1)\n```\n\n**To Reproduce**\nhttps://github.com/ros-controls/ros2_control/issues/3590",
+    "bodyHTML": "<p dir=\"auto\"><strong>Describe the bug</strong></p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"\n2026-09-03T05:23:56.0018831Z ============================= test session starts ==============================\n2026-09-03T05:23:56.0019252Z platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0\n2026-09-03T05:23:56.0019715Z cachedir: /__w/ros2_control/ros2_control/ros_ws/build/rqt_controller_manager/.pytest_cache\n2026-09-03T05:23:56.0020222Z rootdir: /__w/ros2_control/ros2_control/ros_ws/src/7kxxzc759db/ros2_control/rqt_controller_manager\n2026-09-03T05:23:56.0021527Z plugins: launch-testing-ros-0.28.6, launch-testing-3.8.8, ament-mypy-0.19.3, ament-xmllint-0.19.3, ament-copyright-0.19.3, ament-pep257-0.19.3, ament-flake8-0.19.3, ament-lint-0.19.3, cov-4.1.0, timeout-2.2.0, None-None, typeguard-4.1.5, rerunfailures-12.0, colcon-core-0.21.1, mock-3.12.0\n2026-09-03T05:23:56.0022388Z collected 1 item\n2026-09-03T05:23:56.0022603Z \n2026-09-03T05:23:58.0923855Z test/test_run_launch.py F                                                [100%]\n2026-09-03T05:23:58.0924181Z \n2026-09-03T05:23:58.0924377Z =================================== FAILURES ===================================\n2026-09-03T05:23:58.0924834Z ________________________ launch tests: test_run_launch _________________________\n2026-09-03T05:23:58.0925165Z \n2026-09-03T05:23:58.0925800Z ========================================================================================================================================================\n2026-09-03T05:23:58.0926967Z FAIL: test_run_launch.TestFixture.test_node_start\n2026-09-03T05:23:58.0928788Z --------------------------------------------------------------------------------------------------------------------------------------------------------\n2026-09-03T05:23:58.0929303Z Traceback (most recent call last):\n2026-09-03T05:23:58.0935400Z   File &quot;/__w/ros2_control/ros2_control/ros_ws/src/7kxxzc759db/ros2_control/rqt_controller_manager/test/test_run_launch.py&quot;, line 58, in test_node_start\n2026-09-03T05:23:58.0936230Z     assert node_name in self.node.get_node_names()\n2026-09-03T05:23:58.0936937Z AssertionError: assert 'rqt_controller_manager_node' in ['test_node']\n2026-09-03T05:23:58.0937545Z  +  where ['test_node'] = &lt;bound method Node.get_node_names of &lt;rclpy.node.Node object at 0x7facb10b9760&gt;&gt;()\n2026-09-03T05:23:58.0938396Z  +    where &lt;bound method Node.get_node_names of &lt;rclpy.node.Node object at 0x7facb10b9760&gt;&gt; = &lt;rclpy.node.Node object at 0x7facb10b9760&gt;.get_node_names\n2026-09-03T05:23:58.0939137Z  +      where &lt;rclpy.node.Node object at 0x7facb10b9760&gt; = &lt;test_run_launch.TestFixture testMethod=test_node_start&gt;.node\n2026-09-03T05:23:58.0939807Z ----------------------------- Captured stdout call -----------------------------\n2026-09-03T05:23:58.0940443Z [INFO] [launch]: All log files can be found below /github/home/.ros/log/2026-09-03-05-23-56-001472-a8e3e4e3c71e-169058\n2026-09-03T05:23:58.0941026Z [INFO] [launch]: Default logging verbosity is set to INFO\n2026-09-03T05:23:58.0945799Z [INFO] [rqt_controller_manager-1]: process started with pid [169062]\n2026-09-03T05:23:58.0946536Z [rqt_controller_manager-1] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'\n2026-09-03T05:23:58.0948330Z [INFO] [rqt_controller_manager-1]: sending signal 'SIGINT' to process[rqt_controller_manager-1]\n2026-09-03T05:23:58.0950626Z [rqt_controller_manager-1] Traceback (most recent call last):\n2026-09-03T05:23:58.0952195Z [rqt_controller_manager-1]   File &quot;/__w/ros2_control/ros2_control/ros_ws/install/rqt_controller_manager/lib/rqt_controller_manager/rqt_controller_manager&quot;, line 33, in &lt;module&gt;\n2026-09-03T05:23:58.0953390Z [rqt_controller_manager-1]     sys.exit(load_entry_point('rqt-controller-manager', 'console_scripts', 'rqt_controller_manager')())\n2026-09-03T05:23:58.0954401Z [rqt_controller_manager-1]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0955365Z [rqt_controller_manager-1]   File &quot;/__w/ros2_control/ros2_control/ros_ws/build/rqt_controller_manager/rqt_controller_manager/main.py&quot;, line 23, in main\n2026-09-03T05:23:58.0956228Z [rqt_controller_manager-1]     sys.exit(main.main(sys.argv, standalone=&quot;rqt_controller_manager&quot;))\n2026-09-03T05:23:58.0956864Z [rqt_controller_manager-1]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0957673Z [rqt_controller_manager-1]   File &quot;/__w/ros2_control/ros2_control/ros_ws/build/rqt_gui/src/rqt_gui/main.py&quot;, line 58, in main\n2026-09-03T05:23:58.0958342Z [rqt_controller_manager-1]     return super(Main, self).main(\n2026-09-03T05:23:58.0958861Z [rqt_controller_manager-1]            ^^^^^^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0959661Z [rqt_controller_manager-1]   File &quot;/__w/ros2_control/ros2_control/ros_ws/install/qt_gui/lib/python3.12/site-packages/qt_gui/main.py&quot;, line 465, in main\n2026-09-03T05:23:58.0960435Z [rqt_controller_manager-1]     main_window = MainWindow(help_text)\n2026-09-03T05:23:58.0960906Z [rqt_controller_manager-1]                   ^^^^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0961823Z [rqt_controller_manager-1]   File &quot;/__w/ros2_control/ros2_control/ros_ws/install/qt_gui/lib/python3.12/site-packages/qt_gui/main_window.py&quot;, line 53, in __init__\n2026-09-03T05:23:58.0962566Z [rqt_controller_manager-1]     self._help_widget = QTextBrowser(self)\n2026-09-03T05:23:58.0963133Z [rqt_controller_manager-1]                         ^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0963624Z [rqt_controller_manager-1] KeyboardInterrupt\n2026-09-03T05:23:58.0964967Z [ERROR] [rqt_controller_manager-1]: process has died [pid 169062, exit code -2, cmd '/__w/ros2_control/ros2_control/ros_ws/install/rqt_controller_manager/lib/rqt_controller_manager/rqt_controller_manager --force-discover --ros-args -r __node:=rqt_controller_manager_node'].\n2026-09-03T05:23:58.0966207Z ----------------------------- Captured stderr call -----------------------------\n2026-09-03T05:23:58.0966742Z test_node_start (test_run_launch.TestFixture.test_node_start) ... FAIL\n2026-09-03T05:23:58.0967031Z \n2026-09-03T05:23:58.0967210Z ======================================================================\n2026-09-03T05:23:58.0967665Z FAIL: test_node_start (test_run_launch.TestFixture.test_node_start)\n2026-09-03T05:23:58.0968193Z ----------------------------------------------------------------------\n2026-09-03T05:23:58.0968580Z Traceback (most recent call last):\n2026-09-03T05:23:58.0969303Z   File &quot;/__w/ros2_control/ros2_control/ros_ws/src/7kxxzc759db/ros2_control/rqt_controller_manager/test/test_run_launch.py&quot;, line 58, in test_node_start\n2026-09-03T05:23:58.0969935Z     assert node_name in self.node.get_node_names()\n2026-09-03T05:23:58.0970397Z AssertionError: assert 'rqt_controller_manager_node' in ['test_node']\n2026-09-03T05:23:58.0970881Z  +  where ['test_node'] = &lt;bound method Node.get_node_names of &lt;rclpy.node.Node object at 0x7facb10b9760&gt;&gt;()\n2026-09-03T05:23:58.0971470Z  +    where &lt;bound method Node.get_node_names of &lt;rclpy.node.Node object at 0x7facb10b9760&gt;&gt; = &lt;rclpy.node.Node object at 0x7facb10b9760&gt;.get_node_names\n2026-09-03T05:23:58.0972072Z  +      where &lt;rclpy.node.Node object at 0x7facb10b9760&gt; = &lt;test_run_launch.TestFixture testMethod=test_node_start&gt;.node\n2026-09-03T05:23:58.0972386Z \n2026-09-03T05:23:58.0972543Z ----------------------------------------------------------------------\n2026-09-03T05:23:58.0972789Z Ran 1 test in 2.038s\n2026-09-03T05:23:58.0972976Z \n2026-09-03T05:23:58.0973087Z FAILED (failures=1)\"><pre class=\"notranslate\"><code class=\"notranslate\">\n2026-09-03T05:23:56.0018831Z ============================= test session starts ==============================\n2026-09-03T05:23:56.0019252Z platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0\n2026-09-03T05:23:56.0019715Z cachedir: /__w/ros2_control/ros2_control/ros_ws/build/rqt_controller_manager/.pytest_cache\n2026-09-03T05:23:56.0020222Z rootdir: /__w/ros2_control/ros2_control/ros_ws/src/7kxxzc759db/ros2_control/rqt_controller_manager\n2026-09-03T05:23:56.0021527Z plugins: launch-testing-ros-0.28.6, launch-testing-3.8.8, ament-mypy-0.19.3, ament-xmllint-0.19.3, ament-copyright-0.19.3, ament-pep257-0.19.3, ament-flake8-0.19.3, ament-lint-0.19.3, cov-4.1.0, timeout-2.2.0, None-None, typeguard-4.1.5, rerunfailures-12.0, colcon-core-0.21.1, mock-3.12.0\n2026-09-03T05:23:56.0022388Z collected 1 item\n2026-09-03T05:23:56.0022603Z \n2026-09-03T05:23:58.0923855Z test/test_run_launch.py F                                                [100%]\n2026-09-03T05:23:58.0924181Z \n2026-09-03T05:23:58.0924377Z =================================== FAILURES ===================================\n2026-09-03T05:23:58.0924834Z ________________________ launch tests: test_run_launch _________________________\n2026-09-03T05:23:58.0925165Z \n2026-09-03T05:23:58.0925800Z ========================================================================================================================================================\n2026-09-03T05:23:58.0926967Z FAIL: test_run_launch.TestFixture.test_node_start\n2026-09-03T05:23:58.0928788Z --------------------------------------------------------------------------------------------------------------------------------------------------------\n2026-09-03T05:23:58.0929303Z Traceback (most recent call last):\n2026-09-03T05:23:58.0935400Z   File \"/__w/ros2_control/ros2_control/ros_ws/src/7kxxzc759db/ros2_control/rqt_controller_manager/test/test_run_launch.py\", line 58, in test_node_start\n2026-09-03T05:23:58.0936230Z     assert node_name in self.node.get_node_names()\n2026-09-03T05:23:58.0936937Z AssertionError: assert 'rqt_controller_manager_node' in ['test_node']\n2026-09-03T05:23:58.0937545Z  +  where ['test_node'] = &lt;bound method Node.get_node_names of &lt;rclpy.node.Node object at 0x7facb10b9760&gt;&gt;()\n2026-09-03T05:23:58.0938396Z  +    where &lt;bound method Node.get_node_names of &lt;rclpy.node.Node object at 0x7facb10b9760&gt;&gt; = &lt;rclpy.node.Node object at 0x7facb10b9760&gt;.get_node_names\n2026-09-03T05:23:58.0939137Z  +      where &lt;rclpy.node.Node object at 0x7facb10b9760&gt; = &lt;test_run_launch.TestFixture testMethod=test_node_start&gt;.node\n2026-09-03T05:23:58.0939807Z ----------------------------- Captured stdout call -----------------------------\n2026-09-03T05:23:58.0940443Z [INFO] [launch]: All log files can be found below /github/home/.ros/log/2026-09-03-05-23-56-001472-a8e3e4e3c71e-169058\n2026-09-03T05:23:58.0941026Z [INFO] [launch]: Default logging verbosity is set to INFO\n2026-09-03T05:23:58.0945799Z [INFO] [rqt_controller_manager-1]: process started with pid [169062]\n2026-09-03T05:23:58.0946536Z [rqt_controller_manager-1] QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'\n2026-09-03T05:23:58.0948330Z [INFO] [rqt_controller_manager-1]: sending signal 'SIGINT' to process[rqt_controller_manager-1]\n2026-09-03T05:23:58.0950626Z [rqt_controller_manager-1] Traceback (most recent call last):\n2026-09-03T05:23:58.0952195Z [rqt_controller_manager-1]   File \"/__w/ros2_control/ros2_control/ros_ws/install/rqt_controller_manager/lib/rqt_controller_manager/rqt_controller_manager\", line 33, in &lt;module&gt;\n2026-09-03T05:23:58.0953390Z [rqt_controller_manager-1]     sys.exit(load_entry_point('rqt-controller-manager', 'console_scripts', 'rqt_controller_manager')())\n2026-09-03T05:23:58.0954401Z [rqt_controller_manager-1]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0955365Z [rqt_controller_manager-1]   File \"/__w/ros2_control/ros2_control/ros_ws/build/rqt_controller_manager/rqt_controller_manager/main.py\", line 23, in main\n2026-09-03T05:23:58.0956228Z [rqt_controller_manager-1]     sys.exit(main.main(sys.argv, standalone=\"rqt_controller_manager\"))\n2026-09-03T05:23:58.0956864Z [rqt_controller_manager-1]              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0957673Z [rqt_controller_manager-1]   File \"/__w/ros2_control/ros2_control/ros_ws/build/rqt_gui/src/rqt_gui/main.py\", line 58, in main\n2026-09-03T05:23:58.0958342Z [rqt_controller_manager-1]     return super(Main, self).main(\n2026-09-03T05:23:58.0958861Z [rqt_controller_manager-1]            ^^^^^^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0959661Z [rqt_controller_manager-1]   File \"/__w/ros2_control/ros2_control/ros_ws/install/qt_gui/lib/python3.12/site-packages/qt_gui/main.py\", line 465, in main\n2026-09-03T05:23:58.0960435Z [rqt_controller_manager-1]     main_window = MainWindow(help_text)\n2026-09-03T05:23:58.0960906Z [rqt_controller_manager-1]                   ^^^^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0961823Z [rqt_controller_manager-1]   File \"/__w/ros2_control/ros2_control/ros_ws/install/qt_gui/lib/python3.12/site-packages/qt_gui/main_window.py\", line 53, in __init__\n2026-09-03T05:23:58.0962566Z [rqt_controller_manager-1]     self._help_widget = QTextBrowser(self)\n2026-09-03T05:23:58.0963133Z [rqt_controller_manager-1]                         ^^^^^^^^^^^^^^^^^^\n2026-09-03T05:23:58.0963624Z [rqt_controller_manager-1] KeyboardInterrupt\n2026-09-03T05:23:58.0964967Z [ERROR] [rqt_controller_manager-1]: process has died [pid 169062, exit code -2, cmd '/__w/ros2_control/ros2_control/ros_ws/install/rqt_controller_manager/lib/rqt_controller_manager/rqt_controller_manager --force-discover --ros-args -r __node:=rqt_controller_manager_node'].\n2026-09-03T05:23:58.0966207Z ----------------------------- Captured stderr call -----------------------------\n2026-09-03T05:23:58.0966742Z test_node_start (test_run_launch.TestFixture.test_node_start) ... FAIL\n2026-09-03T05:23:58.0967031Z \n2026-09-03T05:23:58.0967210Z ======================================================================\n2026-09-03T05:23:58.0967665Z FAIL: test_node_start (test_run_launch.TestFixture.test_node_start)\n2026-09-03T05:23:58.0968193Z ----------------------------------------------------------------------\n2026-09-03T05:23:58.0968580Z Traceback (most recent call last):\n2026-09-03T05:23:58.0969303Z   File \"/__w/ros2_control/ros2_control/ros_ws/src/7kxxzc759db/ros2_control/rqt_controller_manager/test/test_run_launch.py\", line 58, in test_node_start\n2026-09-03T05:23:58.0969935Z     assert node_name in self.node.get_node_names()\n2026-09-03T05:23:58.0970397Z AssertionError: assert 'rqt_controller_manager_node' in ['test_node']\n2026-09-03T05:23:58.0970881Z  +  where ['test_node'] = &lt;bound method Node.get_node_names of &lt;rclpy.node.Node object at 0x7facb10b9760&gt;&gt;()\n2026-09-03T05:23:58.0971470Z  +    where &lt;bound method Node.get_node_names of &lt;rclpy.node.Node object at 0x7facb10b9760&gt;&gt; = &lt;rclpy.node.Node object at 0x7facb10b9760&gt;.get_node_names\n2026-09-03T05:23:58.0972072Z  +      where &lt;rclpy.node.Node object at 0x7facb10b9760&gt; = &lt;test_run_launch.TestFixture testMethod=test_node_start&gt;.node\n2026-09-03T05:23:58.0972386Z \n2026-09-03T05:23:58.0972543Z ----------------------------------------------------------------------\n2026-09-03T05:23:58.0972789Z Ran 1 test in 2.038s\n2026-09-03T05:23:58.0972976Z \n2026-09-03T05:23:58.0973087Z FAILED (failures=1)\n</code></pre></div>\n<p dir=\"auto\"><strong>To Reproduce</strong><br>\n<a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"5332634892\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3590\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-controls/ros2_control/issues/3590/hovercard\" href=\"https://github.com/ros-controls/ros2_control/issues/3590\">#3590</a></p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2026-09-03T07:52:13Z",
+    "updatedAt": "2026-09-10T06:21:49Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+      "login": "christophfroehlich",
+      "id": "MDQ6VXNlcjMzNjcyNDQ=",
+      "profileUrl": "https://github.com/christophfroehlich",
+      "name": "Christoph Fröhlich",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "MQ"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 1,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABTqCdjQ",
+      "databaseId": 5614116237,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABPex-yA",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3591,
+        "locked": false,
+        "databaseId": 5333876424
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3591#issuecomment-5614116237",
+      "createdAt": "2026-09-10T06:21:49Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "#3592 ",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"5358290215\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3592\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-controls/ros2_control/pull/3592/hovercard\" href=\"https://github.com/ros-controls/ros2_control/pull/3592\">#3592</a></p>",
+      "bodyVersion": "a36d30876b6ae070ab1008a5cf127fc462ba2981ec2569b86943cf439bf7763d",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc8AAAABPex-yM8AAAAHGEiMlg",
+      "databaseId": 30472178838,
+      "createdAt": "2026-09-03T07:52:15Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc8AAAABPex-yM8AAAAHMJ2DlQ",
+      "databaseId": 30880400277,
+      "createdAt": "2026-09-10T06:21:49Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABTqCdjQ",
+      "databaseId": 5614116237,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc8AAAABPex-yA",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3591,
+        "locked": false,
+        "databaseId": 5333876424
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3591#issuecomment-5614116237",
+      "createdAt": "2026-09-10T06:21:49Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "#3592 ",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"5358290215\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_control/issues/3592\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-controls/ros2_control/pull/3592/hovercard\" href=\"https://github.com/ros-controls/ros2_control/pull/3592\">#3592</a></p>",
+      "bodyVersion": "a36d30876b6ae070ab1008a5cf127fc462ba2981ec2569b86943cf439bf7763d",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABoGZBD5gBqzMwNDcyMTc4ODM4",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABoIn6yEgBqzMwODgwNDAwMjc3"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABoGZBD5gBqzMwNDcyMTc4ODM4",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABoIn6yEgBqzMwODgwNDAwMjc3"
+    }
+  },
+  "linked_pull_requests": [],
+  "comments_complete": true,
+  "linked_pr_fetches": []
+}

@@ -1,0 +1,35 @@
+{
+  "source": {
+    "url": "https://github.com/ros2/ament_cmake_ros/pull/60/files",
+    "final_url": "https://github.com/ros2/ament_cmake_ros/pull/60/files",
+    "fetched_at": "2026-10-11T11:23:31.523184+00:00",
+    "http_status": 200,
+    "response_sha256": "31efa6227f62f07ea33b09df75dd071b2531fd4b3d76f53f69d5d0dc51c174a5"
+  },
+  "files": {
+    "rmw_test_fixture_implementation/package.xml": [
+      "@@ -18,9 +18,6 @@",
+      "   <build_depend>rmw_implementation</build_depend>",
+      "   <build_depend>rmw_implementation_cmake</build_depend>",
+      " ",
+      "-  <!-- Explicit group resolution - see ros-infrastructure/catkin_pkg#369 -->",
+      "-  <exec_depend condition=\"$DISABLE_GROUPS_WORKAROUND != 1\">rmw_zenoh_cpp</exec_depend>",
+      "-",
+      "   <exec_depend>rpyutils</exec_depend>",
+      " ",
+      "   <depend>rcpputils</depend>",
+      "@@ -33,8 +30,6 @@",
+      "   <test_depend>ament_lint_auto</test_depend>",
+      "   <test_depend>ament_lint_common</test_depend>",
+      " ",
+      "-  <group_depend>rmw_test_fixture_implementation_packages</group_depend>",
+      "-",
+      "   <export>",
+      "     <build_type>ament_cmake</build_type>",
+      "   </export>"
+    ]
+  },
+  "complete": null,
+  "format": "rendered_diff_lines",
+  "note": "Exposed code hunks only; not a complete patch or verified fix."
+}

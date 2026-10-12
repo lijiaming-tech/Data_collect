@@ -1,0 +1,29 @@
+{
+  "source": {
+    "url": "https://github.com/ros/urdfdom/pull/222",
+    "final_url": "https://github.com/ros/urdfdom/pull/222",
+    "fetched_at": "2026-10-11T11:19:51.111308+00:00",
+    "http_status": 200,
+    "response_sha256": "54ee6af0272dcedacb72eaed8968a0ba2164e3550c4227b89051ce0bb0ea433b"
+  },
+  "url": "https://github.com/ros/urdfdom/pull/222",
+  "title": "Relax the version compatibility for urdfdom_headers. by clalancette · Pull Request #222 · ros/urdfdom · GitHub",
+  "state_from_issue_link": "MERGED",
+  "body_rendered_text": "That is, newer versions of urdfdom_headers should be just fine, so don't specify a version here.\n\n\nThis should fix ros2/ros2#1705\n\n\n@fujitatomoya Since I can't reproduce this, can you give this PR a try and see if it fixes things for you?",
+  "discussion_rendered_text": [
+    "This should also hopefully fix the failing build in https://build.ros2.org/job/Rbin_uN64__urdfdom__ubuntu_noble_amd64__binary/19/console",
+    "Pulls: #222\n\nGist: https://gist.githubusercontent.com/clalancette/ab19f7efafbd904031a96e57d17ea575/raw/893370af4168cb149b94abedeb13980cd8d96ccf/ros2.repos\n\nBUILD args:\n\nTEST args:\n\nROS Distro: rolling\n\nJob: ci_launcher\n\nci_launcher ran: https://ci.ros2.org/job/ci_launcher/16388\n\n\n\nLinux \n\n\nLinux-aarch64 \n\n\nLinux-rhel \n\n\nWindows",
+    "@clalancette thanks! fix looks good to me, now local build in progress. i will let you know the result as soon as i see it.",
+    "local (source build with ros2/ros2@58faf9a on Uuntu Noble) build passes.",
+    "local (source build with ros2/ros2@58faf9a on Uuntu Noble) build passes.\n\n\n\nThanks for the confirmation!  Once CI finishes here I will merge and release.",
+    "Sigh.  Infrastructure on regular Linux has been quite challenging; it's had to restart at least twice today.  While I would be highly surprised if Linux amd64 failed where Linux arm64 succeeded, I'm still going to try to let Linux amd64 run to completion before merging it.  Which likely means I will merge and release tomorrow instead.",
+    "@clalancette CI failures are unrelated, is this good to merge? i do not have power..."
+  ],
+  "discussion_complete": null,
+  "commit_urls": [
+    "https://github.com/ros/urdfdom/commit/d370d61ceca07b049617ea4a912a0db927c093e7",
+    "https://github.com/ros/urdfdom/pull/222/commits/c7710a42ddb812a0472beacd3d3c67e6495cb504",
+    "https://github.com/ros2/ros2/commit/58faf9a091f9cd0bf24e93bb559b09133a75fafd"
+  ],
+  "note": "Rendered page extraction; discussion completeness is not guaranteed."
+}

@@ -1,0 +1,1519 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-controls/ros2_control",
+  "source": {
+    "url": "https://github.com/ros-controls/ros2_control/issues/3123",
+    "final_url": "https://github.com/ros-controls/ros2_control/issues/3123",
+    "fetched_at": "2026-10-11T11:24:31.702837+00:00",
+    "http_status": 200,
+    "response_sha256": "ee44c44ca3aa03efb89805bc723ea651011987893c352c5a6bf51f3a242e0206"
+  },
+  "issue": {
+    "id": "I_kwDOBiM5Uc7yuxOT",
+    "databaseId": 4072346515,
+    "number": 3123,
+    "title": "Segfault in in `joint_state_broadcaster::JointStateBroadcaster::init_joint_data()`",
+    "url": "https://github.com/ros-controls/ros2_control/issues/3123",
+    "body": "Rolling-testing\nhttps://github.com/ros-controls/gz_ros2_control/actions/runs/23055669518/attempts/1?pr=791\n```\n11: [gazebo-1] Stack trace (most recent call last) in thread 20673:\n11: [gazebo-1] #31   Object \"/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2\", at 0xffffffffffffffff, in \n11: [gazebo-1] #30   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7fcba1c6fa63, in __clone\n11: [gazebo-1] #29   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7fcba1be2aa3, in \n11: [gazebo-1] #28   Object \"/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33\", at 0x7fcba1e74db3, in \n11: [gazebo-1] #27   Object \"/opt/ros/rolling/lib/librclcpp.so\", at 0x7fcb6a6c3346, in rclcpp::executors::MultiThreadedExecutor::run(unsigned long)\n11: [gazebo-1] #26   Object \"/opt/ros/rolling/lib/librclcpp.so\", at 0x7fcb6a6b0069, in rclcpp::Executor::execute_any_executable(rclcpp::AnyExecutable&)\n11: [gazebo-1] #25   Object \"/opt/ros/rolling/lib/librclcpp.so\", at 0x7fcb6a6aceb3, in rclcpp::Executor::execute_service(std::shared_ptr<rclcpp::ServiceBase>)\n11: [gazebo-1] #24   Object \"/opt/ros/rolling/lib/librclcpp.so\", at 0x7fcb6a781ee9, in \n11: [gazebo-1] #23   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b6be326, in rclcpp::Service<controller_manager_msgs::srv::SwitchController>::handle_request(std::shared_ptr<rmw_request_id_s>, std::shared_ptr<void>)\n11: [gazebo-1] #22   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b6c9815, in rclcpp::AnyServiceCallback<controller_manager_msgs::srv::SwitchController>::dispatch(std::shared_ptr<rclcpp::Service<controller_manager_msgs::srv::SwitchController> > const&, std::shared_ptr<rmw_request_id_s> const&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >)\n11: [gazebo-1] #21   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b6d6772, in std::function<void (std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >)>::operator()(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >) const\n11: [gazebo-1] #20   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b66bd7f, in std::_Function_handler<void (std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >), std::_Bind<void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder<1>, std::_Placeholder<2>))(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >)> >::_M_invoke(std::_Any_data const&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >&&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >&&)\n11: [gazebo-1] #19   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b67b3f3, in std::enable_if<is_invocable_r_v<void, std::_Bind<void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder<1>, std::_Placeholder<2>))(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >)>&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > > >, void>::type std::__invoke_r<void, std::_Bind<void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder<1>, std::_Placeholder<2>))(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >)>&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > > >(std::_Bind<void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder<1>, std::_Placeholder<2>))(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >)>&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >&&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >&&)\n11: [gazebo-1] #18   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b686f2c, in void std::__invoke_impl<void, std::_Bind<void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder<1>, std::_Placeholder<2>))(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >)>&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > > >(std::__invoke_other, std::_Bind<void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder<1>, std::_Placeholder<2>))(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >)>&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >&&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >&&)\n11: [gazebo-1] #17   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b690626, in void std::_Bind<void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder<1>, std::_Placeholder<2>))(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >)>::operator()<std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >, void>(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >&&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >&&)\n11: [gazebo-1] #16   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b69754a, in void std::_Bind<void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder<1>, std::_Placeholder<2>))(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >)>::__call<void, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >&&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >&&, 0ul, 1ul, 2ul>(std::tuple<std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >&&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >&&>&&, std::_Index_tuple<0ul, 1ul, 2ul>)\n11: [gazebo-1] #15   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b69d7ac, in std::__invoke_result<void (controller_manager::ControllerManager::*&)(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >), controller_manager::ControllerManager*&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > > >::type std::__invoke<void (controller_manager::ControllerManager::*&)(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >), controller_manager::ControllerManager*&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > > >(void (controller_manager::ControllerManager::*&)(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >), controller_manager::ControllerManager*&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >&&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >&&)\n11: [gazebo-1] #14   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b6a3d5a, in void std::__invoke_impl<void, void (controller_manager::ControllerManager::*&)(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >), controller_manager::ControllerManager*&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > > >(std::__invoke_memfun_deref, void (controller_manager::ControllerManager::*&)(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >), controller_manager::ControllerManager*&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >&&, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >&&)\n11: [gazebo-1] #13   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b51a3c4, in controller_manager::ControllerManager::switch_controller_service_cb(std::shared_ptr<controller_manager_msgs::srv::SwitchController_Request_<std::allocator<void> > >, std::shared_ptr<controller_manager_msgs::srv::SwitchController_Response_<std::allocator<void> > >)\n11: [gazebo-1] #12   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b50e92a, in controller_manager::ControllerManager::switch_controller_cb(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, int, bool, rclcpp::Duration const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&)\n11: [gazebo-1] #11   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b51f2ff, in controller_manager::ControllerManager::manage_switch()\n11: [gazebo-1] #10   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b5133cc, in controller_manager::ControllerManager::activate_controllers(std::vector<controller_manager::ControllerSpec, std::allocator<controller_manager::ControllerSpec> > const&, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&, int)\n11: [gazebo-1] #9    Object \"/opt/ros/rolling/lib/librclcpp_lifecycle.so\", at 0x7fcb6aca73b7, in rclcpp_lifecycle::LifecycleNode::LifecycleNodeInterfaceImpl::trigger_transition(unsigned char)\n11: [gazebo-1] #8    Object \"/opt/ros/rolling/lib/librclcpp_lifecycle.so\", at 0x7fcb6aca7360, in rclcpp_lifecycle::LifecycleNode::LifecycleNodeInterfaceImpl::trigger_transition(unsigned char, rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn&)\n11: [gazebo-1] #7    Object \"/opt/ros/rolling/lib/librclcpp_lifecycle.so\", at 0x7fcb6aca66f9, in rclcpp_lifecycle::LifecycleNode::LifecycleNodeInterfaceImpl::change_state(unsigned char, rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn&)\n11: [gazebo-1] #6    Object \"/opt/ros/rolling/lib/librclcpp_lifecycle.so\", at 0x7fcb6aca63be, in rclcpp_lifecycle::LifecycleNode::LifecycleNodeInterfaceImpl::execute_callback(unsigned int, rclcpp_lifecycle::State const&) const\n11: [gazebo-1] #5    Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_interface/lib/libcontroller_interface.so\", at 0x7fcb6ad7ce31, in std::_Function_handler<rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn (rclcpp_lifecycle::State const&), controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&)::{lambda(rclcpp_lifecycle::State const&)#3}>::_M_invoke(std::_Any_data const&, rclcpp_lifecycle::State const&)\n11: [gazebo-1] #4    Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_interface/lib/libcontroller_interface.so\", at 0x7fcb6ad7d562, in std::enable_if<is_invocable_r_v<rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn, controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&)::{lambda(rclcpp_lifecycle::State const&)#3}&, rclcpp_lifecycle::State const&>, rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn>::type std::__invoke_r<rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn, controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&)::{lambda(rclcpp_lifecycle::State const&)#3}&, rclcpp_lifecycle::State const&>(controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&)::{lambda(rclcpp_lifecycle::State const&)#3}&, rclcpp_lifecycle::State const&)\n11: [gazebo-1] #3    Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_interface/lib/libcontroller_interface.so\", at 0x7fcb6ad7dc60, in rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn std::__invoke_impl<rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn, controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&)::{lambda(rclcpp_lifecycle::State const&)#3}&, rclcpp_lifecycle::State const&>(std::__invoke_other, controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&)::{lambda(rclcpp_lifecycle::State const&)#3}&, rclcpp_lifecycle::State const&)\n11: [gazebo-1] #2    Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_interface/lib/libcontroller_interface.so\", at 0x7fcb6ad77628, in controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&)::{lambda(rclcpp_lifecycle::State const&)#3}::operator()(rclcpp_lifecycle::State const&) const\n11: [gazebo-1] #1    Object \"/opt/ros/rolling/lib/libjoint_state_broadcaster.so\", at 0x7fcb6453c2ce, in joint_state_broadcaster::JointStateBroadcaster::on_activate(rclcpp_lifecycle::State const&)\n11: [gazebo-1] #0    Object \"/opt/ros/rolling/lib/libjoint_state_broadcaster.so\", at 0x7fcb6453b760, in joint_state_broadcaster::JointStateBroadcaster::init_joint_data()\n11: [gazebo-1] Segmentation fault (Address not mapped to object [0x78])\n11: [gazebo-1] Segmentation fault (core dumped)\n```\n\nHappens since February 26th. Is this related to ros2_control or the JSB?",
+    "bodyHTML": "<p dir=\"auto\">Rolling-testing<br>\n<a href=\"https://github.com/ros-controls/gz_ros2_control/actions/runs/23055669518/attempts/1?pr=791\">https://github.com/ros-controls/gz_ros2_control/actions/runs/23055669518/attempts/1?pr=791</a></p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"11: [gazebo-1] Stack trace (most recent call last) in thread 20673:\n11: [gazebo-1] #31   Object &quot;/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2&quot;, at 0xffffffffffffffff, in \n11: [gazebo-1] #30   Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7fcba1c6fa63, in __clone\n11: [gazebo-1] #29   Object &quot;/usr/lib/x86_64-linux-gnu/libc.so.6&quot;, at 0x7fcba1be2aa3, in \n11: [gazebo-1] #28   Object &quot;/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33&quot;, at 0x7fcba1e74db3, in \n11: [gazebo-1] #27   Object &quot;/opt/ros/rolling/lib/librclcpp.so&quot;, at 0x7fcb6a6c3346, in rclcpp::executors::MultiThreadedExecutor::run(unsigned long)\n11: [gazebo-1] #26   Object &quot;/opt/ros/rolling/lib/librclcpp.so&quot;, at 0x7fcb6a6b0069, in rclcpp::Executor::execute_any_executable(rclcpp::AnyExecutable&amp;)\n11: [gazebo-1] #25   Object &quot;/opt/ros/rolling/lib/librclcpp.so&quot;, at 0x7fcb6a6aceb3, in rclcpp::Executor::execute_service(std::shared_ptr&lt;rclcpp::ServiceBase&gt;)\n11: [gazebo-1] #24   Object &quot;/opt/ros/rolling/lib/librclcpp.so&quot;, at 0x7fcb6a781ee9, in \n11: [gazebo-1] #23   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b6be326, in rclcpp::Service&lt;controller_manager_msgs::srv::SwitchController&gt;::handle_request(std::shared_ptr&lt;rmw_request_id_s&gt;, std::shared_ptr&lt;void&gt;)\n11: [gazebo-1] #22   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b6c9815, in rclcpp::AnyServiceCallback&lt;controller_manager_msgs::srv::SwitchController&gt;::dispatch(std::shared_ptr&lt;rclcpp::Service&lt;controller_manager_msgs::srv::SwitchController&gt; &gt; const&amp;, std::shared_ptr&lt;rmw_request_id_s&gt; const&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;)\n11: [gazebo-1] #21   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b6d6772, in std::function&lt;void (std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;::operator()(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;) const\n11: [gazebo-1] #20   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b66bd7f, in std::_Function_handler&lt;void (std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;), std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt; &gt;::_M_invoke(std::_Any_data const&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;)\n11: [gazebo-1] #19   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b67b3f3, in std::enable_if&lt;is_invocable_r_v&lt;void, std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt; &gt;, void&gt;::type std::__invoke_r&lt;void, std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt; &gt;(std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;)\n11: [gazebo-1] #18   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b686f2c, in void std::__invoke_impl&lt;void, std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt; &gt;(std::__invoke_other, std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;)\n11: [gazebo-1] #17   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b690626, in void std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;::operator()&lt;std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;, void&gt;(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;)\n11: [gazebo-1] #16   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b69754a, in void std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;::__call&lt;void, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, 0ul, 1ul, 2ul&gt;(std::tuple&lt;std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;&gt;&amp;&amp;, std::_Index_tuple&lt;0ul, 1ul, 2ul&gt;)\n11: [gazebo-1] #15   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b69d7ac, in std::__invoke_result&lt;void (controller_manager::ControllerManager::*&amp;)(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;), controller_manager::ControllerManager*&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt; &gt;::type std::__invoke&lt;void (controller_manager::ControllerManager::*&amp;)(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;), controller_manager::ControllerManager*&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt; &gt;(void (controller_manager::ControllerManager::*&amp;)(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;), controller_manager::ControllerManager*&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;)\n11: [gazebo-1] #14   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b6a3d5a, in void std::__invoke_impl&lt;void, void (controller_manager::ControllerManager::*&amp;)(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;), controller_manager::ControllerManager*&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt; &gt;(std::__invoke_memfun_deref, void (controller_manager::ControllerManager::*&amp;)(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;), controller_manager::ControllerManager*&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;)\n11: [gazebo-1] #13   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b51a3c4, in controller_manager::ControllerManager::switch_controller_service_cb(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)\n11: [gazebo-1] #12   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b50e92a, in controller_manager::ControllerManager::switch_controller_cb(std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, int, bool, rclcpp::Duration const&amp;, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;&amp;)\n11: [gazebo-1] #11   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b51f2ff, in controller_manager::ControllerManager::manage_switch()\n11: [gazebo-1] #10   Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so&quot;, at 0x7fcb6b5133cc, in controller_manager::ControllerManager::activate_controllers(std::vector&lt;controller_manager::ControllerSpec, std::allocator&lt;controller_manager::ControllerSpec&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, int)\n11: [gazebo-1] #9    Object &quot;/opt/ros/rolling/lib/librclcpp_lifecycle.so&quot;, at 0x7fcb6aca73b7, in rclcpp_lifecycle::LifecycleNode::LifecycleNodeInterfaceImpl::trigger_transition(unsigned char)\n11: [gazebo-1] #8    Object &quot;/opt/ros/rolling/lib/librclcpp_lifecycle.so&quot;, at 0x7fcb6aca7360, in rclcpp_lifecycle::LifecycleNode::LifecycleNodeInterfaceImpl::trigger_transition(unsigned char, rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn&amp;)\n11: [gazebo-1] #7    Object &quot;/opt/ros/rolling/lib/librclcpp_lifecycle.so&quot;, at 0x7fcb6aca66f9, in rclcpp_lifecycle::LifecycleNode::LifecycleNodeInterfaceImpl::change_state(unsigned char, rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn&amp;)\n11: [gazebo-1] #6    Object &quot;/opt/ros/rolling/lib/librclcpp_lifecycle.so&quot;, at 0x7fcb6aca63be, in rclcpp_lifecycle::LifecycleNode::LifecycleNodeInterfaceImpl::execute_callback(unsigned int, rclcpp_lifecycle::State const&amp;) const\n11: [gazebo-1] #5    Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_interface/lib/libcontroller_interface.so&quot;, at 0x7fcb6ad7ce31, in std::_Function_handler&lt;rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn (rclcpp_lifecycle::State const&amp;), controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}&gt;::_M_invoke(std::_Any_data const&amp;, rclcpp_lifecycle::State const&amp;)\n11: [gazebo-1] #4    Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_interface/lib/libcontroller_interface.so&quot;, at 0x7fcb6ad7d562, in std::enable_if&lt;is_invocable_r_v&lt;rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn, controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}&amp;, rclcpp_lifecycle::State const&amp;&gt;, rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn&gt;::type std::__invoke_r&lt;rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn, controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}&amp;, rclcpp_lifecycle::State const&amp;&gt;(controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}&amp;, rclcpp_lifecycle::State const&amp;)\n11: [gazebo-1] #3    Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_interface/lib/libcontroller_interface.so&quot;, at 0x7fcb6ad7dc60, in rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn std::__invoke_impl&lt;rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn, controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}&amp;, rclcpp_lifecycle::State const&amp;&gt;(std::__invoke_other, controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}&amp;, rclcpp_lifecycle::State const&amp;)\n11: [gazebo-1] #2    Object &quot;/__w/gz_ros2_control/gz_ros2_control/install/controller_interface/lib/libcontroller_interface.so&quot;, at 0x7fcb6ad77628, in controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}::operator()(rclcpp_lifecycle::State const&amp;) const\n11: [gazebo-1] #1    Object &quot;/opt/ros/rolling/lib/libjoint_state_broadcaster.so&quot;, at 0x7fcb6453c2ce, in joint_state_broadcaster::JointStateBroadcaster::on_activate(rclcpp_lifecycle::State const&amp;)\n11: [gazebo-1] #0    Object &quot;/opt/ros/rolling/lib/libjoint_state_broadcaster.so&quot;, at 0x7fcb6453b760, in joint_state_broadcaster::JointStateBroadcaster::init_joint_data()\n11: [gazebo-1] Segmentation fault (Address not mapped to object [0x78])\n11: [gazebo-1] Segmentation fault (core dumped)\"><pre class=\"notranslate\"><code class=\"notranslate\">11: [gazebo-1] Stack trace (most recent call last) in thread 20673:\n11: [gazebo-1] #31   Object \"/usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2\", at 0xffffffffffffffff, in \n11: [gazebo-1] #30   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7fcba1c6fa63, in __clone\n11: [gazebo-1] #29   Object \"/usr/lib/x86_64-linux-gnu/libc.so.6\", at 0x7fcba1be2aa3, in \n11: [gazebo-1] #28   Object \"/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33\", at 0x7fcba1e74db3, in \n11: [gazebo-1] #27   Object \"/opt/ros/rolling/lib/librclcpp.so\", at 0x7fcb6a6c3346, in rclcpp::executors::MultiThreadedExecutor::run(unsigned long)\n11: [gazebo-1] #26   Object \"/opt/ros/rolling/lib/librclcpp.so\", at 0x7fcb6a6b0069, in rclcpp::Executor::execute_any_executable(rclcpp::AnyExecutable&amp;)\n11: [gazebo-1] #25   Object \"/opt/ros/rolling/lib/librclcpp.so\", at 0x7fcb6a6aceb3, in rclcpp::Executor::execute_service(std::shared_ptr&lt;rclcpp::ServiceBase&gt;)\n11: [gazebo-1] #24   Object \"/opt/ros/rolling/lib/librclcpp.so\", at 0x7fcb6a781ee9, in \n11: [gazebo-1] #23   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b6be326, in rclcpp::Service&lt;controller_manager_msgs::srv::SwitchController&gt;::handle_request(std::shared_ptr&lt;rmw_request_id_s&gt;, std::shared_ptr&lt;void&gt;)\n11: [gazebo-1] #22   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b6c9815, in rclcpp::AnyServiceCallback&lt;controller_manager_msgs::srv::SwitchController&gt;::dispatch(std::shared_ptr&lt;rclcpp::Service&lt;controller_manager_msgs::srv::SwitchController&gt; &gt; const&amp;, std::shared_ptr&lt;rmw_request_id_s&gt; const&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;)\n11: [gazebo-1] #21   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b6d6772, in std::function&lt;void (std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;::operator()(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;) const\n11: [gazebo-1] #20   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b66bd7f, in std::_Function_handler&lt;void (std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;), std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt; &gt;::_M_invoke(std::_Any_data const&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;)\n11: [gazebo-1] #19   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b67b3f3, in std::enable_if&lt;is_invocable_r_v&lt;void, std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt; &gt;, void&gt;::type std::__invoke_r&lt;void, std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt; &gt;(std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;)\n11: [gazebo-1] #18   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b686f2c, in void std::__invoke_impl&lt;void, std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt; &gt;(std::__invoke_other, std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;)\n11: [gazebo-1] #17   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b690626, in void std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;::operator()&lt;std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;, void&gt;(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;)\n11: [gazebo-1] #16   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b69754a, in void std::_Bind&lt;void (controller_manager::ControllerManager::*(controller_manager::ControllerManager*, std::_Placeholder&lt;1&gt;, std::_Placeholder&lt;2&gt;))(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)&gt;::__call&lt;void, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, 0ul, 1ul, 2ul&gt;(std::tuple&lt;std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;&gt;&amp;&amp;, std::_Index_tuple&lt;0ul, 1ul, 2ul&gt;)\n11: [gazebo-1] #15   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b69d7ac, in std::__invoke_result&lt;void (controller_manager::ControllerManager::*&amp;)(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;), controller_manager::ControllerManager*&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt; &gt;::type std::__invoke&lt;void (controller_manager::ControllerManager::*&amp;)(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;), controller_manager::ControllerManager*&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt; &gt;(void (controller_manager::ControllerManager::*&amp;)(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;), controller_manager::ControllerManager*&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;)\n11: [gazebo-1] #14   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b6a3d5a, in void std::__invoke_impl&lt;void, void (controller_manager::ControllerManager::*&amp;)(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;), controller_manager::ControllerManager*&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt; &gt;(std::__invoke_memfun_deref, void (controller_manager::ControllerManager::*&amp;)(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;), controller_manager::ControllerManager*&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;&amp;&amp;)\n11: [gazebo-1] #13   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b51a3c4, in controller_manager::ControllerManager::switch_controller_service_cb(std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Request_&lt;std::allocator&lt;void&gt; &gt; &gt;, std::shared_ptr&lt;controller_manager_msgs::srv::SwitchController_Response_&lt;std::allocator&lt;void&gt; &gt; &gt;)\n11: [gazebo-1] #12   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b50e92a, in controller_manager::ControllerManager::switch_controller_cb(std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, int, bool, rclcpp::Duration const&amp;, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;&amp;)\n11: [gazebo-1] #11   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b51f2ff, in controller_manager::ControllerManager::manage_switch()\n11: [gazebo-1] #10   Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_manager/lib/libcontroller_manager.so\", at 0x7fcb6b5133cc, in controller_manager::ControllerManager::activate_controllers(std::vector&lt;controller_manager::ControllerSpec, std::allocator&lt;controller_manager::ControllerSpec&gt; &gt; const&amp;, std::vector&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;, std::allocator&lt;std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt; &gt; const&amp;, int)\n11: [gazebo-1] #9    Object \"/opt/ros/rolling/lib/librclcpp_lifecycle.so\", at 0x7fcb6aca73b7, in rclcpp_lifecycle::LifecycleNode::LifecycleNodeInterfaceImpl::trigger_transition(unsigned char)\n11: [gazebo-1] #8    Object \"/opt/ros/rolling/lib/librclcpp_lifecycle.so\", at 0x7fcb6aca7360, in rclcpp_lifecycle::LifecycleNode::LifecycleNodeInterfaceImpl::trigger_transition(unsigned char, rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn&amp;)\n11: [gazebo-1] #7    Object \"/opt/ros/rolling/lib/librclcpp_lifecycle.so\", at 0x7fcb6aca66f9, in rclcpp_lifecycle::LifecycleNode::LifecycleNodeInterfaceImpl::change_state(unsigned char, rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn&amp;)\n11: [gazebo-1] #6    Object \"/opt/ros/rolling/lib/librclcpp_lifecycle.so\", at 0x7fcb6aca63be, in rclcpp_lifecycle::LifecycleNode::LifecycleNodeInterfaceImpl::execute_callback(unsigned int, rclcpp_lifecycle::State const&amp;) const\n11: [gazebo-1] #5    Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_interface/lib/libcontroller_interface.so\", at 0x7fcb6ad7ce31, in std::_Function_handler&lt;rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn (rclcpp_lifecycle::State const&amp;), controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}&gt;::_M_invoke(std::_Any_data const&amp;, rclcpp_lifecycle::State const&amp;)\n11: [gazebo-1] #4    Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_interface/lib/libcontroller_interface.so\", at 0x7fcb6ad7d562, in std::enable_if&lt;is_invocable_r_v&lt;rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn, controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}&amp;, rclcpp_lifecycle::State const&amp;&gt;, rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn&gt;::type std::__invoke_r&lt;rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn, controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}&amp;, rclcpp_lifecycle::State const&amp;&gt;(controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}&amp;, rclcpp_lifecycle::State const&amp;)\n11: [gazebo-1] #3    Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_interface/lib/libcontroller_interface.so\", at 0x7fcb6ad7dc60, in rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn std::__invoke_impl&lt;rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn, controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}&amp;, rclcpp_lifecycle::State const&amp;&gt;(std::__invoke_other, controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}&amp;, rclcpp_lifecycle::State const&amp;)\n11: [gazebo-1] #2    Object \"/__w/gz_ros2_control/gz_ros2_control/install/controller_interface/lib/libcontroller_interface.so\", at 0x7fcb6ad77628, in controller_interface::ControllerInterfaceBase::init(controller_interface::ControllerInterfaceParams const&amp;)::{lambda(rclcpp_lifecycle::State const&amp;)#3}::operator()(rclcpp_lifecycle::State const&amp;) const\n11: [gazebo-1] #1    Object \"/opt/ros/rolling/lib/libjoint_state_broadcaster.so\", at 0x7fcb6453c2ce, in joint_state_broadcaster::JointStateBroadcaster::on_activate(rclcpp_lifecycle::State const&amp;)\n11: [gazebo-1] #0    Object \"/opt/ros/rolling/lib/libjoint_state_broadcaster.so\", at 0x7fcb6453b760, in joint_state_broadcaster::JointStateBroadcaster::init_joint_data()\n11: [gazebo-1] Segmentation fault (Address not mapped to object [0x78])\n11: [gazebo-1] Segmentation fault (core dumped)\n</code></pre></div>\n<p dir=\"auto\">Happens since February 26th. Is this related to ros2_control or the JSB?</p>",
+    "state": "CLOSED",
+    "stateReason": "NOT_PLANNED",
+    "createdAt": "2026-03-13T17:08:53Z",
+    "updatedAt": "2026-06-22T16:51:02Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+      "login": "christophfroehlich",
+      "id": "MDQ6VXNlcjMzNjcyNDQ=",
+      "profileUrl": "https://github.com/christophfroehlich",
+      "name": "Christoph Fröhlich",
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+            "fullDatabaseId": "687920448",
+            "color": "ee0701",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+            "fullDatabaseId": "8380273440",
+            "color": "ededed",
+            "name": "stale",
+            "nameHTML": "stale",
+            "description": null,
+            "url": "https://github.com/ros-controls/ros2_control/labels/stale",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 5,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc708tTd",
+      "databaseId": 4109554909,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7yuxOT",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3123,
+        "locked": false,
+        "databaseId": 4072346515
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3123#issuecomment-4109554909",
+      "createdAt": "2026-03-23T10:26:46Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@christophfroehlich Could it be that https://github.com/ros-controls/ros2_controllers/pull/2217 solved it? ",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/christophfroehlich/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/christophfroehlich\">@christophfroehlich</a> Could it be that <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4088971605\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_controllers/issues/2217\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-controls/ros2_controllers/pull/2217/hovercard\" href=\"https://github.com/ros-controls/ros2_controllers/pull/2217\">ros-controls/ros2_controllers#2217</a> solved it?</p>",
+      "bodyVersion": "5b8931428a281b7d2481f32d8a462ced2e69e391c076a72f4e7a70da9be275cc",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc71CvXK",
+      "databaseId": 4111136202,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7yuxOT",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3123,
+        "locked": false,
+        "databaseId": 4072346515
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3123#issuecomment-4111136202",
+      "createdAt": "2026-03-23T14:39:36Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Could be. I'll leave this issue open, stale workflow will auto close it if it never happens again.",
+      "bodyHTML": "<p dir=\"auto\">Could be. I'll leave this issue open, stale workflow will auto close it if it never happens again.</p>",
+      "bodyVersion": "83db11917bc1df0468b795eec5168418bf5f76cdad618ca8e569f457fd42c944",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc71FgVZ",
+      "databaseId": 4111861081,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7yuxOT",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3123,
+        "locked": false,
+        "databaseId": 4072346515
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3123#issuecomment-4111861081",
+      "createdAt": "2026-03-23T16:16:33Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "True. Suree",
+      "bodyHTML": "<p dir=\"auto\">True. Suree</p>",
+      "bodyVersion": "3c5f0f6995ba90ff532094c4a4ba1d86c0c1fdd17d1de5acf1e91837c0cb370a",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABBqom2A",
+      "databaseId": 4406781656,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7yuxOT",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3123,
+        "locked": false,
+        "databaseId": 4072346515
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3123#issuecomment-4406781656",
+      "createdAt": "2026-05-08T13:28:00Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABHFu91w",
+      "databaseId": 4770741719,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7yuxOT",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3123,
+        "locked": false,
+        "databaseId": 4072346515
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3123#issuecomment-4770741719",
+      "createdAt": "2026-06-22T16:51:01Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue was closed because it has been stalled for 45 days with no activity.",
+      "bodyHTML": "<p dir=\"auto\">This issue was closed because it has been stalled for 45 days with no activity.</p>",
+      "bodyVersion": "2ebf833f90f878eff9039e2c6cb637ca3b662f79161cd2a020a36f04c154f883",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7yuxOTzwAAAAV767ub",
+      "databaseId": 23553883035,
+      "createdAt": "2026-03-13T17:08:54Z",
+      "actor": {
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?s=64&u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "login": "christophfroehlich",
+        "profileResourcePath": "/christophfroehlich",
+        "__typename": "User",
+        "name": "Christoph Fröhlich"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw2ODc5MjA0NDg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "ee0701",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc708tTd",
+      "databaseId": 4109554909,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7yuxOT",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3123,
+        "locked": false,
+        "databaseId": 4072346515
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3123#issuecomment-4109554909",
+      "createdAt": "2026-03-23T10:26:46Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "@christophfroehlich Could it be that https://github.com/ros-controls/ros2_controllers/pull/2217 solved it? ",
+      "bodyHTML": "<p dir=\"auto\"><a class=\"user-mention notranslate\" data-hovercard-type=\"user\" data-hovercard-url=\"/users/christophfroehlich/hovercard\" data-octo-click=\"hovercard-link-click\" data-octo-dimensions=\"link_type:self\" href=\"https://github.com/christophfroehlich\">@christophfroehlich</a> Could it be that <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4088971605\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-controls/ros2_controllers/issues/2217\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-controls/ros2_controllers/pull/2217/hovercard\" href=\"https://github.com/ros-controls/ros2_controllers/pull/2217\">ros-controls/ros2_controllers#2217</a> solved it?</p>",
+      "bodyVersion": "5b8931428a281b7d2481f32d8a462ced2e69e391c076a72f4e7a70da9be275cc",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc71CvXK",
+      "databaseId": 4111136202,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7yuxOT",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3123,
+        "locked": false,
+        "databaseId": 4072346515
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjMzNjcyNDQ=",
+        "login": "christophfroehlich",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/3367244?u=b62ff823191edb91863d1fb972a4bd50b612355d&v=4",
+        "profileUrl": "https://github.com/christophfroehlich",
+        "name": "Christoph Fröhlich"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3123#issuecomment-4111136202",
+      "createdAt": "2026-03-23T14:39:36Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Could be. I'll leave this issue open, stale workflow will auto close it if it never happens again.",
+      "bodyHTML": "<p dir=\"auto\">Could be. I'll leave this issue open, stale workflow will auto close it if it never happens again.</p>",
+      "bodyVersion": "83db11917bc1df0468b795eec5168418bf5f76cdad618ca8e569f457fd42c944",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc71FgVZ",
+      "databaseId": 4111861081,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7yuxOT",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3123,
+        "locked": false,
+        "databaseId": 4072346515
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjEwMDgyNDI4",
+        "login": "saikishor",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/10082428?u=a8449baf27fec21608c3919a53021b418098ddfe&v=4",
+        "profileUrl": "https://github.com/saikishor",
+        "name": "Sai Kishor Kothakota"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3123#issuecomment-4111861081",
+      "createdAt": "2026-03-23T16:16:33Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "True. Suree",
+      "bodyHTML": "<p dir=\"auto\">True. Suree</p>",
+      "bodyVersion": "3c5f0f6995ba90ff532094c4a4ba1d86c0c1fdd17d1de5acf1e91837c0cb370a",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABBqom2A",
+      "databaseId": 4406781656,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7yuxOT",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3123,
+        "locked": false,
+        "databaseId": 4072346515
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3123#issuecomment-4406781656",
+      "createdAt": "2026-05-08T13:28:00Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.",
+      "bodyHTML": "<p dir=\"auto\">This issue is being labeled as stale because it has been open 45 days with no activity. It will be automatically closed after another 45 days without follow-ups.</p>",
+      "bodyVersion": "6a6ff181a249415889a07d6eacba5ceecd8028749571572ef989ea4c71e5dd70",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOBiM5Uc7yuxOTzwAAAAXkcN4j",
+      "databaseId": 25307438627,
+      "createdAt": "2026-05-08T13:28:01Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "label": {
+        "id": "LA_kwDOBiM5Uc8AAAAB84DTIA",
+        "archivedAt": null,
+        "nameHTML": "stale",
+        "name": "stale",
+        "color": "ededed",
+        "description": null
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOBiM5Uc8AAAABHFu91w",
+      "databaseId": 4770741719,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOBiM5Uc7yuxOT",
+        "author": {
+          "__typename": "User",
+          "id": "MDQ6VXNlcjMzNjcyNDQ=",
+          "login": "christophfroehlich"
+        },
+        "number": 3123,
+        "locked": false,
+        "databaseId": 4072346515
+      },
+      "author": {
+        "__typename": "Bot",
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "login": "github-actions",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?v=4",
+        "profileUrl": "https://github.com/apps/github-actions"
+      },
+      "url": "https://github.com/ros-controls/ros2_control/issues/3123#issuecomment-4770741719",
+      "createdAt": "2026-06-22T16:51:01Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": {
+        "id": "MDM6QXBwMTUzNjg=",
+        "name": "GitHub Actions",
+        "url": "https://help.github.com/en/actions"
+      },
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This issue was closed because it has been stalled for 45 days with no activity.",
+      "bodyHTML": "<p dir=\"auto\">This issue was closed because it has been stalled for 45 days with no activity.</p>",
+      "bodyVersion": "2ebf833f90f878eff9039e2c6cb637ca3b662f79161cd2a020a36f04c154f883",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMDI5NzE3Mjk=",
+        "name": "ros2_control",
+        "owner": {
+          "__typename": "Organization",
+          "id": "MDEyOk9yZ2FuaXphdGlvbjQ4Mjc1NDc=",
+          "login": "ros-controls",
+          "url": "https://github.com/ros-controls"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-controls/ros2_control",
+        "databaseId": 102971729
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOBiM5Uc7yuxOTzwAAAAZMg7GF",
+      "databaseId": 27053502853,
+      "createdAt": "2026-06-22T16:51:02Z",
+      "actor": {
+        "id": "MDM6Qm90NDE4OTgyODI=",
+        "avatarUrl": "https://avatars.githubusercontent.com/in/15368?s=64&v=4",
+        "login": "github-actions",
+        "profileResourcePath": "/apps/github-actions",
+        "__typename": "Bot",
+        "isCopilot": false,
+        "isAgent": false,
+        "displayName": "github-actions[bot]"
+      },
+      "stateReason": "NOT_PLANNED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": null,
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnOgsKHABqzIzNTUzODgzMDM1",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnvA-GPABqzI3MDUzNTAyODUz"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABnOgsKHABqzIzNTUzODgzMDM1",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnvA-GPABqzI3MDUzNTAyODUz"
+    }
+  },
+  "linked_pull_requests": [],
+  "comments_complete": true,
+  "linked_pr_fetches": []
+}

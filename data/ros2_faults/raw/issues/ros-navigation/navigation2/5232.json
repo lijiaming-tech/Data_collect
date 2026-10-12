@@ -1,0 +1,2697 @@
+{
+  "schema_version": "1.0",
+  "repository": "ros-navigation/navigation2",
+  "source": {
+    "url": "https://github.com/ros-navigation/navigation2/issues/5232",
+    "final_url": "https://github.com/ros-navigation/navigation2/issues/5232",
+    "fetched_at": "2026-10-11T11:22:21.701453+00:00",
+    "http_status": 200,
+    "response_sha256": "3761cc8c89e509a1c2209c6684a0299545002798e1932cae0e58aeeb5ef2834a"
+  },
+  "issue": {
+    "id": "I_kwDOCBF7SM65yKKm",
+    "databaseId": 3116933798,
+    "number": 5232,
+    "title": "Local and global costmap ~half cell misalignment when both using the global frame",
+    "url": "https://github.com/ros-navigation/navigation2/issues/5232",
+    "body": "<!--\nFor general questions, please ask on Robotics Stack Exchange: https://robotics.stackexchange.com/, make sure to include at least the `ros2` and `nav2` tags and the rosdistro version you are running, e.g. `ardent`.\nFor general design discussions, please post on discourse: https://discourse.ros.org/c/ng-ros\nNot sure if this is the right repository? Open an issue on https://github.com/ros-navigation/navigation2\nFor Bug report or feature requests, please fill out the relevant category below\n-->\n\n## Bug report\n\n**Required Info:**\n\n- Operating System:\n  - Ubuntu 22.04\n- Computer:\n  - <!-- Nvidia Jetson Orin, 13th Gen Intel NUC, Ryzen 9 7940-HS -->\n- ROS2 Version:\n  - ROS2 Iron\n- Version or commit hash:\n  - 1.2.10\n- DDS implementation:\n  - Cyclone DDS\n\n#### Steps to reproduce issue\nUse a rolling local costmap and a static global costmap. Configure both with the same global frame. Typically:\n```\nlocal_costmap:\n  local_costmap:\n    ros__parameters:\n      update_frequency: 5.0\n      publish_frequency: 5.0\n      global_frame: map\n      robot_base_frame: base_link\n      rolling_window: true\n      trinary_costmap: False\n      width: 3\n      height: 3\n      resolution: 0.1\n      robot_radius: 0.8\n      use_maximum: true\n\n      plugins: [\"sync_layer\"]\n      sync_layer:\n        plugin: \"nav2_costmap_2d::StaticLayer\"\n        map_subscribe_transient_local: True\n        map_topic: \"/global_costmap/costmap\"\n        subscribe_to_updates: True\n        enabled: True\n      always_send_full_costmap: True\n\nglobal_costmap:\n  global_costmap:\n    ros__parameters:\n      publish_frequency: 1.0\n      update_frequency: 5.0\n      global_frame: map\n      robot_base_frame: base_link\n      robot_radius: 0.8\n      resolution: 0.1\n      track_unknown_space: False\n      use_maximum: true\n\n      plugins: [...]\n```\n\n#### Expected behavior\nThe local and global costmap are perfectly aligned since their sizes are integers, and the rolling costmap center coordinates is also casted to integer (https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/src/costmap_2d.cpp#L331).\n\n![Image](https://github.com/user-attachments/assets/8da690e8-d8b6-45d1-abf4-5b9bbd79b1eb)\n\nhttps://github.com/user-attachments/assets/798f0c70-bc92-46e3-a09d-aa4262cf9953\n\n#### Actual behavior\n\nIn some cases / after some time (still unclear), the rolling local costmap appears slightly shifted (~40% of a cell) with respect to the global costmap.\n\n![Image](https://github.com/user-attachments/assets/aced2e80-177d-4a33-85c5-17139119286f)\n\n#### Reproduction instructions\n\n#### Additional information\nIssue originally mentioned in #5152 ",
+    "bodyHTML": "\n<h2 dir=\"auto\">Bug report</h2>\n<p dir=\"auto\"><strong>Required Info:</strong></p>\n<ul dir=\"auto\">\n<li>Operating System:\n<ul dir=\"auto\">\n<li>Ubuntu 22.04</li>\n</ul>\n</li>\n<li>Computer:\n<ul dir=\"auto\">\n<li>\n\n</li>\n</ul>\n</li>\n<li>ROS2 Version:\n<ul dir=\"auto\">\n<li>ROS2 Iron</li>\n</ul>\n</li>\n<li>Version or commit hash:\n<ul dir=\"auto\">\n<li>1.2.10</li>\n</ul>\n</li>\n<li>DDS implementation:\n<ul dir=\"auto\">\n<li>Cyclone DDS</li>\n</ul>\n</li>\n</ul>\n<h4 dir=\"auto\">Steps to reproduce issue</h4>\n<p dir=\"auto\">Use a rolling local costmap and a static global costmap. Configure both with the same global frame. Typically:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"local_costmap:\n  local_costmap:\n    ros__parameters:\n      update_frequency: 5.0\n      publish_frequency: 5.0\n      global_frame: map\n      robot_base_frame: base_link\n      rolling_window: true\n      trinary_costmap: False\n      width: 3\n      height: 3\n      resolution: 0.1\n      robot_radius: 0.8\n      use_maximum: true\n\n      plugins: [&quot;sync_layer&quot;]\n      sync_layer:\n        plugin: &quot;nav2_costmap_2d::StaticLayer&quot;\n        map_subscribe_transient_local: True\n        map_topic: &quot;/global_costmap/costmap&quot;\n        subscribe_to_updates: True\n        enabled: True\n      always_send_full_costmap: True\n\nglobal_costmap:\n  global_costmap:\n    ros__parameters:\n      publish_frequency: 1.0\n      update_frequency: 5.0\n      global_frame: map\n      robot_base_frame: base_link\n      robot_radius: 0.8\n      resolution: 0.1\n      track_unknown_space: False\n      use_maximum: true\n\n      plugins: [...]\"><pre class=\"notranslate\"><code class=\"notranslate\">local_costmap:\n  local_costmap:\n    ros__parameters:\n      update_frequency: 5.0\n      publish_frequency: 5.0\n      global_frame: map\n      robot_base_frame: base_link\n      rolling_window: true\n      trinary_costmap: False\n      width: 3\n      height: 3\n      resolution: 0.1\n      robot_radius: 0.8\n      use_maximum: true\n\n      plugins: [\"sync_layer\"]\n      sync_layer:\n        plugin: \"nav2_costmap_2d::StaticLayer\"\n        map_subscribe_transient_local: True\n        map_topic: \"/global_costmap/costmap\"\n        subscribe_to_updates: True\n        enabled: True\n      always_send_full_costmap: True\n\nglobal_costmap:\n  global_costmap:\n    ros__parameters:\n      publish_frequency: 1.0\n      update_frequency: 5.0\n      global_frame: map\n      robot_base_frame: base_link\n      robot_radius: 0.8\n      resolution: 0.1\n      track_unknown_space: False\n      use_maximum: true\n\n      plugins: [...]\n</code></pre></div>\n<h4 dir=\"auto\">Expected behavior</h4>\n<p dir=\"auto\">The local and global costmap are perfectly aligned since their sizes are integers, and the rolling costmap center coordinates is also casted to integer (<a href=\"https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/src/costmap_2d.cpp#L331\">https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/src/costmap_2d.cpp#L331</a>).</p>\n<p dir=\"auto\"><a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://private-user-images.githubusercontent.com/102609575/451273038-8da690e8-d8b6-45d1-abf4-5b9bbd79b1eb.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgwNDEsIm5iZiI6MTc5MTcxNzc0MSwicGF0aCI6Ii8xMDI2MDk1NzUvNDUxMjczMDM4LThkYTY5MGU4LWQ4YjYtNDVkMS1hYmY0LTViOWJiZDc5YjFlYi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYxMDExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MTAxMVQxMTIyMjFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wMDA0NTAxNTcyZGMyY2UyZDc3MTZlNmNlNTE5MWMxMzkyN2VhZDEzMjVlZTg5NTRmODJhNDRiZThjMjRkMWMyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.i4xUc0Kh5w4xqZ24VM0TVPNqm1ws87fGrFR0gQob_3Y\"><img src=\"https://private-user-images.githubusercontent.com/102609575/451273038-8da690e8-d8b6-45d1-abf4-5b9bbd79b1eb.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgwNDEsIm5iZiI6MTc5MTcxNzc0MSwicGF0aCI6Ii8xMDI2MDk1NzUvNDUxMjczMDM4LThkYTY5MGU4LWQ4YjYtNDVkMS1hYmY0LTViOWJiZDc5YjFlYi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYxMDExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MTAxMVQxMTIyMjFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wMDA0NTAxNTcyZGMyY2UyZDc3MTZlNmNlNTE5MWMxMzkyN2VhZDEzMjVlZTg5NTRmODJhNDRiZThjMjRkMWMyJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.i4xUc0Kh5w4xqZ24VM0TVPNqm1ws87fGrFR0gQob_3Y\" alt=\"Image\" style=\"max-width: 100%;\"></a></p>\n<details open=\"\" class=\"details-reset border rounded-2\">\n  <summary class=\"tmp-px-3 py-2\">\n    <svg aria-hidden=\"true\" data-component=\"Octicon\" height=\"16\" viewBox=\"0 0 16 16\" version=\"1.1\" width=\"16\" data-view-component=\"true\" class=\"octicon octicon-device-camera-video\">\n    <path d=\"M16 3.75v8.5a.75.75 0 0 1-1.136.643L11 10.575v.675A1.75 1.75 0 0 1 9.25 13h-7.5A1.75 1.75 0 0 1 0 11.25v-6.5C0 3.784.784 3 1.75 3h7.5c.966 0 1.75.784 1.75 1.75v.675l3.864-2.318A.75.75 0 0 1 16 3.75Zm-6.5 1a.25.25 0 0 0-.25-.25h-7.5a.25.25 0 0 0-.25.25v6.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-6.5ZM11 8.825l3.5 2.1v-5.85l-3.5 2.1Z\"></path>\n</svg>\n    <span class=\"m-1\">450640192-408c6cfd-27ae-45d4-ae35-8edcbbaa872e.mp4</span>\n    <span class=\"dropdown-caret\"></span>\n  </summary>\n\n  <video src=\"https://private-user-images.githubusercontent.com/102609575/451273297-798f0c70-bc92-46e3-a09d-aa4262cf9953.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgwNDEsIm5iZiI6MTc5MTcxNzc0MSwicGF0aCI6Ii8xMDI2MDk1NzUvNDUxMjczMjk3LTc5OGYwYzcwLWJjOTItNDZlMy1hMDlkLWFhNDI2MmNmOTk1My5tcDQ_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYxMDExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MTAxMVQxMTIyMjFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1hNDM5NGY2MTRmYzFiZmRmOTI0ZGJlZTcwNzc1M2E2MjVmNjAyMzkzODM5MzM5ZWIxNTA2ZTFkNWRmZWFlMWQzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9dmlkZW8lMkZtcDQifQ.sl60fgjg3zmp7RB-M6iOD14SLpB-mqTaF1zFVjmnOJQ\" data-canonical-src=\"https://private-user-images.githubusercontent.com/102609575/451273297-798f0c70-bc92-46e3-a09d-aa4262cf9953.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgwNDEsIm5iZiI6MTc5MTcxNzc0MSwicGF0aCI6Ii8xMDI2MDk1NzUvNDUxMjczMjk3LTc5OGYwYzcwLWJjOTItNDZlMy1hMDlkLWFhNDI2MmNmOTk1My5tcDQ_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYxMDExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MTAxMVQxMTIyMjFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1hNDM5NGY2MTRmYzFiZmRmOTI0ZGJlZTcwNzc1M2E2MjVmNjAyMzkzODM5MzM5ZWIxNTA2ZTFkNWRmZWFlMWQzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9dmlkZW8lMkZtcDQifQ.sl60fgjg3zmp7RB-M6iOD14SLpB-mqTaF1zFVjmnOJQ\" controls=\"controls\" muted=\"muted\" class=\"d-block rounded-bottom-2 border-top width-fit\" style=\"max-height:640px; min-height: 200px\">\n\n  </video>\n</details>\n\n<h4 dir=\"auto\">Actual behavior</h4>\n<p dir=\"auto\">In some cases / after some time (still unclear), the rolling local costmap appears slightly shifted (~40% of a cell) with respect to the global costmap.</p>\n<p dir=\"auto\"><a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://private-user-images.githubusercontent.com/102609575/451273709-aced2e80-177d-4a33-85c5-17139119286f.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgwNDEsIm5iZiI6MTc5MTcxNzc0MSwicGF0aCI6Ii8xMDI2MDk1NzUvNDUxMjczNzA5LWFjZWQyZTgwLTE3N2QtNGEzMy04NWM1LTE3MTM5MTE5Mjg2Zi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYxMDExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MTAxMVQxMTIyMjFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04NDkwNzU5NDVmYjM4OGY1ZmI3ODY3N2Q0NTQwNjRhZmFkNmQ5NGQwMDNmNTI4Y2Y0Yjc3NzE5ZDczMWU4MGRkJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.wmpxO8jZLTUHhqipuy7i8pMedj1hq84Gg1BekcYSIfM\"><img src=\"https://private-user-images.githubusercontent.com/102609575/451273709-aced2e80-177d-4a33-85c5-17139119286f.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3OTE3MTgwNDEsIm5iZiI6MTc5MTcxNzc0MSwicGF0aCI6Ii8xMDI2MDk1NzUvNDUxMjczNzA5LWFjZWQyZTgwLTE3N2QtNGEzMy04NWM1LTE3MTM5MTE5Mjg2Zi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYxMDExJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MTAxMVQxMTIyMjFaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT04NDkwNzU5NDVmYjM4OGY1ZmI3ODY3N2Q0NTQwNjRhZmFkNmQ5NGQwMDNmNTI4Y2Y0Yjc3NzE5ZDczMWU4MGRkJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZyZXNwb25zZS1jb250ZW50LXR5cGU9aW1hZ2UlMkZwbmcifQ.wmpxO8jZLTUHhqipuy7i8pMedj1hq84Gg1BekcYSIfM\" alt=\"Image\" style=\"max-width: 100%;\"></a></p>\n<h4 dir=\"auto\">Reproduction instructions</h4>\n<h4 dir=\"auto\">Additional information</h4>\n<p dir=\"auto\">Issue originally mentioned in <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"3059299721\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/5152\" data-hovercard-type=\"issue\" data-hovercard-url=\"/ros-navigation/navigation2/issues/5152/hovercard\" href=\"https://github.com/ros-navigation/navigation2/issues/5152\">#5152</a></p>",
+    "state": "CLOSED",
+    "stateReason": "COMPLETED",
+    "createdAt": "2025-06-04T08:17:34Z",
+    "updatedAt": "2026-03-17T20:29:40Z",
+    "closedAt": null,
+    "author": {
+      "avatarUrl": "https://avatars.githubusercontent.com/u/102609575?v=4",
+      "login": "DylanDeCoeyer-Quimesis",
+      "id": "U_kgDOBh2ypw",
+      "profileUrl": "https://github.com/DylanDeCoeyer-Quimesis",
+      "name": null,
+      "__typename": "User"
+    },
+    "labels": {
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": "Mg"
+      },
+      "edges": [
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+            "fullDatabaseId": "948691578",
+            "color": "d73a4a",
+            "name": "bug",
+            "nameHTML": "bug",
+            "description": "Something isn't working",
+            "url": "https://github.com/ros-navigation/navigation2/labels/bug",
+            "archivedAt": null
+          }
+        },
+        {
+          "node": {
+            "id": "MDU6TGFiZWw5NDg2OTE1ODE=",
+            "fullDatabaseId": "948691581",
+            "color": "008672",
+            "name": "help wanted",
+            "nameHTML": "help wanted",
+            "description": "Extra attention is needed",
+            "url": "https://github.com/ros-navigation/navigation2/labels/help%20wanted",
+            "archivedAt": null
+          }
+        }
+      ]
+    },
+    "totalCommentsCount": 9,
+    "duplicateOf": null
+  },
+  "comments": [
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6vSwlK",
+      "databaseId": 2940930378,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-2940930378",
+      "createdAt": "2025-06-04T18:07:42Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Renamed for specificity - I hope that still meets your intent. Is this something you're going to look into or a report for some developer / maintainer to look into eventually when time or interest allots? \n\nI also see you mention Iron, have you tested this on something more modern? I don't recall anything that would fix / brought up an issue like this recently, but it is worth checking that we didn't already fix this issue in `main` or `main_humble` (main branch compatible with Humble) so we don't chase our tails",
+      "bodyHTML": "<p dir=\"auto\">Renamed for specificity - I hope that still meets your intent. Is this something you're going to look into or a report for some developer / maintainer to look into eventually when time or interest allots?</p>\n<p dir=\"auto\">I also see you mention Iron, have you tested this on something more modern? I don't recall anything that would fix / brought up an issue like this recently, but it is worth checking that we didn't already fix this issue in <code class=\"notranslate\">main</code> or <code class=\"notranslate\">main_humble</code> (main branch compatible with Humble) so we don't chase our tails</p>",
+      "bodyVersion": "1b7a6ac11ab51f29a42979a6c60a2d371b0ceb5a35cc0877087146c0bec316bd",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6veb7g",
+      "databaseId": 2943991520,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBh2ypw",
+        "login": "DylanDeCoeyer-Quimesis",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/102609575?v=4",
+        "profileUrl": "https://github.com/DylanDeCoeyer-Quimesis",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-2943991520",
+      "createdAt": "2025-06-05T12:16:55Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This shift is causing issues when our robot drives close to the border of the working area. Due to the shift, the position of the robot can be non-lethal on the global costmap and lethal on the local costmap. In this case, the planner can find a path, but our DWB follower systematically fails with nav2_core::NoValidControl.\n\nAs a consequence, I'll have to find a solution (either the root cause or a workaround). But I was hoping to get some insights from a Nav2 expert :-)",
+      "bodyHTML": "<p dir=\"auto\">This shift is causing issues when our robot drives close to the border of the working area. Due to the shift, the position of the robot can be non-lethal on the global costmap and lethal on the local costmap. In this case, the planner can find a path, but our DWB follower systematically fails with nav2_core::NoValidControl.</p>\n<p dir=\"auto\">As a consequence, I'll have to find a solution (either the root cause or a workaround). But I was hoping to get some insights from a Nav2 expert :-)</p>",
+      "bodyVersion": "564ce5fc02902eb3ea3794a86a664e3b21cc2324744418d64ed83787971a2081",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6vkVlX",
+      "databaseId": 2945538391,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-2945538391",
+      "createdAt": "2025-06-05T18:06:08Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Understood, unfortunately I don't have a 'here's the reason' off of the top of my head. I would have to experiment a bit to gain some intuition about what's happening and what impacts the behavior. Personally what I'd start with is checking that its not an issue with visualization just as a starting point. Then:\n* I'm suspect in this case of the origin calculation. The motion of the robot is not in discrete cells (continuous), so since we quash the origin change into an `int`, that would tell me there will be some approximation error. I'd check that first thing. \n* One thing in that area that I would test is changing the calculation of `new_grid_ox` to use the continuous coordinates instead of the static casted `int` version. The static casted version of `cell_ox` is needed later in the function, but I'm not sure that the new grid origin information needs to have that approximation applied. \n* I'm interested if we can see it only in the X or Y dimension and make some adjustments with respect to that axis only to see what helps / hurts and if that's related \n* Certainly the X and Y bounds functions you mention in the other ticket are suspect, but if you're not saying that helped with anything, I wouldn't start there.\n\nMy off the cuff intuition would be to crutinize the origin since that is what the rest is offset based off of. The grid is a fixed size so unless you count the cells and see when this happen there's a row / column added or missing, then I don't think it has to do with calculating grid bounds, but rather where the grid itself is placed. I think that's the origin or incoming map data alignment related, possibly. ",
+      "bodyHTML": "<p dir=\"auto\">Understood, unfortunately I don't have a 'here's the reason' off of the top of my head. I would have to experiment a bit to gain some intuition about what's happening and what impacts the behavior. Personally what I'd start with is checking that its not an issue with visualization just as a starting point. Then:</p>\n<ul dir=\"auto\">\n<li>I'm suspect in this case of the origin calculation. The motion of the robot is not in discrete cells (continuous), so since we quash the origin change into an <code class=\"notranslate\">int</code>, that would tell me there will be some approximation error. I'd check that first thing.</li>\n<li>One thing in that area that I would test is changing the calculation of <code class=\"notranslate\">new_grid_ox</code> to use the continuous coordinates instead of the static casted <code class=\"notranslate\">int</code> version. The static casted version of <code class=\"notranslate\">cell_ox</code> is needed later in the function, but I'm not sure that the new grid origin information needs to have that approximation applied.</li>\n<li>I'm interested if we can see it only in the X or Y dimension and make some adjustments with respect to that axis only to see what helps / hurts and if that's related</li>\n<li>Certainly the X and Y bounds functions you mention in the other ticket are suspect, but if you're not saying that helped with anything, I wouldn't start there.</li>\n</ul>\n<p dir=\"auto\">My off the cuff intuition would be to crutinize the origin since that is what the rest is offset based off of. The grid is a fixed size so unless you count the cells and see when this happen there's a row / column added or missing, then I don't think it has to do with calculating grid bounds, but rather where the grid itself is placed. I think that's the origin or incoming map data alignment related, possibly.</p>",
+      "bodyVersion": "37f0d9528bee4c272aafcda5ce575300f878e5481bce315fd6c3b68c14f0d0dd",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "U_kgDOBh2ypw",
+                "login": "DylanDeCoeyer-Quimesis",
+                "name": null,
+                "avatarUrl": "https://avatars.githubusercontent.com/u/102609575?s=64&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7wtr9m",
+      "databaseId": 4038508390,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBh2ypw",
+        "login": "DylanDeCoeyer-Quimesis",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/102609575?v=4",
+        "profileUrl": "https://github.com/DylanDeCoeyer-Quimesis",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-4038508390",
+      "createdAt": "2026-03-11T11:19:02Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I finally understood the issue. The coordinates of the origin of my static costmap were not multiple of the costmap resolution. For example:\n\n```\norigin:\n- 3.05\n- -11.05\n```\n\nwith a costmap resolution of 0.1.\n\n---------------------\n**Explanation**\n\nThe global costmap gets its origin from the .yaml file loaded. The origin is enforced by the `static_layer`, when calling `resizeMap` (https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/plugins/static_layer.cpp#L205). It can be any float value.\n\nHowever, the local costmap origin will always be located at `(0, 0) + (N, M) * <costmap resolution>` with (N, M) being integers (see https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/src/costmap_2d.cpp#L327).\n\nAs a consequence, the X/Y distances between the local and global costmap origins are not systematically multiple of the costmap resolution, leading to the observed shift. \n\n-----------------\n**Solution**\n\nI just made sure that the static costmap created by my system uses origin coordinates which are multiple of the costmap resolution.",
+      "bodyHTML": "<p dir=\"auto\">I finally understood the issue. The coordinates of the origin of my static costmap were not multiple of the costmap resolution. For example:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"origin:\n- 3.05\n- -11.05\"><pre class=\"notranslate\"><code class=\"notranslate\">origin:\n- 3.05\n- -11.05\n</code></pre></div>\n<p dir=\"auto\">with a costmap resolution of 0.1.</p>\n<hr>\n<p dir=\"auto\"><strong>Explanation</strong></p>\n<p dir=\"auto\">The global costmap gets its origin from the .yaml file loaded. The origin is enforced by the <code class=\"notranslate\">static_layer</code>, when calling <code class=\"notranslate\">resizeMap</code> (<a href=\"https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/plugins/static_layer.cpp#L205\">https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/plugins/static_layer.cpp#L205</a>). It can be any float value.</p>\n<p dir=\"auto\">However, the local costmap origin will always be located at <code class=\"notranslate\">(0, 0) + (N, M) * &lt;costmap resolution&gt;</code> with (N, M) being integers (see <a href=\"https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/src/costmap_2d.cpp#L327\">https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/src/costmap_2d.cpp#L327</a>).</p>\n<p dir=\"auto\">As a consequence, the X/Y distances between the local and global costmap origins are not systematically multiple of the costmap resolution, leading to the observed shift.</p>\n<hr>\n<p dir=\"auto\"><strong>Solution</strong></p>\n<p dir=\"auto\">I just made sure that the static costmap created by my system uses origin coordinates which are multiple of the costmap resolution.</p>",
+      "bodyVersion": "9fdbdc643bcea8e2f48b136bd954c7e6c3428ea03b9aebaaffc3af997a3d50c9",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7xPFnW",
+      "databaseId": 4047264214,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-4047264214",
+      "createdAt": "2026-03-12T14:36:26Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Does your PR #6028 resolve this?",
+      "bodyHTML": "<p dir=\"auto\">Does your PR <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4063789226\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6028\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6028/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/6028\">#6028</a> resolve this?</p>",
+      "bodyVersion": "f40524819a33d91376ca7c7f30946258bf20ce7ca3eb8e348a099a171bbc625c",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7xPjdB",
+      "databaseId": 4047386433,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBh2ypw",
+        "login": "DylanDeCoeyer-Quimesis",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/102609575?v=4",
+        "profileUrl": "https://github.com/DylanDeCoeyer-Quimesis",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-4047386433",
+      "createdAt": "2026-03-12T14:52:31Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> Does your PR [#6028](https://github.com/ros-navigation/navigation2/pull/6028) resolve this?\n\nNo, it's completely uncorrelated. The local costmap origin coordinates are always cast to integers. So, even if `getSizeInMetersX` gives a value too small by a half cell width, the origin coordinates are floored and the local costmap grid remains aligned with the global costmap grid.\n\nThe shift that I reported here occurs when a static costmap is used in the global costmap, loaded by `StaticLayer`. If its origin coordinates have a resolution smaller than the costmap resolution, the shift appears. For example, if the static costmap origin is (- 3.14, -11.06) and the costmap resolution is 0.1, the shifts will be  0.04 (X) and 0.06 (Y) between the local and global costmaps. This is due to the fact that the function [`resizeMap`](https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/costmap_2d.cpp#L111) used by the `StaticLayer` does not floor the new origin coordinates, while the function [`updateOrigin`](https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/costmap_2d.cpp#L350) used by the rolling local costmap periodic update does.",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">Does your PR <a href=\"https://github.com/ros-navigation/navigation2/pull/6028\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6028/hovercard\">#6028</a> resolve this?</p>\n</blockquote>\n<p dir=\"auto\">No, it's completely uncorrelated. The local costmap origin coordinates are always cast to integers. So, even if <code class=\"notranslate\">getSizeInMetersX</code> gives a value too small by a half cell width, the origin coordinates are floored and the local costmap grid remains aligned with the global costmap grid.</p>\n<p dir=\"auto\">The shift that I reported here occurs when a static costmap is used in the global costmap, loaded by <code class=\"notranslate\">StaticLayer</code>. If its origin coordinates have a resolution smaller than the costmap resolution, the shift appears. For example, if the static costmap origin is (- 3.14, -11.06) and the costmap resolution is 0.1, the shifts will be  0.04 (X) and 0.06 (Y) between the local and global costmaps. This is due to the fact that the function <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/costmap_2d.cpp#L111\"><code class=\"notranslate\">resizeMap</code></a> used by the <code class=\"notranslate\">StaticLayer</code> does not floor the new origin coordinates, while the function <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/costmap_2d.cpp#L350\"><code class=\"notranslate\">updateOrigin</code></a> used by the rolling local costmap periodic update does.</p>",
+      "bodyVersion": "003e8187671fdd75134b85202c832ac4c9f0ace62dffbf7d7880229060cbe37e",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7xZ-ci",
+      "databaseId": 4050118434,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-4050118434",
+      "createdAt": "2026-03-12T21:10:04Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Sorry, this was a quick scan, I understand better. \n\nIs there any actionable thing we can do here in this case? It sounds like its dependent on the mapping system (though we could update at least SLAM Toolbox to make sure the resolution and origin are full increments). Is this something we can detect on startup with the rolling static layer to give the user a light warning that they may want to adjust their origin? ",
+      "bodyHTML": "<p dir=\"auto\">Sorry, this was a quick scan, I understand better.</p>\n<p dir=\"auto\">Is there any actionable thing we can do here in this case? It sounds like its dependent on the mapping system (though we could update at least SLAM Toolbox to make sure the resolution and origin are full increments). Is this something we can detect on startup with the rolling static layer to give the user a light warning that they may want to adjust their origin?</p>",
+      "bodyVersion": "49bb4f1f776d34ed0e6ee1bd4a62bb094df1266537bb68c114a20cbb690dacb9",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7xoje4",
+      "databaseId": 4053940152,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBh2ypw",
+        "login": "DylanDeCoeyer-Quimesis",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/102609575?v=4",
+        "profileUrl": "https://github.com/DylanDeCoeyer-Quimesis",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-4053940152",
+      "createdAt": "2026-03-13T09:52:24Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "We could add a warning [here](https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/plugins/static_layer.cpp#L210) if `new_map.info.origin.position.x` or `new_map.info.origin.position.y` is not a multiple of `new_map.info.resolution` ( `% resolution != 0`).\n\n```\nRCLCPP_WARN(logger_, \"StaticLayer: Costmap origin coordinates (%f, %f) are not multiple of costmap resolution (%f). The costmap grid won't align with (0, 0)\")\n```\n\nAlternatively, we could cast the origin coordinates in `resizeMap` [here](https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/costmap_2d.cpp#L116):\n```\norigin_x_ = static_cast<int>(origin_x / resolution) * resolution;\norigin_y_ = static_cast<int>(origin_y / resolution) * resolution;\n```\n> Is this something we can detect on startup with the rolling static layer to give the user a light warning that they may want to adjust their origin?\n\nThe misalignment only occurs when the StaticLayer receives a new static costmap, at runtime. I don't see any way to predict this at startup.",
+      "bodyHTML": "<p dir=\"auto\">We could add a warning <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/plugins/static_layer.cpp#L210\">here</a> if <code class=\"notranslate\">new_map.info.origin.position.x</code> or <code class=\"notranslate\">new_map.info.origin.position.y</code> is not a multiple of <code class=\"notranslate\">new_map.info.resolution</code> ( <code class=\"notranslate\">% resolution != 0</code>).</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"RCLCPP_WARN(logger_, &quot;StaticLayer: Costmap origin coordinates (%f, %f) are not multiple of costmap resolution (%f). The costmap grid won't align with (0, 0)&quot;)\"><pre class=\"notranslate\"><code class=\"notranslate\">RCLCPP_WARN(logger_, \"StaticLayer: Costmap origin coordinates (%f, %f) are not multiple of costmap resolution (%f). The costmap grid won't align with (0, 0)\")\n</code></pre></div>\n<p dir=\"auto\">Alternatively, we could cast the origin coordinates in <code class=\"notranslate\">resizeMap</code> <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/costmap_2d.cpp#L116\">here</a>:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"origin_x_ = static_cast&lt;int&gt;(origin_x / resolution) * resolution;\norigin_y_ = static_cast&lt;int&gt;(origin_y / resolution) * resolution;\"><pre class=\"notranslate\"><code class=\"notranslate\">origin_x_ = static_cast&lt;int&gt;(origin_x / resolution) * resolution;\norigin_y_ = static_cast&lt;int&gt;(origin_y / resolution) * resolution;\n</code></pre></div>\n<blockquote>\n<p dir=\"auto\">Is this something we can detect on startup with the rolling static layer to give the user a light warning that they may want to adjust their origin?</p>\n</blockquote>\n<p dir=\"auto\">The misalignment only occurs when the StaticLayer receives a new static costmap, at runtime. I don't see any way to predict this at startup.</p>",
+      "bodyVersion": "0e58deb49031ce29bbe170716857776aaa0f4c3d3ef5f3b73c00b7b06047a9ad",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7xxyGE",
+      "databaseId": 4056359300,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-4056359300",
+      "createdAt": "2026-03-13T16:24:58Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Ok. I don’t think we should change the origin since many users have annotations and zones based on those coordinates. But we can warn about the misalignment. \n\nCan you open a PR for that? Though for the message, I would mention about misalignment with rolling and non-rolling grids perhaps?",
+      "bodyHTML": "<p dir=\"auto\">Ok. I don’t think we should change the origin since many users have annotations and zones based on those coordinates. But we can warn about the misalignment.</p>\n<p dir=\"auto\">Can you open a PR for that? Though for the message, I would mention about misalignment with rolling and non-rolling grids perhaps?</p>",
+      "bodyVersion": "82988d62eadef2ede8ebad3898a234b960e7deaec04e7eb477869171308e6ca9",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    }
+  ],
+  "timeline_events": [
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM65yKKmzwAAAAQwBHAr",
+      "databaseId": 17985466411,
+      "createdAt": "2025-06-04T16:39:50Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1Nzg=",
+        "archivedAt": null,
+        "nameHTML": "bug",
+        "name": "bug",
+        "color": "d73a4a",
+        "description": "Something isn't working"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "RenamedTitleEvent",
+      "id": "RTE_lADOCBF7SM65yKKmzwAAAAQwBI7f",
+      "databaseId": 17985474271,
+      "createdAt": "2025-06-04T16:40:22Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "currentTitle": "Local and global costmap ~half cell misalignment when both using the global frame",
+      "previousTitle": "Unexpected misalignment of local costmap with respect to the global costmap using a common global frame"
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6vSwlK",
+      "databaseId": 2940930378,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-2940930378",
+      "createdAt": "2025-06-04T18:07:42Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Renamed for specificity - I hope that still meets your intent. Is this something you're going to look into or a report for some developer / maintainer to look into eventually when time or interest allots? \n\nI also see you mention Iron, have you tested this on something more modern? I don't recall anything that would fix / brought up an issue like this recently, but it is worth checking that we didn't already fix this issue in `main` or `main_humble` (main branch compatible with Humble) so we don't chase our tails",
+      "bodyHTML": "<p dir=\"auto\">Renamed for specificity - I hope that still meets your intent. Is this something you're going to look into or a report for some developer / maintainer to look into eventually when time or interest allots?</p>\n<p dir=\"auto\">I also see you mention Iron, have you tested this on something more modern? I don't recall anything that would fix / brought up an issue like this recently, but it is worth checking that we didn't already fix this issue in <code class=\"notranslate\">main</code> or <code class=\"notranslate\">main_humble</code> (main branch compatible with Humble) so we don't chase our tails</p>",
+      "bodyVersion": "1b7a6ac11ab51f29a42979a6c60a2d371b0ceb5a35cc0877087146c0bec316bd",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6veb7g",
+      "databaseId": 2943991520,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBh2ypw",
+        "login": "DylanDeCoeyer-Quimesis",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/102609575?v=4",
+        "profileUrl": "https://github.com/DylanDeCoeyer-Quimesis",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-2943991520",
+      "createdAt": "2025-06-05T12:16:55Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "This shift is causing issues when our robot drives close to the border of the working area. Due to the shift, the position of the robot can be non-lethal on the global costmap and lethal on the local costmap. In this case, the planner can find a path, but our DWB follower systematically fails with nav2_core::NoValidControl.\n\nAs a consequence, I'll have to find a solution (either the root cause or a workaround). But I was hoping to get some insights from a Nav2 expert :-)",
+      "bodyHTML": "<p dir=\"auto\">This shift is causing issues when our robot drives close to the border of the working area. Due to the shift, the position of the robot can be non-lethal on the global costmap and lethal on the local costmap. In this case, the planner can find a path, but our DWB follower systematically fails with nav2_core::NoValidControl.</p>\n<p dir=\"auto\">As a consequence, I'll have to find a solution (either the root cause or a workaround). But I was hoping to get some insights from a Nav2 expert :-)</p>",
+      "bodyVersion": "564ce5fc02902eb3ea3794a86a664e3b21cc2324744418d64ed83787971a2081",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "LabeledEvent",
+      "id": "LE_lADOCBF7SM65yKKmzwAAAAQxSp1i",
+      "databaseId": 18006842722,
+      "createdAt": "2025-06-05T17:58:18Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "label": {
+        "id": "MDU6TGFiZWw5NDg2OTE1ODE=",
+        "archivedAt": null,
+        "nameHTML": "help wanted",
+        "name": "help wanted",
+        "color": "008672",
+        "description": "Extra attention is needed"
+      },
+      "intent": null
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM6vkVlX",
+      "databaseId": 2945538391,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-2945538391",
+      "createdAt": "2025-06-05T18:06:08Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Understood, unfortunately I don't have a 'here's the reason' off of the top of my head. I would have to experiment a bit to gain some intuition about what's happening and what impacts the behavior. Personally what I'd start with is checking that its not an issue with visualization just as a starting point. Then:\n* I'm suspect in this case of the origin calculation. The motion of the robot is not in discrete cells (continuous), so since we quash the origin change into an `int`, that would tell me there will be some approximation error. I'd check that first thing. \n* One thing in that area that I would test is changing the calculation of `new_grid_ox` to use the continuous coordinates instead of the static casted `int` version. The static casted version of `cell_ox` is needed later in the function, but I'm not sure that the new grid origin information needs to have that approximation applied. \n* I'm interested if we can see it only in the X or Y dimension and make some adjustments with respect to that axis only to see what helps / hurts and if that's related \n* Certainly the X and Y bounds functions you mention in the other ticket are suspect, but if you're not saying that helped with anything, I wouldn't start there.\n\nMy off the cuff intuition would be to crutinize the origin since that is what the rest is offset based off of. The grid is a fixed size so unless you count the cells and see when this happen there's a row / column added or missing, then I don't think it has to do with calculating grid bounds, but rather where the grid itself is placed. I think that's the origin or incoming map data alignment related, possibly. ",
+      "bodyHTML": "<p dir=\"auto\">Understood, unfortunately I don't have a 'here's the reason' off of the top of my head. I would have to experiment a bit to gain some intuition about what's happening and what impacts the behavior. Personally what I'd start with is checking that its not an issue with visualization just as a starting point. Then:</p>\n<ul dir=\"auto\">\n<li>I'm suspect in this case of the origin calculation. The motion of the robot is not in discrete cells (continuous), so since we quash the origin change into an <code class=\"notranslate\">int</code>, that would tell me there will be some approximation error. I'd check that first thing.</li>\n<li>One thing in that area that I would test is changing the calculation of <code class=\"notranslate\">new_grid_ox</code> to use the continuous coordinates instead of the static casted <code class=\"notranslate\">int</code> version. The static casted version of <code class=\"notranslate\">cell_ox</code> is needed later in the function, but I'm not sure that the new grid origin information needs to have that approximation applied.</li>\n<li>I'm interested if we can see it only in the X or Y dimension and make some adjustments with respect to that axis only to see what helps / hurts and if that's related</li>\n<li>Certainly the X and Y bounds functions you mention in the other ticket are suspect, but if you're not saying that helped with anything, I wouldn't start there.</li>\n</ul>\n<p dir=\"auto\">My off the cuff intuition would be to crutinize the origin since that is what the rest is offset based off of. The grid is a fixed size so unless you count the cells and see when this happen there's a row / column added or missing, then I don't think it has to do with calculating grid bounds, but rather where the grid itself is placed. I think that's the origin or incoming map data alignment related, possibly.</p>",
+      "bodyVersion": "37f0d9528bee4c272aafcda5ce575300f878e5481bce315fd6c3b68c14f0d0dd",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 1,
+            "nodes": [
+              {
+                "__typename": "User",
+                "id": "U_kgDOBh2ypw",
+                "login": "DylanDeCoeyer-Quimesis",
+                "name": null,
+                "avatarUrl": "https://avatars.githubusercontent.com/u/102609575?s=64&v=4"
+              }
+            ]
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7wtr9m",
+      "databaseId": 4038508390,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBh2ypw",
+        "login": "DylanDeCoeyer-Quimesis",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/102609575?v=4",
+        "profileUrl": "https://github.com/DylanDeCoeyer-Quimesis",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-4038508390",
+      "createdAt": "2026-03-11T11:19:02Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "I finally understood the issue. The coordinates of the origin of my static costmap were not multiple of the costmap resolution. For example:\n\n```\norigin:\n- 3.05\n- -11.05\n```\n\nwith a costmap resolution of 0.1.\n\n---------------------\n**Explanation**\n\nThe global costmap gets its origin from the .yaml file loaded. The origin is enforced by the `static_layer`, when calling `resizeMap` (https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/plugins/static_layer.cpp#L205). It can be any float value.\n\nHowever, the local costmap origin will always be located at `(0, 0) + (N, M) * <costmap resolution>` with (N, M) being integers (see https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/src/costmap_2d.cpp#L327).\n\nAs a consequence, the X/Y distances between the local and global costmap origins are not systematically multiple of the costmap resolution, leading to the observed shift. \n\n-----------------\n**Solution**\n\nI just made sure that the static costmap created by my system uses origin coordinates which are multiple of the costmap resolution.",
+      "bodyHTML": "<p dir=\"auto\">I finally understood the issue. The coordinates of the origin of my static costmap were not multiple of the costmap resolution. For example:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"origin:\n- 3.05\n- -11.05\"><pre class=\"notranslate\"><code class=\"notranslate\">origin:\n- 3.05\n- -11.05\n</code></pre></div>\n<p dir=\"auto\">with a costmap resolution of 0.1.</p>\n<hr>\n<p dir=\"auto\"><strong>Explanation</strong></p>\n<p dir=\"auto\">The global costmap gets its origin from the .yaml file loaded. The origin is enforced by the <code class=\"notranslate\">static_layer</code>, when calling <code class=\"notranslate\">resizeMap</code> (<a href=\"https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/plugins/static_layer.cpp#L205\">https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/plugins/static_layer.cpp#L205</a>). It can be any float value.</p>\n<p dir=\"auto\">However, the local costmap origin will always be located at <code class=\"notranslate\">(0, 0) + (N, M) * &lt;costmap resolution&gt;</code> with (N, M) being integers (see <a href=\"https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/src/costmap_2d.cpp#L327\">https://github.com/ros-navigation/navigation2/blob/iron/nav2_costmap_2d/src/costmap_2d.cpp#L327</a>).</p>\n<p dir=\"auto\">As a consequence, the X/Y distances between the local and global costmap origins are not systematically multiple of the costmap resolution, leading to the observed shift.</p>\n<hr>\n<p dir=\"auto\"><strong>Solution</strong></p>\n<p dir=\"auto\">I just made sure that the static costmap created by my system uses origin coordinates which are multiple of the costmap resolution.</p>",
+      "bodyVersion": "9fdbdc643bcea8e2f48b136bd954c7e6c3428ea03b9aebaaffc3af997a3d50c9",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7xPFnW",
+      "databaseId": 4047264214,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-4047264214",
+      "createdAt": "2026-03-12T14:36:26Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Does your PR #6028 resolve this?",
+      "bodyHTML": "<p dir=\"auto\">Does your PR <a class=\"issue-link js-issue-link\" data-error-text=\"Failed to load title\" data-id=\"4063789226\" data-permission-text=\"Title is private\" data-url=\"https://github.com/ros-navigation/navigation2/issues/6028\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6028/hovercard\" href=\"https://github.com/ros-navigation/navigation2/pull/6028\">#6028</a> resolve this?</p>",
+      "bodyVersion": "f40524819a33d91376ca7c7f30946258bf20ce7ca3eb8e348a099a171bbc625c",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7xPjdB",
+      "databaseId": 4047386433,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBh2ypw",
+        "login": "DylanDeCoeyer-Quimesis",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/102609575?v=4",
+        "profileUrl": "https://github.com/DylanDeCoeyer-Quimesis",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-4047386433",
+      "createdAt": "2026-03-12T14:52:31Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "> Does your PR [#6028](https://github.com/ros-navigation/navigation2/pull/6028) resolve this?\n\nNo, it's completely uncorrelated. The local costmap origin coordinates are always cast to integers. So, even if `getSizeInMetersX` gives a value too small by a half cell width, the origin coordinates are floored and the local costmap grid remains aligned with the global costmap grid.\n\nThe shift that I reported here occurs when a static costmap is used in the global costmap, loaded by `StaticLayer`. If its origin coordinates have a resolution smaller than the costmap resolution, the shift appears. For example, if the static costmap origin is (- 3.14, -11.06) and the costmap resolution is 0.1, the shifts will be  0.04 (X) and 0.06 (Y) between the local and global costmaps. This is due to the fact that the function [`resizeMap`](https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/costmap_2d.cpp#L111) used by the `StaticLayer` does not floor the new origin coordinates, while the function [`updateOrigin`](https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/costmap_2d.cpp#L350) used by the rolling local costmap periodic update does.",
+      "bodyHTML": "<blockquote>\n<p dir=\"auto\">Does your PR <a href=\"https://github.com/ros-navigation/navigation2/pull/6028\" data-hovercard-type=\"pull_request\" data-hovercard-url=\"/ros-navigation/navigation2/pull/6028/hovercard\">#6028</a> resolve this?</p>\n</blockquote>\n<p dir=\"auto\">No, it's completely uncorrelated. The local costmap origin coordinates are always cast to integers. So, even if <code class=\"notranslate\">getSizeInMetersX</code> gives a value too small by a half cell width, the origin coordinates are floored and the local costmap grid remains aligned with the global costmap grid.</p>\n<p dir=\"auto\">The shift that I reported here occurs when a static costmap is used in the global costmap, loaded by <code class=\"notranslate\">StaticLayer</code>. If its origin coordinates have a resolution smaller than the costmap resolution, the shift appears. For example, if the static costmap origin is (- 3.14, -11.06) and the costmap resolution is 0.1, the shifts will be  0.04 (X) and 0.06 (Y) between the local and global costmaps. This is due to the fact that the function <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/costmap_2d.cpp#L111\"><code class=\"notranslate\">resizeMap</code></a> used by the <code class=\"notranslate\">StaticLayer</code> does not floor the new origin coordinates, while the function <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/costmap_2d.cpp#L350\"><code class=\"notranslate\">updateOrigin</code></a> used by the rolling local costmap periodic update does.</p>",
+      "bodyVersion": "003e8187671fdd75134b85202c832ac4c9f0ace62dffbf7d7880229060cbe37e",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7xZ-ci",
+      "databaseId": 4050118434,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-4050118434",
+      "createdAt": "2026-03-12T21:10:04Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Sorry, this was a quick scan, I understand better. \n\nIs there any actionable thing we can do here in this case? It sounds like its dependent on the mapping system (though we could update at least SLAM Toolbox to make sure the resolution and origin are full increments). Is this something we can detect on startup with the rolling static layer to give the user a light warning that they may want to adjust their origin? ",
+      "bodyHTML": "<p dir=\"auto\">Sorry, this was a quick scan, I understand better.</p>\n<p dir=\"auto\">Is there any actionable thing we can do here in this case? It sounds like its dependent on the mapping system (though we could update at least SLAM Toolbox to make sure the resolution and origin are full increments). Is this something we can detect on startup with the rolling static layer to give the user a light warning that they may want to adjust their origin?</p>",
+      "bodyVersion": "49bb4f1f776d34ed0e6ee1bd4a62bb094df1266537bb68c114a20cbb690dacb9",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7xoje4",
+      "databaseId": 4053940152,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "U_kgDOBh2ypw",
+        "login": "DylanDeCoeyer-Quimesis",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/102609575?v=4",
+        "profileUrl": "https://github.com/DylanDeCoeyer-Quimesis",
+        "name": null
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-4053940152",
+      "createdAt": "2026-03-13T09:52:24Z",
+      "authorAssociation": "CONTRIBUTOR",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "We could add a warning [here](https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/plugins/static_layer.cpp#L210) if `new_map.info.origin.position.x` or `new_map.info.origin.position.y` is not a multiple of `new_map.info.resolution` ( `% resolution != 0`).\n\n```\nRCLCPP_WARN(logger_, \"StaticLayer: Costmap origin coordinates (%f, %f) are not multiple of costmap resolution (%f). The costmap grid won't align with (0, 0)\")\n```\n\nAlternatively, we could cast the origin coordinates in `resizeMap` [here](https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/costmap_2d.cpp#L116):\n```\norigin_x_ = static_cast<int>(origin_x / resolution) * resolution;\norigin_y_ = static_cast<int>(origin_y / resolution) * resolution;\n```\n> Is this something we can detect on startup with the rolling static layer to give the user a light warning that they may want to adjust their origin?\n\nThe misalignment only occurs when the StaticLayer receives a new static costmap, at runtime. I don't see any way to predict this at startup.",
+      "bodyHTML": "<p dir=\"auto\">We could add a warning <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/plugins/static_layer.cpp#L210\">here</a> if <code class=\"notranslate\">new_map.info.origin.position.x</code> or <code class=\"notranslate\">new_map.info.origin.position.y</code> is not a multiple of <code class=\"notranslate\">new_map.info.resolution</code> ( <code class=\"notranslate\">% resolution != 0</code>).</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"RCLCPP_WARN(logger_, &quot;StaticLayer: Costmap origin coordinates (%f, %f) are not multiple of costmap resolution (%f). The costmap grid won't align with (0, 0)&quot;)\"><pre class=\"notranslate\"><code class=\"notranslate\">RCLCPP_WARN(logger_, \"StaticLayer: Costmap origin coordinates (%f, %f) are not multiple of costmap resolution (%f). The costmap grid won't align with (0, 0)\")\n</code></pre></div>\n<p dir=\"auto\">Alternatively, we could cast the origin coordinates in <code class=\"notranslate\">resizeMap</code> <a href=\"https://github.com/ros-navigation/navigation2/blob/main/nav2_costmap_2d/src/costmap_2d.cpp#L116\">here</a>:</p>\n<div class=\"snippet-clipboard-content notranslate position-relative overflow-auto\" data-snippet-clipboard-copy-content=\"origin_x_ = static_cast&lt;int&gt;(origin_x / resolution) * resolution;\norigin_y_ = static_cast&lt;int&gt;(origin_y / resolution) * resolution;\"><pre class=\"notranslate\"><code class=\"notranslate\">origin_x_ = static_cast&lt;int&gt;(origin_x / resolution) * resolution;\norigin_y_ = static_cast&lt;int&gt;(origin_y / resolution) * resolution;\n</code></pre></div>\n<blockquote>\n<p dir=\"auto\">Is this something we can detect on startup with the rolling static layer to give the user a light warning that they may want to adjust their origin?</p>\n</blockquote>\n<p dir=\"auto\">The misalignment only occurs when the StaticLayer receives a new static costmap, at runtime. I don't see any way to predict this at startup.</p>",
+      "bodyVersion": "0e58deb49031ce29bbe170716857776aaa0f4c3d3ef5f3b73c00b7b06047a9ad",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "IssueComment",
+      "id": "IC_kwDOCBF7SM7xxyGE",
+      "databaseId": 4056359300,
+      "viewerDidAuthor": false,
+      "issue": {
+        "id": "I_kwDOCBF7SM65yKKm",
+        "author": {
+          "__typename": "User",
+          "id": "U_kgDOBh2ypw",
+          "login": "DylanDeCoeyer-Quimesis"
+        },
+        "number": 5232,
+        "locked": false,
+        "databaseId": 3116933798
+      },
+      "author": {
+        "__typename": "User",
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "login": "SteveMacenski",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "profileUrl": "https://github.com/SteveMacenski",
+        "name": "Steve Macenski"
+      },
+      "url": "https://github.com/ros-navigation/navigation2/issues/5232#issuecomment-4056359300",
+      "createdAt": "2026-03-13T16:24:58Z",
+      "authorAssociation": "MEMBER",
+      "viewerCanDelete": false,
+      "viewerCanMinimize": false,
+      "viewerCanUnminimize": false,
+      "viewerCanReport": false,
+      "viewerCanReportToMaintainer": false,
+      "viewerCanBlockFromOrg": false,
+      "viewerCanUnblockFromOrg": false,
+      "viewerCanBlockPersonally": false,
+      "viewerCanUnblockPersonally": false,
+      "viewerCanPin": false,
+      "viewerCanUnpin": false,
+      "viaApp": null,
+      "isHidden": false,
+      "isMinimized": false,
+      "minimizedReason": null,
+      "showSpammyBadge": false,
+      "createdViaEmail": false,
+      "authorToRepoOwnerSponsorship": null,
+      "viewerCanReadUserContentEdits": true,
+      "lastEditedAt": null,
+      "lastUserContentEdit": null,
+      "pinnedBy": null,
+      "body": "Ok. I don’t think we should change the origin since many users have annotations and zones based on those coordinates. But we can warn about the misalignment. \n\nCan you open a PR for that? Though for the message, I would mention about misalignment with rolling and non-rolling grids perhaps?",
+      "bodyHTML": "<p dir=\"auto\">Ok. I don’t think we should change the origin since many users have annotations and zones based on those coordinates. But we can warn about the misalignment.</p>\n<p dir=\"auto\">Can you open a PR for that? Though for the message, I would mention about misalignment with rolling and non-rolling grids perhaps?</p>",
+      "bodyVersion": "82988d62eadef2ede8ebad3898a234b960e7deaec04e7eb477869171308e6ca9",
+      "viewerCanUpdate": false,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation",
+          "url": "https://github.com/ros-navigation"
+        },
+        "isPrivate": false,
+        "viewerCanCreateIssues": false,
+        "slashCommandsEnabled": false,
+        "nameWithOwner": "ros-navigation/navigation2",
+        "databaseId": 135363400
+      },
+      "reactionGroups": [
+        {
+          "content": "THUMBS_UP",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "THUMBS_DOWN",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "LAUGH",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HOORAY",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "CONFUSED",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "HEART",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "ROCKET",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        },
+        {
+          "content": "EYES",
+          "viewerHasReacted": false,
+          "reactors": {
+            "totalCount": 0,
+            "nodes": []
+          }
+        }
+      ]
+    },
+    {
+      "__typename": "ConnectedEvent",
+      "id": "COE_lADOCBF7SM65yKKmzwAAAAWCF_Xd",
+      "databaseId": 23657444829,
+      "createdAt": "2026-03-17T19:56:12Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "subject": {
+        "id": "PR_kwDOCBF7SM7LQqqK",
+        "__typename": "PullRequest",
+        "title": "nav2_costmap_2d: warn on origin misalignment in StaticLayer",
+        "url": "https://github.com/ros-navigation/navigation2/pull/6039",
+        "number": 6039,
+        "state": "MERGED",
+        "isDraft": false,
+        "isInMergeQueue": false,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      }
+    },
+    {
+      "__typename": "ClosedEvent",
+      "id": "CE_lADOCBF7SM65yKKmzwAAAAWCJefq",
+      "databaseId": 23658358762,
+      "createdAt": "2026-03-17T20:29:40Z",
+      "actor": {
+        "id": "MDQ6VXNlcjE0OTQ0MTQ3",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/14944147?s=64&u=0925d37e9d3569c71d930114b66e6394c2efb3c6&v=4",
+        "login": "SteveMacenski",
+        "profileResourcePath": "/SteveMacenski",
+        "__typename": "User",
+        "name": "Steve Macenski"
+      },
+      "stateReason": "COMPLETED",
+      "duplicateOf": null,
+      "closingProjectItemStatus": null,
+      "closer": {
+        "id": "PR_kwDOCBF7SM7LQqqK",
+        "__typename": "PullRequest",
+        "url": "https://github.com/ros-navigation/navigation2/pull/6039",
+        "number": 6039,
+        "repository": {
+          "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+          "name": "navigation2",
+          "owner": {
+            "__typename": "Organization",
+            "id": "O_kgDOCPwD7w",
+            "login": "ros-navigation"
+          }
+        }
+      },
+      "intent": null
+    }
+  ],
+  "timeline_page_info": {
+    "timelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABlzvQM_ABqzE3OTg1NDY2NDEx",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnP19ZyABqzIzNjU4MzU4NzYy"
+    },
+    "backTimelineItems": {
+      "hasNextPage": false,
+      "hasPreviousPage": false,
+      "startCursor": "Y3Vyc29yOnYyOpPPAAABlzvQM_ABqzE3OTg1NDY2NDEx",
+      "endCursor": "Y3Vyc29yOnYyOpPPAAABnP19ZyABqzIzNjU4MzU4NzYy"
+    }
+  },
+  "linked_pull_requests": [
+    {
+      "id": "PR_kwDOCBF7SM7LQqqK",
+      "url": "https://github.com/ros-navigation/navigation2/pull/6039",
+      "number": 6039,
+      "title": "nav2_costmap_2d: warn on origin misalignment in StaticLayer",
+      "state": "MERGED",
+      "isDraft": false,
+      "isInMergeQueue": false,
+      "createdAt": "2026-03-17T15:11:13Z",
+      "databaseId": 3410143882,
+      "repository": {
+        "id": "MDEwOlJlcG9zaXRvcnkxMzUzNjM0MDA=",
+        "name": "navigation2",
+        "owner": {
+          "__typename": "Organization",
+          "id": "O_kgDOCPwD7w",
+          "login": "ros-navigation"
+        }
+      },
+      "__typename": "PullRequest",
+      "relation_types": [
+        "linkedPullRequests",
+        "closedByPullRequestsReferences",
+        "closing_event"
+      ]
+    }
+  ],
+  "comments_complete": true,
+  "linked_pr_fetches": [
+    {
+      "url": "https://github.com/ros-navigation/navigation2/pull/6039",
+      "status": "collected",
+      "raw_file": "raw/pull_requests/ros-navigation/navigation2/6039.json",
+      "patch_error": "RuntimeError: Patch download destination blocked; using rendered changes",
+      "rendered_changes_file": "raw/pull_requests/ros-navigation/navigation2/6039.changes.json"
+    }
+  ]
+}
